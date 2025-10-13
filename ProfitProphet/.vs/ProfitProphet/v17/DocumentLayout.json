@@ -1,141 +1,141 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\",
+  "WorkspaceRootPath": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\chartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\chartdataadapter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartdataadapter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\jsonappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\jsonappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\iappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\iappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\views\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\entities\\candle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\candle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\apis\\alphavantageclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\alphavantageclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\apis\\yahoofinanceclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\yahoofinanceclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\services\\apis\\twelvedataclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\twelvedataclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\views\\apisettingscontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\apisettingscontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\views\\apisettingscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\apisettingscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\profitprophet.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:profitprophet.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\entities\\timeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\entities\\timeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\timeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartdataadapter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartdataadapter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\jsonappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\jsonappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\iappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\iappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\entities\\candle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\candle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\apis\\alphavantageclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\alphavantageclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\apis\\yahoofinanceclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\yahoofinanceclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\apis\\twelvedataclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\twelvedataclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\apisettingscontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\apisettingscontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\apisettingscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\apisettingscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\profitprophet.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:profitprophet.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\entities\\ticker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\entities\\ticker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\ticker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\migrations\\20251009183532_droptickerfkfromcandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\migrations\\20251009183532_droptickerfkfromcandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009183532_droptickerfkfromcandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\migrations\\20251009182118_ensurecandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\migrations\\20251009182118_ensurecandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009182118_ensurecandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\migrations\\20251009181010_createcandlestable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\migrations\\20251009181010_createcandlestable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009181010_createcandlestable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-13 reggel\\profitprophet\\migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -146,7 +146,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 233,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 22,
           "Children": [
             {
               "$type": "Bookmark",
@@ -158,37 +158,36 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "ChartController.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\ChartController.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartController.cs",
               "RelativeDocumentMoniker": "Services\\ChartController.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\ChartController.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartController.cs",
               "RelativeToolTip": "Services\\ChartController.cs",
-              "ViewState": "AgIAAAQAAAAAAAAAAAAwwDYAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAAAgwCwAAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-13T09:02:36.067Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "ChartDataAdapter.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\ChartDataAdapter.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartDataAdapter.cs",
               "RelativeDocumentMoniker": "Services\\ChartDataAdapter.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\ChartDataAdapter.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartDataAdapter.cs",
               "RelativeToolTip": "Services\\ChartDataAdapter.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-13T09:01:20.755Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-13T09:01:20.755Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "IAppSettingsService.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\IAppSettingsService.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IAppSettingsService.cs",
               "RelativeDocumentMoniker": "Services\\IAppSettingsService.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\IAppSettingsService.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IAppSettingsService.cs",
               "RelativeToolTip": "Services\\IAppSettingsService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -196,11 +195,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 11,
               "Title": "JsonAppSettingsService.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\JsonAppSettingsService.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\JsonAppSettingsService.cs",
               "RelativeDocumentMoniker": "Services\\JsonAppSettingsService.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\JsonAppSettingsService.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\JsonAppSettingsService.cs",
               "RelativeToolTip": "Services\\JsonAppSettingsService.cs",
               "ViewState": "AgIAAAEAAAAAAAAAAAAwwBAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -208,24 +207,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "MainViewModel.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\ViewModels\\MainViewModel.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\MainViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\ViewModels\\MainViewModel.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\MainViewModel.cs",
               "RelativeToolTip": "ViewModels\\MainViewModel.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAAACYAAABZAAAAAAAAAA==",
+              "ViewState": "AgIAAMUAAAAAAAAAAAAgwJgAAABUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-11T16:35:52.706Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 9,
               "Title": "DataImportControl.xaml.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
               "RelativeDocumentMoniker": "Views\\DataImportControl.xaml.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
               "RelativeToolTip": "Views\\DataImportControl.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -233,22 +232,22 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 10,
               "Title": "DataImportControl.xaml",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\DataImportControl.xaml",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml",
               "RelativeDocumentMoniker": "Views\\DataImportControl.xaml",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\DataImportControl.xaml",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml",
               "RelativeToolTip": "Views\\DataImportControl.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-10-10T14:42:58.21Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "ApiSettingsControl.xaml.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
               "RelativeDocumentMoniker": "Views\\ApiSettingsControl.xaml.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
               "RelativeToolTip": "Views\\ApiSettingsControl.xaml.cs",
               "ViewState": "AgIAAAoAAAAAAAAAAABBwBYAAAA5AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -256,22 +255,22 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 24,
               "Title": "ApiSettingsControl.xaml",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
               "RelativeDocumentMoniker": "Views\\ApiSettingsControl.xaml",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
               "RelativeToolTip": "Views\\ApiSettingsControl.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-10-10T14:41:41.925Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "SettingsWindow.xaml.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
               "RelativeDocumentMoniker": "Views\\SettingsWindow.xaml.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
               "RelativeToolTip": "Views\\SettingsWindow.xaml.cs",
               "ViewState": "AgIAABgAAAAAAAAAAAAAACUAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -279,11 +278,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "SettingsWindow.xaml",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\SettingsWindow.xaml",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml",
               "RelativeDocumentMoniker": "Views\\SettingsWindow.xaml",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Views\\SettingsWindow.xaml",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml",
               "RelativeToolTip": "Views\\SettingsWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-10-10T14:40:09.512Z"
@@ -292,9 +291,9 @@
               "$type": "Document",
               "DocumentIndex": 30,
               "Title": "20251009183532_DropTickerFkFromCandles.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "RelativeToolTip": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "ViewState": "AgIAACUAAAAAAAAAAABBwDAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -304,9 +303,9 @@
               "$type": "Document",
               "DocumentIndex": 31,
               "Title": "20251009182118_EnsureCandles.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009182118_EnsureCandles.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
               "RelativeToolTip": "Migrations\\20251009182118_EnsureCandles.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -316,9 +315,9 @@
               "$type": "Document",
               "DocumentIndex": 32,
               "Title": "20251009181010_CreateCandlesTable.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009181010_CreateCandlesTable.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
               "RelativeToolTip": "Migrations\\20251009181010_CreateCandlesTable.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -328,9 +327,9 @@
               "$type": "Document",
               "DocumentIndex": 33,
               "Title": "20251009180108_AddCandlePropsAndTimeframe.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
               "RelativeToolTip": "Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -338,11 +337,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 25,
               "Title": "CandleDto.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\DTOs\\CandleDto.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\CandleDto.cs",
               "RelativeDocumentMoniker": "DTOs\\CandleDto.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\DTOs\\CandleDto.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\CandleDto.cs",
               "RelativeToolTip": "DTOs\\CandleDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -350,11 +349,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "CandleMapper.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Mappers\\CandleMapper.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Mappers\\CandleMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\CandleMapper.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Mappers\\CandleMapper.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Mappers\\CandleMapper.cs",
               "RelativeToolTip": "Mappers\\CandleMapper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -364,33 +363,35 @@
               "$type": "Document",
               "DocumentIndex": 6,
               "Title": "CandleBase.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\CandleBase.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\CandleBase.cs",
               "RelativeDocumentMoniker": "Entities\\CandleBase.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\CandleBase.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\CandleBase.cs",
               "RelativeToolTip": "Entities\\CandleBase.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:37:22.818Z"
+              "WhenOpened": "2025-10-09T15:37:22.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Timeframe.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Timeframe.cs",
+              "RelativeDocumentMoniker": "Entities\\Timeframe.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Timeframe.cs",
+              "RelativeToolTip": "Entities\\Timeframe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T15:36:57.594Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 27,
-              "Title": "Timeframe.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\Timeframe.cs",
-              "RelativeDocumentMoniker": "Entities\\Timeframe.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\Timeframe.cs",
-              "RelativeToolTip": "Entities\\Timeframe.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:36:57.594Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
               "Title": "AssemblyInfo.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\AssemblyInfo.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\AssemblyInfo.cs",
               "RelativeDocumentMoniker": "AssemblyInfo.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\AssemblyInfo.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\AssemblyInfo.cs",
               "RelativeToolTip": "AssemblyInfo.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -398,11 +399,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\MainWindow.xaml",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\MainWindow.xaml",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-10-01T05:44:14.567Z",
@@ -410,24 +411,23 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "ChartBuilder.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\ChartBuilder.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartBuilder.cs",
               "RelativeDocumentMoniker": "Services\\ChartBuilder.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\ChartBuilder.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartBuilder.cs",
               "RelativeToolTip": "Services\\ChartBuilder.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAwwFgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T14:27:07.893Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-18T14:27:07.893Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 28,
               "Title": "App.xaml",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\App.xaml",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml",
               "RelativeDocumentMoniker": "App.xaml",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\App.xaml",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml",
               "RelativeToolTip": "App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-09-17T13:07:59.419Z",
@@ -435,11 +435,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "App.xaml.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\App.xaml.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml.cs",
               "RelativeDocumentMoniker": "App.xaml.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\App.xaml.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
               "ViewState": "AgIAABoAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -447,24 +447,24 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "DataService.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\DataService.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeDocumentMoniker": "Services\\DataService.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\DataService.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeToolTip": "Services\\DataService.cs",
-              "ViewState": "AgIAAGoAAAAAAAAAAAAwwI0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAHAAAAAAAAAAAAAAAIsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T10:02:49.317Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "YahooFinanceClient.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
               "RelativeDocumentMoniker": "Services\\APIs\\YahooFinanceClient.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
               "RelativeToolTip": "Services\\APIs\\YahooFinanceClient.cs",
               "ViewState": "AgIAAGIAAAAAAAAAAIAwwHQAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -472,11 +472,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "TwelveDataClient.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
               "RelativeDocumentMoniker": "Services\\APIs\\TwelveDataClient.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
               "RelativeToolTip": "Services\\APIs\\TwelveDataClient.cs",
               "ViewState": "AgIAAE0AAAAAAAAAAIAwwF8AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -484,11 +484,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "AlphaVantageClient.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
               "RelativeDocumentMoniker": "Services\\APIs\\AlphaVantageClient.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
               "RelativeToolTip": "Services\\APIs\\AlphaVantageClient.cs",
               "ViewState": "AgIAAHcAAAAAAAAAAIAwwIkAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -496,11 +496,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "IStockApiClient.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\IStockApiClient.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IStockApiClient.cs",
               "RelativeDocumentMoniker": "Services\\IStockApiClient.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Services\\IStockApiClient.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IStockApiClient.cs",
               "RelativeToolTip": "Services\\IStockApiClient.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAIAwwBIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -508,11 +508,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "StockContext.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Data\\StockContext.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Data\\StockContext.cs",
               "RelativeDocumentMoniker": "Data\\StockContext.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Data\\StockContext.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Data\\StockContext.cs",
               "RelativeToolTip": "Data\\StockContext.cs",
               "ViewState": "AgIAABsAAAAAAAAAAAAAABMAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -520,11 +520,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Candle.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\Candle.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Candle.cs",
               "RelativeDocumentMoniker": "Entities\\Candle.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\Candle.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Candle.cs",
               "RelativeToolTip": "Entities\\Candle.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -534,9 +534,9 @@
               "$type": "Document",
               "DocumentIndex": 29,
               "Title": "Ticker.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\Ticker.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Ticker.cs",
               "RelativeDocumentMoniker": "Entities\\Ticker.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\Entities\\Ticker.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Ticker.cs",
               "RelativeToolTip": "Entities\\Ticker.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -544,11 +544,11 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 26,
               "Title": "ProfitProphet.csproj",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\ProfitProphet.csproj",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ProfitProphet.csproj",
               "RelativeDocumentMoniker": "ProfitProphet.csproj",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\ProfitProphet.csproj",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ProfitProphet.csproj",
               "RelativeToolTip": "ProfitProphet.csproj",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
@@ -556,15 +556,16 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 1,
               "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-13 reggel\\ProfitProphet\\MainWindow.xaml.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAiwA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T08:14:56.325Z"
+              "WhenOpened": "2025-09-17T08:14:56.325Z",
+              "EditorCaption": ""
             }
           ]
         }

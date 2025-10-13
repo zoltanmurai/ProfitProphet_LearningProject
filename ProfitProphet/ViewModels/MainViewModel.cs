@@ -2,6 +2,7 @@
 using OxyPlot;
 using ProfitProphet.Data;
 using ProfitProphet.DTOs;
+using ProfitProphet.Entities;
 using ProfitProphet.Services;
 using ProfitProphet.Views;
 using System;
@@ -27,6 +28,7 @@ namespace ProfitProphet.ViewModels
         private string _selectedSymbol;
         private string _selectedInterval;
         private PlotModel _chartModel;
+        private readonly StockContext _context = new();
 
 
         public ObservableCollection<string> Watchlist { get; }
@@ -34,7 +36,7 @@ namespace ProfitProphet.ViewModels
 
         public PlotController ChartPlotController => _chartController.GetController();
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
@@ -124,13 +126,13 @@ namespace ProfitProphet.ViewModels
                     return;
 
                 // 3️⃣ Chart felépítése
-                ChartModel = _chartBuilder.BuildModel(candles, _selectedSymbol, _selectedInterval);
+                ChartModel = _chartBuilder.BuildModel(candles.Cast<CandleBase>(), _selectedSymbol, _selectedInterval);
 
                 // 4️⃣ Lazy loader: automatikus régi adatok betöltése scroll esetén
                 _chartController.ConfigureLazyLoader(async () =>
                 {
                     var first = candles.Min(c => c.TimestampUtc);
-                    var tf = IntervalToTf(_selectedInterval);
+                    var tf = _dataService.GetTimeframeFromInterval(_selectedInterval);
 
                     // Kérünk régebbi 90 napnyi adatot (ha van)
                     var older = await _context.Candles
@@ -148,7 +150,7 @@ namespace ProfitProphet.ViewModels
                     older.Reverse();
                     candles.InsertRange(0, older);
 
-                    ChartModel = _chartBuilder.BuildModel(candles, _selectedSymbol, _selectedInterval);
+                    ChartModel = _chartBuilder.BuildModel(candles.Cast<CandleBase>(), _selectedSymbol, _selectedInterval);
                     OnPropertyChanged(nameof(ChartModel));
                 });
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ProfitProphet")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b1bd06f47e432623b3a258234970ed57f51062c")]
 [assembly: System.Reflection.AssemblyProductAttribute("ProfitProphet")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ProfitProphet")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

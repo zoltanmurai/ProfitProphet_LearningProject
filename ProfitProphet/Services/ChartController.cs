@@ -1,6 +1,5 @@
 ﻿using OxyPlot;
 using OxyPlot.Wpf;
-using OxyPlot.Commands;
 using System;
 using System.Threading.Tasks;
 
@@ -27,23 +26,23 @@ namespace ProfitProphet.Services
         private void ConfigureDefaultBindings()
         {
             _controller.UnbindMouseWheel();
-            _controller.BindMouseWheel(OxyMouseButton.None, PlotCommands.ZoomWheel);
+            _controller.BindMouseWheel((OxyModifierKeys)OxyMouseButton.None, OxyPlot.PlotCommands.ZoomWheel);
 
-            _controller.BindMouseDown(OxyMouseButton.Left, PlotCommands.PanAt);
-            _controller.BindMouseDown(OxyMouseButton.Right, PlotCommands.ZoomRectangle);
+            _controller.BindMouseDown(OxyMouseButton.Left, OxyPlot.PlotCommands.PanAt);
+            _controller.BindMouseDown(OxyMouseButton.Right, OxyPlot.PlotCommands.ZoomRectangle);
 
             // Ctrl + bal klikk → Auto-fit
             _controller.BindMouseDown(OxyMouseButton.Left, OxyModifierKeys.Control,
-                new DelegatePlotCommand<OxyMouseDownEventArgs>((view, args) =>
+                new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
                 {
-                    view.Model?.ResetAllAxes();
+                    view.ActualModel?.ResetAllAxes();
                     view.InvalidatePlot(false);
                     args.Handled = true;
                 }));
 
             // Középső gomb → Lazy load
             _controller.BindMouseDown(OxyMouseButton.Middle,
-                new DelegatePlotCommand<OxyMouseDownEventArgs>((view, args) =>
+                new DelegatePlotCommand<OxyMouseDownEventArgs>((view, controller, args) =>
                 {
                     if (_lazyLoader != null)
                         _ = _lazyLoader.Invoke();
