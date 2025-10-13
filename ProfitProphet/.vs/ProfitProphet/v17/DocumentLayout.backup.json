@@ -1,0 +1,543 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\jsonappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\jsonappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\iappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\iappsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\views\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\entities\\candle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\candle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\apis\\alphavantageclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\alphavantageclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\apis\\yahoofinanceclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\yahoofinanceclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\services\\apis\\twelvedataclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\apis\\twelvedataclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\views\\apisettingscontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\apisettingscontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\views\\apisettingscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\apisettingscontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\profitprophet.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:profitprophet.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\entities\\timeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\timeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\entities\\ticker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\ticker.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\migrations\\20251009183532_droptickerfkfromcandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009183532_droptickerfkfromcandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\migrations\\20251009182118_ensurecandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009182118_ensurecandles.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\migrations\\20251009181010_createcandlestable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009181010_createcandlestable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\users\\zolta\\onedrive\\_syncronized\\vscommunity\\c#\\hashdehash\\profitprophet 10-12 este\\profitprophet\\migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 233,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{b1e99781-ab81-11d0-b683-00aa00a3ee26}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "IAppSettingsService.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\IAppSettingsService.cs",
+              "RelativeDocumentMoniker": "Services\\IAppSettingsService.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\IAppSettingsService.cs",
+              "RelativeToolTip": "Services\\IAppSettingsService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-11T16:45:36.124Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "JsonAppSettingsService.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\JsonAppSettingsService.cs",
+              "RelativeDocumentMoniker": "Services\\JsonAppSettingsService.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\JsonAppSettingsService.cs",
+              "RelativeToolTip": "Services\\JsonAppSettingsService.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAwwBAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-11T16:44:37.464Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\ViewModels\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\ViewModels\\MainViewModel.cs",
+              "RelativeToolTip": "ViewModels\\MainViewModel.cs",
+              "ViewState": "AgIAAIIAAAAAAAAAAIAwwI4AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-11T16:35:52.706Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DataImportControl.xaml.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\DataImportControl.xaml.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
+              "RelativeToolTip": "Views\\DataImportControl.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGAAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T14:43:20.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DataImportControl.xaml",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\DataImportControl.xaml",
+              "RelativeDocumentMoniker": "Views\\DataImportControl.xaml",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\DataImportControl.xaml",
+              "RelativeToolTip": "Views\\DataImportControl.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-10T14:42:58.21Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ApiSettingsControl.xaml.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\ApiSettingsControl.xaml.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
+              "RelativeToolTip": "Views\\ApiSettingsControl.xaml.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAABBwBYAAAA5AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T14:41:57.286Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ApiSettingsControl.xaml",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
+              "RelativeDocumentMoniker": "Views\\ApiSettingsControl.xaml",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
+              "RelativeToolTip": "Views\\ApiSettingsControl.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-10T14:41:41.925Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SettingsWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\SettingsWindow.xaml.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
+              "RelativeToolTip": "Views\\SettingsWindow.xaml.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAAAACUAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-10T14:40:43.908Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "SettingsWindow.xaml",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\SettingsWindow.xaml",
+              "RelativeDocumentMoniker": "Views\\SettingsWindow.xaml",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Views\\SettingsWindow.xaml",
+              "RelativeToolTip": "Views\\SettingsWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-10T14:40:09.512Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "20251009183532_DropTickerFkFromCandles.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
+              "RelativeDocumentMoniker": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
+              "RelativeToolTip": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAABBwDAAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T18:35:32.926Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "20251009182118_EnsureCandles.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
+              "RelativeDocumentMoniker": "Migrations\\20251009182118_EnsureCandles.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
+              "RelativeToolTip": "Migrations\\20251009182118_EnsureCandles.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T18:21:18.991Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "20251009181010_CreateCandlesTable.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
+              "RelativeDocumentMoniker": "Migrations\\20251009181010_CreateCandlesTable.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
+              "RelativeToolTip": "Migrations\\20251009181010_CreateCandlesTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T18:10:10.35Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "20251009180108_AddCandlePropsAndTimeframe.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
+              "RelativeDocumentMoniker": "Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
+              "RelativeToolTip": "Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T18:01:08.743Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "CandleDto.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\DTOs\\CandleDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\CandleDto.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\DTOs\\CandleDto.cs",
+              "RelativeToolTip": "DTOs\\CandleDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T15:45:38.907Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CandleMapper.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Mappers\\CandleMapper.cs",
+              "RelativeDocumentMoniker": "Mappers\\CandleMapper.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Mappers\\CandleMapper.cs",
+              "RelativeToolTip": "Mappers\\CandleMapper.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T15:42:21.13Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CandleBase.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\CandleBase.cs",
+              "RelativeDocumentMoniker": "Entities\\CandleBase.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\CandleBase.cs",
+              "RelativeToolTip": "Entities\\CandleBase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T15:37:22.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "Timeframe.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\Timeframe.cs",
+              "RelativeDocumentMoniker": "Entities\\Timeframe.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\Timeframe.cs",
+              "RelativeToolTip": "Entities\\Timeframe.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-09T15:36:57.594Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "AssemblyInfo.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\AssemblyInfo.cs",
+              "RelativeToolTip": "AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-01T14:51:06.992Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-10-01T05:44:14.567Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ChartBuilder.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\ChartBuilder.cs",
+              "RelativeDocumentMoniker": "Services\\ChartBuilder.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\ChartBuilder.cs",
+              "RelativeToolTip": "Services\\ChartBuilder.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAIAwwCcAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-18T14:27:07.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "App.xaml",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\App.xaml",
+              "RelativeDocumentMoniker": "App.xaml",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\App.xaml",
+              "RelativeToolTip": "App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-09-17T13:07:59.419Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "App.xaml.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\App.xaml.cs",
+              "RelativeDocumentMoniker": "App.xaml.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\App.xaml.cs",
+              "RelativeToolTip": "App.xaml.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T13:06:16.062Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DataService.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\DataService.cs",
+              "RelativeDocumentMoniker": "Services\\DataService.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\DataService.cs",
+              "RelativeToolTip": "Services\\DataService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE0AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T10:02:49.317Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "YahooFinanceClient.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
+              "RelativeDocumentMoniker": "Services\\APIs\\YahooFinanceClient.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
+              "RelativeToolTip": "Services\\APIs\\YahooFinanceClient.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAIAwwHQAAAAuAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T09:34:50.69Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "TwelveDataClient.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
+              "RelativeDocumentMoniker": "Services\\APIs\\TwelveDataClient.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
+              "RelativeToolTip": "Services\\APIs\\TwelveDataClient.cs",
+              "ViewState": "AgIAAE0AAAAAAAAAAIAwwF8AAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T09:27:01.716Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "AlphaVantageClient.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
+              "RelativeDocumentMoniker": "Services\\APIs\\AlphaVantageClient.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
+              "RelativeToolTip": "Services\\APIs\\AlphaVantageClient.cs",
+              "ViewState": "AgIAAHcAAAAAAAAAAIAwwIkAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T09:26:29.363Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IStockApiClient.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\IStockApiClient.cs",
+              "RelativeDocumentMoniker": "Services\\IStockApiClient.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Services\\IStockApiClient.cs",
+              "RelativeToolTip": "Services\\IStockApiClient.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAIAwwBIAAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T09:26:01.07Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "StockContext.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Data\\StockContext.cs",
+              "RelativeDocumentMoniker": "Data\\StockContext.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Data\\StockContext.cs",
+              "RelativeToolTip": "Data\\StockContext.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAABMAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T08:48:59.779Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "Candle.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\Candle.cs",
+              "RelativeDocumentMoniker": "Entities\\Candle.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\Candle.cs",
+              "RelativeToolTip": "Entities\\Candle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T08:47:58.701Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "Ticker.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\Ticker.cs",
+              "RelativeDocumentMoniker": "Entities\\Ticker.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\Entities\\Ticker.cs",
+              "RelativeToolTip": "Entities\\Ticker.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T08:47:24.09Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ProfitProphet.csproj",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\ProfitProphet.csproj",
+              "RelativeDocumentMoniker": "ProfitProphet.csproj",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\ProfitProphet.csproj",
+              "RelativeToolTip": "ProfitProphet.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-09-17T08:44:22.142Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet 10-12 este\\ProfitProphet\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAiwA4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-17T08:14:56.325Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+<Window x:Class="ProfitProphet.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings" Height="600" Width="900"
+        WindowStartupLocation="CenterOwner"
+        Background="#1e1e1e"
+        Foreground="White">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Bal oldali menü -->
+        <StackPanel Background="#252526">
+            <TextBlock Text="Settings"
+                       FontSize="20"
+                       FontWeight="Bold"
+                       Margin="10,10,10,0"/>
+            <ListBox x:Name="Sidebar"
+                     Margin="10"
+                     Background="#2d2d30"
+                     Foreground="White"
+                     BorderThickness="0">
+                <ListBoxItem Content="Általános" Tag="General"/>
+                <ListBoxItem Content="APIs" Tag="ApiSettings"/>
+                <ListBoxItem Content="Data Import" Tag="DataImport"/>
+            </ListBox>
+        </StackPanel>
+
+        <!-- Tartalom -->
+        <Border Grid.Column="1" Background="#1e1e1e" Padding="20">
+            <ContentControl x:Name="ContentArea"/>
+        </Border>
+    </Grid>
+</Window>

@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="ProfitProphet.Views.ApiSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="#1e1e1e">
+    <StackPanel Margin="10">
+        <TextBlock Text="API Settings" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+            <TextBlock Text="Active API:" Width="150"/>
+            <ComboBox x:Name="ApiComboBox" Width="200"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
+            <TextBlock Text="API Key:" Width="150"/>
+            <TextBox x:Name="ApiKeyBox" Width="200"/>
+        </StackPanel>
+        <Button Content="Save"
+                Width="100"
+                HorizontalAlignment="Left"
+                Margin="0,20,0,0"
+                Click="Save_Click"/>
+    </StackPanel>
+</UserControl>

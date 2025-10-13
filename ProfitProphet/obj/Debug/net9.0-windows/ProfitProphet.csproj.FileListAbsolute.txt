@@ -1,0 +1,1055 @@
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.lref
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.lref
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet tegnap\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-10\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-11\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 elbaszott\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.exe
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.deps.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.runtimeconfig.json
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Humanizer.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Bcl.AsyncInterfaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Build.Locator.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.CSharp.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.CodeAnalysis.Workspaces.MSBuild.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Data.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Design.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Relational.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.EntityFrameworkCore.Sqlite.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Caching.Memory.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Configuration.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.DependencyModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Logging.Abstractions.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Options.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Microsoft.Extensions.Primitives.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\Mono.TextTemplating.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\OxyPlot.Wpf.Shared.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.batteries_v2.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.core.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\SQLitePCLRaw.provider.e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.AttributedModel.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Convention.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Hosting.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.Runtime.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\System.Composition.TypedParts.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.CSharp.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\cs\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\de\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\es\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\fr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\it\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ja\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ko\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pl\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\pt-BR\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\ru\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\browser-wasm\nativeassets\net9.0\e_sqlite3.a
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-armel\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-mips64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-arm64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-musl-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-ppc64le\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-s390x\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x64\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\linux-x86\native\libe_sqlite3.so
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\maccatalyst-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-arm64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\osx-x64\native\libe_sqlite3.dylib
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-arm64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x64\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\bin\Debug\net9.0-windows\runtimes\win-x86\native\e_sqlite3.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.AssemblyReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.ResolveComReference.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.baml
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\MainWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\Views\ApiSettingsControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\Views\DataImportControl.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\Views\SettingsWindow.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\App.g.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet_MarkupCompile.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.g.resources
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.GeneratedMSBuildEditorConfig.editorconfig
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfoInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.AssemblyInfo.cs
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.csproj.CoreCompileInputs.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitPr.82A92E2A.Up2Date
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\refint\ProfitProphet.dll
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.pdb
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ProfitProphet.genruntimeconfig.cache
+E:\Users\zolta\OneDrive\_Syncronized\VSCommunity\C#\HashDeHash\ProfitProphet 10-12 este\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
