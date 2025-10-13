@@ -137,8 +137,5 @@ namespace ProfitProphet.Services
             "1d" => Timeframe.Day,
             _ => Timeframe.Hour
         };
-
-        public Timeframe GetTimeframeFromInterval(string interval) => IntervalToTf(interval);
-
     }
 }

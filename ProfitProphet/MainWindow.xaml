@@ -286,7 +286,6 @@
                     <ColumnDefinition Width="53*"/>
                 </Grid.ColumnDefinitions>
                 <oxy:PlotView Model="{Binding ChartModel}"
-                              Controller="{Binding ChartPlotController}"
                               Background="#0e1117" 
                               IsManipulationEnabled="True"
                               ZoomRectangleCursor="SizeNWSE"

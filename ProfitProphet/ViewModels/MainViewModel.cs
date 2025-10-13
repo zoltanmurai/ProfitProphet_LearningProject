@@ -1,11 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OxyPlot;
-using ProfitProphet.Data;
-using ProfitProphet.DTOs;
-using ProfitProphet.Entities;
-using ProfitProphet.Services;
-using ProfitProphet.Views;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -13,6 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using OxyPlot;
+using ProfitProphet.Data;
+using ProfitProphet.DTOs;
+using ProfitProphet.Services;
+using ProfitProphet.Views;
 
 namespace ProfitProphet.ViewModels
 {
@@ -20,25 +18,16 @@ namespace ProfitProphet.ViewModels
     {
         private readonly IAppSettingsService _settingsService;
         private readonly DataService _dataService;
-        //private readonly ChartBuilder _chartBuilder;
-        private readonly ChartBuilder _chartBuilder = new();
-        private readonly ChartController _chartController = new();
+        private readonly ChartBuilder _chartBuilder;
 
         private AppSettings _settings;
         private string _selectedSymbol;
         private string _selectedInterval;
         private PlotModel _chartModel;
-        private readonly StockContext _context = new();
 
 
         public ObservableCollection<string> Watchlist { get; }
         public ObservableCollection<IntervalItem> Intervals { get; }
-
-        public PlotController ChartPlotController => _chartController.GetController();
-
-        //public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         public string SelectedSymbol
         {
@@ -112,57 +101,72 @@ namespace ProfitProphet.ViewModels
 
             try
             {
-                // 1️⃣ Először próbáljunk lokális adatot betölteni
+                // 1️⃣ Próbáljuk meg először a DB-ből
                 var candles = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
 
-                // 2️⃣ Ha nincs elég adat, vagy üres az adatbázis, API-ból töltjük
-                if (candles == null || candles.Count < 10)
+                // 2️⃣ Ha nincs adat, vagy elavult (3 napnál régebbi), frissítsünk API-ról
+                if (candles.Count == 0 || candles.Last().TimestampUtc < DateTime.UtcNow.AddDays(-3))
                 {
-                    candles = await _dataService.GetDataAsync(_selectedSymbol, _selectedInterval);
-                    await _dataService.SaveCandlesAsync(_selectedInterval, candles);
+                    var newData = await _dataService.GetDataAsync(_selectedSymbol, _selectedInterval);
+
+                    if (newData?.Count > 0)
+                    {
+                        
+                        // 🔹 új adatok mentése a DB-be
+                        await _dataService.SaveCandlesAsync(_selectedSymbol, newData);
+
+                        // 🔹 a memóriában lévő listához hozzáadjuk a frisset
+                        candles.AddRange(newData);
+                    }
                 }
 
+                //  Biztonsági ellenőrzés
                 if (candles == null || candles.Count == 0)
-                    return;
-
-                // 3️⃣ Chart felépítése
-                ChartModel = _chartBuilder.BuildModel(candles.Cast<CandleBase>(), _selectedSymbol, _selectedInterval);
-
-                // 4️⃣ Lazy loader: automatikus régi adatok betöltése scroll esetén
-                _chartController.ConfigureLazyLoader(async () =>
                 {
-                    var first = candles.Min(c => c.TimestampUtc);
-                    var tf = _dataService.GetTimeframeFromInterval(_selectedInterval);
+                    MessageBox.Show($"Nincs adat a(z) {_selectedSymbol} szimbólumhoz.", "Chart",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
 
-                    // Kérünk régebbi 90 napnyi adatot (ha van)
-                    var older = await _context.Candles
-                        .AsNoTracking()
-                        .Where(c => c.Symbol == _selectedSymbol &&
-                                    c.Timeframe == tf &&
-                                    c.TimestampUtc < first)
-                        .OrderByDescending(c => c.TimestampUtc)
-                        .Take(90)
-                        .ToListAsync();
+                // 4️⃣ Rendezés időrendbe
+                candles = candles.OrderBy(c => c.TimestampUtc).ToList();
 
-                    if (older.Count == 0)
-                        return;
-
-                    older.Reverse();
-                    candles.InsertRange(0, older);
-
-                    ChartModel = _chartBuilder.BuildModel(candles.Cast<CandleBase>(), _selectedSymbol, _selectedInterval);
-                    OnPropertyChanged(nameof(ChartModel));
+                // 5️⃣ Chart felépítése
+                _chartBuilder.ConfigureLazyLoader(async (start, end) =>
+                {
+                    var olderData = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
+                    return olderData
+                        .Where(c => c.TimestampUtc >= start && c.TimestampUtc < end)
+                        .OrderBy(c => c.TimestampUtc)
+                        .Select(c => new ChartBuilder.CandleData
+                        {
+                            Timestamp = c.TimestampUtc,
+                            Open = (double)c.Open,
+                            High = (double)c.High,
+                            Low = (double)c.Low,
+                            Close = (double)c.Close
+                        })
+                        .ToList();
                 });
 
-                OnPropertyChanged(nameof(ChartModel));
-                OnPropertyChanged(nameof(ChartPlotController));
+                ChartModel = _chartBuilder.BuildInteractiveChart(
+                    candles.Select(c => new ChartBuilder.CandleData
+                    {
+                        Timestamp = c.TimestampUtc,
+                        Open = (double)c.Open,
+                        High = (double)c.High,
+                        Low = (double)c.Low,
+                        Close = (double)c.Close
+                    }).ToList(),
+                    _selectedSymbol,
+                    _selectedInterval);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Hiba a chart betöltésekor: {ex.Message}");
+                MessageBox.Show($"Hiba a chart betöltése közben:\n{ex.Message}",
+                    "Chart Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
 
         private void AddSymbol(object obj)
         {

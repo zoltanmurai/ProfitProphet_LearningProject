@@ -3231,11 +3231,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ProfitProphet.csproj",
+      "projectUniqueName": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet10-12este\\ProfitProphet\\ProfitProphet.csproj",
       "projectName": "ProfitProphet",
-      "projectPath": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ProfitProphet.csproj",
+      "projectPath": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet10-12este\\ProfitProphet\\ProfitProphet.csproj",
       "packagesPath": "C:\\Users\\zolta\\.nuget\\packages\\",
-      "outputPath": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\obj\\",
+      "outputPath": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet10-12este\\ProfitProphet\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
