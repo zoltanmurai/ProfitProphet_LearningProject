@@ -246,8 +246,7 @@
               "RelativeToolTip": "ViewModels\\MainViewModel.cs",
               "ViewState": "AgIAAGEAAAAAAAAAAAAAwHMAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-11T16:35:52.706Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-11T16:35:52.706Z"
             },
             {
               "$type": "Document",
@@ -435,8 +434,7 @@
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-01T05:44:14.567Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-10-01T05:44:14.567Z"
             },
             {
               "$type": "Document",
@@ -448,8 +446,7 @@
               "RelativeToolTip": "Services\\ChartBuilder.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAFkBAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T14:27:07.893Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-18T14:27:07.893Z"
             },
             {
               "$type": "Document",
@@ -460,8 +457,7 @@
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml",
               "RelativeToolTip": "App.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-09-17T13:07:59.419Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-17T13:07:59.419Z"
             },
             {
               "$type": "Document",
@@ -481,9 +477,9 @@
               "Title": "DataService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeDocumentMoniker": "Services\\DataService.cs",
-              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs*",
-              "RelativeToolTip": "Services\\DataService.cs*",
-              "ViewState": "AgIAAIcAAAAAAAAAAAAkwCUBAAAAAAAAAAAAAA==",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
+              "RelativeToolTip": "Services\\DataService.cs",
+              "ViewState": "AgIAAJUAAAAAAAAAAAAkwGcBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T10:02:49.317Z",
               "EditorCaption": ""
