@@ -125,10 +125,10 @@ namespace ProfitProphet.ViewModels
                     if (newData?.Count > 0)
                     {
                         
-                        // 🔹 új adatok mentése a DB-be
+                        // új adatok mentése a DB-be
                         await _dataService.SaveCandlesAsync(_selectedSymbol, newData);
 
-                        // 🔹 a memóriában lévő listához hozzáadjuk a frisset
+                        // a memóriában lévő listához hozzáadjuk a frisset
                         candles.AddRange(newData);
                     }
                 }
@@ -204,36 +204,28 @@ namespace ProfitProphet.ViewModels
 
         public async Task RemoveSymbolAsync(string symbol)
         {
-            if (string.IsNullOrWhiteSpace(symbol))
-                return;
+            if (string.IsNullOrWhiteSpace(symbol)) return;
 
             try
             {
-                // 1. Törlés az adatbázisból
+                // 🔑 Előbb ürítjük a nézetet
+                if (SelectedSymbol == symbol)
+                {
+                    SelectedSymbol = null;   // ez nem tölt be semmit (settered lekezeli)
+                    ChartModel = null;       // HasChartData is frissül a setteredben
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChartModel)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+                }
+
+                // DB törlés
                 await _dataService.RemoveSymbolAndCandlesAsync(symbol);
 
-                // 2. Eltávolítás a Watchlist-ből
+                // Watchlist frissítés
                 if (Watchlist.Contains(symbol))
                     Watchlist.Remove(symbol);
 
-                // 3. Settings mentése
                 _settings.Watchlist = Watchlist.ToList();
                 _settingsService.Save(_settings);
-
-                // 4. Ha a törölt volt kiválasztva, válassz másik szimbólumot
-                if (SelectedSymbol == symbol)
-                {
-                    // Válassz az első megmaradt szimbólumot, vagy null
-                    SelectedSymbol = Watchlist.Count > 0 ? Watchlist[0] : null;
-
-                    // Ha null lett, töröld a chartot
-                    if (SelectedSymbol == null)
-                    {
-                        ChartModel = null;
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
-                    }
-                    // Ha van még szimbólum, a SelectedSymbol setter magáról meghívja a LoadChartAsync-et
-                }
             }
             catch (Exception ex)
             {
@@ -241,6 +233,7 @@ namespace ProfitProphet.ViewModels
                     "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
 
         private void OpenSettings(object obj)
         {

@@ -6,9 +6,11 @@ using ProfitProphet.Mappers;
 using ProfitProphet.Services.APIs;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 
 namespace ProfitProphet.Services
 {
@@ -139,104 +141,157 @@ namespace ProfitProphet.Services
         };
 
         public async Task<List<Candle>> GetRefreshReloadAsync(
-            string symbol,
-            string interval,
-            int maxAgeDays = 2,
-            int correctionDays = 5)
+    string symbol,
+    string interval,
+    int maxAgeDays = 2,
+    int correctionDays = 5)
         {
             var tf = IntervalToTf(interval);
 
-            // 1️⃣ Lekérjük a helyi adatokat
+            // 1️⃣ Lekérjük a lokális adatokat
             var localCandles = await _context.Candles
                 .Where(c => c.Symbol == symbol && c.Timeframe == tf)
                 .OrderBy(c => c.TimestampUtc)
                 .ToListAsync();
 
-            DateTime? lastLocalDate = localCandles.LastOrDefault()?.TimestampUtc;
+            // Ha nincs semmi lokális adat, akkor majd újratöltjük API-ból
+            bool hasLocal = localCandles.Count > 0;
+            DateTime? lastLocalDate = hasLocal ? localCandles.Last().TimestampUtc : null;
+
+            // 2️⃣ Ellenőrizzük, mennyire frissek a helyi adatok
+            bool isOutdated = false;
+            if (hasLocal && lastLocalDate.HasValue)
+            {
+                var age = (DateTime.UtcNow - lastLocalDate.Value).TotalDays;
+                isOutdated = age > maxAgeDays;
+            }
+
             bool needsFullReload = false;
 
-            // 2️⃣ Lekérjük az API-ból az utolsó néhány napot (mindig)
-            var client = new YahooFinanceClient();
-            var dtoList = await client.GetHistoricalAsync(symbol, interval);
-            var apiCandles = dtoList.Select(d => new Candle
+            // 3️⃣ Ha VAN lokális adat, csak akkor ellenőrizzük az adatminőséget
+            if (hasLocal)
             {
-                Symbol = d.Symbol,
-                TimestampUtc = d.TimestampUtc,
-                Open = d.Open,
-                High = d.High,
-                Low = d.Low,
-                Close = d.Close,
-                Volume = d.Volume,
-                Timeframe = tf
-            }).OrderBy(c => c.TimestampUtc).ToList();
+                // API-t csak most hívjuk, miután megnéztük a DB-t
+                var client = new YahooFinanceClient();
+                var dtoList = await client.GetHistoricalAsync(symbol, interval);
+                var apiCandles = dtoList
+                    .Select(d => new Candle
+                    {
+                        Symbol = d.Symbol,
+                        TimestampUtc = d.TimestampUtc,
+                        Open = d.Open,
+                        High = d.High,
+                        Low = d.Low,
+                        Close = d.Close,
+                        Volume = d.Volume,
+                        Timeframe = tf
+                    })
+                    .OrderBy(c => c.TimestampUtc)
+                    .ToList();
 
-            // 3️⃣ Ha nincs helyi adat → teljes betöltés
-            if (localCandles.Count == 0)
-            {
-                await SaveCandlesAsync(interval, apiCandles);
-                return apiCandles;
-            }
+                // ⚠️ Ha az API nem adott vissza semmit → maradunk a régiekkel
+                if (apiCandles.Count == 0)
+                    return localCandles;
 
-            // 4️⃣ Megnézzük, mennyire frissek a helyi adatok
-            bool isOutdated = (DateTime.UtcNow - lastLocalDate!.Value).TotalDays > maxAgeDays;
-
-            // 5️⃣ Ellenőrizzük az első néhány gyertyát (pl. 3 nap)
-            int checkCount = Math.Min(3, Math.Min(localCandles.Count, apiCandles.Count));
-            for (int i = 0; i < checkCount; i++)
-            {
-                var local = localCandles[i];
-                var api = apiCandles[i];
-
-                if (decimal.Abs(local.Open - api.Open) > 0.0001m ||
-                    decimal.Abs(local.Close - api.Close) > 0.0001m ||
-                    decimal.Abs(local.High - api.High) > 0.0001m ||
-                    decimal.Abs(local.Low - api.Low) > 0.0001m)
+                // Ellenőrzés – csak a közös dátumokra (nem indexre!)
+                int checkCount = Math.Min(3, Math.Min(localCandles.Count, apiCandles.Count));
+                for (int i = 0; i < checkCount; i++)
                 {
-                    needsFullReload = true;
-                    break;
+                    var local = localCandles[i];
+                    var api = apiCandles[i];
+
+                    // Ha a Symbol eltér, az biztos jel arra, hogy rossz táblázatot nézünk
+                    if (!string.Equals(local.Symbol, api.Symbol, StringComparison.OrdinalIgnoreCase))
+                    {
+                        needsFullReload = true;
+                        break;
+                    }
+
+                    // Érték-eltérés – nagyobb tűrés, hogy ne triggereljen minden apróságra
+                    if (Math.Abs(local.Open - api.Open) > 0.5m ||
+                        Math.Abs(local.Close - api.Close) > 0.5m ||
+                        Math.Abs(local.High - api.High) > 0.5m ||
+                        Math.Abs(local.Low - api.Low) > 0.5m)
+                    {
+                        needsFullReload = true;
+                        break;
+                    }
                 }
 
-            }
+                // 4️⃣ Döntés: teljes újratöltés vagy részleges frissítés
+                if (needsFullReload || isOutdated)
+                {
+                    // Teljes újratöltés – csak ha tényleg szükséges
+                    var oldCandles = await _context.Candles
+                        .Where(c => c.Symbol == symbol && c.Timeframe == tf)
+                        .ToListAsync();
 
-            if (needsFullReload || isOutdated)
-            {
-                // 🔁 teljes újratöltés, ha régi vagy eltér
-                var old = _context.Candles.Where(c => c.Symbol == symbol && c.Timeframe == tf);
-                _context.Candles.RemoveRange(old);
-                await _context.SaveChangesAsync();
+                    if (oldCandles.Count > 0)
+                    {
+                        _context.Candles.RemoveRange(oldCandles);
+                        await _context.SaveChangesAsync();
+                    }
 
-                await SaveCandlesAsync(interval, apiCandles);
-                return apiCandles;
-            }
-
-            // 6️⃣ Részleges frissítés: utolsó néhány nap API-ból
-            DateTime correctionCutoff = DateTime.UtcNow.AddDays(-correctionDays);
-            var recentApi = apiCandles.Where(c => c.TimestampUtc >= correctionCutoff);
-
-            foreach (var c in recentApi)
-            {
-                var existing = _context.Candles.FirstOrDefault(x =>
-                    x.Symbol == c.Symbol &&
-                    x.TimestampUtc == c.TimestampUtc &&
-                    x.Timeframe == tf);
-
-                if (existing == null)
-                    _context.Candles.Add(c);
+                    await SaveCandlesAsync(interval, apiCandles);
+                    return apiCandles;
+                }
                 else
                 {
-                    existing.Open = c.Open;
-                    existing.High = c.High;
-                    existing.Low = c.Low;
-                    existing.Close = c.Close;
-                    existing.Volume = c.Volume;
+                    // Részleges frissítés – az utolsó pár nap kiegészítése
+                    DateTime correctionCutoff = DateTime.UtcNow.AddDays(-correctionDays);
+                    var recentApi = apiCandles.Where(c => c.TimestampUtc >= correctionCutoff).ToList();
+
+                    foreach (var c in recentApi)
+                    {
+                        var existing = await _context.Candles.FirstOrDefaultAsync(x =>
+                            x.Symbol == c.Symbol &&
+                            x.TimestampUtc == c.TimestampUtc &&
+                            x.Timeframe == tf);
+
+                        if (existing == null)
+                            _context.Candles.Add(c);
+                        else
+                        {
+                            existing.Open = c.Open;
+                            existing.High = c.High;
+                            existing.Low = c.Low;
+                            existing.Close = c.Close;
+                            existing.Volume = c.Volume;
+                        }
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    // Lokális + frissített gyertyák visszaadása
+                    return await GetLocalDataAsync(symbol, interval);
                 }
             }
+            else
+            {
+                // 5️⃣ Ha nincs semmilyen lokális adat, most hívjuk az API-t
+                var client = new YahooFinanceClient();
+                var dtoList = await client.GetHistoricalAsync(symbol, interval);
+                var apiCandles = dtoList.Select(d => new Candle
+                {
+                    Symbol = d.Symbol,
+                    TimestampUtc = d.TimestampUtc,
+                    Open = d.Open,
+                    High = d.High,
+                    Low = d.Low,
+                    Close = d.Close,
+                    Volume = d.Volume,
+                    Timeframe = tf
+                }).OrderBy(c => c.TimestampUtc).ToList();
 
-            await _context.SaveChangesAsync();
+                if (apiCandles.Count > 0)
+                {
+                    await SaveCandlesAsync(interval, apiCandles);
+                }
 
-            // Visszatérés a frissített helyi adatokkal
-            return await GetLocalDataAsync(symbol, interval);
+                return apiCandles;
+            }
         }
+
         public async Task RemoveSymbolAndCandlesAsync(string symbol)
         {
             var ticker = await _context.Tickers.FirstOrDefaultAsync(t => t.Symbol == symbol);

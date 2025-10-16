@@ -350,6 +350,9 @@ namespace ProfitProphet.Services
 #pragma warning disable CS0618
             _xAxis.AxisChanged += async (_, __) =>
             {
+                if (_candles == null || _candles.Count == 0)
+                    return;
+
                 await MaybeLazyLoadOlderAsync(); 
                 UpdateXAxisLabels();
                 AutoFitYToVisible();
