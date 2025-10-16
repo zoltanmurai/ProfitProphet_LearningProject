@@ -60,7 +60,7 @@ namespace ProfitProphet.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ProfitProphet;component/views/dataimportcontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ProfitProphet;V1.0.0.0;component/views/dataimportcontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\DataImportControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

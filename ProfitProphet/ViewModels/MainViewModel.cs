@@ -209,41 +209,36 @@ namespace ProfitProphet.ViewModels
 
             try
             {
+                // 1. Törlés az adatbázisból
                 await _dataService.RemoveSymbolAndCandlesAsync(symbol);
 
+                // 2. Eltávolítás a Watchlist-ből
                 if (Watchlist.Contains(symbol))
                     Watchlist.Remove(symbol);
 
+                // 3. Settings mentése
                 _settings.Watchlist = Watchlist.ToList();
                 _settingsService.Save(_settings);
 
-                // Ha a törölt volt kiválasztva
+                // 4. Ha a törölt volt kiválasztva, válassz másik szimbólumot
                 if (SelectedSymbol == symbol)
                 {
-                    SelectedSymbol = null;
-                    ChartModel = null; // -> töröljük a grafikont
-                    //PropertyChanged(nameof(ChartModel));
-                    //PropertyChanged(nameof(HasChartData));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChartModel)));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+                    // Válassz az első megmaradt szimbólumot, vagy null
+                    SelectedSymbol = Watchlist.Count > 0 ? Watchlist[0] : null;
 
+                    // Ha null lett, töröld a chartot
+                    if (SelectedSymbol == null)
+                    {
+                        ChartModel = null;
+                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+                    }
+                    // Ha van még szimbólum, a SelectedSymbol setter magáról meghívja a LoadChartAsync-et
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Törlés sikertelen:\n{ex.Message}",
                     "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            // Ha a törölt volt kiválasztva
-            if (SelectedSymbol == symbol)
-            {
-                SelectedSymbol = null;
-                ChartModel = null; // -> töröljük a grafikont
-                                   //PropertyChanged(nameof(ChartModel));
-                                   //PropertyChanged(nameof(HasChartData));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChartModel)));
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
-
             }
         }
 

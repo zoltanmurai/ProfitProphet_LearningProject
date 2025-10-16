@@ -68,7 +68,7 @@ namespace ProfitProphet.Views {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/ProfitProphet;component/views/apisettingscontrol.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/ProfitProphet;V1.0.0.0;component/views/apisettingscontrol.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\Views\ApiSettingsControl.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
