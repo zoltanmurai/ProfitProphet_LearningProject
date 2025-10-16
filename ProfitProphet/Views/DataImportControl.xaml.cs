@@ -90,7 +90,7 @@ namespace ProfitProphet.Views
                     //}).ToList();
                     //await _dataService.SaveCandlesAsync(interval, entities);
                     var dtoList = await client.GetHistoricalAsync(symbol, interval, fromUtc, toUtc);
-                    await _dataService.SaveCandlesAsync(interval, dtoList); // ✅ a mapper és a mentés bent van a DataService-ben
+                    await _dataService.SaveCandlesAsync(interval, dtoList); // a mapper és a mentés bent van a DataService-ben
                     ok++;
                 }
                 catch (Exception ex)

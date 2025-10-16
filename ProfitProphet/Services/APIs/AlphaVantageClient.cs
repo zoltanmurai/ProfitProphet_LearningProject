@@ -55,7 +55,7 @@ namespace ProfitProphet.Services.APIs
                 case "15m":
                 case "30m":
                 case "60m":
-                case "90m": // AV nem támogatja a 90m-t, fallback 60m-re
+                case "90m": 
                     function = "TIME_SERIES_INTRADAY";
                     intraday = interval == "90m" ? "60min" : interval.Replace("m", "min");
                     break;
@@ -66,7 +66,7 @@ namespace ProfitProphet.Services.APIs
                     break;
             }
 
-            // URL összerakása
+            // URL összerakás
             var url = function == "TIME_SERIES_INTRADAY"
                 ? $"https://www.alphavantage.co/query?function={function}&symbol={symbol}&interval={intraday}&outputsize=full&apikey={_apiKey}"
                 : $"https://www.alphavantage.co/query?function={function}&symbol={symbol}&apikey={_apiKey}";
@@ -90,7 +90,7 @@ namespace ProfitProphet.Services.APIs
             var list = new List<CandleDto>();
             foreach (var p in series.EnumerateObject())
             {
-                // Alpha Vantage kulcs neve dátum string (local time), konvertáljuk
+                // Alpha Vantage kulcs neve dátum string (local time)
                 if (!DateTime.TryParse(p.Name, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var dt))
                     continue;
 
@@ -109,7 +109,7 @@ namespace ProfitProphet.Services.APIs
                         volume = vol;
                 }
 
-                // AV idő bélyegét érdemes UTC-nek tekinteni a belső konzisztencia miatt
+                // AV időbélyeg UTC
                 var tsUtc = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
 
                 list.Add(new CandleDto(
@@ -126,7 +126,6 @@ namespace ProfitProphet.Services.APIs
             // Időrendbe (növekvő)
             list = list.OrderBy(x => x.TimestampUtc).ToList();
 
-            // Opcionális szűkítés from/to szerint
             if (fromUtc.HasValue) list = list.Where(x => x.TimestampUtc >= fromUtc.Value).ToList();
             if (toUtc.HasValue) list = list.Where(x => x.TimestampUtc <= toUtc.Value).ToList();
 
@@ -142,7 +141,7 @@ namespace ProfitProphet.Services.APIs
         }
 
         // ─────────────────────────────────────────────────────────────────────────
-        // (Opcionális) régi segéd – ha máshol még hivatkozod. A UI NE ezt hívja.
+        // (Opcionális) régi segéd
         // ─────────────────────────────────────────────────────────────────────────
         public async Task<List<OxyPlot.Series.HighLowItem>> GetIntradayDataLegacy(string ticker, string apiKey)
         {

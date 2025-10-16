@@ -34,7 +34,7 @@ namespace ProfitProphet.Services.APIs
             if (string.IsNullOrWhiteSpace(symbol))
                 return new List<CandleDto>();
 
-            // Ha van from/to → period1/period2, különben interval+range
+            // Ha from/to  period1/period2
             string url;
             if (fromUtc.HasValue && toUtc.HasValue)
             {
@@ -101,7 +101,7 @@ namespace ProfitProphet.Services.APIs
                 long? vol = null;
                 if (i < volumes.Count && !IsNull(volumes[i]))
                 {
-                    // Yahoo volume JSON-ben double lehet; kerekítsük long-ra
+                    // Yahoo volume JSON-ben double. long-nak castoljuk
                     vol = (long)volumes[i].GetDouble();
                 }
 
@@ -185,7 +185,7 @@ namespace ProfitProphet.Services.APIs
             throw new HttpRequestException("Yahoo Finance lekérés sikertelen többszöri próbálkozás után.", lastEx);
         }
 
-        // Opcionális segéd: ha gyorsan kell OxyPlot-hoz
+        // Opcionális segéd
         public static List<HighLowItem> ToHighLowItems(IEnumerable<CandleDto> bars)
             => bars.Select(d => new HighLowItem(
                     DateTimeAxis.ToDouble(d.TimestampUtc),

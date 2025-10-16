@@ -31,7 +31,7 @@ namespace ProfitProphet.Services.APIs
             // Interval mapping Twelve Data-hoz
             var tdInterval = MapInterval(interval);
 
-            // outputsize: nagyobb történet (max a csomagodtól függ)
+            // outputsize
             var url =
                 $"https://api.twelvedata.com/time_series?symbol={symbol}&interval={tdInterval}&outputsize=5000&timezone=UTC&format=JSON&apikey={_apiKey}";
 
@@ -103,12 +103,12 @@ namespace ProfitProphet.Services.APIs
         {
             // percek → TwelveData: 1min,5min,15min,30min
             "1m" => "1min",
-            "2m" => "1min",   // TD nem támogatja, közelítsünk
+            "2m" => "1min",  
             "5m" => "5min",
             "15m" => "15min",
             "30m" => "30min",
             "60m" or "1h" => "1h",
-            "90m" => "1h",    // nincs 90m, közelítés 1h
+            "90m" => "1h",    
             // nap/hét/hónap
             "1d" => "1day",
             "1wk" or "1w" => "1week",

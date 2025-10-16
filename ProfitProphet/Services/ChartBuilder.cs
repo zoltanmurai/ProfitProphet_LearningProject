@@ -3,6 +3,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ProfitProphet.Entities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,13 +11,6 @@ using System.Windows.Controls;
 
 namespace ProfitProphet.Services
 {
-    /// <summary>
-    /// Felelős a chart (PlotModel) felépítéséért és interaktív viselkedéséért:
-    /// - gapmentes X-tengely (CategoryAxis)
-    /// - automatikus Y-skálázás (aktuális nézet alapján)
-    /// - zoom/pan támogatás
-    /// - lazy load (régi adatok betöltése, ha visszagörgetünk)
-    /// </summary>
     public class ChartBuilder
     {
         private CategoryAxis _xAxis;
@@ -26,7 +20,7 @@ namespace ProfitProphet.Services
         private DateTime _earliestLoaded;
         private bool _isLoadingOlder;
 
-        private List<CandleData> _candles;  // referencia a teljes sorozatra
+        private List<CandleData> _candles;  
 
         private Func<DateTime, DateTime, Task<List<CandleData>>> _lazyLoader;
 
@@ -259,6 +253,34 @@ namespace ProfitProphet.Services
                 PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40)
             };
 
+            //double amin = _xAxis?.ActualMinimum ?? 0;
+            //if (double.IsNaN(amin)) amin = 0;
+
+            //double amax = _xAxis?.ActualMaximum ?? _candles.Count - 1;
+            //if (double.IsNaN(amax)) amax = _candles.Count - 1;
+
+            //int n = _candles.Count;
+            //int start = Math.Max(0, (int)Math.Floor((double)amin));
+            //int end = Math.Min(n - 1, (int)Math.Ceiling(amax));
+            //int visible = Math.Max(1, end - start + 1);
+            //string TitleToX = "";
+
+            //for (int i = start; i <= end; i++)
+            //{
+            //    var dt = _candles[i].Timestamp;
+
+            //    TitleToX = dt.ToString("yyyy");
+            //}
+            //int start = Math.Max(0, (int)Math.Floor(amin));
+            //int end = Math.Min(_candles.Count - 1, (int)Math.Ceiling(amax));
+
+            //var startYear = _candles[start].Timestamp.Year;
+            //var endYear = _candles[end].Timestamp.Year;
+
+            //string titleToX = startYear == endYear
+            //    ? startYear.ToString()
+            //    : $"{startYear} – {endYear}";
+
             _xAxis = new CategoryAxis
             {
                 Position = AxisPosition.Bottom,
@@ -267,6 +289,9 @@ namespace ProfitProphet.Services
                 MinorGridlineStyle = LineStyle.Dot,
                 GapWidth = 0,
                 IntervalLength = 80,
+                //Title = titleToX,
+
+                Angle = -60,
                 IsZoomEnabled = true,
                 IsPanEnabled = true
             };
@@ -280,6 +305,7 @@ namespace ProfitProphet.Services
                 MinorGridlineStyle = LineStyle.Dot,
                 AxislineColor = OxyColors.Gray,
                 Title = "Price",
+                //Angle = 45,
                 IsZoomEnabled = true,
                 IsPanEnabled = true
             };
@@ -294,7 +320,6 @@ namespace ProfitProphet.Services
                 YAxisKey = _yAxis.Key
             };
 
-            // CSAK EGYSZER adjuk hozzá az adatokat
             for (int i = 0; i < _candles.Count; i++)
             {
                 var c = _candles[i];
@@ -325,21 +350,47 @@ namespace ProfitProphet.Services
 #pragma warning disable CS0618
             _xAxis.AxisChanged += async (_, __) =>
             {
-                await MaybeLazyLoadOlderAsync();  // ← Most már async!
+                await MaybeLazyLoadOlderAsync(); 
                 UpdateXAxisLabels();
                 AutoFitYToVisible();
                 Model.InvalidatePlot(false);
             };
+            _xAxis.AxisChanged += (_, __) => UpdateXAxisTitle();
 #pragma warning restore CS0618
 
             return Model;
+        }
+
+        private void UpdateXAxisTitle()
+        {
+            if (_candles == null || _candles.Count == 0 || _xAxis == null)
+                return;
+
+            double amin = _xAxis.ActualMinimum;
+            double amax = _xAxis.ActualMaximum;
+
+            if (double.IsNaN(amin) || double.IsNaN(amax))
+                return;
+
+            int start = Math.Max(0, (int)Math.Floor(amin));
+            int end = Math.Min(_candles.Count - 1, (int)Math.Ceiling(amax));
+
+            var startYear = _candles[start].Timestamp.Year;
+            var endYear = _candles[end].Timestamp.Year;
+
+            string title = startYear == endYear
+                ? startYear.ToString()
+                : $"{startYear} – {endYear}";
+
+            _xAxis.Title = title;
+            Model?.InvalidatePlot(false);
         }
 
         private async Task MaybeLazyLoadOlderAsync()
         {
             if (_lazyLoader == null) return;
             if (_isLoadingOlder) return;
-            if (_xAxis.ActualMinimum >= 5) return;  // Már van elég adat az elején
+            if (_xAxis.ActualMinimum >= 5) return;  //ha van elég adat az elején
 
             _isLoadingOlder = true;
             try
@@ -359,19 +410,19 @@ namespace ProfitProphet.Services
 
                 int shift = olderData.Count;
 
-                // Eltoljuk a meglévő indexeket
+                // Eltolás az X tengelyen
                 foreach (var item in _series.Items)
                     item.X += shift;
 
-                // Beszúrjuk az új adatokat az elejére
+                // Beszúrjuk az új adatokat
                 for (int i = 0; i < olderData.Count; i++)
                 {
                     var c = olderData[i];
                     _series.Items.Insert(i, new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
-                    _candles.Insert(i, c);  // ← Szinkronban tartjuk
+                    _candles.Insert(i, c); 
                 }
 
-                // Nézet követése az új adatok után
+                // Nézet követése
                 _xAxis.Zoom(viewMin + shift, viewMax + shift);
             }
             finally
@@ -402,10 +453,10 @@ namespace ProfitProphet.Services
             int end = Math.Min(n - 1, (int)Math.Ceiling(amax));
             int visible = Math.Max(1, end - start + 1);
 
-            // Todas a tisztítás
             for (int i = 0; i < n; i++)
                 _xAxis.Labels[i] = string.Empty;
-
+            // Címkék beállítása a zoom szint alapján
+            //trükközni kellet, mert a CategoryAxis nem támogatja a dinamikus címkézést
             // Szoros zoom: napi szint
             if (visible <= 20)
             {
@@ -413,15 +464,15 @@ namespace ProfitProphet.Services
                 {
                     var dt = _candles[i].Timestamp;
 
-                    // Nagyon szoros zoom (6-8 gyertya): év + hónap + nap
-                    if (visible <= 8)
+                    // Nagyon szoros zoom (8-12 gyertya): év + hónap + nap
+                    if (visible <= 12)
                     {
-                        _xAxis.Labels[i] = dt.ToString("yyyy-MM-dd");
+                        _xAxis.Labels[i] = dt.ToString("yyyy-MMM-dd");
                     }
                     // Közepesen szoros zoom: hónap + nap
                     else
                     {
-                        _xAxis.Labels[i] = dt.ToString("MM-dd");
+                        _xAxis.Labels[i] = dt.ToString("MMM-dd");
                         if (i == start || dt.Day == 1)
                             _xAxis.Labels[i] = dt.ToString("MMM dd");
                     }
@@ -429,17 +480,17 @@ namespace ProfitProphet.Services
                 return;
             }
 
-            // Közepesen sűrű: 12 címke
-            int desired = Math.Min(12, visible);
+            // Közepesen sűrű: 16 címke
+            int desired = Math.Min(16, visible);
             int step = (int)Math.Ceiling((double)visible / desired);
 
             for (int i = start; i <= end; i += step)
             {
                 var dt = _candles[i].Timestamp;
-                if (visible > 180)
-                    _xAxis.Labels[i] = (dt.Month == 1) ? dt.ToString("yyyy") : string.Empty;
+                if (visible > 120)
+                    _xAxis.Labels[i] = (dt.Month == 1) ? dt.ToString("yyyy MMM") : string.Empty;
                 else
-                    _xAxis.Labels[i] = dt.ToString("MMM");
+                    _xAxis.Labels[i] = dt.ToString("yyyy MMM");
             }
         }
     }

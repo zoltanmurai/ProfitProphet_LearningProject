@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using OxyPlot;
+using ProfitProphet.Data;
+using ProfitProphet.DTOs;
+using ProfitProphet.Services;
+using ProfitProphet.Views;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using OxyPlot;
-using ProfitProphet.Data;
-using ProfitProphet.DTOs;
-using ProfitProphet.Services;
-using ProfitProphet.Views;
 
 namespace ProfitProphet.ViewModels
 {
@@ -56,9 +58,18 @@ namespace ProfitProphet.ViewModels
         public PlotModel ChartModel
         {
             get => _chartModel;
-            set => Set(ref _chartModel, value);
+            //set => Set(ref _chartModel, value);
+            set
+            {
+                if (Set(ref _chartModel, value))
+                {
+                    // Ha sikerült beállítani, frissítjük a HasChartData-t is
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+                }
+            }
         }
 
+        public bool HasChartData => ChartModel != null;
         public ICommand AddSymbolCommand { get; }
         public ICommand OpenSettingsCommand { get; }
 
@@ -101,11 +112,13 @@ namespace ProfitProphet.ViewModels
 
             try
             {
-                // 1️⃣ Próbáljuk meg először a DB-ből
-                var candles = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
 
-                // 2️⃣ Ha nincs adat, vagy elavult (3 napnál régebbi), frissítsünk API-ról
-                if (candles.Count == 0 || candles.Last().TimestampUtc < DateTime.UtcNow.AddDays(-3))
+                var candles = await _dataService.GetRefreshReloadAsync(_selectedSymbol, _selectedInterval);
+
+
+
+                // Ha nincs adat, vagy 1 napnál régebbi, frissítsünk API-ról
+                if (candles.Count == 0 || candles.Last().TimestampUtc < DateTime.UtcNow.AddDays(-1))
                 {
                     var newData = await _dataService.GetDataAsync(_selectedSymbol, _selectedInterval);
 
@@ -128,10 +141,10 @@ namespace ProfitProphet.ViewModels
                     return;
                 }
 
-                // 4️⃣ Rendezés időrendbe
+                // Rendezés időrendbe
                 candles = candles.OrderBy(c => c.TimestampUtc).ToList();
 
-                // 5️⃣ Chart felépítése
+                // Chart felépítése
                 _chartBuilder.ConfigureLazyLoader(async (start, end) =>
                 {
                     var olderData = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
@@ -179,6 +192,58 @@ namespace ProfitProphet.ViewModels
                 Watchlist.Add(symbol);
                 _settings.Watchlist = Watchlist.ToList();
                 _settingsService.Save(_settings);
+            }
+        }
+
+        private void WatchlistListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var item = ItemsControl.ContainerFromElement((ItemsControl)sender, e.OriginalSource as DependencyObject) as ListBoxItem;
+            if (item != null)
+                item.IsSelected = true; // jobb klikk is kijelöl
+        }
+
+        public async Task RemoveSymbolAsync(string symbol)
+        {
+            if (string.IsNullOrWhiteSpace(symbol))
+                return;
+
+            try
+            {
+                await _dataService.RemoveSymbolAndCandlesAsync(symbol);
+
+                if (Watchlist.Contains(symbol))
+                    Watchlist.Remove(symbol);
+
+                _settings.Watchlist = Watchlist.ToList();
+                _settingsService.Save(_settings);
+
+                // Ha a törölt volt kiválasztva
+                if (SelectedSymbol == symbol)
+                {
+                    SelectedSymbol = null;
+                    ChartModel = null; // -> töröljük a grafikont
+                    //PropertyChanged(nameof(ChartModel));
+                    //PropertyChanged(nameof(HasChartData));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChartModel)));
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Törlés sikertelen:\n{ex.Message}",
+                    "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            // Ha a törölt volt kiválasztva
+            if (SelectedSymbol == symbol)
+            {
+                SelectedSymbol = null;
+                ChartModel = null; // -> töröljük a grafikont
+                                   //PropertyChanged(nameof(ChartModel));
+                                   //PropertyChanged(nameof(HasChartData));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChartModel)));
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+
             }
         }
 

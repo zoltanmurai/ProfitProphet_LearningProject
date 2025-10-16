@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1qt4z/WYIBY=",
+  "dgSpecHash": "t3SGjZqG/2A=",
   "success": true,
-  "projectFilePath": "E:\\Users\\zolta\\OneDrive\\_Syncronized\\VSCommunity\\C#\\HashDeHash\\ProfitProphet10-12este\\ProfitProphet\\ProfitProphet.csproj",
+  "projectFilePath": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ProfitProphet.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\zolta\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\zolta\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\7.0.0\\microsoft.bcl.asyncinterfaces.7.0.0.nupkg.sha512",

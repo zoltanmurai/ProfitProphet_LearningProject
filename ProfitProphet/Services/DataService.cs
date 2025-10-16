@@ -137,5 +137,117 @@ namespace ProfitProphet.Services
             "1d" => Timeframe.Day,
             _ => Timeframe.Hour
         };
+
+        public async Task<List<Candle>> GetRefreshReloadAsync(
+            string symbol,
+            string interval,
+            int maxAgeDays = 2,
+            int correctionDays = 5)
+        {
+            var tf = IntervalToTf(interval);
+
+            // 1️⃣ Lekérjük a helyi adatokat
+            var localCandles = await _context.Candles
+                .Where(c => c.Symbol == symbol && c.Timeframe == tf)
+                .OrderBy(c => c.TimestampUtc)
+                .ToListAsync();
+
+            DateTime? lastLocalDate = localCandles.LastOrDefault()?.TimestampUtc;
+            bool needsFullReload = false;
+
+            // 2️⃣ Lekérjük az API-ból az utolsó néhány napot (mindig)
+            var client = new YahooFinanceClient();
+            var dtoList = await client.GetHistoricalAsync(symbol, interval);
+            var apiCandles = dtoList.Select(d => new Candle
+            {
+                Symbol = d.Symbol,
+                TimestampUtc = d.TimestampUtc,
+                Open = d.Open,
+                High = d.High,
+                Low = d.Low,
+                Close = d.Close,
+                Volume = d.Volume,
+                Timeframe = tf
+            }).OrderBy(c => c.TimestampUtc).ToList();
+
+            // 3️⃣ Ha nincs helyi adat → teljes betöltés
+            if (localCandles.Count == 0)
+            {
+                await SaveCandlesAsync(interval, apiCandles);
+                return apiCandles;
+            }
+
+            // 4️⃣ Megnézzük, mennyire frissek a helyi adatok
+            bool isOutdated = (DateTime.UtcNow - lastLocalDate!.Value).TotalDays > maxAgeDays;
+
+            // 5️⃣ Ellenőrizzük az első néhány gyertyát (pl. 3 nap)
+            int checkCount = Math.Min(3, Math.Min(localCandles.Count, apiCandles.Count));
+            for (int i = 0; i < checkCount; i++)
+            {
+                var local = localCandles[i];
+                var api = apiCandles[i];
+
+                if (decimal.Abs(local.Open - api.Open) > 0.0001m ||
+                    decimal.Abs(local.Close - api.Close) > 0.0001m ||
+                    decimal.Abs(local.High - api.High) > 0.0001m ||
+                    decimal.Abs(local.Low - api.Low) > 0.0001m)
+                {
+                    needsFullReload = true;
+                    break;
+                }
+
+            }
+
+            if (needsFullReload || isOutdated)
+            {
+                // 🔁 teljes újratöltés, ha régi vagy eltér
+                var old = _context.Candles.Where(c => c.Symbol == symbol && c.Timeframe == tf);
+                _context.Candles.RemoveRange(old);
+                await _context.SaveChangesAsync();
+
+                await SaveCandlesAsync(interval, apiCandles);
+                return apiCandles;
+            }
+
+            // 6️⃣ Részleges frissítés: utolsó néhány nap API-ból
+            DateTime correctionCutoff = DateTime.UtcNow.AddDays(-correctionDays);
+            var recentApi = apiCandles.Where(c => c.TimestampUtc >= correctionCutoff);
+
+            foreach (var c in recentApi)
+            {
+                var existing = _context.Candles.FirstOrDefault(x =>
+                    x.Symbol == c.Symbol &&
+                    x.TimestampUtc == c.TimestampUtc &&
+                    x.Timeframe == tf);
+
+                if (existing == null)
+                    _context.Candles.Add(c);
+                else
+                {
+                    existing.Open = c.Open;
+                    existing.High = c.High;
+                    existing.Low = c.Low;
+                    existing.Close = c.Close;
+                    existing.Volume = c.Volume;
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            // Visszatérés a frissített helyi adatokkal
+            return await GetLocalDataAsync(symbol, interval);
+        }
+        public async Task RemoveSymbolAndCandlesAsync(string symbol)
+        {
+            var ticker = await _context.Tickers.FirstOrDefaultAsync(t => t.Symbol == symbol);
+            if (ticker != null)
+            {
+                var candles = _context.Candles.Where(c => c.Symbol == symbol);
+                _context.Candles.RemoveRange(candles);
+
+                _context.Tickers.Remove(ticker);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

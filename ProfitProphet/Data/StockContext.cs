@@ -40,7 +40,7 @@ namespace ProfitProphet.Data
                 //e.Property(x => x.Low).HasPrecision(18, 6);
                 //e.Property(x => x.Close).HasPrecision(18, 6);
 
-                e.ToTable("Candles"); // legyen fix
+                e.ToTable("Candles"); 
                 e.HasIndex(x => new { x.Symbol, x.TimestampUtc, x.Timeframe }).IsUnique();
                 e.Property(x => x.Open).HasPrecision(18, 6);
                 e.Property(x => x.High).HasPrecision(18, 6);

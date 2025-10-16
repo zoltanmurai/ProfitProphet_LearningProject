@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf"
+        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:viewmodels="clr-namespace:ProfitProphet.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         mc:Ignorable="d"
         Title="ProfitProphet"
         Height="850" Width="1500"
@@ -38,14 +38,17 @@
 
             <!-- Lista -->
             <ListBox Grid.Row="1"
-             ItemsSource="{Binding Watchlist}"
-             SelectedItem="{Binding SelectedSymbol, Mode=TwoWay}"
-             Background="#0e1117"
-             Foreground="White"
-             BorderThickness="0"
-             Margin="10,0,10,10"
-             Padding="5"
-             ScrollViewer.VerticalScrollBarVisibility="Auto">
+                 x:Name="WatchlistListBox"
+                 ItemsSource="{Binding Watchlist}"
+                 SelectedItem="{Binding SelectedSymbol, Mode=TwoWay}"
+                 Background="#0e1117"
+                 Foreground="White"
+                 BorderThickness="0"
+                 Margin="10,0,10,10"
+                 Padding="5"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 PreviewMouseRightButtonDown="WatchlistListBox_PreviewMouseRightButtonDown">
+
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Margin" Value="0,2"/>
@@ -55,9 +58,9 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
                                     <Border x:Name="row"
-                                    Background="#0e1117"
-                                    CornerRadius="4"
-                                    Padding="8">
+                                Background="#0e1117"
+                                CornerRadius="4"
+                                Padding="8">
                                         <ContentPresenter />
                                     </Border>
                                     <ControlTemplate.Triggers>
@@ -73,27 +76,35 @@
                         </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
+
+                <!-- Jobb klikkes menü -->
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove from Watchlist"
+                      Click="RemoveMenuItem_Click" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
             </ListBox>
 
             <!-- + Gomb -->
             <Button Grid.Row="2"
-            Content="+ Add Symbol"
-            Command="{Binding AddSymbolCommand}"
-            Margin="10"
-            Padding="8,6"
-            FontWeight="Bold"
-            Foreground="White"
-            Background="#2563eb"
-            BorderBrush="#2563eb"
-            Cursor="Hand"
-            Height="38">
+                Content="+ Add Symbol"
+                Command="{Binding AddSymbolCommand}"
+                Margin="10"
+                Padding="8,6"
+                FontWeight="Bold"
+                Foreground="White"
+                Background="#2563eb"
+                BorderBrush="#2563eb"
+                Cursor="Hand"
+                Height="38">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border x:Name="bd"
-                        Background="{TemplateBinding Background}"
-                        CornerRadius="4">
+                    Background="{TemplateBinding Background}"
+                    CornerRadius="4">
                             <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                                  VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -108,7 +119,7 @@
             </Button>
         </Grid>
 
-        <!-- 📊 Jobb oldal: Toolbar + Chart -->
+        <!--  Jobb oldal: Toolbar + Chart -->
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -180,33 +191,33 @@
 
                                             <!-- Kiválasztott érték -->
                                             <ContentPresenter Margin="8,0,28,0"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Left"
-                                            RecognizesAccessKey="True"
-                                            Content="{TemplateBinding SelectionBoxItem}"
-                                            ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
-                                            ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
-                                            ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Left"
+                                                                RecognizesAccessKey="True"
+                                                                Content="{TemplateBinding SelectionBoxItem}"
+                                                                ContentStringFormat="{TemplateBinding SelectionBoxItemStringFormat}"
+                                                                ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
+                                                                ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
+                                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />  
                                             <!-- A lenyíló popup -->
                                             <Popup x:Name="PART_Popup"
-                                    Placement="Bottom"
-                                    IsOpen="{TemplateBinding IsDropDownOpen}"
-                                    AllowsTransparency="True"
-                                    Focusable="False"
-                                    PopupAnimation="Fade"
-                                    StaysOpen="False"
-                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                                    Placement="Bottom"
+                                                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                                                    AllowsTransparency="True"
+                                                    Focusable="False"
+                                                    PopupAnimation="Fade"
+                                                    StaysOpen="False"
+                                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
                                                 <Border x:Name="DropDownBorder"
-                                        Background="#161b22"
-                                        BorderBrush="#2c2f33"
-                                        BorderThickness="1"
-                                        CornerRadius="4"
-                                        SnapsToDevicePixels="True"
-                                        Padding="2">
+                                                        Background="#161b22"
+                                                        BorderBrush="#2c2f33"
+                                                        BorderThickness="1"
+                                                        CornerRadius="4"
+                                                        SnapsToDevicePixels="True"
+                                                        Padding="2">        
                                                     <ScrollViewer Margin="0" SnapsToDevicePixels="True">
                                                         <StackPanel IsItemsHost="True"
-                          KeyboardNavigation.DirectionalNavigation="Contained" />
+                                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
                                                     </ScrollViewer>
                                                 </Border>
                                             </Popup>
@@ -280,16 +291,27 @@
             </DockPanel>
 
             <!-- Chart -->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1187*"/>
                     <ColumnDefinition Width="53*"/>
                 </Grid.ColumnDefinitions>
-                <oxy:PlotView Model="{Binding ChartModel}"
+
+                <oxy:PlotView x:Name="ChartView"
+                              Model="{Binding ChartModel}"
                               Background="#0e1117" 
                               IsManipulationEnabled="True"
                               ZoomRectangleCursor="SizeNWSE"
-                              Grid.ColumnSpan="2"/>     
+                              Grid.ColumnSpan="2"
+                              Visibility="{Binding HasChartData, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                <TextBlock Text="No data available. Please add a symbol to the watchlist."
+                            Foreground="White"
+                            FontSize="16"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Grid.ColumnSpan="2"
+                            Visibility="{Binding HasChartData, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
             </Grid>
         </Grid>
     </Grid>
