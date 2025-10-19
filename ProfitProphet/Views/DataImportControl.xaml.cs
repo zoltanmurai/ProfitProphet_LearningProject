@@ -1,12 +1,14 @@
 using ProfitProphet.Entities;
 using ProfitProphet.Services;
 using ProfitProphet.Services.APIs;
+using ProfitProphet.Settings;
 using System;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace ProfitProphet.Views
 {
@@ -15,18 +17,53 @@ namespace ProfitProphet.Views
         private readonly DataService _dataService;
         private readonly IAppSettingsService _settingsService;
         private readonly AppSettings _settings;
+        private bool _isImporting = false;
+        private bool _initializing = true;
 
         public DataImportControl(DataService dataService, IAppSettingsService settings)
         {
             InitializeComponent();
-            //_data = dataService ?? throw new ArgumentNullException(nameof(dataService));
-            //_settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            //_settings = _settingsService.Load();
-            LookbackCombo.SelectedIndex = 0;
             _dataService = dataService;
             _settingsService = settings;
+            _settings = _settingsService.LoadSettings();
+            DataContext = _settings;
+            SetLookbackSelection(_settings.LookbackPeriodDays);
+            //AutoImportCheckBox.IsChecked = _settings.AutoDataImport;
+            _initializing = false;
+        }
 
-            _settings = _settingsService.Load();
+        private void SetLookbackSelection(int days)
+        {
+            var item = LookbackCombo.Items.OfType<ComboBoxItem>()
+                .FirstOrDefault(i => i.Content.ToString().StartsWith(days.ToString()));
+            if (item != null)
+                LookbackCombo.SelectedItem = item;
+        }
+
+        private async void LookbackCombo_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_initializing) return;
+            _settings.LookbackPeriodDays = GetSelectedLookbackDays();
+            await _settingsService.SaveSettingsAsync(_settings);
+        }
+
+        private int GetSelectedLookbackDays()
+        {
+            var content = (LookbackCombo.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            if (content == null) return 200;
+            if (content.Contains("200")) return 200;
+            if (content.Contains("350")) return 350;
+            if (content.Contains("720")) return 720;
+            if (content.Contains("12")) return 365;
+            if (content.Contains("24")) return 730;
+            return 200;
+        }
+
+        private async void AutoImportCheckBox_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (_initializing) return;
+            _settings.AutoDataImport = AutoImportCheckBox.IsChecked == true;
+            await _settingsService.SaveSettingsAsync(_settings);
         }
 
         private (DateTime fromUtc, DateTime toUtc) ParseLookback(string s)
@@ -57,6 +94,20 @@ namespace ProfitProphet.Views
 
         private async void StartImport_Click(object sender, RoutedEventArgs e)
         {
+            if (_isImporting)
+                return;
+
+            _isImporting = true;
+            var button = (Button)sender;
+            button.IsEnabled = false;
+            StatusTextBlock.Foreground = Brushes.LightGray;
+            StatusTextBlock.Text = "Importálás elindítva...";
+
+            // --- Beállítások mentése ---
+            _settings.AutoDataImport = AutoImportCheckBox.IsChecked == true;
+            _settings.LookbackPeriodDays = GetSelectedLookbackDays(); // a korábban definiált metódusod
+            await _settingsService.SaveSettingsAsync(_settings);
+
             var lookback = (LookbackCombo.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? "200 days";
             var (fromUtc, toUtc) = ParseLookback(lookback);
 
@@ -64,6 +115,9 @@ namespace ProfitProphet.Views
             if (watch.Count == 0)
             {
                 MessageBox.Show("A watchlist üres. Add hozzá a tickereket a beállításokban vagy a főablakban.", "Import", MessageBoxButton.OK, MessageBoxImage.Information);
+                _isImporting = false;
+                button.IsEnabled = true;
+                StatusTextBlock.Text = "Import megszakítva – nincs szimbólum.";
                 return;
             }
 
@@ -71,36 +125,35 @@ namespace ProfitProphet.Views
             var interval = _settings.DefaultInterval ?? "1d";
 
             int ok = 0, fail = 0;
+            int total = watch.Count;
+            int done = 0;
+
             foreach (var symbol in watch)
             {
                 try
                 {
-                    var bars = await client.GetHistoricalAsync(symbol, interval, fromUtc, toUtc);
-                    // DTO → Entity konverzió
-                    //var entities = bars.Select(dto => new Candle
-                    //{
-                    //    Symbol = dto.Symbol,
-                    //    TimestampUtc = dto.TimestampUtc,
-                    //    Open = dto.Open,
-                    //    High = dto.High,
-                    //    Low = dto.Low,
-                    //    Close = dto.Close,
-                    //    Volume = dto.Volume ?? 0,
-                    //    Timeframe = Enum.Parse<Timeframe>(interval, ignoreCase: true)
-                    //}).ToList();
-                    //await _dataService.SaveCandlesAsync(interval, entities);
+                    StatusTextBlock.Text = $"Importálás: {symbol} ({++done}/{total})...";
+                    await Task.Delay(150); // kis delay
+
                     var dtoList = await client.GetHistoricalAsync(symbol, interval, fromUtc, toUtc);
-                    await _dataService.SaveCandlesAsync(interval, dtoList); // a mapper és a mentés bent van a DataService-ben
+                    await _dataService.SaveCandlesAsync(interval, dtoList);
                     ok++;
                 }
                 catch (Exception ex)
                 {
                     fail++;
-                    // opcionálisan log
+                    //  logolas majd egyszer:
+                    // _logService.LogError($"Import hiba {symbol}: {ex.Message}");
                 }
             }
 
+            StatusTextBlock.Foreground = fail == 0 ? Brushes.LightGreen : Brushes.OrangeRed;
+            StatusTextBlock.Text = $"Import befejezve. Sikeres: {ok}, Sikertelen: {fail}.";
             MessageBox.Show($"Kész: {ok} sikeres, {fail} sikertelen.", "Import", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            _isImporting = false;
+            button.IsEnabled = true;
         }
+
     }
 }

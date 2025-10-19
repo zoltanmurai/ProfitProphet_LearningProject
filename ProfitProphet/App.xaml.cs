@@ -35,7 +35,9 @@ namespace ProfitProphet
            "ProfitProphet", "settings.json");
 
             DataService = new DataService(new StockContext());
-            SettingsService = new JsonAppSettingsService(cfgPath);
+            //SettingsService = new JsonAppSettingsService(cfgPath);
+            SettingsService = new AppSettingsService(cfgPath);
+
 
 #if DEBUG
             var dbPath = Path.Combine(AppContext.BaseDirectory, "Candles.db");

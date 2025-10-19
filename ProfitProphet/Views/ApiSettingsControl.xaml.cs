@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using ProfitProphet.Services;
+using ProfitProphet.Settings;
 
 namespace ProfitProphet.Views
 {
@@ -15,7 +16,7 @@ namespace ProfitProphet.Views
             InitializeComponent();
 
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
-            _settings = _settingsService.Load();
+            _settings = _settingsService.LoadSettings();
 
             ApiComboBox.ItemsSource = new[] { "YahooFinance", "TwelveData", "AlphaVantage" };
             ApiComboBox.SelectedItem = _settings.SelectedApi;
@@ -51,8 +52,7 @@ namespace ProfitProphet.Views
                     _settings.YahooApiKey = ApiKeyBox.Text?.Trim() ?? "";
                     break;
             }
-
-            _settingsService.Save(_settings);
+            _settingsService.SaveSettingsAsync(_settings);
 
             MessageBox.Show("Beállítások elmentve.", "Settings", MessageBoxButton.OK, MessageBoxImage.Information);
         }

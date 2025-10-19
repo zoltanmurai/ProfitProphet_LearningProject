@@ -3,6 +3,7 @@ using OxyPlot;
 using ProfitProphet.Data;
 using ProfitProphet.DTOs;
 using ProfitProphet.Services;
+using ProfitProphet.Settings;
 using ProfitProphet.Views;
 using System;
 using System.Collections.ObjectModel;
@@ -49,7 +50,7 @@ namespace ProfitProphet.ViewModels
                 if (Set(ref _selectedInterval, value))
                 {
                     _settings.DefaultInterval = value;
-                    _settingsService.Save(_settings);
+                    _settingsService.SaveSettingsAsync(_settings);
                     _ = LoadChartAsync();
                 }
             }
@@ -79,8 +80,8 @@ namespace ProfitProphet.ViewModels
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "ProfitProphet", "settings.json");
 
-            _settingsService = new JsonAppSettingsService(cfgPath);
-            _settings = _settingsService.Load();
+            _settingsService = new AppSettingsService(cfgPath);
+            _settings = _settingsService.LoadSettings();
 
             _dataService = new DataService(new StockContext());
             _chartBuilder = new ChartBuilder();
@@ -105,6 +106,99 @@ namespace ProfitProphet.ViewModels
             _ = LoadChartAsync();
         }
 
+        //        private async Task LoadChartAsync()
+        //        {
+        //            if (string.IsNullOrWhiteSpace(_selectedSymbol))
+        //                return;
+
+        //            try
+        //            {
+
+        //                var candles = await _dataService.GetRefreshReloadAsync(_selectedSymbol, _selectedInterval);
+
+        //                // Dup check
+        //#if DEBUG
+        //                var dupGroups = candles
+        //                    .GroupBy(c => new { c.Symbol, c.Timeframe, c.TimestampUtc })
+        //                    .Count(g => g.Count() > 1);
+        //                if (dupGroups > 0)
+        //                    System.Diagnostics.Debug.WriteLine($"[DIAG] before chart: total={candles.Count}, dupGroups={dupGroups}");
+        //#endif
+
+        //                // Ha nincs adat, jelezd
+        //                if (candles == null || candles.Count == 0)
+        //                {
+        //                    MessageBox.Show($"Nincs adat a(z) {_selectedSymbol} szimbólumhoz.", "Chart",
+        //                        MessageBoxButton.OK, MessageBoxImage.Information);
+        //                    return;
+        //                }
+
+        //                // Rendezés időrendbe
+        //                candles = candles.OrderBy(c => c.TimestampUtc).ToList();
+
+        //                // Ha nincs adat, vagy 1 napnál régebbi, frissítsünk API-ról
+        //                //if (candles.Count == 0 || candles.Last().TimestampUtc < DateTime.UtcNow.AddDays(-1))
+        //                //{
+        //                //    var newData = await _dataService.GetDataAsync(_selectedSymbol, _selectedInterval);
+
+        //                //    if (newData?.Count > 0)
+        //                //    {
+
+        //                //        // új adatok mentése a DB-be
+        //                //        await _dataService.SaveCandlesAsync(_selectedSymbol, newData);
+
+        //                //        // a memóriában lévő listához hozzáadjuk a frisset
+        //                //        candles.AddRange(newData);
+        //                //    }
+        //                //}
+
+        //                //  Biztonsági ellenőrzés
+        //                if (candles == null || candles.Count == 0)
+        //                {
+        //                    MessageBox.Show($"Nincs adat a(z) {_selectedSymbol} szimbólumhoz.", "Chart",
+        //                        MessageBoxButton.OK, MessageBoxImage.Information);
+        //                    return;
+        //                }
+
+        //                // Rendezés időrendbe
+        //                candles = candles.OrderBy(c => c.TimestampUtc).ToList();
+
+        //                // Chart felépítése
+        //                _chartBuilder.ConfigureLazyLoader(async (start, end) =>
+        //                {
+        //                    var olderData = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
+        //                    return olderData
+        //                        .Where(c => c.TimestampUtc >= start && c.TimestampUtc < end)
+        //                        .OrderBy(c => c.TimestampUtc)
+        //                        .Select(c => new ChartBuilder.CandleData
+        //                        {
+        //                            Timestamp = c.TimestampUtc,
+        //                            Open = (double)c.Open,
+        //                            High = (double)c.High,
+        //                            Low = (double)c.Low,
+        //                            Close = (double)c.Close
+        //                        })
+        //                        .ToList();
+        //                });
+
+        //                ChartModel = _chartBuilder.BuildInteractiveChart(
+        //                    candles.Select(c => new ChartBuilder.CandleData
+        //                    {
+        //                        Timestamp = c.TimestampUtc,
+        //                        Open = (double)c.Open,
+        //                        High = (double)c.High,
+        //                        Low = (double)c.Low,
+        //                        Close = (double)c.Close
+        //                    }).ToList(),
+        //                    _selectedSymbol,
+        //                    _selectedInterval);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                MessageBox.Show($"Hiba a chart betöltése közben:\n{ex.Message}",
+        //                    "Chart Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        //            }
+        //        }
         private async Task LoadChartAsync()
         {
             if (string.IsNullOrWhiteSpace(_selectedSymbol))
@@ -112,39 +206,41 @@ namespace ProfitProphet.ViewModels
 
             try
             {
+                // 1) csak lokális
+                var candles = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval); // :contentReference[oaicite:1]{index=1}
 
-                var candles = await _dataService.GetRefreshReloadAsync(_selectedSymbol, _selectedInterval);
-
-
-
-                // Ha nincs adat, vagy 1 napnál régebbi, frissítsünk API-ról
-                if (candles.Count == 0 || candles.Last().TimestampUtc < DateTime.UtcNow.AddDays(-1))
+                // 2) ha nincs lokális és be van kapcsolva az auto-import → egyszeri lookback letöltés
+                if ((candles == null || candles.Count == 0) && _settings.AutoDataImport)
                 {
-                    var newData = await _dataService.GetDataAsync(_selectedSymbol, _selectedInterval);
-
-                    if (newData?.Count > 0)
+                    // csak akkor kérünk API-t, ha ÜRES a DB
+                    bool hasLocal = await _dataService.HasLocalDataAsync(_selectedSymbol, _selectedInterval);
+                    if (!hasLocal)
                     {
-                        
-                        // új adatok mentése a DB-be
-                        await _dataService.SaveCandlesAsync(_selectedSymbol, newData);
+                        await _dataService.DownloadLookbackAsync(
+                            _selectedSymbol,
+                            _selectedInterval,
+                            _settings.LookbackPeriodDays > 0 ? _settings.LookbackPeriodDays : 200
+                        );
 
-                        // a memóriában lévő listához hozzáadjuk a frisset
-                        candles.AddRange(newData);
+                        // mentés után újra DB-ből
+                        candles = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
                     }
                 }
 
-                //  Biztonsági ellenőrzés
+                // 3) nincs adat → jelzés és kilépés (nem kérünk API-t)
                 if (candles == null || candles.Count == 0)
                 {
-                    MessageBox.Show($"Nincs adat a(z) {_selectedSymbol} szimbólumhoz.", "Chart",
+                    MessageBox.Show(
+                        $"Nincs lokális adat a(z) {_selectedSymbol} szimbólumhoz.\n" +
+                        $"Nyomd meg a Data Import gombot, vagy kapcsold be az automatikus letöltést.",
+                        "Chart",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
-                // Rendezés időrendbe
+                // 4) rendezés és chart
                 candles = candles.OrderBy(c => c.TimestampUtc).ToList();
 
-                // Chart felépítése
                 _chartBuilder.ConfigureLazyLoader(async (start, end) =>
                 {
                     var olderData = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
@@ -181,6 +277,7 @@ namespace ProfitProphet.ViewModels
             }
         }
 
+
         private void AddSymbol(object obj)
         {
             var input = Microsoft.VisualBasic.Interaction.InputBox("Add meg a részvény szimbólumát:", "Új szimbólum");
@@ -191,7 +288,8 @@ namespace ProfitProphet.ViewModels
             {
                 Watchlist.Add(symbol);
                 _settings.Watchlist = Watchlist.ToList();
-                _settingsService.Save(_settings);
+                _settingsService.SaveSettingsAsync(_settings);
+
             }
         }
 
@@ -225,7 +323,8 @@ namespace ProfitProphet.ViewModels
                     Watchlist.Remove(symbol);
 
                 _settings.Watchlist = Watchlist.ToList();
-                _settingsService.Save(_settings);
+                _settingsService.SaveSettingsAsync(_settings);
+
             }
             catch (Exception ex)
             {
@@ -239,7 +338,7 @@ namespace ProfitProphet.ViewModels
         {
             var win = new SettingsWindow(_dataService, _settingsService);
             win.ShowDialog();
-            _settings = _settingsService.Load();
+            _settings = _settingsService.LoadSettings();
         }
 
         #region INotifyPropertyChanged

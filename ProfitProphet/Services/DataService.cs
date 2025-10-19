@@ -33,13 +33,13 @@ namespace ProfitProphet.Services
             foreach (var c in candles)
             {
                 var tf = c.Timeframe;
-                //var existing = _context.Candles
-                //    .FirstOrDefault(x => x.TickerId == ticker.Id && x.TimestampUtc == c.TimestampUtc);
+                c.Symbol = (c.Symbol ?? string.Empty).Trim().ToUpperInvariant();
+                c.TimestampUtc = NormalizeTimestamp(c.TimestampUtc, tf);
+
                 var existing = _context.Candles.FirstOrDefault(x =>
                     x.Symbol == c.Symbol &&
                     x.TimestampUtc == c.TimestampUtc &&
-                    x.Timeframe == tf  //idősík
-                );
+                    x.Timeframe == tf);
 
                 if (existing == null)
                 {
@@ -48,7 +48,6 @@ namespace ProfitProphet.Services
                 }
                 else
                 {
-                    // Update fields in case data changed
                     existing.Open = c.Open;
                     existing.High = c.High;
                     existing.Low = c.Low;
@@ -73,32 +72,51 @@ namespace ProfitProphet.Services
                 .ToList();
         }
 
-        public async Task SaveCandlesAsync(string interval, List<CandleDto> dtos)
+        // Mentés: DTO-kat vagy kész entitásokat fogad
+        public async Task SaveCandlesAsync(string interval, IEnumerable<object> rawCandles)
         {
-            if (dtos == null || dtos.Count == 0) return;
+            if (rawCandles == null) return;
 
-            // DTO → Entity konverzió
-            var entities = dtos.Select(d => d.ToEntity(interval)).ToList();
+            // DTO -> Entity konverzió. Ha nálad más a ToEntity aláírás, igazítsd.
+            List<Candle> candles = rawCandles switch
+            {
+                IEnumerable<CandleDto> dtoList => dtoList.Select(d => d.ToEntity(interval)).ToList(),
+                IEnumerable<Candle> entityList => entityList.ToList(),
+                _ => throw new ArgumentException("Unsupported candle type collection.")
+            };
+            if (candles.Count == 0) return;
 
-            await SaveCandlesAsync(interval, entities);
-        }
+            // Interval -> Timeframe (írj ide a saját megfeleltetésedet)
+            Timeframe tf = IntervalToTf(interval);
 
-        // Ezt használja a chart és a lokális adatok
-        public async Task SaveCandlesAsync(string interval, List<Candle> candles)
-        {
-            if (candles == null || candles.Count == 0) return;
-
+            // Normalizálás és egységesítés
             foreach (var c in candles)
             {
-                bool exists = await _context.Candles
-                    .AnyAsync(x => x.Symbol == c.Symbol && x.TimestampUtc == c.TimestampUtc);
+                c.Symbol = (c.Symbol ?? string.Empty).Trim().ToUpperInvariant();
+                c.Timeframe = tf;
+                c.TimestampUtc = NormalizeTimestamp(c.TimestampUtc, tf);
+            }
 
-                if (!exists)
-                    _context.Candles.Add(c);
+            // Egy lekérdezéssel kérdezzük le a meglévő időpontokat az adott symbol+tf-re
+            // Ha egyszerre több symbold jön, célszerűbb symbolonként csoportosítani (itt a legegyszerűbb verzió van)
+            foreach (var group in candles.GroupBy(c => new { c.Symbol, c.Timeframe }))
+            {
+                var existing = await _context.Candles
+                    .Where(x => x.Symbol == group.Key.Symbol && x.Timeframe == group.Key.Timeframe)
+                    .Select(x => x.TimestampUtc)
+                    .ToListAsync();
+
+                var toInsert = group
+                    .Where(c => !existing.Contains(c.TimestampUtc))
+                    .ToList();
+
+                if (toInsert.Count > 0)
+                    await _context.Candles.AddRangeAsync(toInsert);
             }
 
             await _context.SaveChangesAsync();
         }
+
 
         public async Task<List<Candle>> GetDataAsync(string symbol, string interval)
         {
@@ -125,11 +143,19 @@ namespace ProfitProphet.Services
         public async Task<List<Candle>> GetLocalDataAsync(string symbol, string interval)
         {
             var tf = IntervalToTf(interval);
-            return await _context.Candles
+            var data = await _context.Candles
                 .AsNoTracking()
                 .Where(c => c.Symbol == symbol && c.Timeframe == tf)
                 .OrderBy(c => c.TimestampUtc)
                 .ToListAsync();
+
+            // Biztonsági deduplikálás: ha valaha került be duplikátum, itt levágjuk
+            var dedup = data
+                .GroupBy(c => new { c.Symbol, c.Timeframe, c.TimestampUtc })
+                .Select(g => g.First())
+                .ToList();
+
+            return dedup;
         }
 
         private static Timeframe IntervalToTf(string interval) => interval switch
@@ -140,46 +166,121 @@ namespace ProfitProphet.Services
             _ => Timeframe.Hour
         };
 
+        // Timeframe normalizálás – a te enumod: Hour, Day, Week, Month
+        private static DateTime NormalizeTimestamp(DateTime ts, Timeframe tf, DayOfWeek weekStart = DayOfWeek.Monday)
+        {
+            // Stabil összehasonlítás: kényszerítsük UTC-re
+            if (ts.Kind == DateTimeKind.Local) ts = ts.ToUniversalTime();
+            else if (ts.Kind == DateTimeKind.Unspecified) ts = DateTime.SpecifyKind(ts, DateTimeKind.Utc);
+
+            switch (tf)
+            {
+                case Timeframe.Hour:
+                    return new DateTime(ts.Year, ts.Month, ts.Day, ts.Hour, 0, 0, DateTimeKind.Utc);
+                case Timeframe.Day:
+                    return new DateTime(ts.Year, ts.Month, ts.Day, 0, 0, 0, DateTimeKind.Utc);
+                case Timeframe.Week:
+                    // Hét kezdete weekStart szerint (alap: hétfő)
+                    int diff = (7 + (ts.DayOfWeek - weekStart)) % 7;
+                    var start = ts.Date.AddDays(-diff);
+                    return new DateTime(start.Year, start.Month, start.Day, 0, 0, 0, DateTimeKind.Utc);
+                case Timeframe.Month:
+                    return new DateTime(ts.Year, ts.Month, 1, 0, 0, 0, DateTimeKind.Utc);
+                default:
+                    // Ha más timeframe is van az enumodban, bővítsd ide
+                    return DateTime.SpecifyKind(ts, DateTimeKind.Utc);
+            }
+        }
+
+        private static DateTime LastTradingDayOpenUtc(DateTime utcNow)
+        {
+            var d = utcNow.Date;
+            while (d.DayOfWeek == DayOfWeek.Saturday || d.DayOfWeek == DayOfWeek.Sunday)
+                d = d.AddDays(-1);
+            return new DateTime(d.Year, d.Month, d.Day, 0, 0, 0, DateTimeKind.Utc);
+        }
+
+        private static DateTime LastCompleteHourUtc(DateTime utcNow)
+        {
+            var h = new DateTime(utcNow.Year, utcNow.Month, utcNow.Day, utcNow.Hour, 0, 0, DateTimeKind.Utc);
+            if (utcNow.Minute == 0 && utcNow.Second == 0) h = h.AddHours(-1);
+            while (h.DayOfWeek == DayOfWeek.Saturday || h.DayOfWeek == DayOfWeek.Sunday)
+                h = h.AddHours(-1);
+            return h;
+        }
+
+        private static DateTime GetMarketNowOpenUtc(Timeframe tf, DateTime utcNow)
+        {
+            return tf switch
+            {
+                Timeframe.Day => LastTradingDayOpenUtc(utcNow),
+                Timeframe.Week => NormalizeTimestamp(utcNow, Timeframe.Week),
+                Timeframe.Month => NormalizeTimestamp(utcNow, Timeframe.Month),
+                Timeframe.Hour => NormalizeTimestamp(LastCompleteHourUtc(utcNow), Timeframe.Hour),
+                _ => NormalizeTimestamp(utcNow, tf)
+            };
+        }
+
+        public async Task<bool> HasLocalDataAsync(string symbol, string interval)
+        {
+            var tf = IntervalToTf(interval);
+            return await _context.Candles
+                .AsNoTracking()
+                .AnyAsync(c => c.Symbol == symbol && c.Timeframe == tf);
+        }
+
+        // 
+        public async Task DownloadLookbackAsync(string symbol, string interval, int lookbackDays)
+        {
+            var tf = IntervalToTf(interval);
+            var toUtc = GetMarketNowOpenUtc(tf, DateTime.UtcNow);              // lezárt gyertya „most”
+            var fromUtc = toUtc.AddDays(-lookbackDays);
+
+            var client = new YahooFinanceClient(); // támogatja a from/to-t
+            var dtoList = await client.GetHistoricalAsync(symbol, interval, fromUtc, toUtc); // :contentReference[oaicite:0]{index=0}
+
+            // SaveCandlesAsync elvégzi a normalizálást + deduplikálást
+            await SaveCandlesAsync(interval, dtoList);
+        }
+
+
+        //itt kezdődik a probléma.....
+
         public async Task<List<Candle>> GetRefreshReloadAsync(
             string symbol,
             string interval,
             int maxAgeDays = 2,
             int correctionDays = 5,
-            decimal valueTolerance = 0.5m,  // Növelve 0.5m-re esetleges rounding hibák miatt
+            decimal valueTolerance = 0.5m,
             int suspiciousDeleteThreshold = 200)
         {
             var tf = IntervalToTf(interval);
-            Debug.WriteLine($"[DEBUG] Starting GetRefreshReloadAsync for symbol: {symbol}, interval: {interval}, tf: {tf}");
+            Debug.WriteLine($"[DEBUG] GetRefreshReloadAsync: {symbol}, {interval}, tf={tf}");
 
-            // 1. Lekérjük a lokális adatokat (NEM módosítjuk még az adatbázist!)
+            // 1) Lokális adatok
             var localCandles = await _context.Candles
                 .Where(c => c.Symbol == symbol && c.Timeframe == tf)
                 .OrderBy(c => c.TimestampUtc)
                 .ToListAsync();
 
             bool hasLocal = localCandles.Count > 0;
-            Debug.WriteLine($"[DEBUG] Local candles count: {localCandles.Count}. Has local data: {hasLocal}");
+            var lastLocalOpen = hasLocal ? NormalizeTimestamp(localCandles[^1].TimestampUtc, tf) : (DateTime?)null;
 
-            DateTime? lastLocalDate = hasLocal ? localCandles.Last().TimestampUtc : null;
-            Debug.WriteLine($"[DEBUG] Last local date: {lastLocalDate?.ToString("yyyy-MM-dd HH:mm:ss") ?? "None"}");
+            // 2) Lezárt "most" (weekend fix)
+            var marketNowOpen = GetMarketNowOpenUtc(tf, DateTime.UtcNow);
 
-            // 2. Ellenőrizzük a frissességet (anélkül, hogy API-t hívnánk még)
-            bool isOutdated = false;
-            if (hasLocal && lastLocalDate.HasValue)
-            {
-                var age = (DateTime.UtcNow - lastLocalDate.Value).TotalDays;
-                isOutdated = age > maxAgeDays;
-                Debug.WriteLine($"[DEBUG] Data age in days: {age:F2}. Is outdated: {isOutdated}");
-            }
+            bool isOutdated = hasLocal && lastLocalOpen.HasValue
+                ? (marketNowOpen - lastLocalOpen.Value).TotalDays > maxAgeDays
+                : !hasLocal;
 
-            // 3. API lekérés (mindig, de optimalizáltan használjuk)
-            Debug.WriteLine("[DEBUG] Fetching data from API.");
+            // 3) API lekérés (egyelőre teljes sáv, később szűkítünk)
             var client = new YahooFinanceClient();
             var dtoList = await client.GetHistoricalAsync(symbol, interval);
+
             var apiCandles = dtoList
                 .Select(d => new Candle
                 {
-                    Symbol = d.Symbol,
+                    Symbol = (d.Symbol ?? string.Empty).Trim().ToUpperInvariant(),
                     TimestampUtc = d.TimestampUtc,
                     Open = d.Open,
                     High = d.High,
@@ -192,79 +293,81 @@ namespace ProfitProphet.Services
                 .ToList();
 
             if (apiCandles.Count == 0)
-            {
-                Debug.WriteLine("[DEBUG] API returned no data. Returning local data if any.");
                 return localCandles;
-            }
 
-            Debug.WriteLine($"[DEBUG] API returned {apiCandles.Count} candles.");
+            // 3/a) Normalizálás azonnal
+            for (int i = 0; i < apiCandles.Count; i++)
+                apiCandles[i].TimestampUtc = NormalizeTimestamp(apiCandles[i].TimestampUtc, tf);
 
-            // 4. Ha NINCS lokális adat VAGY outdated → Corrective update az API-val
+            // 4) Ha nincs lokális vagy elavult → teljes korrekció, utána DB-ből térünk vissza
             if (!hasLocal || isOutdated)
             {
-                Debug.WriteLine("[DEBUG] No local data or outdated → Performing corrective update from API.");
                 await PerformCorrectiveUpdateAsync(symbol, tf, apiCandles, suspiciousDeleteThreshold);
-                return await GetLocalDataAsync(symbol, interval);
+
+                var updated = await _context.Candles
+                    .AsNoTracking()
+                    .Where(c => c.Symbol == symbol && c.Timeframe == tf)
+                    .OrderBy(c => c.TimestampUtc)
+                    .ToListAsync();
+
+                return updated
+                    .GroupBy(c => new { c.Symbol, c.Timeframe, c.TimestampUtc })
+                    .Select(g => g.First())
+                    .ToList();
             }
 
-            // 5. Ha VAN lokális adat ÉS NEM outdated → Ellenőrizzük az adatminőséget
-            Debug.WriteLine("[DEBUG] Has fresh local data → Checking data quality.");
+            // 5) Quality check a legfrissebb elemeken
+            int checkCount = Math.Min(3, Math.Min(localCandles.Count, apiCandles.Count));
+            var localTail = localCandles.TakeLast(checkCount).ToArray();
+            var apiTail = apiCandles.TakeLast(checkCount).ToArray();
 
             bool needsFullReload = false;
-            int checkCount = Math.Min(3, Math.Min(localCandles.Count, apiCandles.Count));
-            Debug.WriteLine($"[DEBUG] Checking first {checkCount} candles for quality.");
-
             for (int i = 0; i < checkCount; i++)
             {
-                var local = localCandles[i];
-                var api = apiCandles[i];
+                var local = localTail[i];
+                var api = apiTail[i];
 
-                // Symbol ellenőrzés
                 if (!string.Equals(local.Symbol, api.Symbol, StringComparison.OrdinalIgnoreCase))
                 {
-                    needsFullReload = true;
-                    Debug.WriteLine($"[DEBUG] Symbol mismatch at index {i}: Local '{local.Symbol}' vs API '{api.Symbol}'. Triggering corrective update.");
-                    break;
+                    needsFullReload = true; break;
                 }
 
-                // Timestamp ellenőrzés
-                var timeDiff = Math.Abs((local.TimestampUtc - api.TimestampUtc).TotalDays);
-                if (timeDiff > 1)
+                if (local.TimestampUtc != api.TimestampUtc)
                 {
-                    needsFullReload = true;
-                    Debug.WriteLine($"[DEBUG] Timestamp mismatch at index {i}: Local {local.TimestampUtc} vs API {api.TimestampUtc} (diff: {timeDiff:F2} days). Triggering corrective update.");
-                    break;
+                    needsFullReload = true; break;
                 }
 
-                // Érték ellenőrzés toleranciával
                 if (Math.Abs(local.Open - api.Open) > valueTolerance ||
                     Math.Abs(local.High - api.High) > valueTolerance ||
                     Math.Abs(local.Low - api.Low) > valueTolerance ||
                     Math.Abs(local.Close - api.Close) > valueTolerance)
                 {
-                    needsFullReload = true;
-                    Debug.WriteLine($"[DEBUG] Value mismatch at index {i}: Open {local.Open} vs {api.Open}, High {local.High} vs {api.High}, etc. (tolerance: {valueTolerance}). Triggering corrective update.");
-                    break;
+                    needsFullReload = true; break;
                 }
             }
 
             if (needsFullReload)
             {
-                Debug.WriteLine("[DEBUG] Quality check failed → Performing corrective update from API.");
                 await PerformCorrectiveUpdateAsync(symbol, tf, apiCandles, suspiciousDeleteThreshold);
-                return await GetLocalDataAsync(symbol, interval);
+
+                var updated = await _context.Candles
+                    .AsNoTracking()
+                    .Where(c => c.Symbol == symbol && c.Timeframe == tf)
+                    .OrderBy(c => c.TimestampUtc)
+                    .ToListAsync();
+
+                return updated
+                    .GroupBy(c => new { c.Symbol, c.Timeframe, c.TimestampUtc })
+                    .Select(g => g.First())
+                    .ToList();
             }
 
-            // 6. Ha minden OK → Részleges frissítés (csak a legutóbbi correctionDays nap)
-            Debug.WriteLine("[DEBUG] Quality check passed → Performing partial update.");
+            // 6) Partial update: csak a correctionDays ablak, normalizált cutoff-hoz képest
+            var rawCutoff = DateTime.UtcNow.AddDays(-correctionDays);
+            var cutoffNorm = NormalizeTimestamp(rawCutoff, tf);
+            var recentApi = apiCandles.Where(c => c.TimestampUtc >= cutoffNorm).ToList();
 
-            DateTime correctionCutoff = DateTime.UtcNow.AddDays(-correctionDays);
-            var recentApi = apiCandles.Where(c => c.TimestampUtc >= correctionCutoff).ToList();
-            Debug.WriteLine($"[DEBUG] Recent API candles for partial update: {recentApi.Count} (from {correctionCutoff:yyyy-MM-dd}).");
-
-            int updatedCount = 0;
-            int addedCount = 0;
-
+            int updatedCount = 0, addedCount = 0;
             foreach (var c in recentApi)
             {
                 var existing = await _context.Candles.FirstOrDefaultAsync(x =>
@@ -287,38 +390,37 @@ namespace ProfitProphet.Services
                     updatedCount++;
                 }
             }
-
             await _context.SaveChangesAsync();
-            Debug.WriteLine($"[DEBUG] Partial update: Added {addedCount}, Updated {updatedCount} candles.");
 
-            // Visszaadjuk a frissített lokális adatokat
-            var updatedLocal = await GetLocalDataAsync(symbol, interval);
-            Debug.WriteLine($"[DEBUG] Returning updated local candles: {updatedLocal.Count}");
+            var result = await _context.Candles
+                .AsNoTracking()
+                .Where(c => c.Symbol == symbol && c.Timeframe == tf)
+                .OrderBy(c => c.TimestampUtc)
+                .ToListAsync();
 
-            return updatedLocal;
+            return result
+                .GroupBy(c => new { c.Symbol, c.Timeframe, c.TimestampUtc })
+                .Select(g => g.First())
+                .ToList();
         }
 
         private async Task PerformCorrectiveUpdateAsync(
-            string symbol,
-            Timeframe tf,
-            List<Candle> apiCandles,
-            int suspiciousDeleteThreshold)
+    string symbol,
+    Timeframe tf,
+    List<Candle> apiCandles,
+    int suspiciousDeleteThreshold)
         {
-            int addedCount = 0;
-            int updatedCount = 0;
-            int deletedCount = 0;
-
-            // Aktuális lokális adatok lekérése
+            // Lokális adatok ehhez a symbol+tf-hez
             var currentLocal = await _context.Candles
                 .Where(c => c.Symbol == symbol && c.Timeframe == tf)
                 .ToListAsync();
 
-            Debug.WriteLine($"[DEBUG] Current local candles for corrective update: {currentLocal.Count}");
-
-            // API dict timestamp alapján
+            // API: kulcs a normalizált timestamp
             var apiDict = apiCandles.ToDictionary(c => c.TimestampUtc, c => c);
 
-            // Update vagy add az API alapján
+            int addedCount = 0, updatedCount = 0, deletedCount = 0;
+
+            // Upsert
             foreach (var apiC in apiCandles)
             {
                 var existing = currentLocal.FirstOrDefault(x => x.TimestampUtc == apiC.TimestampUtc);
@@ -335,33 +437,23 @@ namespace ProfitProphet.Services
                     existing.Low = apiC.Low;
                     existing.Close = apiC.Close;
                     existing.Volume = apiC.Volume;
-                    existing.Symbol = apiC.Symbol;  // Biztonság kedvéért
+                    existing.Symbol = apiC.Symbol;
                     updatedCount++;
                 }
             }
 
-            // Extra local-ok törlése, amik nincsenek API-ban
+            // Törlés: csak az adott symbol+tf-ben nem szereplő időpontok
             var toDelete = currentLocal.Where(local => !apiDict.ContainsKey(local.TimestampUtc)).ToList();
 
             deletedCount = toDelete.Count;
-            Debug.WriteLine($"[DEBUG] Found {deletedCount} extra local candles to potentially delete.");
-
-            if (deletedCount > suspiciousDeleteThreshold)
-            {
-                Debug.WriteLine($"[WARNING] Suspicious large number of deletions ({deletedCount} > {suspiciousDeleteThreshold}) for symbol {symbol}. Skipping deletion to prevent data loss. Possible symbol mismatch or API issue.");
-            }
-            else
-            {
-                if (deletedCount > 0)
-                {
-                    _context.Candles.RemoveRange(toDelete);
-                    Debug.WriteLine($"[DEBUG] Deleting {deletedCount} extra candles.");
-                }
-            }
+            if (deletedCount > 0 && deletedCount <= suspiciousDeleteThreshold)
+                _context.Candles.RemoveRange(toDelete);
 
             await _context.SaveChangesAsync();
-            Debug.WriteLine($"[DEBUG] Corrective update completed: Added {addedCount}, Updated {updatedCount}, Deleted {deletedCount} (or skipped if suspicious).");
+
+            Debug.WriteLine($"[DEBUG] Corrective: add={addedCount}, upd={updatedCount}, del={deletedCount}");
         }
+
 
         public async Task RemoveSymbolAndCandlesAsync(string symbol)
         {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ProfitProphet.Services
+namespace ProfitProphet.Settings
 {
     public class AppSettings
     {
@@ -10,5 +10,7 @@ namespace ProfitProphet.Services
         public string TwelveDataApiKey { get; set; } = "";
         public string AlphaVantageApiKey { get; set; } = "";
         public List<string> Watchlist { get; set; } = new();
+        public int LookbackPeriodDays { get; set; } = 200;
+        public bool AutoDataImport { get; set; } = false;
     }
 }

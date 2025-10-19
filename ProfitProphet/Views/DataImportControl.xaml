@@ -4,9 +4,15 @@
              Background="#1e1e1e">
     <StackPanel Margin="10">
         <TextBlock Text="Data Import" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+        <CheckBox x:Name="AutoImportCheckBox"
+                  Content="Automatikus dataimport"
+                  IsChecked="{Binding AutoDataImport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  Checked="AutoImportCheckBox_CheckedChanged"
+                  Unchecked="AutoImportCheckBox_CheckedChanged"
+                  Margin="0,0,0,8"/>
         <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
-            <TextBlock Text="Lookback Period:" Width="150"/>
-            <ComboBox x:Name="LookbackCombo" Width="200">
+            <TextBlock Text="Lookback Period (nap):" Width="150"/>
+            <ComboBox x:Name="LookbackCombo" Width="200" SelectionChanged="LookbackCombo_SelectionChanged">
                 <ComboBoxItem Content="200 days"/>
                 <ComboBoxItem Content="350 days"/>
                 <ComboBoxItem Content="720 days"/>
@@ -19,5 +25,9 @@
                 HorizontalAlignment="Left"
                 Margin="0,20,0,0"
                 Click="StartImport_Click"/>
+        <TextBlock x:Name="StatusTextBlock"
+                   Text="{Binding ImportStatus}"
+                   Margin="0,20,0,0"
+                   Foreground="LightGreen"/>
     </StackPanel>
 </UserControl>
