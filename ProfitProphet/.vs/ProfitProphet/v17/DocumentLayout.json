@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -13,14 +21,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -154,7 +154,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 233,
-          "SelectedChildIndex": 10,
+          "SelectedChildIndex": 25,
           "Children": [
             {
               "$type": "Bookmark",
@@ -174,7 +174,8 @@
               "RelativeToolTip": "Services\\AppSettingsService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-19T09:46:39.251Z"
+              "WhenOpened": "2025-10-19T09:46:39.251Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -186,7 +187,8 @@
               "RelativeToolTip": "DTOs\\CandleDtoExtensions.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-16T09:24:53.489Z"
+              "WhenOpened": "2025-10-16T09:24:53.489Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -198,7 +200,8 @@
               "RelativeToolTip": "Converters\\InverseBoolToVisibilityConverter.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-15T19:08:03.581Z"
+              "WhenOpened": "2025-10-15T19:08:03.581Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -210,7 +213,8 @@
               "RelativeToolTip": "Converters\\BoolToVisibilityConverter.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-15T19:07:43.921Z"
+              "WhenOpened": "2025-10-15T19:07:43.921Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -220,9 +224,10 @@
               "RelativeDocumentMoniker": "Settings\\AppSettings.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Settings\\AppSettings.cs",
               "RelativeToolTip": "Settings\\AppSettings.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwBAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-15T18:01:59.407Z"
+              "WhenOpened": "2025-10-15T18:01:59.407Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -234,11 +239,12 @@
               "RelativeToolTip": "Services\\IAppSettingsService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-11T16:45:36.124Z"
+              "WhenOpened": "2025-10-11T16:45:36.124Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "MainViewModel.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\MainViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
@@ -246,11 +252,12 @@
               "RelativeToolTip": "ViewModels\\MainViewModel.cs",
               "ViewState": "AgIAAPQAAAAAAAAAAAAwwBYBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-11T16:35:52.706Z"
+              "WhenOpened": "2025-10-11T16:35:52.706Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DataImportControl.xaml.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
               "RelativeDocumentMoniker": "Views\\DataImportControl.xaml.cs",
@@ -258,11 +265,12 @@
               "RelativeToolTip": "Views\\DataImportControl.xaml.cs",
               "ViewState": "AgIAAFQAAAAAAAAAAAAgwGYAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-10T14:43:20.842Z"
+              "WhenOpened": "2025-10-10T14:43:20.842Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "DataImportControl.xaml",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml",
               "RelativeDocumentMoniker": "Views\\DataImportControl.xaml",
@@ -282,7 +290,8 @@
               "RelativeToolTip": "Views\\ApiSettingsControl.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAgwBIAAAA4AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-10T14:41:57.286Z"
+              "WhenOpened": "2025-10-10T14:41:57.286Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -293,7 +302,8 @@
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
               "RelativeToolTip": "Views\\ApiSettingsControl.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-10T14:41:41.925Z"
+              "WhenOpened": "2025-10-10T14:41:41.925Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -305,7 +315,8 @@
               "RelativeToolTip": "Views\\SettingsWindow.xaml.cs",
               "ViewState": "AgIAABQAAAAAAAAAAIAwwBwAAABEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-10T14:40:43.908Z"
+              "WhenOpened": "2025-10-10T14:40:43.908Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -316,7 +327,8 @@
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml",
               "RelativeToolTip": "Views\\SettingsWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-10T14:40:09.512Z"
+              "WhenOpened": "2025-10-10T14:40:09.512Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -326,9 +338,10 @@
               "RelativeDocumentMoniker": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "RelativeToolTip": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
-              "ViewState": "AgIAACUAAAAAAAAAAABBwDAAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAACQAAAAAAAAAAIBJwDAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T18:35:32.926Z"
+              "WhenOpened": "2025-10-09T18:35:32.926Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -340,7 +353,8 @@
               "RelativeToolTip": "Migrations\\20251009182118_EnsureCandles.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T18:21:18.991Z"
+              "WhenOpened": "2025-10-09T18:21:18.991Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -352,7 +366,8 @@
               "RelativeToolTip": "Migrations\\20251009181010_CreateCandlesTable.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T18:10:10.35Z"
+              "WhenOpened": "2025-10-09T18:10:10.35Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -364,7 +379,8 @@
               "RelativeToolTip": "Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T18:01:08.743Z"
+              "WhenOpened": "2025-10-09T18:01:08.743Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -376,7 +392,8 @@
               "RelativeToolTip": "DTOs\\CandleDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:45:38.907Z"
+              "WhenOpened": "2025-10-09T15:45:38.907Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -388,7 +405,8 @@
               "RelativeToolTip": "Mappers\\CandleMapper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:42:21.13Z"
+              "WhenOpened": "2025-10-09T15:42:21.13Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -400,7 +418,8 @@
               "RelativeToolTip": "Entities\\CandleBase.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAPAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:37:22.818Z"
+              "WhenOpened": "2025-10-09T15:37:22.818Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -412,7 +431,8 @@
               "RelativeToolTip": "Entities\\Timeframe.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:36:57.594Z"
+              "WhenOpened": "2025-10-09T15:36:57.594Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -424,7 +444,8 @@
               "RelativeToolTip": "AssemblyInfo.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-01T14:51:06.992Z"
+              "WhenOpened": "2025-10-01T14:51:06.992Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -435,19 +456,21 @@
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml",
               "RelativeToolTip": "MainWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-10-01T05:44:14.567Z"
+              "WhenOpened": "2025-10-01T05:44:14.567Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "ChartBuilder.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartBuilder.cs",
               "RelativeDocumentMoniker": "Services\\ChartBuilder.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartBuilder.cs",
               "RelativeToolTip": "Services\\ChartBuilder.cs",
-              "ViewState": "AgIAAPMAAAAAAAAAAAAAAAIBAAAuAAAAAAAAAA==",
+              "ViewState": "AgIAAAoCAAAAAAAAAIAwwB8CAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-18T14:27:07.893Z"
+              "WhenOpened": "2025-09-18T14:27:07.893Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -471,19 +494,21 @@
               "RelativeToolTip": "App.xaml.cs",
               "ViewState": "AgIAAAgAAAAAAAAAAAAwwCYAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T13:06:16.062Z"
+              "WhenOpened": "2025-09-17T13:06:16.062Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "DataService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeDocumentMoniker": "Services\\DataService.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeToolTip": "Services\\DataService.cs",
-              "ViewState": "AgIAANQAAAAAAAAAAAAwwOcAAAALAAAAAAAAAA==",
+              "ViewState": "AgIAAPUAAAAAAAAAAAAwwOcAAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T10:02:49.317Z"
+              "WhenOpened": "2025-09-17T10:02:49.317Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -495,7 +520,8 @@
               "RelativeToolTip": "Services\\APIs\\YahooFinanceClient.cs",
               "ViewState": "AgIAAGIAAAAAAAAAAIAwwHQAAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T09:34:50.69Z"
+              "WhenOpened": "2025-09-17T09:34:50.69Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -507,7 +533,8 @@
               "RelativeToolTip": "Services\\APIs\\TwelveDataClient.cs",
               "ViewState": "AgIAAE0AAAAAAAAAAIAwwF8AAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T09:27:01.716Z"
+              "WhenOpened": "2025-09-17T09:27:01.716Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -517,9 +544,10 @@
               "RelativeDocumentMoniker": "Services\\APIs\\AlphaVantageClient.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
               "RelativeToolTip": "Services\\APIs\\AlphaVantageClient.cs",
-              "ViewState": "AgIAAHcAAAAAAAAAAIAwwIkAAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAAHcAAAAAAAAAAIAwwIkAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T09:26:29.363Z"
+              "WhenOpened": "2025-09-17T09:26:29.363Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -531,7 +559,8 @@
               "RelativeToolTip": "Services\\IStockApiClient.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAIAwwBIAAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T09:26:01.07Z"
+              "WhenOpened": "2025-09-17T09:26:01.07Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -541,9 +570,10 @@
               "RelativeDocumentMoniker": "Data\\StockContext.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Data\\StockContext.cs",
               "RelativeToolTip": "Data\\StockContext.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAAABMAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAABoAAAAAAAAAAAAxwBMAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T08:48:59.779Z"
+              "WhenOpened": "2025-09-17T08:48:59.779Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -555,7 +585,8 @@
               "RelativeToolTip": "Entities\\Candle.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T08:47:58.701Z"
+              "WhenOpened": "2025-09-17T08:47:58.701Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -567,7 +598,8 @@
               "RelativeToolTip": "Entities\\Ticker.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T08:47:24.09Z"
+              "WhenOpened": "2025-09-17T08:47:24.09Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -591,7 +623,8 @@
               "RelativeToolTip": "MainWindow.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-17T08:14:56.325Z"
+              "WhenOpened": "2025-09-17T08:14:56.325Z",
+              "EditorCaption": ""
             }
           ]
         }

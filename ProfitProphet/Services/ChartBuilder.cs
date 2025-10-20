@@ -243,6 +243,11 @@ namespace ProfitProphet.Services
             _earliestLoaded = _candles.First().Timestamp;
             _isLoadingOlder = false;
 
+
+            // MA-k kiszámítása
+            var sma20 = ComputeSMA(candles, 20);
+            var sma50 = ComputeSMA(candles, 50);
+
             Model = new PlotModel
             {
                 Title = $"{symbol} ({interval})",
@@ -360,6 +365,30 @@ namespace ProfitProphet.Services
             };
             _xAxis.AxisChanged += (_, __) => UpdateXAxisTitle();
 #pragma warning restore CS0618
+
+            // SMA 20
+            var sma20Series = new LineSeries
+            {
+                Title = "SMA 20",
+                StrokeThickness = 1.6,
+                // YAxisKey = priceAxis.Key,  // ha külön kulcsot használsz a gyertyáknál, rendeld ugyanarra
+                CanTrackerInterpolatePoints = false
+            };
+            sma20Series.Points.AddRange(sma20);
+            Model.Series.Add(sma20Series);
+
+            // SMA 50 (opcionális)
+            if (sma50.Count > 0)
+            {
+                var sma50Series = new LineSeries
+                {
+                    Title = "SMA 50",
+                    StrokeThickness = 1.6,
+                    CanTrackerInterpolatePoints = false
+                };
+                sma50Series.Points.AddRange(sma50);
+                Model.Series.Add(sma50Series);
+            }
 
             return Model;
         }
@@ -495,6 +524,50 @@ namespace ProfitProphet.Services
                 else
                     _xAxis.Labels[i] = dt.ToString("yyyy MMM");
             }
+        }
+        // SMA záróárból teszt
+        private static List<DataPoint> ComputeSMA(List<CandleData> data, int period)
+        {
+            var pts = new List<DataPoint>();
+            if (data == null || data.Count == 0 || period <= 1) return pts;
+
+            double sum = 0;
+            var q = new Queue<double>(period);
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                double close = data[i].Close;
+                sum += close;
+                q.Enqueue(close);
+
+                if (q.Count > period) sum -= q.Dequeue();
+
+                if (q.Count == period)
+                {
+                    double sma = sum / period;
+                    // X = index! (CategoryAxis)
+                    pts.Add(new DataPoint(i, sma));
+                }
+            }
+            return pts;
+        }
+
+        // EMA záróárból teszt
+        private static List<DataPoint> ComputeEMA(List<CandleData> data, int period)
+        {
+            var pts = new List<DataPoint>();
+            if (data == null || data.Count < period || period <= 1) return pts;
+
+            double multiplier = 2.0 / (period + 1);
+            double ema = data.Take(period).Average(d => d.Close);
+
+            for (int i = period; i < data.Count; i++)
+            {
+                ema = (data[i].Close - ema) * multiplier + ema;
+                var x = DateTimeAxis.ToDouble(data[i].Timestamp);
+                pts.Add(new DataPoint(x, ema));
+            }
+            return pts;
         }
     }
 }
