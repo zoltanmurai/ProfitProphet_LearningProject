@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media;
 
@@ -467,5 +468,43 @@ namespace ProfitProphet.Services
                 await _context.SaveChangesAsync();
             }
         }
+
+        // Több szimbólum frissítése sorban, kvóta-barát módon
+        public async Task RefreshSymbolsAsync(IEnumerable<string> symbols, string interval, CancellationToken ct = default)
+        {
+            if (symbols == null) return;
+
+            var list = symbols
+                .Where(s => !string.IsNullOrWhiteSpace(s))
+                .Select(s => s.Trim().ToUpperInvariant())
+                .Distinct()
+                .ToList();
+
+            foreach (var symbol in list)
+            {
+                ct.ThrowIfCancellationRequested();
+                await RefreshSymbolAsync(symbol, interval, ct);
+
+                // enyhe throttle (API kvóta miatt)
+                await Task.Delay(250, ct);
+            }
+        }
+
+        // Wrapper
+        public Task RefreshAllVisibleAsync(IEnumerable<string> symbols, string interval, CancellationToken ct = default)
+            => RefreshSymbolsAsync(symbols, interval, ct);
+
+        public async Task RefreshSymbolAsync(string symbol, string interval, CancellationToken ct = default)
+            => await GetRefreshReloadAsync(symbol, interval); // vagy a saját logikád
+
+
+        //public async Task RefreshSymbolAsync(string symbol, string interval, CancellationToken ct = default)
+        //{
+        //    if (string.IsNullOrWhiteSpace(symbol)) return;
+        //    if (string.IsNullOrWhiteSpace(interval)) interval = "1d";
+
+        //    await GetRefreshReloadAsync(symbol, interval);
+        //}
+
     }
 }

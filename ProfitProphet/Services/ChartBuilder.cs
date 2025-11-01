@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using ProfitProphet.Models.Charting;
+using ProfitProphet.Services.Charting;
+using ProfitProphet.Services.Indicators;
 
 namespace ProfitProphet.Services
 {
@@ -16,6 +19,8 @@ namespace ProfitProphet.Services
         private CategoryAxis _xAxis;
         private LinearAxis _yAxis;
         private CandleStickSeries _series;
+        private readonly IIndicatorRegistry _indicatorRegistry;
+        private readonly IChartSettingsService _chartSettings;
 
         private DateTime _earliestLoaded;
         private bool _isLoadingOlder;
@@ -26,117 +31,24 @@ namespace ProfitProphet.Services
 
         public PlotModel Model { get; private set; }
 
+        public ChartBuilder()
+            : this(new ProfitProphet.Services.Indicators.IndicatorRegistry(),
+                   new ProfitProphet.Services.Charting.ChartSettingsService())
+        {
+        }
+
+        public ChartBuilder(IIndicatorRegistry indicatorRegistry, IChartSettingsService chartSettings)
+        {
+            //_indicatorRegistry = indicatorRegistry;
+            //_chartSettings = chartSettings;
+            _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
+            _chartSettings = chartSettings ?? throw new ArgumentNullException(nameof(chartSettings));
+        }
+
         public void ConfigureLazyLoader(Func<DateTime, DateTime, Task<List<CandleData>>> loader)
         {
             _lazyLoader = loader;
         }
-
-        //public PlotModel BuildInteractiveChart(List<CandleData> candles, string symbol, string interval)
-        //{
-        //    if (candles == null || candles.Count == 0)
-        //        throw new ArgumentException("A candle lista üres.");
-
-        //    candles = candles.OrderBy(c => c.Timestamp).ToList();
-        //    _earliestLoaded = candles.First().Timestamp;
-        //    _isLoadingOlder = false;
-
-        //    Model = new PlotModel
-        //    {
-        //        Title = $"{symbol} ({interval})",
-        //        TextColor = OxyColors.White,
-        //        Background = OxyColor.FromRgb(22, 27, 34),
-        //        PlotAreaBackground = OxyColor.FromRgb(24, 28, 34),
-        //        PlotAreaBorderThickness = new OxyThickness(0),
-        //        PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40)
-        //    };
-
-        //    //_xAxis = new CategoryAxis
-        //    //{
-        //    //    Position = AxisPosition.Bottom,
-        //    //    TextColor = OxyColors.White,
-        //    //    MajorGridlineStyle = LineStyle.Solid,
-        //    //    MinorGridlineStyle = LineStyle.Dot,
-        //    //    GapWidth = 0,
-        //    //    IntervalLength = 80,
-        //    //    IsZoomEnabled = true,
-        //    //    IsPanEnabled = true
-        //    //};
-
-        //    //// Optimalizált címkézés: max 12 címke, csak az évszám az év elején, egyébként csak a hónap rövidítve
-        //    //int candleCount = candles.Count;
-        //    //int maxLabels = 12; // ennyi címke fér el (kb. havonta 1, ha 1y adatod van)
-        //    //int step = Math.Max(1, candleCount / maxLabels);
-
-        //    //for (int i = 0; i < candleCount; i++)
-        //    //{
-        //    //    if (i % step == 0)
-        //    //    {
-        //    //        var date = candles[i].Timestamp;
-        //    //        // csak az év egyszer, a hónap rövid formában
-        //    //        string label = (i == 0 || date.Month == 1) ? date.ToString("yyyy MMM") : date.ToString("MM.dd");
-        //    //        _xAxis.Labels.Add(label);
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        _xAxis.Labels.Add(string.Empty);
-        //    //    }
-        //    //}
-
-
-        //    //Model.Axes.Add(_xAxis);
-
-        //    //foreach (var c in candles)
-        //    //    _xAxis.Labels.Add(c.Timestamp.ToString("yyyy-MM-dd"));
-        //    //Model.Axes.Add(_xAxis);
-
-
-
-
-
-        //    _yAxis = new LinearAxis
-        //    {
-        //        Position = AxisPosition.Left,
-        //        TextColor = OxyColors.White,
-        //        MajorGridlineStyle = LineStyle.Solid,
-        //        MinorGridlineStyle = LineStyle.Dot,
-        //        AxislineColor = OxyColors.Gray,
-        //        Title = "Price",
-        //        IsZoomEnabled = true,
-        //        IsPanEnabled = true
-        //    };
-        //    Model.Axes.Add(_yAxis);
-
-        //    _series = new CandleStickSeries
-        //    {
-        //        IncreasingColor = OxyColor.FromRgb(34, 197, 94),
-        //        DecreasingColor = OxyColor.FromRgb(239, 68, 68),
-        //        CandleWidth = CalculateCandleWidth(interval),
-        //        TrackerFormatString = "{Category}\nO: {4:0.###}\nH: {1:0.###}\nL: {2:0.###}\nC: {3:0.###}",
-        //        YAxisKey = _yAxis.Key
-        //    };
-
-        //    for (int i = 0; i < candles.Count; i++)
-        //    {
-        //        var c = candles[i];
-        //        _series.Items.Add(new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
-        //    }
-
-        //    Model.Series.Add(_series);
-
-        //    // Események
-        //    _xAxis.AxisChanged += async (_, __) =>
-        //    {
-        //        await MaybeLazyLoadOlderAsync();
-        //        AutoFitYToVisible();
-        //        Model.InvalidatePlot(false);
-        //    };
-
-        //    Model.ResetAllAxes();
-        //    AutoFitYToVisible();
-        //    Model.InvalidatePlot(true);
-
-        //    return Model;
-        //}
 
         private void AutoFitYToVisible()
         {
@@ -164,55 +76,6 @@ namespace ProfitProphet.Services
                 _yAxis.Zoom(min - pad, max + pad);
             }
         }
-
-        //private async Task MaybeLazyLoadOlderAsync()
-        //{
-        //    if (_lazyLoader == null) return;
-        //    if (_isLoadingOlder) return;
-        //    if (_xAxis.ActualMinimum >= 5) return;
-
-        //    _isLoadingOlder = true;
-        //    try
-        //    {
-        //        var viewMin = _xAxis.ActualMinimum;
-        //        var viewMax = _xAxis.ActualMaximum;
-
-        //        var olderEnd = _earliestLoaded;
-        //        var olderStart = _earliestLoaded.AddDays(-90);
-
-        //        var olderData = await _lazyLoader(olderStart, olderEnd);
-        //        if (olderData == null || olderData.Count == 0)
-        //            return;
-
-        //        olderData = olderData.OrderBy(c => c.Timestamp).ToList();
-        //        _earliestLoaded = olderData.First().Timestamp;
-
-        //        int shift = olderData.Count;
-
-        //        foreach (var item in _series.Items)
-        //            item.X += shift;
-
-        //        for (int i = 0; i < olderData.Count; i++)
-        //        {
-        //            var c = olderData[i];
-        //            _series.Items.Insert(i, new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
-        //            _xAxis.Labels.Insert(i, c.Timestamp.ToString("yyyy-MM-dd"));
-        //        }
-
-        //        _xAxis.Zoom(viewMin + shift, viewMax + shift);
-        //        AutoFitYToVisible();
-        //        Model.InvalidatePlot(true);
-        //    }
-        //    finally
-        //    {
-        //        _isLoadingOlder = false;
-        //    }
-
-        //    //_xAxis.Zoom(viewMin + shift, viewMax + shift);
-        //    UpdateXAxisLabels();
-        //    AutoFitYToVisible();
-        //    Model.InvalidatePlot(true);
-        //}
 
         public static double CalculateCandleWidth(string interval)
         {
@@ -244,9 +107,9 @@ namespace ProfitProphet.Services
             _isLoadingOlder = false;
 
 
-            // MA-k kiszámítása
-            var sma20 = ComputeSMA(candles, 20);
-            var sma50 = ComputeSMA(candles, 50);
+            //// MA-k kiszámítása
+            //var sma20 = ComputeSMA(candles, 20);
+            //var sma50 = ComputeSMA(candles, 50);
 
             Model = new PlotModel
             {
@@ -258,34 +121,7 @@ namespace ProfitProphet.Services
                 PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40)
             };
 
-            //double amin = _xAxis?.ActualMinimum ?? 0;
-            //if (double.IsNaN(amin)) amin = 0;
-
-            //double amax = _xAxis?.ActualMaximum ?? _candles.Count - 1;
-            //if (double.IsNaN(amax)) amax = _candles.Count - 1;
-
-            //int n = _candles.Count;
-            //int start = Math.Max(0, (int)Math.Floor((double)amin));
-            //int end = Math.Min(n - 1, (int)Math.Ceiling(amax));
-            //int visible = Math.Max(1, end - start + 1);
-            //string TitleToX = "";
-
-            //for (int i = start; i <= end; i++)
-            //{
-            //    var dt = _candles[i].Timestamp;
-
-            //    TitleToX = dt.ToString("yyyy");
-            //}
-            //int start = Math.Max(0, (int)Math.Floor(amin));
-            //int end = Math.Min(_candles.Count - 1, (int)Math.Ceiling(amax));
-
-            //var startYear = _candles[start].Timestamp.Year;
-            //var endYear = _candles[end].Timestamp.Year;
-
-            //string titleToX = startYear == endYear
-            //    ? startYear.ToString()
-            //    : $"{startYear} – {endYear}";
-
+            
             _xAxis = new CategoryAxis
             {
                 Position = AxisPosition.Bottom,
@@ -366,28 +202,47 @@ namespace ProfitProphet.Services
             _xAxis.AxisChanged += (_, __) => UpdateXAxisTitle();
 #pragma warning restore CS0618
 
-            // SMA 20
-            var sma20Series = new LineSeries
-            {
-                Title = "SMA 20",
-                StrokeThickness = 1.6,
-                // YAxisKey = priceAxis.Key,  // ha külön kulcsot használsz a gyertyáknál, rendeld ugyanarra
-                CanTrackerInterpolatePoints = false
-            };
-            sma20Series.Points.AddRange(sma20);
-            Model.Series.Add(sma20Series);
+            //// SMA 20
+            //var sma20Series = new LineSeries
+            //{
+            //    Title = "SMA 20",
+            //    StrokeThickness = 1.6,
+            //    // YAxisKey = priceAxis.Key,  // ha külön kulcsot használsz a gyertyáknál, rendeld ugyanarra
+            //    CanTrackerInterpolatePoints = false
+            //};
+            //sma20Series.Points.AddRange(sma20);
+            //Model.Series.Add(sma20Series);
 
-            // SMA 50 (opcionális)
-            if (sma50.Count > 0)
+            //// SMA 50 (opcionális)
+            //if (sma50.Count > 0)
+            //{
+            //    var sma50Series = new LineSeries
+            //    {
+            //        Title = "SMA 50",
+            //        StrokeThickness = 1.6,
+            //        CanTrackerInterpolatePoints = false
+            //    };
+            //    sma50Series.Points.AddRange(sma50);
+            //    Model.Series.Add(sma50Series);
+            //}
+
+            var ohlc = _candles.Select(c => new OhlcPoint
             {
-                var sma50Series = new LineSeries
-                {
-                    Title = "SMA 50",
-                    StrokeThickness = 1.6,
-                    CanTrackerInterpolatePoints = false
-                };
-                sma50Series.Points.AddRange(sma50);
-                Model.Series.Add(sma50Series);
+                Open = (double)c.Open,
+                High = (double)c.High,
+                Low = (double)c.Low,
+                Close = (double)c.Close
+            }).ToList();
+
+            var settings = _chartSettings.GetForSymbol(symbol);
+
+            foreach (var inst in settings.Indicators.Where(i => i.IsVisible))
+            {
+                var ind = _indicatorRegistry.Get(inst.IndicatorId);
+                if (ind == null) continue;
+
+                var result = ind.Compute(ohlc, inst.Params);
+                ind.Render(Model, result, _xAxis, _yAxis);
             }
 
             return Model;
@@ -525,49 +380,74 @@ namespace ProfitProphet.Services
                     _xAxis.Labels[i] = dt.ToString("yyyy MMM");
             }
         }
-        // SMA záróárból teszt
-        private static List<DataPoint> ComputeSMA(List<CandleData> data, int period)
+
+        // ChartBuilder belsejébe (class szintre)
+        public void AddIndicatorToSymbol(string symbol, string indicatorId, Action<IndicatorParams>? configure = null)
         {
-            var pts = new List<DataPoint>();
-            if (data == null || data.Count == 0 || period <= 1) return pts;
-
-            double sum = 0;
-            var q = new Queue<double>(period);
-
-            for (int i = 0; i < data.Count; i++)
+            var st = _chartSettings.GetForSymbol(symbol);
+            var inst = new IndicatorInstance
             {
-                double close = data[i].Close;
-                sum += close;
-                q.Enqueue(close);
-
-                if (q.Count > period) sum -= q.Dequeue();
-
-                if (q.Count == period)
-                {
-                    double sma = sum / period;
-                    // X = index! (CategoryAxis)
-                    pts.Add(new DataPoint(i, sma));
-                }
-            }
-            return pts;
+                IndicatorId = indicatorId,
+                IsVisible = true,
+                Pane = "main",
+                Params = new IndicatorParams()
+            };
+            configure?.Invoke(inst.Params);
+            st.Indicators.Add(inst);
+            _chartSettings.Save(st);
         }
 
-        // EMA záróárból teszt
-        private static List<DataPoint> ComputeEMA(List<CandleData> data, int period)
+        public void ClearIndicatorsForSymbol(string symbol)
         {
-            var pts = new List<DataPoint>();
-            if (data == null || data.Count < period || period <= 1) return pts;
-
-            double multiplier = 2.0 / (period + 1);
-            double ema = data.Take(period).Average(d => d.Close);
-
-            for (int i = period; i < data.Count; i++)
-            {
-                ema = (data[i].Close - ema) * multiplier + ema;
-                var x = DateTimeAxis.ToDouble(data[i].Timestamp);
-                pts.Add(new DataPoint(x, ema));
-            }
-            return pts;
+            var st = _chartSettings.GetForSymbol(symbol);
+            st.Indicators.Clear();
+            _chartSettings.Save(st);
         }
+
+
+        //// SMA záróárból teszt
+        //private static List<DataPoint> ComputeSMA(List<CandleData> data, int period)
+        //{
+        //    var pts = new List<DataPoint>();
+        //    if (data == null || data.Count == 0 || period <= 1) return pts;
+
+        //    double sum = 0;
+        //    var q = new Queue<double>(period);
+
+        //    for (int i = 0; i < data.Count; i++)
+        //    {
+        //        double close = data[i].Close;
+        //        sum += close;
+        //        q.Enqueue(close);
+
+        //        if (q.Count > period) sum -= q.Dequeue();
+
+        //        if (q.Count == period)
+        //        {
+        //            double sma = sum / period;
+        //            // X = index! (CategoryAxis)
+        //            pts.Add(new DataPoint(i, sma));
+        //        }
+        //    }
+        //    return pts;
+        //}
+
+        //// EMA záróárból teszt
+        //private static List<DataPoint> ComputeEMA(List<CandleData> data, int period)
+        //{
+        //    var pts = new List<DataPoint>();
+        //    if (data == null || data.Count < period || period <= 1) return pts;
+
+        //    double multiplier = 2.0 / (period + 1);
+        //    double ema = data.Take(period).Average(d => d.Close);
+
+        //    for (int i = period; i < data.Count; i++)
+        //    {
+        //        ema = (data[i].Close - ema) * multiplier + ema;
+        //        var x = DateTimeAxis.ToDouble(data[i].Timestamp);
+        //        pts.Add(new DataPoint(x, ema));
+        //    }
+        //    return pts;
+        //}
     }
 }

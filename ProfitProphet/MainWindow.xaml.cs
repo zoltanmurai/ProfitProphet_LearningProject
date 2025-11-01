@@ -1,4 +1,8 @@
+using OxyPlot.Wpf;
+using ProfitProphet.Entities;
+using ProfitProphet.Services;
 using ProfitProphet.ViewModels;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -8,6 +12,12 @@ namespace ProfitProphet
     public partial class MainWindow : Window
     {
         private MainViewModel Vm => (MainViewModel)DataContext;
+
+        //private readonly ChartBuilder _chartBuilder = new();
+        //private List<ChartBuilder.CandleData> _candles;
+        //private string _symbol;
+        //private string _interval;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,5 +50,27 @@ namespace ProfitProphet
                 }
             }
         }
+
+        //private void AddEma_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_candles == null || _candles.Count == 0) return;
+
+        //    _chartBuilder.AddIndicatorToSymbol(_symbol, "ema", p =>
+        //    {
+        //        p["Period"] = 20;
+        //        p["Source"] = "Close";
+        //    });
+
+        //    PlotView.Model = _chartBuilder.BuildInteractiveChart(_candles, _symbol, _interval);
+        //}
+
+        //private void RemoveAll_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (_candles == null || _candles.Count == 0) return;
+
+        //    _chartBuilder.ClearIndicatorsForSymbol(_symbol);
+        //    PlotView.Model = _chartBuilder.BuildInteractiveChart(_candles, _symbol, _interval);
+        //}
+
     }
 }

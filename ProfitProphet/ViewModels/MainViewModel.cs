@@ -6,14 +6,17 @@ using ProfitProphet.Services;
 using ProfitProphet.Settings;
 using ProfitProphet.Views;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using ProfitProphet.ViewModels.Commands;
 
 namespace ProfitProphet.ViewModels
 {
@@ -21,16 +24,29 @@ namespace ProfitProphet.ViewModels
     {
         private readonly IAppSettingsService _settingsService;
         private readonly DataService _dataService;
-        private readonly ChartBuilder _chartBuilder;
+        private readonly ChartBuilder _chartBuilder = new();
 
         private AppSettings _settings;
         private string _selectedSymbol;
         private string _selectedInterval;
         private PlotModel _chartModel;
 
+        private CancellationTokenSource _ctsRefresh;
+        private Task _autoTask;
+        private bool _isRefreshing;
+        private bool _autoRefreshEnabled;
+        private int _refreshIntervalMinutes = 5;
+
+        private List<ChartBuilder.CandleData> _candles = new();
 
         public ObservableCollection<string> Watchlist { get; }
         public ObservableCollection<IntervalItem> Intervals { get; }
+
+        public ICommand AddEma20Command { get; }
+        public ICommand ClearIndicatorsCommand { get; }
+
+        public bool HasChartData => _candles?.Count > 0;
+
 
         public string SelectedSymbol
         {
@@ -38,7 +54,11 @@ namespace ProfitProphet.ViewModels
             set
             {
                 if (Set(ref _selectedSymbol, value))
+                {
                     _ = LoadChartAsync();
+                    (AddEma20Command as RelayCommand)?.RaiseCanExecuteChanged();
+                    (ClearIndicatorsCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                }
             }
         }
 
@@ -50,29 +70,26 @@ namespace ProfitProphet.ViewModels
                 if (Set(ref _selectedInterval, value))
                 {
                     _settings.DefaultInterval = value;
-                    _settingsService.SaveSettingsAsync(_settings);
+                    _ = _settingsService.SaveSettingsAsync(_settings);
                     _ = LoadChartAsync();
                 }
             }
         }
 
-        public PlotModel ChartModel
+        private static List<ChartBuilder.CandleData> MapToCandleData(IEnumerable<ProfitProphet.Entities.Candle> src)
         {
-            get => _chartModel;
-            //set => Set(ref _chartModel, value);
-            set
-            {
-                if (Set(ref _chartModel, value))
+            return src
+                .OrderBy(c => c.TimestampUtc)                // ha csak Timestamp van
+                .Select(c => new ChartBuilder.CandleData
                 {
-                    // Ha sikerült beállítani, frissítjük a HasChartData-t is
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
-                }
-            }
+                    Timestamp = c.TimestampUtc,
+                    Open = (double)c.Open,
+                    High = (double)c.High,
+                    Low = (double)c.Low,
+                    Close = (double)c.Close
+                })
+                .ToList();
         }
-
-        public bool HasChartData => ChartModel != null;
-        public ICommand AddSymbolCommand { get; }
-        public ICommand OpenSettingsCommand { get; }
 
         public MainViewModel()
         {
@@ -103,102 +120,103 @@ namespace ProfitProphet.ViewModels
             AddSymbolCommand = new RelayCommand(AddSymbol);
             OpenSettingsCommand = new RelayCommand(OpenSettings);
 
+            // Auto-refresh beállítások
+            var s = _settingsService.LoadSettings();
+            AutoRefreshEnabled = s?.AutoRefreshEnabled ?? false;
+            RefreshIntervalMinutes = Math.Max(1, s?.RefreshIntervalMinutes ?? 5);
+
+            RefreshNowCommand = new RelayCommand(async _ => await RefreshNowAsync(), _ => !IsRefreshing);
+            ToggleAutoRefreshCommand = new RelayCommand(_ => AutoRefreshEnabled = !AutoRefreshEnabled);
+
+            AddEma20Command = new RelayCommand(_ => AddEma20(), _ => HasChartData && !string.IsNullOrWhiteSpace(SelectedSymbol));
+            ClearIndicatorsCommand = new RelayCommand(_ => ClearIndicators(), _ => HasChartData && !string.IsNullOrWhiteSpace(SelectedSymbol));
+
             _ = LoadChartAsync();
         }
 
-        //        private async Task LoadChartAsync()
-        //        {
-        //            if (string.IsNullOrWhiteSpace(_selectedSymbol))
-        //                return;
+        private void AddEma20()
+        {
+            if (_candles == null || _candles.Count == 0) return; // vagy üzenet a usernek
 
-        //            try
-        //            {
+            _chartBuilder.AddIndicatorToSymbol(SelectedSymbol, "ema", p =>
+            {
+                p["Period"] = 20;
+                p["Source"] = "Close";
+            });
 
-        //                var candles = await _dataService.GetRefreshReloadAsync(_selectedSymbol, _selectedInterval);
+            //ChartModel = _chartBuilder.BuildInteractiveChart(_candles, _symbol, _interval);
+            //OnPropertyChanged(nameof(ChartModel));
+            RebuildChart();
+        }
 
-        //                // Dup check
-        //#if DEBUG
-        //                var dupGroups = candles
-        //                    .GroupBy(c => new { c.Symbol, c.Timeframe, c.TimestampUtc })
-        //                    .Count(g => g.Count() > 1);
-        //                if (dupGroups > 0)
-        //                    System.Diagnostics.Debug.WriteLine($"[DIAG] before chart: total={candles.Count}, dupGroups={dupGroups}");
-        //#endif
+        private void ClearIndicators()
+        {
+            if (_candles == null || _candles.Count == 0) return;
 
-        //                // Ha nincs adat, jelezd
-        //                if (candles == null || candles.Count == 0)
-        //                {
-        //                    MessageBox.Show($"Nincs adat a(z) {_selectedSymbol} szimbólumhoz.", "Chart",
-        //                        MessageBoxButton.OK, MessageBoxImage.Information);
-        //                    return;
-        //                }
+            _chartBuilder.ClearIndicatorsForSymbol(SelectedSymbol);
+            //ChartModel = _chartBuilder.BuildInteractiveChart(_candles, _symbol, _interval);
+            //OnPropertyChanged(nameof(ChartModel));
+            RebuildChart();
+        }
 
-        //                // Rendezés időrendbe
-        //                candles = candles.OrderBy(c => c.TimestampUtc).ToList();
+        #region Parancsok
+        public ICommand AddSymbolCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
+        public ICommand RefreshNowCommand { get; }
+        public ICommand ToggleAutoRefreshCommand { get; }
+        #endregion
 
-        //                // Ha nincs adat, vagy 1 napnál régebbi, frissítsünk API-ról
-        //                //if (candles.Count == 0 || candles.Last().TimestampUtc < DateTime.UtcNow.AddDays(-1))
-        //                //{
-        //                //    var newData = await _dataService.GetDataAsync(_selectedSymbol, _selectedInterval);
+        #region Állapot
 
-        //                //    if (newData?.Count > 0)
-        //                //    {
+        public PlotModel ChartModel
+        {
+            get => _chartModel;
+            set
+            {
+                if (Set(ref _chartModel, value))
+                    OnPropertyChanged(nameof(HasChartData));
+            }
+        }
 
-        //                //        // új adatok mentése a DB-be
-        //                //        await _dataService.SaveCandlesAsync(_selectedSymbol, newData);
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            private set
+            {
+                if (Set(ref _isRefreshing, value))
+                {
+                    // Frissítjük a Refresh gomb CanExecute-ját
+                    (RefreshNowCommand as RelayCommand)?.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
-        //                //        // a memóriában lévő listához hozzáadjuk a frisset
-        //                //        candles.AddRange(newData);
-        //                //    }
-        //                //}
+        public bool AutoRefreshEnabled
+        {
+            get => _autoRefreshEnabled;
+            set
+            {
+                if (Set(ref _autoRefreshEnabled, value))
+                    _ = HandleAutoRefreshToggleAsync(value);
+            }
+        }
 
-        //                //  Biztonsági ellenőrzés
-        //                if (candles == null || candles.Count == 0)
-        //                {
-        //                    MessageBox.Show($"Nincs adat a(z) {_selectedSymbol} szimbólumhoz.", "Chart",
-        //                        MessageBoxButton.OK, MessageBoxImage.Information);
-        //                    return;
-        //                }
+        public int RefreshIntervalMinutes
+        {
+            get => _refreshIntervalMinutes;
+            set
+            {
+                int v = Math.Max(1, value);
+                if (Set(ref _refreshIntervalMinutes, v))
+                {
+                    _ = PersistSettingsAsync();
+                    if (AutoRefreshEnabled) _ = RestartAutoLoopAsync();
+                }
+            }
+        }
+        #endregion
 
-        //                // Rendezés időrendbe
-        //                candles = candles.OrderBy(c => c.TimestampUtc).ToList();
-
-        //                // Chart felépítése
-        //                _chartBuilder.ConfigureLazyLoader(async (start, end) =>
-        //                {
-        //                    var olderData = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
-        //                    return olderData
-        //                        .Where(c => c.TimestampUtc >= start && c.TimestampUtc < end)
-        //                        .OrderBy(c => c.TimestampUtc)
-        //                        .Select(c => new ChartBuilder.CandleData
-        //                        {
-        //                            Timestamp = c.TimestampUtc,
-        //                            Open = (double)c.Open,
-        //                            High = (double)c.High,
-        //                            Low = (double)c.Low,
-        //                            Close = (double)c.Close
-        //                        })
-        //                        .ToList();
-        //                });
-
-        //                ChartModel = _chartBuilder.BuildInteractiveChart(
-        //                    candles.Select(c => new ChartBuilder.CandleData
-        //                    {
-        //                        Timestamp = c.TimestampUtc,
-        //                        Open = (double)c.Open,
-        //                        High = (double)c.High,
-        //                        Low = (double)c.Low,
-        //                        Close = (double)c.Close
-        //                    }).ToList(),
-        //                    _selectedSymbol,
-        //                    _selectedInterval);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                MessageBox.Show($"Hiba a chart betöltése közben:\n{ex.Message}",
-        //                    "Chart Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //            }
-        //        }
+        #region Műveletek
         private async Task LoadChartAsync()
         {
             if (string.IsNullOrWhiteSpace(_selectedSymbol))
@@ -207,12 +225,11 @@ namespace ProfitProphet.ViewModels
             try
             {
                 // 1) csak lokális
-                var candles = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval); // :contentReference[oaicite:1]{index=1}
+                var candles = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
 
                 // 2) ha nincs lokális és be van kapcsolva az auto-import → egyszeri lookback letöltés
                 if ((candles == null || candles.Count == 0) && _settings.AutoDataImport)
                 {
-                    // csak akkor kérünk API-t, ha ÜRES a DB
                     bool hasLocal = await _dataService.HasLocalDataAsync(_selectedSymbol, _selectedInterval);
                     if (!hasLocal)
                     {
@@ -235,41 +252,25 @@ namespace ProfitProphet.ViewModels
                         $"Nyomd meg a Data Import gombot, vagy kapcsold be az automatikus letöltést.",
                         "Chart",
                         MessageBoxButton.OK, MessageBoxImage.Information);
+                    ChartModel = null;
                     return;
                 }
 
                 // 4) rendezés és chart
-                candles = candles.OrderBy(c => c.TimestampUtc).ToList();
+                _candles = MapToCandleData(candles);
+
 
                 _chartBuilder.ConfigureLazyLoader(async (start, end) =>
                 {
-                    var olderData = await _dataService.GetLocalDataAsync(_selectedSymbol, _selectedInterval);
-                    return olderData
-                        .Where(c => c.TimestampUtc >= start && c.TimestampUtc < end)
-                        .OrderBy(c => c.TimestampUtc)
-                        .Select(c => new ChartBuilder.CandleData
-                        {
-                            Timestamp = c.TimestampUtc,
-                            Open = (double)c.Open,
-                            High = (double)c.High,
-                            Low = (double)c.Low,
-                            Close = (double)c.Close
-                        })
-                        .ToList();
+                    var olderData = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
+                    return MapToCandleData(
+                        olderData.Where(c => c.TimestampUtc >= start && c.TimestampUtc < end)
+                    );
                 });
 
-                ChartModel = _chartBuilder.BuildInteractiveChart(
-                    candles.Select(c => new ChartBuilder.CandleData
-                    {
-                        Timestamp = c.TimestampUtc,
-                        Open = (double)c.Open,
-                        High = (double)c.High,
-                        Low = (double)c.Low,
-                        Close = (double)c.Close
-                    }).ToList(),
-                    _selectedSymbol,
-                    _selectedInterval);
+                ChartModel = _chartBuilder.BuildInteractiveChart(_candles, SelectedSymbol, SelectedInterval);
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show($"Hiba a chart betöltése közben:\n{ex.Message}",
@@ -277,27 +278,33 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-
         private void AddSymbol(object obj)
         {
             var input = Microsoft.VisualBasic.Interaction.InputBox("Add meg a részvény szimbólumát:", "Új szimbólum");
-            if (string.IsNullOrWhiteSpace(input)) return;
+            if (string.IsNullOrWhiteSpace(SelectedSymbol)) return;
 
             var symbol = input.Trim().ToUpperInvariant();
             if (!Watchlist.Contains(symbol))
             {
                 Watchlist.Add(symbol);
                 _settings.Watchlist = Watchlist.ToList();
-                _settingsService.SaveSettingsAsync(_settings);
-
+                _ = _settingsService.SaveSettingsAsync(_settings);
             }
         }
 
+        private void RebuildChart()
+        {
+            ChartModel = _chartBuilder.BuildInteractiveChart(_candles, SelectedSymbol, SelectedInterval);
+            OnPropertyChanged(nameof(HasChartData));
+            (AddEma20Command as RelayCommand)?.RaiseCanExecuteChanged();
+            (ClearIndicatorsCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        }
+
+        // (Ha MVVM-tisztaság kell, ezt a ListBox code-behindba tedd.)
         private void WatchlistListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             var item = ItemsControl.ContainerFromElement((ItemsControl)sender, e.OriginalSource as DependencyObject) as ListBoxItem;
-            if (item != null)
-                item.IsSelected = true; // jobb klikk is kijelöl
+            if (item != null) item.IsSelected = true; // jobb klikk is kijelöl
         }
 
         public async Task RemoveSymbolAsync(string symbol)
@@ -306,25 +313,20 @@ namespace ProfitProphet.ViewModels
 
             try
             {
-                // 🔑 Előbb ürítjük a nézetet
+                // Nézet ürítése, ha épp ezt nézzük
                 if (SelectedSymbol == symbol)
                 {
-                    SelectedSymbol = null;   // ez nem tölt be semmit (settered lekezeli)
-                    ChartModel = null;       // HasChartData is frissül a setteredben
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ChartModel)));
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HasChartData)));
+                    SelectedSymbol = null;   // setter nem tölt be semmit üresre
+                    ChartModel = null;       // HasChartData frissül
                 }
 
-                // DB törlés
                 await _dataService.RemoveSymbolAndCandlesAsync(symbol);
 
-                // Watchlist frissítés
                 if (Watchlist.Contains(symbol))
                     Watchlist.Remove(symbol);
 
                 _settings.Watchlist = Watchlist.ToList();
-                _settingsService.SaveSettingsAsync(_settings);
-
+                _ = _settingsService.SaveSettingsAsync(_settings);
             }
             catch (Exception ex)
             {
@@ -333,21 +335,143 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-
         private void OpenSettings(object obj)
         {
             var win = new SettingsWindow(_dataService, _settingsService);
             win.ShowDialog();
             _settings = _settingsService.LoadSettings();
         }
+        #endregion
+
+        #region Frissítés + auto loop
+        public async Task RefreshNowAsync()
+        {
+            if (IsRefreshing) return;
+
+            _ctsRefresh?.Cancel();
+            _ctsRefresh = new CancellationTokenSource();
+            var token = _ctsRefresh.Token;
+
+            try
+            {
+                IsRefreshing = true;
+
+                // await _dataService.RefreshAllVisibleAsync(token);
+                //await _dataService.RefreshSymbolAsync(SelectedSymbol, SelectedInterval, token);
+                await _dataService.RefreshAllVisibleAsync(Watchlist.ToList(), SelectedInterval, token);
+
+                await LoadCandlesIntoChartAsync(token);
+            }
+            catch (OperationCanceledException) { /* megszakítva */ }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Frissítési hiba:\n{ex.Message}", "Refresh", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                IsRefreshing = false;
+            }
+        }
+
+        private async Task HandleAutoRefreshToggleAsync(bool enabled)
+        {
+            await PersistSettingsAsync();
+            if (enabled)
+                await RestartAutoLoopAsync();
+            else
+                await StopAutoLoopAsync();
+        }
+
+        private async Task RestartAutoLoopAsync()
+        {
+            await StopAutoLoopAsync();
+            _autoTask = AutoLoopAsync();
+        }
+
+        private async Task StopAutoLoopAsync()
+        {
+            try
+            {
+                _ctsRefresh?.Cancel();
+                if (_autoTask != null) await _autoTask;
+            }
+            catch { /* lenyeljük leállításkor */ }
+            finally
+            {
+                _autoTask = null;
+            }
+        }
+
+        private async Task AutoLoopAsync()
+        {
+            using var timer = new System.Threading.PeriodicTimer(TimeSpan.FromMinutes(RefreshIntervalMinutes));
+
+            // induláskor azonnali frissítés
+            await RefreshNowAsync();
+
+            while (AutoRefreshEnabled)
+            {
+                try
+                {
+                    var tick = await timer.WaitForNextTickAsync();
+                    if (!tick || !AutoRefreshEnabled) break;
+
+                    await RefreshNowAsync();
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch
+                {
+                    // logolható, majd mehet tovább
+                }
+            }
+        }
+
+        private async Task PersistSettingsAsync()
+        {
+            var s = _settingsService.LoadSettings() ?? new AppSettings();
+            s.AutoRefreshEnabled = AutoRefreshEnabled;
+            s.RefreshIntervalMinutes = RefreshIntervalMinutes;
+            await _settingsService.SaveSettingsAsync(s);
+        }
+
+        private Task LoadCandlesIntoChartAsync(CancellationToken token)
+        {
+            // Itt töltsd újra a chart adatforrását/PlotModelt, ha kell külön útvonalon
+            return LoadChartAsync();
+        }
+        #endregion
 
         #region INotifyPropertyChanged
+
+        private void OnCandlesLoaded(IEnumerable<CandleDto> candles)
+        {
+            //_candles = candles ?? new List<ChartBuilder.CandleData>();
+            _candles = candles
+                .OrderBy(c => c.TimestampUtc)
+                .Select(c => new ChartBuilder.CandleData
+                {
+                    Timestamp = c.TimestampUtc,
+                    Open = (double)c.Open,
+                    High = (double)c.High,
+                    Low = (double)c.Low,
+                    Close = (double)c.Close
+                }).ToList();
+
+            RebuildChart();
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string name = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
         protected bool Set<T>(ref T field, T value, [CallerMemberName] string name = null)
         {
             if (Equals(field, value)) return false;
             field = value;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            OnPropertyChanged(name);
             return true;
         }
         #endregion
@@ -355,23 +479,4 @@ namespace ProfitProphet.ViewModels
 
     public record IntervalItem(string Display, string Tag);
 
-    public class RelayCommand : ICommand
-    {
-        private readonly Action<object> _execute;
-        private readonly Predicate<object> _canExecute;
-
-        public RelayCommand(Action<object> execute, Predicate<object> canExecute = null)
-        {
-            _execute = execute;
-            _canExecute = canExecute;
-        }
-
-        public bool CanExecute(object parameter) => _canExecute?.Invoke(parameter) ?? true;
-        public void Execute(object parameter) => _execute(parameter);
-        public event EventHandler CanExecuteChanged
-        {
-            add => CommandManager.RequerySuggested += value;
-            remove => CommandManager.RequerySuggested -= value;
-        }
-    }
 }

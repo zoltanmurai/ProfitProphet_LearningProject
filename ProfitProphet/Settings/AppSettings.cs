@@ -4,6 +4,8 @@ namespace ProfitProphet.Settings
 {
     public class AppSettings
     {
+        public bool AutoRefreshEnabled { get; set; } = false;
+        public int RefreshIntervalMinutes { get; set; } = 5;
         public string SelectedApi { get; set; } = "YahooFinance";
         public string DefaultInterval { get; set; } = "1d";
         public string YahooApiKey { get; set; } = "";
