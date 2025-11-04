@@ -33,6 +33,7 @@ namespace ProfitProphet
                 item.IsSelected = true;
         }
 
+
         // Kontext menü "Remove" kattintás
         private async void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
         {

@@ -130,10 +130,24 @@
             <!-- Toolbar -->
             <DockPanel Grid.Row="0"
                 Background="#161b22"
-                Height="50"
+                Height="Auto" MinHeight="50"
                 VerticalAlignment="Top"
                 LastChildFill="False"
                 Margin="0,0,0,2">
+
+                <!-- Settings ikon -->
+                <Button Width="71"
+                    Height="46"
+                    DockPanel.Dock="Right"
+                    Command="{Binding OpenSettingsCommand}"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    ToolTip="Settings"
+                    Cursor="Hand">
+                    <Image Source="/Assets/settings_black.png"
+                        Stretch="Uniform"
+                        Width="40" Height="40"/>
+                </Button>
 
                 <!--  Frissítés blokk -->
                 <StackPanel DockPanel.Dock="Left"
@@ -216,7 +230,7 @@
                     SelectedValuePath="Tag"
                     Margin="0,0,10,0"
                     DockPanel.Dock="Left"
-                    Cursor="Hand">
+                    Cursor="Hand" Padding="4,2,4,2">
 
                     <!-- ComboBox sötét -->
                     <ComboBox.Style>
@@ -340,55 +354,186 @@
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
 
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="8" >
+
+
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="50" Width="627" MinWidth="50" MinHeight="50" >
                     <!-- Indikátor kiválasztó -->
-                    <ComboBox Width="140"  Margin="0,0,8,0"
-                    ItemsSource="{Binding AvailableIndicatorTypes}"
-                    SelectedItem="{Binding SelectedIndicatorType}"/>
+                    <ComboBox x:Name="IndicatorsCombo"
+                        SelectedIndex="-1"
+                        Width="100"
+                        ItemsSource="{Binding ChartVM.AvailableIndicatorTypes}"
+                        SelectedItem="{Binding ChartVM.SelectedIndicatorType, Mode=TwoWay}"
+                        Margin="8,0,10,0"
+                        ToolTip="Válassz indikátort"
+                        Cursor="Hand"
+                        Padding="4,2">
 
-                    <Button Content="Hozzáadás"
-                    Command="{Binding AddIndicatorWithDialogCommand}"
-                    Margin="6,0,0,0"/>
+                        <!-- ComboBox sötét stílus -->
+                        <ComboBox.Style>
+                            <Style TargetType="ComboBox">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="#161b22"/>
+                                <Setter Property="BorderBrush" Value="#2c2f33"/>
+                                <Setter Property="BorderThickness" Value="1"/>
+                                <Setter Property="Padding" Value="4,2"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ComboBox">
+                                            <Grid>
+                                                <!-- ToggleButton a lenyitáshoz -->
+                                                <ToggleButton x:Name="ToggleButton"
+                                                    Focusable="False"
+                                                    ClickMode="Press"
+                                                    IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="1"
+                                                    Cursor="Hand" Margin="0,0,-20,0">
+                                                    <Grid Margin="70,0,0,0">
+                                                        <Border x:Name="Bd"
+                                                            Background="{TemplateBinding Background}"
+                                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                                            BorderThickness="1"
+                                                            CornerRadius="4"
+                                                            Padding="0,0,10,0"/>
+                                                        <Path x:Name="Arrow"
+                                                            Data="M 0 0 L 4 4 L 8 0 Z"
+                                                            Fill="White"
+                                                            HorizontalAlignment="Left"
+                                                            VerticalAlignment="Top"
+                                                            Width="8" Height="8"/>
+                                                    </Grid>
+                                                </ToggleButton>
 
-                    <!-- Aktív indikátorok lista gyors törléssel -->
-                    <ItemsControl ItemsSource="{Binding Indicators}" Margin="16,0,0,0">
+                                                <TextBlock Text="Indikátorok..."
+                                                    Margin="8,0,0,0"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Left"
+                                                    Foreground="White" Width="76"/>
+                                                <!-- Lenyíló lista -->
+                                                <Popup x:Name="PART_Popup"
+                                                    Placement="Bottom"
+                                                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                                                    AllowsTransparency="True"
+                                                    Focusable="False"
+                                                    PopupAnimation="Fade"
+                                                    StaysOpen="False"
+                                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}">
+                                                    <Border x:Name="DropDownBorder"
+                                                        Background="#161b22"
+                                                        BorderBrush="#2c2f33"
+                                                        BorderThickness="1"
+                                                        CornerRadius="4"
+                                                        SnapsToDevicePixels="True"
+                                                        Padding="2">
+                                                        <ScrollViewer Margin="0" SnapsToDevicePixels="True">
+                                                            <StackPanel IsItemsHost="True"
+                                                    KeyboardNavigation.DirectionalNavigation="Contained" />
+                                                        </ScrollViewer>
+                                                    </Border>
+                                                </Popup>
+                                            </Grid>
+
+                                            <!-- Triggerek -->
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#1f2937"/>
+                                                </Trigger>
+                                                <Trigger Property="IsDropDownOpen" Value="True">
+                                                    <Setter TargetName="Bd" Property="BorderBrush" Value="#2563eb"/>
+                                                    <Setter TargetName="Arrow" Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180"/>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ComboBox.Style>
+
+                        <!-- Lenyíló elemek stílusa -->
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="#161b22"/>
+                                <Setter Property="Padding" Value="6,4"/>
+                                <Setter Property="Cursor" Value="Hand"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ComboBoxItem">
+                                            <Border x:Name="row"
+                                                Background="{TemplateBinding Background}"
+                                                CornerRadius="3"
+                                                Padding="{TemplateBinding Padding}">
+                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="row" Property="Background" Value="#2563eb"/>
+                                                </Trigger>
+                                                <Trigger Property="IsSelected" Value="True">
+                                                    <Setter TargetName="row" Property="Background" Value="#2563eb"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                    <!-- Aktív indikátorok -->
+                    <ItemsControl  x:Name="IndicatorChips" 
+                        DataContext="{Binding ChartVM}"
+                        ItemsSource="{Binding Indicators}"
+                        Margin="16,0,0,0">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <WrapPanel/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
+
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border Padding="6" Margin="4" CornerRadius="8" BorderBrush="#ddd" BorderThickness="1">
+                                <Border Padding="6" 
+                                        Margin="4"
+                                        CornerRadius="8" 
+                                        BorderBrush="#2c2f33" 
+                                        BorderThickness="1"
+                                        MinHeight="32"
+                                        Background="#1f2937">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Type}" FontWeight="SemiBold"/>
-                                        <Button Content="Szerk."
-                                    Command="{Binding DataContext.EditIndicatorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                    CommandParameter="{Binding}" />
-                                        <Button Content="X"
-                                    ToolTip="Indikátor törlése"
-                                    Command="{Binding DataContext.DeleteIndicatorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                    CommandParameter="{Binding}" />
+                                        <TextBlock Text="{Binding Type}" 
+                                                   FontWeight="SemiBold"
+                                                   Foreground="White"
+                                                   FontSize="13"
+                                                   VerticalAlignment="Center" />
+                                        <Button Width="20" Height="20"
+                                              Margin="8,0,0,0"
+                                              Padding="0"
+                                              Background="#2c2f33"
+                                              BorderThickness="0"
+                                              ToolTip="Indikátor törlése"
+                                              Command="{Binding DataContext.DeleteIndicatorCommand,
+                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                              CommandParameter="{Binding}">
+                                            <Button.Content>
+                                                <TextBlock Text="×"
+                                                 FontSize="13"
+                                                 Foreground="White"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                                            </Button.Content>
+                                        </Button>
                                     </StackPanel>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                </StackPanel>
 
-                <!-- Settings ikon -->
-                <Button Width="71"
-                    Height="46"
-                    DockPanel.Dock="Right"
-                    Command="{Binding OpenSettingsCommand}"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    ToolTip="Settings"
-                    Cursor="Hand">
-                    <Image Source="/Assets/settings_black.png"
-                        Stretch="Uniform"
-                        Width="40" Height="40"/>
-                </Button>
+                </StackPanel>
             </DockPanel>
 
 
@@ -399,19 +544,21 @@
                     <ColumnDefinition Width="53*"/>
                 </Grid.ColumnDefinitions>
 
+
                 <oxy:PlotView x:Name="ChartView"
-                  Model="{Binding ChartVM.ChartModel}"
-                  Background="#0e1117"
-                  IsManipulationEnabled="True"
-                  ZoomRectangleCursor="SizeNWSE"
-                  Grid.ColumnSpan="2"
-                  Visibility="{Binding HasChartData, Converter={StaticResource BoolToVisibilityConverter}}">
-                    <oxy:PlotView.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Header="Add EMA (20)" Command="{Binding AddEma20Command}" />
-                            <MenuItem Header="Remove All Indicators" Command="{Binding ClearIndicatorsCommand}" />
+                    Model="{Binding ChartVM.ChartModel}"
+                    Background="#0e1117"
+                    IsManipulationEnabled="True"
+                    ZoomRectangleCursor="SizeNWSE"
+                    Grid.ColumnSpan="2"
+                    Controller="{Binding ChartPlotController}"
+                    ContextMenu="{x:Null}">
+                    <!-- <oxy:PlotView.ContextMenu>
+                        <ContextMenu> -->
+                    <!--MenuItem Header="Add EMA (20)" Command="{Binding AddEma20Command}" / -->
+                    <!--  <MenuItem Header="Remove All Indicators" Command="{Binding ClearIndicatorsCommand}" />
                         </ContextMenu>
-                    </oxy:PlotView.ContextMenu>
+                    </oxy:PlotView.ContextMenu> -->
                 </oxy:PlotView>
 
                 <TextBlock Text="No data available. Please add a symbol to the watchlist."
@@ -419,8 +566,7 @@
                     FontSize="16"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Grid.ColumnSpan="2"
-                    Visibility="{Binding HasChartData, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                    Grid.ColumnSpan="2">
                     <TextBlock.Style>
                         <Style TargetType="TextBlock">
                             <Setter Property="Visibility" Value="Collapsed"/>

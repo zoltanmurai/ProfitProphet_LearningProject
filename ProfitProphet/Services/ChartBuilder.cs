@@ -101,8 +101,10 @@ namespace ProfitProphet.Services
 
         public PlotModel BuildInteractiveChart(List<CandleData> candles, string symbol, string interval)
         {
+            //Model.Series.Clear();
             if (candles == null || candles.Count == 0)
                 throw new ArgumentException("A candle lista üres.");
+            //{ Model.InvalidatePlot(true); }
 
             _candles = candles.OrderBy(c => c.Timestamp).ToList();
             _earliestLoaded = _candles.First().Timestamp;

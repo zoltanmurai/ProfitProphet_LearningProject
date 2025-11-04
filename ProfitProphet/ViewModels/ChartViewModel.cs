@@ -57,11 +57,39 @@ namespace ProfitProphet.ViewModels
         public ObservableCollection<IndicatorType> AvailableIndicatorTypes { get; } =
             new(Enum.GetValues<IndicatorType>());
 
-        private IndicatorType _selectedIndicatorType = IndicatorType.EMA;
-        public IndicatorType SelectedIndicatorType
+        //private IndicatorType _selectedIndicatorType = IndicatorType.EMA;
+        //public IndicatorType SelectedIndicatorType
+        //{
+        //    get => _selectedIndicatorType;
+        //    set { _selectedIndicatorType = value; OnPropertyChanged(); }
+        //}
+
+        private IndicatorType? _selectedIndicatorType;
+        public IndicatorType? SelectedIndicatorType
         {
             get => _selectedIndicatorType;
-            set { _selectedIndicatorType = value; OnPropertyChanged(); }
+            set
+            {
+                //if (_selectedIndicatorType == value)
+                //{
+                //    if (value is null) return;                       
+                //    if (AddIndicatorWithDialogCommand.CanExecute(null))
+                //        AddIndicatorWithDialogCommand.Execute(null);  
+
+                   
+                //    _selectedIndicatorType = null;
+                //    OnPropertyChanged(nameof(SelectedIndicatorType));
+                //}
+
+                if (_selectedIndicatorType == value) return;
+
+                _selectedIndicatorType = value;
+                OnPropertyChanged();
+
+                if (HasChartData && AddIndicatorWithDialogCommand.CanExecute(null))
+                    AddIndicatorWithDialogCommand.Execute(null);
+
+            }
         }
 
         public ObservableCollection<IndicatorConfigDto> Indicators { get; } = new();
@@ -88,6 +116,17 @@ namespace ProfitProphet.ViewModels
 
         private async Task ReloadAsync()
         {
+
+            if (string.IsNullOrWhiteSpace(CurrentSymbol))
+            {
+                _candles = new();
+                OnPropertyChanged(nameof(HasChartData));
+                _chartBuilder.Model?.Series.Clear();
+                _chartBuilder.Model?.InvalidatePlot(true);
+                OnPropertyChanged(nameof(ChartModel));
+                return;
+            }
+
             _candles = await _loadCandlesAsync(CurrentSymbol, CurrentInterval);
             OnPropertyChanged(nameof(HasChartData)); //Chart may be empty, then message appears in UI (XAML)
             RebuildChart();
@@ -98,21 +137,46 @@ namespace ProfitProphet.ViewModels
 
         private void RebuildChart()
         {
+            //_chartBuilder.Model.Series.Clear();
+
+            //if (_candles == null || _candles.Count == 0)
+            //{
+            //    OnPropertyChanged(nameof(HasChartData));
+            //    _chartBuilder.Model.InvalidatePlot(true);
+            //    (AddIndicatorWithDialogCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            //    (EditIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            //    (DeleteIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
+            //    return;
+            //}
+
             _chartBuilder.BuildInteractiveChart(_candles, CurrentSymbol, CurrentInterval);
+            OnPropertyChanged(nameof(HasChartData));
             OnPropertyChanged(nameof(ChartModel));
             (AddIndicatorWithDialogCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (EditIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (DeleteIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
         }
 
+        public async Task ClearDataAsync()
+        {
+            _candles = new List<ChartBuilder.CandleData>();
+            OnPropertyChanged(nameof(HasChartData));
+            _chartBuilder.Model?.Series.Clear();
+            _chartBuilder.Model?.InvalidatePlot(true);
+            OnPropertyChanged(nameof(ChartModel));
+        }
+
         private void AddIndicatorWithDialog()
         {
-            var cfg = DefaultFor(SelectedIndicatorType);
+            if (SelectedIndicatorType is not IndicatorType t) return; 
+
+            var cfg = DefaultFor(t);
             if (!IndicatorSettingsDialog.Show(ref cfg)) return;
 
             Indicators.Add(cfg);
-            ApplyIndicatorsFromList(); // persists via ChartBuilder's ChartSettings and redraws
+            ApplyIndicatorsFromList();
         }
+
 
         private void EditIndicator(IndicatorConfigDto cfg)
         {

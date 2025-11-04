@@ -310,6 +310,8 @@ namespace ProfitProphet.ViewModels
 
             try
             {
+                var wasSelected = SelectedSymbol == symbol;
+
                 if (SelectedSymbol == symbol)
                 {
                     SelectedSymbol = null;
@@ -322,12 +324,53 @@ namespace ProfitProphet.ViewModels
 
                 _settings.Watchlist = Watchlist.ToList();
                 _ = _settingsService.SaveSettingsAsync(_settings);
+
+                //if (SelectedSymbol == removed)
+                //SelectedSymbol = Watchlist.FirstOrDefault();
+
+                if (wasSelected)
+                {
+                    SelectedSymbol = null;
+                    await ChartVM.ClearDataAsync();
+                }
+                // Vagy „szomszédra” lép:
+                // else if (Watchlist.Count > 0) SelectedSymbol = Watchlist[0];
             }
+
+
             catch (Exception ex)
             {
                 MessageBox.Show($"Törlés sikertelen:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        //public async Task RemoveSymbolAsync(string symbol)
+        //{
+        //    if (string.IsNullOrWhiteSpace(symbol)) return;
+
+        //    try
+        //    {
+        //        // Ha a törölt szimbólum volt kiválasztva, nulláz
+        //        if (SelectedSymbol == symbol)
+        //        {
+        //            SelectedSymbol = null;
+
+        //            await ChartVM.ClearDataAsync();
+        //        }
+
+        //        await _dataService.RemoveSymbolAndCandlesAsync(symbol);
+
+        //        if (Watchlist.Contains(symbol))
+        //            Watchlist.Remove(symbol);
+
+        //        _settings.Watchlist = Watchlist.ToList();
+        //        _ = _settingsService.SaveSettingsAsync(_settings);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show($"Törlés sikertelen:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+        //    }
+        //}
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null)
