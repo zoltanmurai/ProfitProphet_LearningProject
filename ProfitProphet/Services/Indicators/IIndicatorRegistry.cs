@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using ProfitProphet.DTOs;
 using ProfitProphet.Indicators.Abstractions;
 
 namespace ProfitProphet.Services.Indicators
@@ -12,6 +12,7 @@ namespace ProfitProphet.Services.Indicators
     {
         IIndicator? Get(string id);
         IEnumerable<IIndicator> GetAll();
+        IIndicator Resolve(IndicatorType type);
     }
 }
 

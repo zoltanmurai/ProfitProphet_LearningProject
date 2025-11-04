@@ -25,11 +25,13 @@ namespace ProfitProphet.Services
         private DateTime _earliestLoaded;
         private bool _isLoadingOlder;
 
-        private List<CandleData> _candles;  
+        private List<CandleData> _candles = new();
+        public IReadOnlyList<CandleData> Candles => _candles;
 
         private Func<DateTime, DateTime, Task<List<CandleData>>> _lazyLoader;
 
         public PlotModel Model { get; private set; }
+       // public List<Candle> Candles { get; } = new();
 
         public ChartBuilder()
             : this(new ProfitProphet.Services.Indicators.IndicatorRegistry(),

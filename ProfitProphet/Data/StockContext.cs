@@ -1,15 +1,19 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using ProfitProphet.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using ProfitProphet.Entities;
 
 namespace ProfitProphet.Data
 {
     public class StockContext : DbContext
     {
+        //public StockContext(DbContextOptions<StockContext> options) : base(options) { }
+
+        public DbSet<ChartProfile> ChartProfiles { get; set; } = null!;
         public DbSet<Ticker> Tickers { get; set; }
         public DbSet<Candle> Candles { get; set; }
 
@@ -31,6 +35,8 @@ namespace ProfitProphet.Data
 
         protected override void OnModelCreating(ModelBuilder mb)
         {
+            base.OnModelCreating(mb);
+
             mb.Entity<Candle>(e =>
             {
                 //e.Property(x => x.Timeframe).HasConversion<string>().IsRequired();
@@ -49,6 +55,16 @@ namespace ProfitProphet.Data
                 e.Property(x => x.Timeframe).HasConversion<string>().IsRequired();
             });
 
+            mb.Entity<ChartProfile>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.Property(x => x.Symbol).IsRequired().HasMaxLength(32);
+                b.Property(x => x.Interval).IsRequired().HasMaxLength(8);
+                b.Property(x => x.IndicatorsJson).IsRequired();
+
+                // egyedi (Symbol, Interval) – egy chartprofil / symbol×időkeret
+                b.HasIndex(x => new { x.Symbol, x.Interval }).IsUnique();
+            });
         }
     }
 }

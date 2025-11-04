@@ -3,36 +3,116 @@
   "WorkspaceRootPath": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartbuilder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\commands\\relaycommand.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\chartviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\chartviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\indicators\\builtin\\emaindicator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:indicators\\builtin\\emaindicator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\models\\charting\\ohlcpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:models\\charting\\ohlcpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\indicators\\abstractions\\indicatorparamdef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:indicators\\abstractions\\indicatorparamdef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\indicators\\indicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\indicators\\indicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\viewmodels\\dialogs\\indicatorsettingsdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:viewmodels\\dialogs\\indicatorsettingsdialog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\indicators\\iindicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\indicators\\iindicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\indicators\\abstractions\\iindicator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:indicators\\abstractions\\iindicator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\charting\\charthelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\charting\\charthelpers.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\models\\charting\\chartsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:models\\charting\\chartsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\indicatorconfigdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\indicatorconfigdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\chartprofileservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\chartprofileservice .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mappers\\chartprofilemappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mappers\\chartprofilemappings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\entities\\chartprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:entities\\chartprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\ichartprofileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\ichartprofileservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\chartprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\chartprofiledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\candledtoextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledtoextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\models\\charting\\ohlcpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:models\\charting\\ohlcpoint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\charting\\chartsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -41,18 +121,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\charting\\ichartsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\charting\\ichartsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\indicators\\indicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\indicators\\indicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\indicators\\iindicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\indicators\\iindicatorregistry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\models\\charting\\chartsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:models\\charting\\chartsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\models\\charting\\indicatorinstance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -65,14 +133,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\models\\charting\\indicatorparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:models\\charting\\indicatorparams.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\indicators\\abstractions\\indicatorparamdef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:indicators\\abstractions\\indicatorparamdef.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:services\\dataservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\appsettingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -89,10 +149,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\dataimportcontrol.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\entities\\candlebase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -127,18 +183,6 @@
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:views\\settingswindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\candledtoextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledtoextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:dtos\\candledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\converters\\inversebooltovisibilityconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:converters\\inversebooltovisibilityconverter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -149,10 +193,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:data\\stockcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\services\\istockapiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -193,10 +233,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:migrations\\20251009180108_addcandlepropsandtimeframe.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|e:\\github\\profitprophet_learningproject\\profitprophet\\mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D45E7AB3-6245-4C1E-96AE-58E764E6CFCD}|ProfitProphet.csproj|solutionrelative:mappers\\candlemapper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -206,7 +242,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 233,
-          "SelectedChildIndex": 21,
+          "SelectedChildIndex": 46,
           "Children": [
             {
               "$type": "Bookmark",
@@ -218,20 +254,129 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 16,
+              "Title": "ChartHelpers.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Charting\\ChartHelpers.cs",
+              "RelativeDocumentMoniker": "Services\\Charting\\ChartHelpers.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Charting\\ChartHelpers.cs",
+              "RelativeToolTip": "Services\\Charting\\ChartHelpers.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAABYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T18:21:17.326Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "IndicatorSettingsDialog.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\Dialogs\\IndicatorSettingsDialog.cs",
+              "RelativeDocumentMoniker": "ViewModels\\Dialogs\\IndicatorSettingsDialog.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\Dialogs\\IndicatorSettingsDialog.cs",
+              "RelativeToolTip": "ViewModels\\Dialogs\\IndicatorSettingsDialog.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAqwE0AAACAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T16:37:56.01Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ChartViewModel.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\ChartViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\ChartViewModel.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\ChartViewModel.cs",
+              "RelativeToolTip": "ViewModels\\ChartViewModel.cs",
+              "ViewState": "AgIAADoAAAAAAAAAAAASwEYAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T16:35:02.348Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "ChartProfile.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\ChartProfile.cs",
+              "RelativeDocumentMoniker": "Entities\\ChartProfile.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\ChartProfile.cs",
+              "RelativeToolTip": "Entities\\ChartProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T15:44:53.885Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "ChartProfileMappings.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Mappers\\ChartProfileMappings.cs",
+              "RelativeDocumentMoniker": "Mappers\\ChartProfileMappings.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Mappers\\ChartProfileMappings.cs",
+              "RelativeToolTip": "Mappers\\ChartProfileMappings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA2AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T15:38:27.576Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "IndicatorConfigDto.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\IndicatorConfigDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\IndicatorConfigDto.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\IndicatorConfigDto.cs",
+              "RelativeToolTip": "DTOs\\IndicatorConfigDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T15:36:46.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "ChartProfileService .cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartProfileService .cs",
+              "RelativeDocumentMoniker": "Services\\ChartProfileService .cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartProfileService .cs",
+              "RelativeToolTip": "Services\\ChartProfileService .cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAqwBUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T15:35:23.582Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "IChartProfileService.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IChartProfileService.cs",
+              "RelativeDocumentMoniker": "Services\\IChartProfileService.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IChartProfileService.cs",
+              "RelativeToolTip": "Services\\IChartProfileService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T15:34:47.102Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "ChartProfileDto.cs",
+              "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\ChartProfileDto.cs",
+              "RelativeDocumentMoniker": "DTOs\\ChartProfileDto.cs",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\ChartProfileDto.cs",
+              "RelativeToolTip": "DTOs\\ChartProfileDto.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-03T15:32:55.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "RelayCommand.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\Commands\\RelayCommand.cs",
               "RelativeDocumentMoniker": "ViewModels\\Commands\\RelayCommand.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\Commands\\RelayCommand.cs",
               "RelativeToolTip": "ViewModels\\Commands\\RelayCommand.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-11-01T11:58:48.952Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 27,
               "Title": "OhlcPoint.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Models\\Charting\\OhlcPoint.cs",
               "RelativeDocumentMoniker": "Models\\Charting\\OhlcPoint.cs",
@@ -239,12 +384,11 @@
               "RelativeToolTip": "Models\\Charting\\OhlcPoint.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:46:30.264Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:46:30.264Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 28,
               "Title": "ChartSettingsService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Charting\\ChartSettingsService.cs",
               "RelativeDocumentMoniker": "Services\\Charting\\ChartSettingsService.cs",
@@ -252,12 +396,11 @@
               "RelativeToolTip": "Services\\Charting\\ChartSettingsService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:17:30.106Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:17:30.106Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 29,
               "Title": "IChartSettingsService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Charting\\IChartSettingsService.cs",
               "RelativeDocumentMoniker": "Services\\Charting\\IChartSettingsService.cs",
@@ -265,51 +408,47 @@
               "RelativeToolTip": "Services\\Charting\\IChartSettingsService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:15:58.378Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:15:58.378Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "IndicatorRegistry.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Indicators\\IndicatorRegistry.cs",
               "RelativeDocumentMoniker": "Services\\Indicators\\IndicatorRegistry.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Indicators\\IndicatorRegistry.cs",
               "RelativeToolTip": "Services\\Indicators\\IndicatorRegistry.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:15:23.867Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:15:23.867Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 14,
               "Title": "IIndicatorRegistry.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Indicators\\IIndicatorRegistry.cs",
               "RelativeDocumentMoniker": "Services\\Indicators\\IIndicatorRegistry.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\Indicators\\IIndicatorRegistry.cs",
               "RelativeToolTip": "Services\\Indicators\\IIndicatorRegistry.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:14:45.866Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:14:45.866Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "EmaIndicator.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Indicators\\BuiltIn\\EmaIndicator.cs",
               "RelativeDocumentMoniker": "Indicators\\BuiltIn\\EmaIndicator.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Indicators\\BuiltIn\\EmaIndicator.cs",
               "RelativeToolTip": "Indicators\\BuiltIn\\EmaIndicator.cs",
-              "ViewState": "AgIAAEIAAAAAAAAAAAAAAFUAAAA0AAAAAAAAAA==",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAoAAAAkAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:13:42.998Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:13:42.998Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 17,
               "Title": "ChartSettings.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Models\\Charting\\ChartSettings.cs",
               "RelativeDocumentMoniker": "Models\\Charting\\ChartSettings.cs",
@@ -317,12 +456,11 @@
               "RelativeToolTip": "Models\\Charting\\ChartSettings.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:13:21.19Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:13:21.19Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 30,
               "Title": "IndicatorInstance.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Models\\Charting\\IndicatorInstance.cs",
               "RelativeDocumentMoniker": "Models\\Charting\\IndicatorInstance.cs",
@@ -330,12 +468,11 @@
               "RelativeToolTip": "Models\\Charting\\IndicatorInstance.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:12:58.752Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:12:58.752Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 31,
               "Title": "IndicatorResult.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Models\\Charting\\IndicatorResult.cs",
               "RelativeDocumentMoniker": "Models\\Charting\\IndicatorResult.cs",
@@ -343,12 +480,11 @@
               "RelativeToolTip": "Models\\Charting\\IndicatorResult.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:12:35.198Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:12:35.198Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 32,
               "Title": "IndicatorParams.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Models\\Charting\\IndicatorParams.cs",
               "RelativeDocumentMoniker": "Models\\Charting\\IndicatorParams.cs",
@@ -356,12 +492,11 @@
               "RelativeToolTip": "Models\\Charting\\IndicatorParams.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:12:09.54Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:12:09.54Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 11,
               "Title": "IndicatorParamDef.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Indicators\\Abstractions\\IndicatorParamDef.cs",
               "RelativeDocumentMoniker": "Indicators\\Abstractions\\IndicatorParamDef.cs",
@@ -369,37 +504,35 @@
               "RelativeToolTip": "Indicators\\Abstractions\\IndicatorParamDef.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAdAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:11:40.088Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:11:40.088Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 15,
               "Title": "IIndicator.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Indicators\\Abstractions\\IIndicator.cs",
               "RelativeDocumentMoniker": "Indicators\\Abstractions\\IIndicator.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Indicators\\Abstractions\\IIndicator.cs",
               "RelativeToolTip": "Indicators\\Abstractions\\IIndicator.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAAwBMAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-01T10:10:10.216Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-01T10:10:10.216Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 33,
               "Title": "AppSettingsService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\AppSettingsService.cs",
               "RelativeDocumentMoniker": "Services\\AppSettingsService.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\AppSettingsService.cs",
               "RelativeToolTip": "Services\\AppSettingsService.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwBAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-19T09:46:39.251Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 25,
               "Title": "CandleDtoExtensions.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\CandleDtoExtensions.cs",
               "RelativeDocumentMoniker": "DTOs\\CandleDtoExtensions.cs",
@@ -411,7 +544,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 45,
               "Title": "InverseBoolToVisibilityConverter.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Converters\\InverseBoolToVisibilityConverter.cs",
               "RelativeDocumentMoniker": "Converters\\InverseBoolToVisibilityConverter.cs",
@@ -423,7 +556,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 46,
               "Title": "BoolToVisibilityConverter.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Converters\\BoolToVisibilityConverter.cs",
               "RelativeDocumentMoniker": "Converters\\BoolToVisibilityConverter.cs",
@@ -435,19 +568,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 34,
               "Title": "AppSettings.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Settings\\AppSettings.cs",
               "RelativeDocumentMoniker": "Settings\\AppSettings.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Settings\\AppSettings.cs",
               "RelativeToolTip": "Settings\\AppSettings.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAcAAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAxwAcAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-15T18:01:59.407Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 43,
               "Title": "IAppSettingsService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IAppSettingsService.cs",
               "RelativeDocumentMoniker": "Services\\IAppSettingsService.cs",
@@ -459,20 +592,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
               "Title": "MainViewModel.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\MainViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ViewModels\\MainViewModel.cs",
               "RelativeToolTip": "ViewModels\\MainViewModel.cs",
-              "ViewState": "AgIAAHoAAAAAAAAAAAAAwAIBAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAKQAAAAAAAAAAAASwLQAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-11T16:35:52.706Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 36,
               "Title": "DataImportControl.xaml.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml.cs",
               "RelativeDocumentMoniker": "Views\\DataImportControl.xaml.cs",
@@ -484,7 +617,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 35,
               "Title": "DataImportControl.xaml",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\DataImportControl.xaml",
               "RelativeDocumentMoniker": "Views\\DataImportControl.xaml",
@@ -495,7 +628,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 40,
               "Title": "ApiSettingsControl.xaml.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml.cs",
               "RelativeDocumentMoniker": "Views\\ApiSettingsControl.xaml.cs",
@@ -507,7 +640,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 52,
               "Title": "ApiSettingsControl.xaml",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\ApiSettingsControl.xaml",
               "RelativeDocumentMoniker": "Views\\ApiSettingsControl.xaml",
@@ -518,7 +651,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 42,
               "Title": "SettingsWindow.xaml.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml.cs",
               "RelativeDocumentMoniker": "Views\\SettingsWindow.xaml.cs",
@@ -530,7 +663,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 44,
               "Title": "SettingsWindow.xaml",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Views\\SettingsWindow.xaml",
               "RelativeDocumentMoniker": "Views\\SettingsWindow.xaml",
@@ -541,19 +674,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 54,
               "Title": "20251009183532_DropTickerFkFromCandles.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009183532_DropTickerFkFromCandles.cs",
               "RelativeToolTip": "Migrations\\20251009183532_DropTickerFkFromCandles.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAMBdwDAAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAB8AAAAAAAAAAABhwDAAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-09T18:35:32.926Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 45,
+              "DocumentIndex": 55,
               "Title": "20251009182118_EnsureCandles.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009182118_EnsureCandles.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009182118_EnsureCandles.cs",
@@ -565,7 +698,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
+              "DocumentIndex": 56,
               "Title": "20251009181010_CreateCandlesTable.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009181010_CreateCandlesTable.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009181010_CreateCandlesTable.cs",
@@ -577,7 +710,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 57,
               "Title": "20251009180108_AddCandlePropsAndTimeframe.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
               "RelativeDocumentMoniker": "Migrations\\20251009180108_AddCandlePropsAndTimeframe.cs",
@@ -589,7 +722,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 26,
               "Title": "CandleDto.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\DTOs\\CandleDto.cs",
               "RelativeDocumentMoniker": "DTOs\\CandleDto.cs",
@@ -601,7 +734,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 5,
               "Title": "CandleMapper.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Mappers\\CandleMapper.cs",
               "RelativeDocumentMoniker": "Mappers\\CandleMapper.cs",
@@ -609,11 +742,12 @@
               "RelativeToolTip": "Mappers\\CandleMapper.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-09T15:42:21.13Z"
+              "WhenOpened": "2025-10-09T15:42:21.13Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 37,
               "Title": "CandleBase.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\CandleBase.cs",
               "RelativeDocumentMoniker": "Entities\\CandleBase.cs",
@@ -625,7 +759,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 53,
               "Title": "Timeframe.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Timeframe.cs",
               "RelativeDocumentMoniker": "Entities\\Timeframe.cs",
@@ -637,7 +771,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 47,
               "Title": "AssemblyInfo.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\AssemblyInfo.cs",
               "RelativeDocumentMoniker": "AssemblyInfo.cs",
@@ -649,32 +783,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
+              "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml*",
+              "RelativeToolTip": "MainWindow.xaml*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2025-10-01T05:44:14.567Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "ChartBuilder.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartBuilder.cs",
               "RelativeDocumentMoniker": "Services\\ChartBuilder.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\ChartBuilder.cs",
               "RelativeToolTip": "Services\\ChartBuilder.cs",
-              "ViewState": "AgIAAIUBAAAAAAAAAAAlwJYBAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAACcBAAAAAAAAAAASwDkBAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-18T14:27:07.893Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 7,
               "Title": "App.xaml",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml",
               "RelativeDocumentMoniker": "App.xaml",
@@ -686,31 +820,31 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 8,
               "Title": "App.xaml.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml.cs",
               "RelativeDocumentMoniker": "App.xaml.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\App.xaml.cs",
               "RelativeToolTip": "App.xaml.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAwwCYAAAA+AAAAAAAAAA==",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAqwDsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T13:06:16.062Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 9,
               "Title": "DataService.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeDocumentMoniker": "Services\\DataService.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\DataService.cs",
               "RelativeToolTip": "Services\\DataService.cs",
-              "ViewState": "AgIAAJsBAAAAAAAAAIAwwOQBAAAyAAAAAAAAAA==",
+              "ViewState": "AgIAALUBAAAAAAAAAAAqwMQBAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T10:02:49.317Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 50,
               "Title": "YahooFinanceClient.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\YahooFinanceClient.cs",
               "RelativeDocumentMoniker": "Services\\APIs\\YahooFinanceClient.cs",
@@ -722,7 +856,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 51,
               "Title": "TwelveDataClient.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\TwelveDataClient.cs",
               "RelativeDocumentMoniker": "Services\\APIs\\TwelveDataClient.cs",
@@ -734,7 +868,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 49,
               "Title": "AlphaVantageClient.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\APIs\\AlphaVantageClient.cs",
               "RelativeDocumentMoniker": "Services\\APIs\\AlphaVantageClient.cs",
@@ -746,7 +880,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 48,
               "Title": "IStockApiClient.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Services\\IStockApiClient.cs",
               "RelativeDocumentMoniker": "Services\\IStockApiClient.cs",
@@ -758,19 +892,19 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 19,
               "Title": "StockContext.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Data\\StockContext.cs",
               "RelativeDocumentMoniker": "Data\\StockContext.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Data\\StockContext.cs",
               "RelativeToolTip": "Data\\StockContext.cs",
-              "ViewState": "AgIAABYAAAAAAAAAAEBVwBMAAAArAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T08:48:59.779Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 39,
               "Title": "Candle.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Candle.cs",
               "RelativeDocumentMoniker": "Entities\\Candle.cs",
@@ -782,7 +916,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 38,
               "Title": "Ticker.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\Entities\\Ticker.cs",
               "RelativeDocumentMoniker": "Entities\\Ticker.cs",
@@ -794,7 +928,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 41,
               "Title": "ProfitProphet.csproj",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\ProfitProphet.csproj",
               "RelativeDocumentMoniker": "ProfitProphet.csproj",
@@ -806,13 +940,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "MainWindow.xaml.cs",
               "DocumentMoniker": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml.cs",
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "E:\\GitHub\\ProfitProphet_LearningProject\\ProfitProphet\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAAEgAAAALAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-17T08:14:56.325Z",
               "EditorCaption": ""

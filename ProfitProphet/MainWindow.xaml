@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:oxy="clr-namespace:OxyPlot.Wpf;assembly=OxyPlot.Wpf" xmlns:viewmodels="clr-namespace:ProfitProphet.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        
+        xmlns:oxy="http://oxyplot.org/wpf"
         mc:Ignorable="d"
         Title="ProfitProphet"
         Height="850" Width="1500"
@@ -339,6 +340,42 @@
                     </ComboBox.ItemContainerStyle>
                 </ComboBox>
 
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Margin="8" >
+                    <!-- Indikátor kiválasztó -->
+                    <ComboBox Width="140"  Margin="0,0,8,0"
+                    ItemsSource="{Binding AvailableIndicatorTypes}"
+                    SelectedItem="{Binding SelectedIndicatorType}"/>
+
+                    <Button Content="Hozzáadás"
+                    Command="{Binding AddIndicatorWithDialogCommand}"
+                    Margin="6,0,0,0"/>
+
+                    <!-- Aktív indikátorok lista gyors törléssel -->
+                    <ItemsControl ItemsSource="{Binding Indicators}" Margin="16,0,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Padding="6" Margin="4" CornerRadius="8" BorderBrush="#ddd" BorderThickness="1">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding Type}" FontWeight="SemiBold"/>
+                                        <Button Content="Szerk."
+                                    Command="{Binding DataContext.EditIndicatorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" />
+                                        <Button Content="X"
+                                    ToolTip="Indikátor törlése"
+                                    Command="{Binding DataContext.DeleteIndicatorCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+
                 <!-- Settings ikon -->
                 <Button Width="71"
                     Height="46"
@@ -356,25 +393,25 @@
 
 
             <!-- Chart -->
-            <Grid Grid.Row="2">
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1187*"/>
                     <ColumnDefinition Width="53*"/>
                 </Grid.ColumnDefinitions>
 
                 <oxy:PlotView x:Name="ChartView"
-                    Model="{Binding ChartModel}"
-                    Background="#0e1117" 
-                    IsManipulationEnabled="True"
-                    ZoomRectangleCursor="SizeNWSE"
-                    Grid.ColumnSpan="2"
-                    Visibility="{Binding HasChartData, Converter={StaticResource BoolToVisibilityConverter}}" >
+                  Model="{Binding ChartVM.ChartModel}"
+                  Background="#0e1117"
+                  IsManipulationEnabled="True"
+                  ZoomRectangleCursor="SizeNWSE"
+                  Grid.ColumnSpan="2"
+                  Visibility="{Binding HasChartData, Converter={StaticResource BoolToVisibilityConverter}}">
                     <oxy:PlotView.ContextMenu>
                         <ContextMenu>
                             <MenuItem Header="Add EMA (20)" Command="{Binding AddEma20Command}" />
                             <MenuItem Header="Remove All Indicators" Command="{Binding ClearIndicatorsCommand}" />
                         </ContextMenu>
-                    </oxy:PlotView.ContextMenu> 
+                    </oxy:PlotView.ContextMenu>
                 </oxy:PlotView>
 
                 <TextBlock Text="No data available. Please add a symbol to the watchlist."
@@ -383,7 +420,18 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Grid.ColumnSpan="2"
-                    Visibility="{Binding HasChartData, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                    Visibility="{Binding HasChartData, Converter={StaticResource InverseBoolToVisibilityConverter}}">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ChartVM.HasChartData}" Value="False">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </Grid>
         </Grid>
     </Grid>
