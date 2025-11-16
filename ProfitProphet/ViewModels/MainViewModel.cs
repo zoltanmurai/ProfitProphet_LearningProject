@@ -123,7 +123,7 @@ namespace ProfitProphet.ViewModels
             //    var list = await _dataService.GetLocalDataAsync(symbol, interval);
             //    return MapToCandleData(list);
             //});
-            ChartVM = new ChartViewModel(async (symbol, interval) =>
+            ChartVM = new ChartViewModel(_settingsService, _settings, async (symbol, interval) =>
             {
                 var list = await _dataService.GetLocalDataAsync(symbol, interval);
 

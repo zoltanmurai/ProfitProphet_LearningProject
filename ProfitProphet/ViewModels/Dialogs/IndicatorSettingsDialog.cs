@@ -59,6 +59,8 @@ namespace ProfitProphet.ViewModels.Dialogs
             switch (cfg.Type)
             {
                 case IndicatorType.SMA:
+                    AddRow("Periódus", "period", "20");
+                    break;
                 case IndicatorType.EMA:
                     AddRow("Periódus", "period", "20");
                     break;

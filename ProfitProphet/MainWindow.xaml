@@ -505,26 +505,36 @@
                                         MinHeight="32"
                                         Background="#1f2937">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Type}" 
-                                                   FontWeight="SemiBold"
-                                                   Foreground="White"
-                                                   FontSize="13"
-                                                   VerticalAlignment="Center" />
+                                        <!-- Felirat: kattintás -> EditIndicatorCommand -->
+                                        <Button Padding="0"
+                                            Background="Transparent"
+                                            BorderThickness="0"
+                                            Command="{Binding DataContext.EditIndicatorCommand,
+                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}">
+                                            <TextBlock Text="{Binding DisplayLabel}"
+                                                FontWeight="SemiBold"
+                                                Foreground="White"
+                                                FontSize="13"
+                                                VerticalAlignment="Center" />
+                                        </Button>
+
+                                        <!-- X: törlés, változatlanul -->
                                         <Button Width="20" Height="20"
-                                              Margin="8,0,0,0"
-                                              Padding="0"
-                                              Background="#2c2f33"
-                                              BorderThickness="0"
-                                              ToolTip="Indikátor törlése"
-                                              Command="{Binding DataContext.DeleteIndicatorCommand,
-                                                                RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                              CommandParameter="{Binding}">
+                                            Margin="8,0,0,0"
+                                            Padding="0"
+                                            Background="#2c2f33"
+                                            BorderThickness="0"
+                                            ToolTip="Indikátor törlése"
+                                            Command="{Binding DataContext.DeleteIndicatorCommand,
+                                               RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}">
                                             <Button.Content>
                                                 <TextBlock Text="×"
-                                                 FontSize="13"
-                                                 Foreground="White"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"/>
+                                                    FontSize="13"
+                                                    Foreground="White"
+                                                    HorizontalAlignment="Center"
+                                                    VerticalAlignment="Center" />
                                             </Button.Content>
                                         </Button>
                                     </StackPanel>
@@ -532,7 +542,6 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
                 </StackPanel>
             </DockPanel>
 

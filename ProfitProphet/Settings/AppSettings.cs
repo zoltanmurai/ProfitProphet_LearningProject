@@ -1,3 +1,4 @@
+using ProfitProphet.DTOs;
 using System.Collections.Generic;
 
 namespace ProfitProphet.Settings
@@ -14,5 +15,9 @@ namespace ProfitProphet.Settings
         public List<string> Watchlist { get; set; } = new();
         public int LookbackPeriodDays { get; set; } = 200;
         public bool AutoDataImport { get; set; } = false;
+        public bool ShowGapMarkers { get; set; } = true;
+
+        public Dictionary<string, List<IndicatorConfigDto>> IndicatorProfiles { get; set; }
+            = new();
     }
 }

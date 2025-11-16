@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using OxyPlot.Annotations;
 using ProfitProphet.Entities;
 using System;
 using System.Collections;
@@ -27,6 +28,8 @@ namespace ProfitProphet.Services
 
         private List<CandleData> _candles = new();
         public IReadOnlyList<CandleData> Candles => _candles;
+
+        public bool ShowGapMarkers { get; set; } = true;
 
         private Func<DateTime, DateTime, Task<List<CandleData>>> _lazyLoader;
 
@@ -89,6 +92,17 @@ namespace ProfitProphet.Services
             return 0.6;
         }
 
+        private static bool IsDailyInterval(string interval)
+        {
+            if (string.IsNullOrWhiteSpace(interval))
+                return false;
+
+            interval = interval.Trim();
+
+            return interval.Equals("1d", StringComparison.OrdinalIgnoreCase)
+                || interval.Equals("d1", StringComparison.OrdinalIgnoreCase);
+        }
+
         // --- Segédtípus ---
         public class CandleData
         {
@@ -97,24 +111,20 @@ namespace ProfitProphet.Services
             public double High { get; set; }
             public double Low { get; set; }
             public double Close { get; set; }
+            public bool HasGapBefore { get; set; }
         }
 
         public PlotModel BuildInteractiveChart(List<CandleData> candles, string symbol, string interval)
         {
-            //Model.Series.Clear();
             if (candles == null || candles.Count == 0)
                 throw new ArgumentException("A candle lista üres.");
-            //{ Model.InvalidatePlot(true); }
 
+            // 1) belső lista rendezése
             _candles = candles.OrderBy(c => c.Timestamp).ToList();
             _earliestLoaded = _candles.First().Timestamp;
             _isLoadingOlder = false;
 
-
-            //// MA-k kiszámítása
-            //var sma20 = ComputeSMA(candles, 20);
-            //var sma50 = ComputeSMA(candles, 50);
-
+            // 2) PlotModel
             Model = new PlotModel
             {
                 Title = $"{symbol} ({interval})",
@@ -125,37 +135,37 @@ namespace ProfitProphet.Services
                 PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40)
             };
 
-            
+            // 3) X tengely – CategoryAxis, de függőleges grid nélkül,
+            //    mert azok összezavarhatják a gap-vonalakat
             _xAxis = new CategoryAxis
             {
                 Position = AxisPosition.Bottom,
                 TextColor = OxyColors.White,
-                MajorGridlineStyle = LineStyle.Solid,
-                MinorGridlineStyle = LineStyle.Dot,
+                MajorGridlineStyle = LineStyle.None,          // fontosan: NINCS függőleges grid
+                MinorGridlineStyle = LineStyle.None,
                 GapWidth = 0,
                 IntervalLength = 80,
-                //Title = titleToX,
-
                 Angle = -60,
                 IsZoomEnabled = true,
                 IsPanEnabled = true
             };
             Model.Axes.Add(_xAxis);
 
+            // 4) Y tengely – csak vízszintes grid
             _yAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
                 TextColor = OxyColors.White,
-                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineStyle = LineStyle.Solid,         // vízszintes grid maradhat
                 MinorGridlineStyle = LineStyle.Dot,
                 AxislineColor = OxyColors.Gray,
                 Title = "Price",
-                //Angle = 45,
                 IsZoomEnabled = true,
                 IsPanEnabled = true
             };
             Model.Axes.Add(_yAxis);
 
+            // 5) CandleStickSeries
             _series = new CandleStickSeries
             {
                 IncreasingColor = OxyColor.FromRgb(34, 197, 94),
@@ -168,12 +178,48 @@ namespace ProfitProphet.Services
             for (int i = 0; i < _candles.Count; i++)
             {
                 var c = _candles[i];
+                // index-alapú X
                 _series.Items.Add(new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
             }
 
             Model.Series.Add(_series);
 
-            // Inicial view: utolsó 120 gyertya, + padding jobbra
+            // GAP JELÖLŐ VONALAK – X tengelyen, HasGapBefore alapján
+            if (ShowGapMarkers &&
+    IsDailyInterval(interval) &&
+    _candles != null && _candles.Count > 1)
+            {
+                var gapCount = _candles.Count(c => c.HasGapBefore);
+                System.Diagnostics.Debug.WriteLine($"[ChartBuilder] gap markers: {gapCount}");
+
+                for (int i = 0; i < _candles.Count; i++)
+                {
+                    var c = _candles[i];
+                    if (!c.HasGapBefore)
+                        continue;
+
+                    double x = i;
+
+                    var gapLine = new LineAnnotation
+                    {
+                        Type = LineAnnotationType.Vertical,
+                        X = x,
+
+                        Color = OxyColor.FromArgb(60, 200, 200, 255), 
+
+                        StrokeThickness = 0.5,
+                        LineStyle = LineStyle.Dash,
+
+                        // gyertyák alatt
+                        Layer = AnnotationLayer.BelowSeries,
+                        XAxisKey = _xAxis.Key
+                    };
+
+                    Model.Annotations.Add(gapLine);
+                }
+            }
+
+            // 7) Kezdő nézet: utolsó 120 gyertya
             Model.ResetAllAxes();
             int total = _candles.Count;
             if (total > 0)
@@ -182,8 +228,7 @@ namespace ProfitProphet.Services
                 int startIndex = total - visibleCount;
                 int endIndex = total - 1;
 
-                // Padding a jobb oldalon, hogy az utolsó gyertya ne lógjon ki
-                double padding = visibleCount * 0.05;  // 5% padding
+                double padding = visibleCount * 0.05;
                 _xAxis.Zoom(startIndex, endIndex + padding);
             }
 
@@ -191,14 +236,13 @@ namespace ProfitProphet.Services
             AutoFitYToVisible();
             Model.InvalidatePlot(true);
 
-            // Zoom/pan közben frissítés
 #pragma warning disable CS0618
             _xAxis.AxisChanged += async (_, __) =>
             {
                 if (_candles == null || _candles.Count == 0)
                     return;
 
-                await MaybeLazyLoadOlderAsync(); 
+                await MaybeLazyLoadOlderAsync();
                 UpdateXAxisLabels();
                 AutoFitYToVisible();
                 Model.InvalidatePlot(false);
@@ -206,36 +250,13 @@ namespace ProfitProphet.Services
             _xAxis.AxisChanged += (_, __) => UpdateXAxisTitle();
 #pragma warning restore CS0618
 
-            //// SMA 20
-            //var sma20Series = new LineSeries
-            //{
-            //    Title = "SMA 20",
-            //    StrokeThickness = 1.6,
-            //    // YAxisKey = priceAxis.Key,  // ha külön kulcsot használsz a gyertyáknál, rendeld ugyanarra
-            //    CanTrackerInterpolatePoints = false
-            //};
-            //sma20Series.Points.AddRange(sma20);
-            //Model.Series.Add(sma20Series);
-
-            //// SMA 50 (opcionális)
-            //if (sma50.Count > 0)
-            //{
-            //    var sma50Series = new LineSeries
-            //    {
-            //        Title = "SMA 50",
-            //        StrokeThickness = 1.6,
-            //        CanTrackerInterpolatePoints = false
-            //    };
-            //    sma50Series.Points.AddRange(sma50);
-            //    Model.Series.Add(sma50Series);
-            //}
-
+            // 8) Indikátorok renderelése
             var ohlc = _candles.Select(c => new OhlcPoint
             {
-                Open = (double)c.Open,
-                High = (double)c.High,
-                Low = (double)c.Low,
-                Close = (double)c.Close
+                Open = c.Open,
+                High = c.High,
+                Low = c.Low,
+                Close = c.Close
             }).ToList();
 
             var settings = _chartSettings.GetForSymbol(symbol);
@@ -252,6 +273,7 @@ namespace ProfitProphet.Services
             return Model;
         }
 
+
         private void UpdateXAxisTitle()
         {
             if (_candles == null || _candles.Count == 0 || _xAxis == null)
@@ -265,6 +287,9 @@ namespace ProfitProphet.Services
 
             int start = Math.Max(0, (int)Math.Floor(amin));
             int end = Math.Min(_candles.Count - 1, (int)Math.Ceiling(amax));
+
+            if (start < 0 || end < 0 || start >= _candles.Count || end >= _candles.Count)
+                return;
 
             var startYear = _candles[start].Timestamp.Year;
             var endYear = _candles[end].Timestamp.Year;
@@ -349,14 +374,14 @@ namespace ProfitProphet.Services
             // Címkék beállítása a zoom szint alapján
             //trükközni kellet, mert a CategoryAxis nem támogatja a dinamikus címkézést
             // Szoros zoom: napi szint
-            if (visible <= 20)
+            if (visible <= 40)
             {
                 for (int i = start; i <= end; i++)
                 {
                     var dt = _candles[i].Timestamp;
 
                     // Nagyon szoros zoom (8-12 gyertya): év + hónap + nap
-                    if (visible <= 12)
+                    if (visible <= 30)
                     {
                         _xAxis.Labels[i] = dt.ToString("yyyy-MMM-dd");
                     }
@@ -385,7 +410,6 @@ namespace ProfitProphet.Services
             }
         }
 
-        // ChartBuilder belsejébe (class szintre)
         public void AddIndicatorToSymbol(string symbol, string indicatorId, Action<IndicatorParams>? configure = null)
         {
             var st = _chartSettings.GetForSymbol(symbol);

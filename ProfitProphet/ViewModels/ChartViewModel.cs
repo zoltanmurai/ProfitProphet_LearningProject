@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using ProfitProphet.Settings;
 
 namespace ProfitProphet.ViewModels
 {
@@ -18,6 +19,9 @@ namespace ProfitProphet.ViewModels
     {
         private readonly ChartBuilder _chartBuilder;
         private readonly Func<string, string, Task<List<ChartBuilder.CandleData>>> _loadCandlesAsync;
+
+        private readonly IAppSettingsService _settingsService;
+        private AppSettings _appSettings;
 
         public PlotModel ChartModel => _chartBuilder.Model;
 
@@ -32,6 +36,8 @@ namespace ProfitProphet.ViewModels
             {
                 if (_currentInterval != value)
                 {
+                    _ = SaveIndicatorsForCurrentContextAsync();
+
                     _currentInterval = value;
                     OnPropertyChanged();
                     _ = ReloadAsync();
@@ -47,6 +53,8 @@ namespace ProfitProphet.ViewModels
             {
                 if (_currentSymbol != value)
                 {
+                    _ = SaveIndicatorsForCurrentContextAsync();
+
                     _currentSymbol = value;
                     OnPropertyChanged();
                     _ = ReloadAsync();
@@ -57,38 +65,23 @@ namespace ProfitProphet.ViewModels
         public ObservableCollection<IndicatorType> AvailableIndicatorTypes { get; } =
             new(Enum.GetValues<IndicatorType>());
 
-        //private IndicatorType _selectedIndicatorType = IndicatorType.EMA;
-        //public IndicatorType SelectedIndicatorType
-        //{
-        //    get => _selectedIndicatorType;
-        //    set { _selectedIndicatorType = value; OnPropertyChanged(); }
-        //}
-
         private IndicatorType? _selectedIndicatorType;
         public IndicatorType? SelectedIndicatorType
         {
             get => _selectedIndicatorType;
             set
             {
-                //if (_selectedIndicatorType == value)
-                //{
-                //    if (value is null) return;                       
-                //    if (AddIndicatorWithDialogCommand.CanExecute(null))
-                //        AddIndicatorWithDialogCommand.Execute(null);  
-
-                   
-                //    _selectedIndicatorType = null;
-                //    OnPropertyChanged(nameof(SelectedIndicatorType));
-                //}
-
                 if (_selectedIndicatorType == value) return;
 
                 _selectedIndicatorType = value;
                 OnPropertyChanged();
 
-                if (HasChartData && AddIndicatorWithDialogCommand.CanExecute(null))
+                if (value is not null &&
+                    HasChartData &&
+                    AddIndicatorWithDialogCommand.CanExecute(null))
+                {
                     AddIndicatorWithDialogCommand.Execute(null);
-
+                }
             }
         }
 
@@ -100,8 +93,14 @@ namespace ProfitProphet.ViewModels
         public ICommand EditIndicatorCommand { get; }
         public ICommand DeleteIndicatorCommand { get; }
 
-        public ChartViewModel(Func<string, string, Task<List<ChartBuilder.CandleData>>> loadCandlesAsync)
+        public ChartViewModel(
+            IAppSettingsService settingsService,
+            AppSettings appSettings,
+            Func<string, string, Task<List<ChartBuilder.CandleData>>> loadCandlesAsync)
         {
+            _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
+            _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
+
             _chartBuilder = new ChartBuilder();
             _loadCandlesAsync = loadCandlesAsync ?? throw new ArgumentNullException(nameof(loadCandlesAsync));
 
@@ -116,7 +115,6 @@ namespace ProfitProphet.ViewModels
 
         private async Task ReloadAsync()
         {
-
             if (string.IsNullOrWhiteSpace(CurrentSymbol))
             {
                 _candles = new();
@@ -128,27 +126,69 @@ namespace ProfitProphet.ViewModels
             }
 
             _candles = await _loadCandlesAsync(CurrentSymbol, CurrentInterval);
+
+            // GAP DETEKTÁLÁS – hétvége / szünnap jelölése a CandleData-ban
+            MarkGaps();
+
             OnPropertyChanged(nameof(HasChartData)); //Chart may be empty, then message appears in UI (XAML)
             RebuildChart();
+            LoadIndicatorsForCurrentContext();
 
-            // If you want the UI list to mirror persisted settings, you can populate it here later.
             System.Diagnostics.Debug.WriteLine($"[ChartVM] candles: {_candles?.Count ?? 0} for {CurrentSymbol} {CurrentInterval}");
+        }
+
+        // ---- GAP DETEKTÁLÁS SEGÉDFÜGGVÉNY ----
+        private void MarkGaps()
+        {
+            if (_candles == null || _candles.Count == 0)
+                return;
+
+            // csak napi idősornál értelmezzük (D1)
+            //bool isDaily = string.Equals(CurrentInterval, "1D", StringComparison.OrdinalIgnoreCase);
+            var iv = CurrentInterval ?? string.Empty;
+            bool isDaily =
+                string.Equals(iv, "1d", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(iv, "d1", StringComparison.OrdinalIgnoreCase);
+
+            if (!isDaily)
+            {
+                // minden más idősornál töröljük a jelölést
+                foreach (var c in _candles)
+                {
+                    c.HasGapBefore = false;
+                }
+                return;
+            }
+
+            _candles = _candles
+                .OrderBy(c => c.Timestamp)
+                .ToList();
+
+            if (_candles.Count == 0)
+                return;
+
+            // első gyertyának sosem lesz gap előtte
+            _candles[0].HasGapBefore = false;
+
+            for (int i = 1; i < _candles.Count; i++)
+            {
+                var prev = _candles[i - 1];
+                var cur = _candles[i];
+
+                var prevDate = prev.Timestamp.Date;
+                var curDate = cur.Timestamp.Date;
+
+                var diffDays = (curDate - prevDate).TotalDays;
+
+                // ha több mint 1 nap telt el a két gyertya között -> hétvége / szünnap
+                cur.HasGapBefore = diffDays > 1.0;
+                //_candles[i].HasGapBefore = (cur - prev).TotalDays > 1.0;
+            }
         }
 
         private void RebuildChart()
         {
-            //_chartBuilder.Model.Series.Clear();
-
-            //if (_candles == null || _candles.Count == 0)
-            //{
-            //    OnPropertyChanged(nameof(HasChartData));
-            //    _chartBuilder.Model.InvalidatePlot(true);
-            //    (AddIndicatorWithDialogCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            //    (EditIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            //    (DeleteIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
-            //    return;
-            //}
-
+            _chartBuilder.ShowGapMarkers = _appSettings?.ShowGapMarkers ?? true;
             _chartBuilder.BuildInteractiveChart(_candles, CurrentSymbol, CurrentInterval);
             OnPropertyChanged(nameof(HasChartData));
             OnPropertyChanged(nameof(ChartModel));
@@ -166,20 +206,61 @@ namespace ProfitProphet.ViewModels
             OnPropertyChanged(nameof(ChartModel));
         }
 
-        private void AddIndicatorWithDialog()
+        // ---- PERSISTENCE HELPER ----
+        private string GetProfileKey() =>
+            $"{CurrentSymbol}|{CurrentInterval}";
+
+        private void LoadIndicatorsForCurrentContext()
         {
-            if (SelectedIndicatorType is not IndicatorType t) return; 
+            Indicators.Clear();
 
-            var cfg = DefaultFor(t);
-            if (!IndicatorSettingsDialog.Show(ref cfg)) return;
+            if (string.IsNullOrWhiteSpace(CurrentSymbol) || string.IsNullOrWhiteSpace(CurrentInterval))
+                return;
 
-            Indicators.Add(cfg);
+            var key = GetProfileKey();
+
+            if (_appSettings.IndicatorProfiles != null &&
+                _appSettings.IndicatorProfiles.TryGetValue(key, out var list) &&
+                list != null)
+            {
+                foreach (var cfg in list)
+                    Indicators.Add(Clone(cfg));
+            }
+
+            // Ha betöltöttük, rajzoljuk újra az indikátorokat a charton
             ApplyIndicatorsFromList();
         }
 
+        // opcionális, ha SettingsWindow után új AppSettings-et töltesz:
+        public void ReloadSettings(AppSettings settings)
+        {
+            _appSettings = settings ?? throw new ArgumentNullException(nameof(settings));
+            // aktuális symbol/interval-ra újratöltjük az indikátorokat
+            LoadIndicatorsForCurrentContext();
+        }
+
+        private void AddIndicatorWithDialog()
+        {
+            if (SelectedIndicatorType is not IndicatorType t) return;
+
+            var cfg = DefaultFor(t);
+            if (!IndicatorSettingsDialog.Show(ref cfg))
+            {
+                SelectedIndicatorType = null;
+                return;
+            }
+
+            Indicators.Add(cfg);
+            ApplyIndicatorsFromList();
+
+            _ = SaveIndicatorsForCurrentContextAsync();
+            SelectedIndicatorType = null;
+        }
 
         private void EditIndicator(IndicatorConfigDto cfg)
         {
+            if (cfg is null) return;
+
             var copy = Clone(cfg);
             if (!IndicatorSettingsDialog.Show(ref copy)) return;
 
@@ -187,12 +268,15 @@ namespace ProfitProphet.ViewModels
             if (ix >= 0) Indicators[ix] = copy;
 
             ApplyIndicatorsFromList();
+            _ = SaveIndicatorsForCurrentContextAsync();
         }
 
         private void DeleteIndicator(IndicatorConfigDto cfg)
         {
+            if (cfg is null) return;
             Indicators.Remove(cfg);
             ApplyIndicatorsFromList();
+            _ = SaveIndicatorsForCurrentContextAsync();
         }
 
         private void ApplyIndicatorsFromList()
@@ -207,8 +291,6 @@ namespace ProfitProphet.ViewModels
 
         private void AddIndicatorToChartSettings(IndicatorConfigDto cfg)
         {
-            // The IDs must match your Indicator implementations.
-            // EMA is present in your project with Id = "ema".
             switch (cfg.Type)
             {
                 case IndicatorType.EMA:
@@ -220,20 +302,41 @@ namespace ProfitProphet.ViewModels
                     break;
 
                 case IndicatorType.SMA:
-                    // Implement SmaIndicator (Id "sma") and register it; until then this is disabled.
-                    // _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "sma", p => { ... });
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "sma", p =>
+                    {
+                        p["Period"] = ParseOrDefault(cfg.Parameters, "period", 20);
+                        p["Source"] = "Close";
+                    });
                     break;
 
                 case IndicatorType.Stochastic:
-                    // Implement StochasticIndicator (Id "stoch") and register it; until then this is disabled.
-                    // _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "stoch", p => { ... });
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "stoch", p =>
+                    {
+                        p["kPeriod"] = ParseOrDefault(cfg.Parameters, "kPeriod", 14);
+                        p["dPeriod"] = ParseOrDefault(cfg.Parameters, "dPeriod", 3);
+                        p["outputD"] = cfg.Parameters.TryGetValue("outputD", out var v)
+                                        ? v
+                                        : "true";
+                    });
                     break;
 
                 case IndicatorType.CMF:
-                    // Implement CmfIndicator (Id "cmf") and ensure Volume is available; until then this is disabled.
-                    // _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "cmf", p => { ... });
+                    // későbbre: cmf indikátor
                     break;
             }
+        }
+
+        private async Task SaveIndicatorsForCurrentContextAsync()
+        {
+            if (string.IsNullOrWhiteSpace(CurrentSymbol) || string.IsNullOrWhiteSpace(CurrentInterval))
+                return;
+
+            var key = GetProfileKey();
+
+            _appSettings.IndicatorProfiles[key] =
+                Indicators.Select(Clone).ToList();   // klónozunk, ne élő referenciát ments
+
+            await _settingsService.SaveSettingsAsync(_appSettings);
         }
 
         private static string ParseOrDefault(Dictionary<string, string> dict, string key, int def)
