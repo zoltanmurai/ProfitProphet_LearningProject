@@ -314,10 +314,11 @@ namespace ProfitProphet.ViewModels
                     {
                         p["kPeriod"] = ParseOrDefault(cfg.Parameters, "kPeriod", 14);
                         p["dPeriod"] = ParseOrDefault(cfg.Parameters, "dPeriod", 3);
-                        p["outputD"] = cfg.Parameters.TryGetValue("outputD", out var v)
-                                        ? v
-                                        : "true";
+                        p["outputD"] = cfg.Parameters.TryGetValue("outputD", out var v) ? v : "true";
                     });
+                    // később a Pane:
+                    // var st = _chartSettings.GetForSymbol(CurrentSymbol);
+                    // st.Indicators.Last().Pane = "sub";
                     break;
 
                 case IndicatorType.CMF:

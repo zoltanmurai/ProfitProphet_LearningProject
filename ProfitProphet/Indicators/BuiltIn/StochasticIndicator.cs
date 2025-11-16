@@ -1,4 +1,5 @@
 ﻿using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using ProfitProphet.Indicators.Abstractions;
@@ -45,28 +46,82 @@ namespace ProfitProphet.Indicators.BuiltIn
             if (!result.Series.TryGetValue("k", out var kVals))
                 return;
 
-            // Saját 0–100-as jobb oldali tengely
-            const string axisKey = "stoch-axis";
+            // 1) Fő ár-tengely felülre szorítása (egyszer)
+            if (yAxis is LinearAxis mainAxis)
+            {
+                // csak egyszer nyomjuk össze, ha még teljes magasságon van
+                if (mainAxis.StartPosition == 0 && mainAxis.EndPosition == 1)
+                {
+                    mainAxis.StartPosition = 0.30; // ár 70% felső rész
+                    mainAxis.EndPosition = 1.00;
+                }
+            }
+
+            // 2) Alsó stochastic panel y-tengelye
+            //const string axisKey = "stoch-pane";
+            //var stochAxis = model.Axes
+            //    .OfType<LinearAxis>()
+            //    .FirstOrDefault(a => a.Key == axisKey);
+
+            //if (stochAxis == null)
+            //{
+            //    stochAxis = new LinearAxis
+            //    {
+            //        Key = axisKey,
+            //        Position = AxisPosition.Left,
+            //        StartPosition = 0.00,   // alsó 30% a stochasticnak
+            //        EndPosition = 0.30,
+            //        Minimum = 0,
+            //        Maximum = 100,
+            //        MajorGridlineStyle = LineStyle.Solid,
+            //        MinorGridlineStyle = LineStyle.Dot,
+            //        TextColor = OxyColors.LightGray,
+            //        Title = "Stoch"
+            //    };
+            //    model.Axes.Add(stochAxis);
+            //}
+
+            // 2) Alsó stochastic panel y-tengelye
+            const string axisKey = "stoch-pane";
             var stochAxis = model.Axes
                 .OfType<LinearAxis>()
                 .FirstOrDefault(a => a.Key == axisKey);
+
             if (stochAxis == null)
             {
                 stochAxis = new LinearAxis
                 {
                     Key = axisKey,
-                    Position = AxisPosition.Right,
+                    Position = AxisPosition.Left,
+                    StartPosition = 0.00,
+                    EndPosition = 0.30,
                     Minimum = 0,
                     Maximum = 100,
-                    MajorGridlineStyle = LineStyle.None,
-                    MinorGridlineStyle = LineStyle.None,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.Dot,
                     TextColor = OxyColors.LightGray,
-                    Title = "%K / %D"
+                    Title = "Stoch"
                 };
                 model.Axes.Add(stochAxis);
             }
 
-            // %K vonal
+            // -> stochastic panel kerete (háttér + szürke border)
+            var stochFrame = new RectangleAnnotation
+            {
+                XAxisKey = xAxis?.Key,
+                YAxisKey = axisKey,
+                MinimumX = -0.5,
+                MaximumX = kVals.Length - 0.5,
+                MinimumY = 0,
+                MaximumY = 100,
+                Fill = OxyColor.FromArgb(10, 255, 255, 255),      // nagyon enyhe háttér
+                Stroke = OxyColor.FromArgb(80, 150, 150, 150),    // finom szürke keret
+                StrokeThickness = 1,
+                Layer = AnnotationLayer.BelowSeries
+            };
+            model.Annotations.Add(stochFrame);
+
+            // 3) %K vonal az alsó panelen
             var kSeries = new LineSeries
             {
                 Title = "%K",
@@ -79,12 +134,12 @@ namespace ProfitProphet.Indicators.BuiltIn
             for (int i = 0; i < kVals.Length; i++)
             {
                 if (!double.IsNaN(kVals[i]))
-                    kSeries.Points.Add(new DataPoint(i, kVals[i]));
+                    kSeries.Points.Add(new DataPoint(i, kVals[i])); // index-alapú X (CategoryAxis)
             }
 
             model.Series.Add(kSeries);
 
-            // %D (ha van)
+            // 4) %D (ha számoltunk)
             if (result.Series.TryGetValue("d", out var dVals))
             {
                 var dSeries = new LineSeries

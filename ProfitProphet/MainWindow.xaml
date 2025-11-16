@@ -550,25 +550,31 @@
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1187*"/>
-                    <ColumnDefinition Width="53*"/>
+                    
                 </Grid.ColumnDefinitions>
 
-
-                <oxy:PlotView x:Name="ChartView"
-                    Model="{Binding ChartVM.ChartModel}"
-                    Background="#0e1117"
-                    IsManipulationEnabled="True"
-                    ZoomRectangleCursor="SizeNWSE"
-                    Grid.ColumnSpan="2"
-                    Controller="{Binding ChartPlotController}"
-                    ContextMenu="{x:Null}">
-                    <!-- <oxy:PlotView.ContextMenu>
-                        <ContextMenu> -->
-                    <!--MenuItem Header="Add EMA (20)" Command="{Binding AddEma20Command}" / -->
-                    <!--  <MenuItem Header="Remove All Indicators" Command="{Binding ClearIndicatorsCommand}" />
-                        </ContextMenu>
-                    </oxy:PlotView.ContextMenu> -->
-                </oxy:PlotView>
+                <Border Grid.Row="0"
+                    Margin="8"
+                    CornerRadius="8"
+                    BorderThickness="1"
+                    BorderBrush="#3A3F4B"
+                    Background="#141820">
+                    <oxy:PlotView x:Name="ChartView"
+                        Model="{Binding ChartVM.ChartModel}"
+                        Background="#0e1117"
+                        IsManipulationEnabled="True"
+                        ZoomRectangleCursor="SizeNWSE"
+                        Grid.ColumnSpan="2"
+                        Controller="{Binding ChartPlotController}"
+                        ContextMenu="{x:Null}" Margin="0,0,0,0">
+                            <!-- <oxy:PlotView.ContextMenu>
+                            <ContextMenu> -->
+                            <!--MenuItem Header="Add EMA (20)" Command="{Binding AddEma20Command}" / -->
+                            <!--  <MenuItem Header="Remove All Indicators" Command="{Binding ClearIndicatorsCommand}" />
+                            </ContextMenu>
+                        </oxy:PlotView.ContextMenu> -->
+                    </oxy:PlotView>
+                </Border>
 
                 <TextBlock Text="No data available. Please add a symbol to the watchlist."
                     Foreground="White"
