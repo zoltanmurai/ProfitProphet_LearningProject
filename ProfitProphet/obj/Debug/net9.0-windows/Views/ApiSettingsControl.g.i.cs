@@ -95,7 +95,7 @@ namespace ProfitProphet.Views {
             case 3:
             
             #line 19 "..\..\..\..\Views\ApiSettingsControl.xaml"
-            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Save_Click);
+            ((System.Windows.Controls.Button)(target)).Click += new System.Windows.RoutedEventHandler(this.Save_ClickAsync);
             
             #line default
             #line hidden

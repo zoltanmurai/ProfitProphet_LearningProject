@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using ProfitProphet.Services;
@@ -16,20 +17,52 @@ namespace ProfitProphet.Views
             InitializeComponent();
 
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
-            _settings = _settingsService.LoadSettings();
+            _settings = _settingsService.LoadSettings() ?? new AppSettings();
 
             ApiComboBox.ItemsSource = new[] { "YahooFinance", "TwelveData", "AlphaVantage" };
-            ApiComboBox.SelectedItem = _settings.SelectedApi;
 
-            ApiKeyBox.Text = _settings.SelectedApi switch
-            {
-                "TwelveData" => _settings.TwelveDataApiKey,
-                "AlphaVantage" => _settings.AlphaVantageApiKey,
-                _ => _settings.YahooApiKey
-            };
+            var api = string.IsNullOrWhiteSpace(_settings.SelectedApi)
+                ? "YahooFinance"
+                : _settings.SelectedApi;
+
+            //ApiComboBox.SelectedItem = _settings.SelectedApi;
+            ApiComboBox.SelectedItem = api;
+
+            //ApiKeyBox.Text = _settings.SelectedApi switch
+            //{
+            //    "TwelveData" => _settings.TwelveDataApiKey,
+            //    "AlphaVantage" => _settings.AlphaVantageApiKey,
+            //    _ => _settings.YahooApiKey
+            //};
+
+            UpdateApiKeyBox(api);
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void ApiComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selected = ApiComboBox.SelectedItem?.ToString();
+            if (string.IsNullOrWhiteSpace(selected))
+                return;
+            UpdateApiKeyBox(selected);
+        }
+
+        private void UpdateApiKeyBox(string apiName)
+        {
+            switch (apiName)
+            {
+                case "TwelveData":
+                    ApiKeyBox.Text = _settings.TwelveDataApiKey ?? "";
+                    break;
+                case "AlphaVantage":
+                    ApiKeyBox.Text = _settings.AlphaVantageApiKey ?? "";
+                    break;
+                default:
+                    ApiKeyBox.Text = _settings.YahooApiKey ?? "";
+                    break;
+            }
+        }
+
+        private async void Save_Click(object sender, RoutedEventArgs e)
         {
             var selected = ApiComboBox.SelectedItem?.ToString();
             if (string.IsNullOrWhiteSpace(selected))
@@ -39,20 +72,21 @@ namespace ProfitProphet.Views
             }
 
             _settings.SelectedApi = selected;
+            var key = ApiKeyBox.Text?.Trim() ?? "";
 
             switch (selected)
             {
                 case "TwelveData":
-                    _settings.TwelveDataApiKey = ApiKeyBox.Text?.Trim() ?? "";
+                    _settings.TwelveDataApiKey = key;
                     break;
                 case "AlphaVantage":
-                    _settings.AlphaVantageApiKey = ApiKeyBox.Text?.Trim() ?? "";
+                    _settings.AlphaVantageApiKey = key;
                     break;
                 default:
-                    _settings.YahooApiKey = ApiKeyBox.Text?.Trim() ?? "";
+                    _settings.YahooApiKey = key;
                     break;
             }
-            _settingsService.SaveSettingsAsync(_settings);
+            await _settingsService.SaveSettingsAsync(_settings);
 
             MessageBox.Show("Beállítások elmentve.", "Settings", MessageBoxButton.OK, MessageBoxImage.Information);
         }

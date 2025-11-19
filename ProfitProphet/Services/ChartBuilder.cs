@@ -186,11 +186,11 @@ namespace ProfitProphet.Services
 
             // GAP JELÖLŐ VONALAK – X tengelyen, HasGapBefore alapján
             if (ShowGapMarkers &&
-    IsDailyInterval(interval) &&
-    _candles != null && _candles.Count > 1)
+                IsDailyInterval(interval) &&
+                _candles != null && _candles.Count > 1)
             {
-                var gapCount = _candles.Count(c => c.HasGapBefore);
-                System.Diagnostics.Debug.WriteLine($"[ChartBuilder] gap markers: {gapCount}");
+                //var gapCount = _candles.Count(c => c.HasGapBefore);
+                //System.Diagnostics.Debug.WriteLine($"[ChartBuilder] gap markers: {gapCount}");
 
                 for (int i = 0; i < _candles.Count; i++)
                 {
