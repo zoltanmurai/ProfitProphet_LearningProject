@@ -28,7 +28,7 @@ namespace ProfitProphet.Services.Indicators
             Register(new EmaIndicator());     // must have Id == "ema"
             Register(new SmaIndicator());   // Id == "sma"
             Register(new StochasticIndicator()); // Id == "stoch"
-            // Register(new CmfIndicator());        // Id == "cmf"
+            Register(new CmfIndicator());        // Id == "cmf"
         }
 
         public IIndicator? Get(string id) =>

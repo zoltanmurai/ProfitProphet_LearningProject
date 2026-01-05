@@ -43,6 +43,7 @@ namespace ProfitProphet.ViewModels
         public ICommand OpenSettingsCommand { get; }
         public ICommand RefreshNowCommand { get; }
         public ICommand ToggleAutoRefreshCommand { get; }
+        public ICommand OpenStrategyTestCommand { get; }
 
         public string SelectedSymbol
         {
@@ -166,6 +167,7 @@ namespace ProfitProphet.ViewModels
 
             AddSymbolCommand = new RelayCommand(AddSymbol);
             OpenSettingsCommand = new RelayCommand(OpenSettings);
+            OpenStrategyTestCommand = new RelayCommand(OpenStrategyTest);
 
             AutoRefreshEnabled = _settings?.AutoRefreshEnabled ?? false;
             RefreshIntervalMinutes = Math.Max(1, _settings?.RefreshIntervalMinutes ?? 5);
@@ -185,7 +187,8 @@ namespace ProfitProphet.ViewModels
                     Open = (double)c.Open,
                     High = (double)c.High,
                     Low = (double)c.Low,
-                    Close = (double)c.Close
+                    Close = (double)c.Close,
+                    Volume = (double)(c.Volume ?? 0)
                 })
                 .ToList();
         }
@@ -342,6 +345,24 @@ namespace ProfitProphet.ViewModels
             {
                 MessageBox.Show($"Törlés sikertelen:\n{ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private async void OpenStrategyTest(object _)
+        {
+            if (string.IsNullOrWhiteSpace(SelectedSymbol)) return;
+
+            // Adatok lekérése a teszthez (lokális DB-ből)
+            var candles = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
+
+            if (candles == null || candles.Count == 0)
+            {
+                MessageBox.Show("Nincs adat a teszteléshez!", "Hiba");
+                return;
+            }
+
+            var vm = new StrategyTestViewModel(candles, SelectedSymbol);
+            var win = new Views.StrategyTestWindow(vm);
+            win.Show();
         }
 
         //public async Task RemoveSymbolAsync(string symbol)

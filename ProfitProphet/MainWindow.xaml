@@ -357,6 +357,14 @@
 
 
                 <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Height="50" Width="627" MinWidth="50" MinHeight="50" >
+
+                    <Button Content="Stratégia Teszt" 
+                        Command="{Binding OpenStrategyTestCommand}" 
+                        Margin="10,0,0,0" 
+                        Padding="10,5"
+                        Background="#2D2D30" 
+                        Foreground="White" 
+                        BorderBrush="#3E3E42"/>
                     <!-- Indikátor kiválasztó -->
                     <ComboBox x:Name="IndicatorsCombo"
                         SelectedIndex="-1"

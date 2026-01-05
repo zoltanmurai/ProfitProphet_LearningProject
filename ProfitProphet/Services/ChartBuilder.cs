@@ -1,24 +1,25 @@
 ﻿using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-using OxyPlot.Annotations;
 using ProfitProphet.Entities;
+using ProfitProphet.Models.Charting;
+using ProfitProphet.Services.Charting;
+using ProfitProphet.Services.Indicators;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using ProfitProphet.Models.Charting;
-using ProfitProphet.Services.Charting;
-using ProfitProphet.Services.Indicators;
+using System.Windows.Documents;
 
 namespace ProfitProphet.Services
 {
     public class ChartBuilder
     {
         private CategoryAxis _xAxis;
-        private LinearAxis _yAxis;
+        private LinearAxis _mainYAxis; // Main price axis
         private CandleStickSeries _series;
         private readonly IIndicatorRegistry _indicatorRegistry;
         private readonly IChartSettingsService _chartSettings;
@@ -34,7 +35,6 @@ namespace ProfitProphet.Services
         private Func<DateTime, DateTime, Task<List<CandleData>>> _lazyLoader;
 
         public PlotModel Model { get; private set; }
-       // public List<Candle> Candles { get; } = new();
 
         public ChartBuilder()
             : this(new ProfitProphet.Services.Indicators.IndicatorRegistry(),
@@ -44,8 +44,6 @@ namespace ProfitProphet.Services
 
         public ChartBuilder(IIndicatorRegistry indicatorRegistry, IChartSettingsService chartSettings)
         {
-            //_indicatorRegistry = indicatorRegistry;
-            //_chartSettings = chartSettings;
             _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
             _chartSettings = chartSettings ?? throw new ArgumentNullException(nameof(chartSettings));
         }
@@ -55,30 +53,360 @@ namespace ProfitProphet.Services
             _lazyLoader = loader;
         }
 
-        private void AutoFitYToVisible()
+        public class CandleData
         {
-            if (_series?.Items == null || _series.Items.Count == 0)
-                return;
+            public DateTime Timestamp { get; set; }
+            public double Open { get; set; }
+            public double High { get; set; }
+            public double Low { get; set; }
+            public double Close { get; set; }
+            public double Volume { get; set; }
+            public bool HasGapBefore { get; set; }
+        }
 
-            int start = Math.Max(0, (int)Math.Floor(_xAxis.ActualMinimum));
-            int end = Math.Min(_series.Items.Count - 1, (int)Math.Ceiling(_xAxis.ActualMaximum));
+        // ==================================================================================
+        // Main Build Logic with Dynamic Panels
+        // ==================================================================================
+        public PlotModel BuildInteractiveChart(List<CandleData> candles, string symbol, string interval)
+        {
+            if (candles == null || candles.Count == 0)
+                return new PlotModel { Title = $"{symbol} - No Data", TextColor = OxyColors.White };
 
-            if (start > end) { start = 0; end = _series.Items.Count - 1; }
+            // 1. Sort and initialize data
+            _candles = candles.OrderBy(c => c.Timestamp).ToList();
+            _earliestLoaded = _candles.First().Timestamp;
+            _isLoadingOlder = false;
 
-            double min = double.MaxValue;
-            double max = double.MinValue;
-
-            for (int i = start; i <= end; i++)
+            // 2. Initialize Model
+            Model = new PlotModel
             {
-                var item = _series.Items[i];
-                if (item.Low < min) min = item.Low;
-                if (item.High > max) max = item.High;
+                Title = $"{symbol} ({interval})",
+                TextColor = OxyColors.White,
+                Background = OxyColor.FromRgb(22, 27, 34),
+                PlotAreaBackground = OxyColor.FromRgb(24, 28, 34),
+                PlotAreaBorderThickness = new OxyThickness(0),
+                PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40)
+            };
+
+            // 3. Analyze Settings to determine layout
+            var settings = _chartSettings.GetForSymbol(symbol);
+
+            // Filter indicators that need separate panels
+            var subPanelIndicators = settings.Indicators
+                .Where(i => i.IsVisible && !IsOverlay(i.IndicatorId, i.Pane))
+                .ToList();
+
+            int subPanelCount = subPanelIndicators.Count;
+
+            // 4. Calculate Layout Geometry
+            // Allocation: Each sub-panel gets 20% height. Main chart gets the rest.
+            double panelHeight = 0.20;
+            double spacing = 0.02;
+            double mainHeight = 1.0 - (subPanelCount * (panelHeight + spacing));
+
+            // Ensure main chart has at least 40% height
+            if (mainHeight < 0.4)
+            {
+                double availableForSubs = 0.6;
+                // If we have many panels, they get smaller
+                panelHeight = (availableForSubs / subPanelCount) - spacing;
+                mainHeight = 0.4;
+            }
+            // If no subs, main chart takes full height
+            if (subPanelCount == 0) mainHeight = 1.0;
+
+            // 5. Setup X-Axis (Shared)
+            _xAxis = new CategoryAxis
+            {
+                Position = AxisPosition.Bottom,
+                TextColor = OxyColors.White,
+                MajorGridlineStyle = LineStyle.None,
+                MinorGridlineStyle = LineStyle.None,
+                GapWidth = 0.1,
+                IntervalLength = 80,
+                Angle = -60,
+                IsZoomEnabled = true,
+                IsPanEnabled = true,
+                Key = "X-Axis"
+            };
+            Model.Axes.Add(_xAxis);
+
+            // 6. Setup Main Y-Axis (Price)
+            _mainYAxis = new LinearAxis
+            {
+                Position = AxisPosition.Right,
+                TextColor = OxyColors.White,
+                MajorGridlineStyle = LineStyle.Solid,
+                MinorGridlineStyle = LineStyle.Dot,
+                AxislineColor = OxyColors.Gray,
+                Title = "Price",
+                IsZoomEnabled = true,
+                IsPanEnabled = true,
+                Key = "MainY",
+                StartPosition = 1.0 - mainHeight, // Starts from top down
+                EndPosition = 1.0
+            };
+            Model.Axes.Add(_mainYAxis);
+
+            // 7. Add Candle Data
+            _series = new CandleStickSeries
+            {
+                IncreasingColor = OxyColor.FromRgb(34, 197, 94),
+                DecreasingColor = OxyColor.FromRgb(239, 68, 68),
+                CandleWidth = CalculateCandleWidth(interval),
+                TrackerFormatString = "{Category}\nO: {4:0.###}\nH: {1:0.###}\nL: {2:0.###}\nC: {3:0.###}",
+                YAxisKey = _mainYAxis.Key,
+                XAxisKey = _xAxis.Key
+            };
+
+            for (int i = 0; i < _candles.Count; i++)
+            {
+                var c = _candles[i];
+                _series.Items.Add(new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
+            }
+            Model.Series.Add(_series);
+
+            if (ShowGapMarkers && IsDailyInterval(interval) && _candles.Count > 1)
+            {
+                AddGapMarkers();
             }
 
-            if (max > min && max - min > 0)
+            // 8. Create Axes for Sub-Panels and Store Map
+            // We map the IndicatorInstance (object reference) to its Axis Key
+            var indicatorToAxisMap = new Dictionary<IndicatorInstance, LinearAxis>();
+
+            for (int i = 0; i < subPanelCount; i++)
             {
-                var pad = (max - min) * 0.02;
-                _yAxis.Zoom(min - pad, max + pad);
+                var indInst = subPanelIndicators[i];
+
+                // Calculate position from bottom up
+                double start = i * (panelHeight + spacing);
+                double end = start + panelHeight;
+
+                var subAxis = new LinearAxis
+                {
+                    Key = $"Axis_Sub_{i}_{indInst.IndicatorId}", // Unique Key for this instance
+                    Position = AxisPosition.Right,
+                    TextColor = OxyColors.LightGray,
+                    StartPosition = start,
+                    EndPosition = end,
+                    MajorGridlineStyle = LineStyle.Solid,
+                    MinorGridlineStyle = LineStyle.None,
+                    Title = indInst.IndicatorId.ToUpper(),
+                    TitleFontSize = 10,
+                    IsZoomEnabled = false,
+                    IsPanEnabled = false
+                };
+                //if (indInst.IndicatorId.Equals("cmf", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    subAxis.Minimum = -1;
+                //    subAxis.Maximum = 1;
+                //    subAxis.MajorStep = 0.5;
+                //    subAxis.MinorStep = 0.1;
+                //}
+
+                // Add axis to model
+                Model.Axes.Add(subAxis);
+
+                // Map it
+                indicatorToAxisMap[indInst] = subAxis;
+            }
+
+            // 9. Initial View
+            Model.ResetAllAxes();
+            if (_candles.Count > 0)
+            {
+                int visibleCount = Math.Min(120, _candles.Count);
+                int startIndex = _candles.Count - visibleCount;
+                int endIndex = _candles.Count - 1;
+                double padding = visibleCount * 0.05;
+                _xAxis.Zoom(startIndex, endIndex + padding);
+            }
+            UpdateXAxisLabels();
+            AutoFitYToVisible();
+            Model.InvalidatePlot(true);
+
+            // 10. Events
+#pragma warning disable CS0618
+            _xAxis.AxisChanged += async (_, __) =>
+            {
+                if (_candles == null || _candles.Count == 0) return;
+                await MaybeLazyLoadOlderAsync();
+                UpdateXAxisLabels();
+                AutoFitYToVisible();
+                Model.InvalidatePlot(false);
+            };
+            _xAxis.AxisChanged += (_, __) => UpdateXAxisTitle();
+#pragma warning restore CS0618
+
+            // 11. Compute and Render Indicators
+            //var ohlc = _candles.Select(c => new OhlcPoint
+            //{
+            //    Open = c.Open,
+            //    High = c.High,
+            //    Low = c.Low,
+            //    Close = c.Close
+            //}).ToList();
+            var ohlc = _candles.Select(c => new OhlcPoint
+            {
+                Open = c.Open,
+                High = c.High,
+                Low = c.Low,
+                Close = c.Close,
+                Volume = c.Volume
+            }).ToList();
+
+            if (ohlc.Count > 0)
+            {
+                var last = ohlc.Last();
+                System.Diagnostics.Debug.WriteLine($"[ADAT ELLENŐRZÉS] Utolsó gyertya: {last.Close} | Volume: {last.Volume}");
+
+                if (last.Volume == 0)
+                    System.Diagnostics.Debug.WriteLine("[HIBA] A Volume értéke 0! Valahol elveszik az adat.");
+                else
+                    System.Diagnostics.Debug.WriteLine("[OK] A Volume adat megérkezett a ChartBuilder-be.");
+            }
+
+            foreach (var inst in settings.Indicators.Where(i => i.IsVisible))
+            {
+                var ind = _indicatorRegistry.Get(inst.IndicatorId);
+                if (ind == null) continue;
+
+                var result = ind.Compute(ohlc, inst.Params);
+
+                // Determine Axis
+                LinearAxis targetAxis = _mainYAxis;
+
+                // If it is in the map, it means it's a sub-panel indicator
+                if (indicatorToAxisMap.ContainsKey(inst))
+                {
+                    targetAxis = indicatorToAxisMap[inst];
+                }
+
+                System.Diagnostics.Debug.WriteLine($"[MODEL ELLENŐRZÉS] Model: {Model} | _xAxis: {_xAxis}");
+                ind.Render(Model, result, _xAxis, targetAxis);
+            }
+
+            return Model;
+        }
+
+        private void AddGapMarkers()
+        {
+            for (int i = 0; i < _candles.Count; i++)
+            {
+                var c = _candles[i];
+                if (!c.HasGapBefore) continue;
+
+                var gapLine = new LineAnnotation
+                {
+                    Type = LineAnnotationType.Vertical,
+                    X = i - 0.5,
+                    Color = OxyColor.FromArgb(60, 200, 200, 255),
+                    StrokeThickness = 0.5,
+                    LineStyle = LineStyle.Dash,
+                    Layer = AnnotationLayer.BelowSeries,
+                    XAxisKey = _xAxis.Key,
+                    YAxisKey = _mainYAxis.Key
+                };
+                Model.Annotations.Add(gapLine);
+            }
+        }
+
+        private bool IsOverlay(string indicatorId, string paneSetting)
+        {
+            if (!string.IsNullOrEmpty(paneSetting))
+            {
+                if (paneSetting.ToLower() == "main") return true;
+                if (paneSetting.ToLower() == "sub") return false;
+            }
+
+            var id = indicatorId.ToLower();
+            if (id.Contains("stoch") || id.Contains("rsi") || id.Contains("cmf") || id.Contains("macd"))
+                return false;
+
+            return true;
+        }
+
+        // ==================================================================================
+        // Helpers
+        // ==================================================================================
+
+        private void AutoFitYToVisible()
+        {
+            // Exit if resources are missing
+            if (_xAxis == null || Model == null) return;
+
+            // 1. Determine visible X-axis range (Indices)
+            double startX = _xAxis.ActualMinimum;
+            double endX = _xAxis.ActualMaximum;
+
+            if (double.IsNaN(startX) || double.IsNaN(endX)) return;
+
+            int startIdx = (int)Math.Floor(startX);
+            int endIdx = (int)Math.Ceiling(endX);
+
+            // 2. Iterate through ALL Y-axes in the model (Main + Sub panels)
+            foreach (var axis in Model.Axes.OfType<LinearAxis>())
+            {
+                // Process only vertical axes (Left or Right)
+                if (axis.Position != AxisPosition.Left && axis.Position != AxisPosition.Right) continue;
+
+                double min = double.MaxValue;
+                double max = double.MinValue;
+                bool hasDataInView = false;
+
+                // 3. Find series linked to this specific axis
+                // FIX: Cast to XYAxisSeries to access YAxisKey
+                var linkedSeries = Model.Series
+                    .OfType<XYAxisSeries>()
+                    .Where(s => s.YAxisKey == axis.Key);
+
+                foreach (var s in linkedSeries)
+                {
+                    // A) CandleStickSeries (Main Chart)
+                    if (s is CandleStickSeries cs)
+                    {
+                        // Optimize loop: check only visible items
+                        int safeStart = Math.Max(0, startIdx);
+                        int safeEnd = Math.Min(cs.Items.Count - 1, endIdx);
+
+                        for (int i = safeStart; i <= safeEnd; i++)
+                        {
+                            var item = cs.Items[i];
+                            if (item.Low < min) min = item.Low;
+                            if (item.High > max) max = item.High;
+                            hasDataInView = true;
+                        }
+                    }
+                    // B) LineSeries (Indicators: CMF, Stoch, SMA)
+                    else if (s is LineSeries ls)
+                    {
+                        // Filter points within the visible X range
+                        var visiblePoints = ls.Points
+                            .Where(p => p.X >= startIdx && p.X <= endIdx);
+
+                        foreach (var p in visiblePoints)
+                        {
+                            if (double.IsNaN(p.Y)) continue;
+                            if (p.Y < min) min = p.Y;
+                            if (p.Y > max) max = p.Y;
+                            hasDataInView = true;
+                        }
+                    }
+                }
+
+                // 4. Update axis range if valid data found
+                if (hasDataInView && max > min)
+                {
+                    // Apply 5% padding for better visualization
+                    double range = max - min;
+                    double padding = range * 0.05;
+
+                    // Avoid zero range issues
+                    if (range == 0) padding = 1.0;
+
+                    axis.Zoom(min - padding, max + padding);
+                }
             }
         }
 
@@ -94,202 +422,25 @@ namespace ProfitProphet.Services
 
         private static bool IsDailyInterval(string interval)
         {
-            if (string.IsNullOrWhiteSpace(interval))
-                return false;
-
+            if (string.IsNullOrWhiteSpace(interval)) return false;
             interval = interval.Trim();
-
             return interval.Equals("1d", StringComparison.OrdinalIgnoreCase)
                 || interval.Equals("d1", StringComparison.OrdinalIgnoreCase);
         }
 
-        // --- Segédtípus ---
-        public class CandleData
-        {
-            public DateTime Timestamp { get; set; }
-            public double Open { get; set; }
-            public double High { get; set; }
-            public double Low { get; set; }
-            public double Close { get; set; }
-            public bool HasGapBefore { get; set; }
-        }
-
-        public PlotModel BuildInteractiveChart(List<CandleData> candles, string symbol, string interval)
-        {
-            if (candles == null || candles.Count == 0)
-                throw new ArgumentException("A candle lista üres.");
-
-            // 1) belső lista rendezése
-            _candles = candles.OrderBy(c => c.Timestamp).ToList();
-            _earliestLoaded = _candles.First().Timestamp;
-            _isLoadingOlder = false;
-
-            // 2) PlotModel
-            Model = new PlotModel
-            {
-                Title = $"{symbol} ({interval})",
-                TextColor = OxyColors.White,
-                Background = OxyColor.FromRgb(22, 27, 34),
-                PlotAreaBackground = OxyColor.FromRgb(24, 28, 34),
-                PlotAreaBorderThickness = new OxyThickness(0),
-                PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40)
-            };
-
-            // 3) X tengely – CategoryAxis, de függőleges grid nélkül,
-            //    mert azok összezavarhatják a gap-vonalakat
-            _xAxis = new CategoryAxis
-            {
-                Position = AxisPosition.Bottom,
-                TextColor = OxyColors.White,
-                MajorGridlineStyle = LineStyle.None,          // fontosan: NINCS függőleges grid
-                MinorGridlineStyle = LineStyle.None,
-                GapWidth = 0,
-                IntervalLength = 80,
-                Angle = -60,
-                IsZoomEnabled = true,
-                IsPanEnabled = true
-            };
-            Model.Axes.Add(_xAxis);
-
-            // 4) Y tengely – csak vízszintes grid
-            _yAxis = new LinearAxis
-            {
-                Position = AxisPosition.Left,
-                TextColor = OxyColors.White,
-                MajorGridlineStyle = LineStyle.Solid,         // vízszintes grid maradhat
-                MinorGridlineStyle = LineStyle.Dot,
-                AxislineColor = OxyColors.Gray,
-                Title = "Price",
-                IsZoomEnabled = true,
-                IsPanEnabled = true
-            };
-            Model.Axes.Add(_yAxis);
-
-            // 5) CandleStickSeries
-            _series = new CandleStickSeries
-            {
-                IncreasingColor = OxyColor.FromRgb(34, 197, 94),
-                DecreasingColor = OxyColor.FromRgb(239, 68, 68),
-                CandleWidth = CalculateCandleWidth(interval),
-                TrackerFormatString = "{Category}\nO: {4:0.###}\nH: {1:0.###}\nL: {2:0.###}\nC: {3:0.###}",
-                YAxisKey = _yAxis.Key
-            };
-
-            for (int i = 0; i < _candles.Count; i++)
-            {
-                var c = _candles[i];
-                // index-alapú X
-                _series.Items.Add(new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
-            }
-
-            Model.Series.Add(_series);
-
-            // GAP JELÖLŐ VONALAK – X tengelyen, HasGapBefore alapján
-            if (ShowGapMarkers &&
-                IsDailyInterval(interval) &&
-                _candles != null && _candles.Count > 1)
-            {
-                //var gapCount = _candles.Count(c => c.HasGapBefore);
-                //System.Diagnostics.Debug.WriteLine($"[ChartBuilder] gap markers: {gapCount}");
-
-                for (int i = 0; i < _candles.Count; i++)
-                {
-                    var c = _candles[i];
-                    if (!c.HasGapBefore)
-                        continue;
-
-                    double x = i;
-
-                    var gapLine = new LineAnnotation
-                    {
-                        Type = LineAnnotationType.Vertical,
-                        X = x,
-
-                        Color = OxyColor.FromArgb(60, 200, 200, 255), 
-
-                        StrokeThickness = 0.5,
-                        LineStyle = LineStyle.Dash,
-
-                        // gyertyák alatt
-                        Layer = AnnotationLayer.BelowSeries,
-                        XAxisKey = _xAxis.Key
-                    };
-
-                    Model.Annotations.Add(gapLine);
-                }
-            }
-
-            // 7) Kezdő nézet: utolsó 120 gyertya
-            Model.ResetAllAxes();
-            int total = _candles.Count;
-            if (total > 0)
-            {
-                int visibleCount = Math.Min(120, total);
-                int startIndex = total - visibleCount;
-                int endIndex = total - 1;
-
-                double padding = visibleCount * 0.05;
-                _xAxis.Zoom(startIndex, endIndex + padding);
-            }
-
-            UpdateXAxisLabels();
-            AutoFitYToVisible();
-            Model.InvalidatePlot(true);
-
-#pragma warning disable CS0618
-            _xAxis.AxisChanged += async (_, __) =>
-            {
-                if (_candles == null || _candles.Count == 0)
-                    return;
-
-                await MaybeLazyLoadOlderAsync();
-                UpdateXAxisLabels();
-                AutoFitYToVisible();
-                Model.InvalidatePlot(false);
-            };
-            _xAxis.AxisChanged += (_, __) => UpdateXAxisTitle();
-#pragma warning restore CS0618
-
-            // 8) Indikátorok renderelése
-            var ohlc = _candles.Select(c => new OhlcPoint
-            {
-                Open = c.Open,
-                High = c.High,
-                Low = c.Low,
-                Close = c.Close
-            }).ToList();
-
-            var settings = _chartSettings.GetForSymbol(symbol);
-
-            foreach (var inst in settings.Indicators.Where(i => i.IsVisible))
-            {
-                var ind = _indicatorRegistry.Get(inst.IndicatorId);
-                if (ind == null) continue;
-
-                var result = ind.Compute(ohlc, inst.Params);
-                ind.Render(Model, result, _xAxis, _yAxis);
-            }
-
-            return Model;
-        }
-
-
         private void UpdateXAxisTitle()
         {
-            if (_candles == null || _candles.Count == 0 || _xAxis == null)
-                return;
+            if (_candles == null || _candles.Count == 0 || _xAxis == null) return;
 
             double amin = _xAxis.ActualMinimum;
             double amax = _xAxis.ActualMaximum;
 
-            if (double.IsNaN(amin) || double.IsNaN(amax))
-                return;
+            if (double.IsNaN(amin) || double.IsNaN(amax)) return;
 
             int start = Math.Max(0, (int)Math.Floor(amin));
             int end = Math.Min(_candles.Count - 1, (int)Math.Ceiling(amax));
 
-            if (start < 0 || end < 0 || start >= _candles.Count || end >= _candles.Count)
-                return;
+            if (start < 0 || end < 0 || start >= _candles.Count || end >= _candles.Count) return;
 
             var startYear = _candles[start].Timestamp.Year;
             var endYear = _candles[end].Timestamp.Year;
@@ -306,7 +457,7 @@ namespace ProfitProphet.Services
         {
             if (_lazyLoader == null) return;
             if (_isLoadingOlder) return;
-            if (_xAxis.ActualMinimum >= 5) return;  //ha van elég adat az elején
+            if (_xAxis.ActualMinimum >= 5) return;
 
             _isLoadingOlder = true;
             try
@@ -318,27 +469,22 @@ namespace ProfitProphet.Services
                 var olderStart = _earliestLoaded.AddDays(-90);
 
                 var olderData = await _lazyLoader(olderStart, olderEnd);
-                if (olderData == null || olderData.Count == 0)
-                    return;
+                if (olderData == null || olderData.Count == 0) return;
 
                 olderData = olderData.OrderBy(c => c.Timestamp).ToList();
                 _earliestLoaded = olderData.First().Timestamp;
 
                 int shift = olderData.Count;
 
-                // Eltolás az X tengelyen
-                foreach (var item in _series.Items)
-                    item.X += shift;
+                foreach (var item in _series.Items) item.X += shift;
 
-                // Beszúrjuk az új adatokat
                 for (int i = 0; i < olderData.Count; i++)
                 {
                     var c = olderData[i];
                     _series.Items.Insert(i, new HighLowItem(i, c.High, c.Low, c.Open, c.Close));
-                    _candles.Insert(i, c); 
+                    _candles.Insert(i, c);
                 }
 
-                // Nézet követése
                 _xAxis.Zoom(viewMin + shift, viewMax + shift);
             }
             finally
@@ -353,7 +499,6 @@ namespace ProfitProphet.Services
             int n = _candles.Count;
             if (n == 0) return;
 
-            // Címkék előkészítése
             if (_xAxis.Labels.Count != n)
             {
                 _xAxis.Labels.Clear();
@@ -362,30 +507,21 @@ namespace ProfitProphet.Services
 
             double amin = _xAxis.ActualMinimum;
             double amax = _xAxis.ActualMaximum;
-            if (double.IsNaN(amin) || double.IsNaN(amax) || amax <= amin)
-                return;
+            if (double.IsNaN(amin) || double.IsNaN(amax) || amax <= amin) return;
 
             int start = Math.Max(0, (int)Math.Floor(amin));
             int end = Math.Min(n - 1, (int)Math.Ceiling(amax));
             int visible = Math.Max(1, end - start + 1);
 
-            for (int i = 0; i < n; i++)
-                _xAxis.Labels[i] = string.Empty;
-            // Címkék beállítása a zoom szint alapján
-            //trükközni kellet, mert a CategoryAxis nem támogatja a dinamikus címkézést
-            // Szoros zoom: napi szint
+            for (int i = 0; i < n; i++) _xAxis.Labels[i] = string.Empty;
+
             if (visible <= 40)
             {
                 for (int i = start; i <= end; i++)
                 {
                     var dt = _candles[i].Timestamp;
-
-                    // Nagyon szoros zoom (8-12 gyertya): év + hónap + nap
                     if (visible <= 30)
-                    {
                         _xAxis.Labels[i] = dt.ToString("yyyy-MMM-dd");
-                    }
-                    // Közepesen szoros zoom: hónap + nap
                     else
                     {
                         _xAxis.Labels[i] = dt.ToString("MMM-dd");
@@ -396,7 +532,6 @@ namespace ProfitProphet.Services
                 return;
             }
 
-            // Közepesen sűrű: 16 címke
             int desired = Math.Min(16, visible);
             int step = (int)Math.Ceiling((double)visible / desired);
 
@@ -413,11 +548,12 @@ namespace ProfitProphet.Services
         public void AddIndicatorToSymbol(string symbol, string indicatorId, Action<IndicatorParams>? configure = null)
         {
             var st = _chartSettings.GetForSymbol(symbol);
+            string defaultPane = IsOverlay(indicatorId, null) ? "main" : "sub";
             var inst = new IndicatorInstance
             {
                 IndicatorId = indicatorId,
                 IsVisible = true,
-                Pane = "main",
+                Pane = defaultPane,
                 Params = new IndicatorParams()
             };
             configure?.Invoke(inst.Params);
@@ -431,51 +567,5 @@ namespace ProfitProphet.Services
             st.Indicators.Clear();
             _chartSettings.Save(st);
         }
-
-
-        //// SMA záróárból teszt
-        //private static List<DataPoint> ComputeSMA(List<CandleData> data, int period)
-        //{
-        //    var pts = new List<DataPoint>();
-        //    if (data == null || data.Count == 0 || period <= 1) return pts;
-
-        //    double sum = 0;
-        //    var q = new Queue<double>(period);
-
-        //    for (int i = 0; i < data.Count; i++)
-        //    {
-        //        double close = data[i].Close;
-        //        sum += close;
-        //        q.Enqueue(close);
-
-        //        if (q.Count > period) sum -= q.Dequeue();
-
-        //        if (q.Count == period)
-        //        {
-        //            double sma = sum / period;
-        //            // X = index! (CategoryAxis)
-        //            pts.Add(new DataPoint(i, sma));
-        //        }
-        //    }
-        //    return pts;
-        //}
-
-        //// EMA záróárból teszt
-        //private static List<DataPoint> ComputeEMA(List<CandleData> data, int period)
-        //{
-        //    var pts = new List<DataPoint>();
-        //    if (data == null || data.Count < period || period <= 1) return pts;
-
-        //    double multiplier = 2.0 / (period + 1);
-        //    double ema = data.Take(period).Average(d => d.Close);
-
-        //    for (int i = period; i < data.Count; i++)
-        //    {
-        //        ema = (data[i].Close - ema) * multiplier + ema;
-        //        var x = DateTimeAxis.ToDouble(data[i].Timestamp);
-        //        pts.Add(new DataPoint(x, ema));
-        //    }
-        //    return pts;
-        //}
     }
 }

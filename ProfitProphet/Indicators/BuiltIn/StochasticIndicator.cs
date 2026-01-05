@@ -36,96 +36,41 @@ namespace ProfitProphet.Indicators.BuiltIn
             r.Series["k"] = k;          // %K
 
             if (outputD)
-                r.Series["d"] = d;      // %D csak ha kérted
+                r.Series["d"] = d;      // %D (only if requested)
 
             return r;
         }
 
+        // IMPORTANT: We do NOT create axes here. We use the xAxis and yAxis provided by the ChartBuilder.
         public void Render(PlotModel model, IndicatorResult result, Axis xAxis, Axis yAxis)
         {
             if (!result.Series.TryGetValue("k", out var kVals))
                 return;
 
-            // 1) Fő ár-tengely felülre szorítása (egyszer)
-            if (yAxis is LinearAxis mainAxis)
-            {
-                // csak egyszer nyomjuk össze, ha még teljes magasságon van
-                if (mainAxis.StartPosition == 0 && mainAxis.EndPosition == 1)
-                {
-                    mainAxis.StartPosition = 0.30; // ár 70% felső rész
-                    mainAxis.EndPosition = 1.00;
-                }
-            }
+            // Use the key of the provided axis (ChartBuilder manages the layout)
+            string axisKey = yAxis.Key;
 
-            // 2) Alsó stochastic panel y-tengelye
-            //const string axisKey = "stoch-pane";
-            //var stochAxis = model.Axes
-            //    .OfType<LinearAxis>()
-            //    .FirstOrDefault(a => a.Key == axisKey);
-
-            //if (stochAxis == null)
-            //{
-            //    stochAxis = new LinearAxis
-            //    {
-            //        Key = axisKey,
-            //        Position = AxisPosition.Left,
-            //        StartPosition = 0.00,   // alsó 30% a stochasticnak
-            //        EndPosition = 0.30,
-            //        Minimum = 0,
-            //        Maximum = 100,
-            //        MajorGridlineStyle = LineStyle.Solid,
-            //        MinorGridlineStyle = LineStyle.Dot,
-            //        TextColor = OxyColors.LightGray,
-            //        Title = "Stoch"
-            //    };
-            //    model.Axes.Add(stochAxis);
-            //}
-
-            // 2) Alsó stochastic panel y-tengelye
-            const string axisKey = "stoch-pane";
-            var stochAxis = model.Axes
-                .OfType<LinearAxis>()
-                .FirstOrDefault(a => a.Key == axisKey);
-
-            if (stochAxis == null)
-            {
-                stochAxis = new LinearAxis
-                {
-                    Key = axisKey,
-                    Position = AxisPosition.Left,
-                    StartPosition = 0.00,
-                    EndPosition = 0.30,
-                    Minimum = 0,
-                    Maximum = 100,
-                    MajorGridlineStyle = LineStyle.Solid,
-                    MinorGridlineStyle = LineStyle.Dot,
-                    TextColor = OxyColors.LightGray,
-                    Title = "Stoch"
-                };
-                model.Axes.Add(stochAxis);
-            }
-
-            // -> stochastic panel kerete (háttér + szürke border)
-            var stochFrame = new RectangleAnnotation
+            // 1. Draw the background zones (Overbought/Oversold)
+            // Note: We use RectangleAnnotation for background zoning
+            var stochZone = new RectangleAnnotation
             {
                 XAxisKey = xAxis?.Key,
                 YAxisKey = axisKey,
                 MinimumX = -0.5,
                 MaximumX = kVals.Length - 0.5,
-                MinimumY = 0,
-                MaximumY = 100,
-                Fill = OxyColor.FromArgb(10, 255, 255, 255),      // nagyon enyhe háttér
-                Stroke = OxyColor.FromArgb(80, 150, 150, 150),    // finom szürke keret
-                StrokeThickness = 1,
+                MinimumY = 20, // Oversold zone
+                MaximumY = 80, // Overbought zone
+                Fill = OxyColor.FromArgb(10, 0, 255, 0), // Very light green hint
                 Layer = AnnotationLayer.BelowSeries
             };
-            model.Annotations.Add(stochFrame);
+            model.Annotations.Add(stochZone);
 
-            // 3) %K vonal az alsó panelen
+            // 2. Draw %K Line
             var kSeries = new LineSeries
             {
-                Title = "%K",
+                Title = $"%K",
                 StrokeThickness = 1.5,
+                Color = OxyColors.Cyan,
                 LineStyle = LineStyle.Solid,
                 XAxisKey = xAxis?.Key,
                 YAxisKey = axisKey
@@ -134,18 +79,19 @@ namespace ProfitProphet.Indicators.BuiltIn
             for (int i = 0; i < kVals.Length; i++)
             {
                 if (!double.IsNaN(kVals[i]))
-                    kSeries.Points.Add(new DataPoint(i, kVals[i])); // index-alapú X (CategoryAxis)
+                    kSeries.Points.Add(new DataPoint(i, kVals[i]));
             }
 
             model.Series.Add(kSeries);
 
-            // 4) %D (ha számoltunk)
+            // 3. Draw %D Line (if exists)
             if (result.Series.TryGetValue("d", out var dVals))
             {
                 var dSeries = new LineSeries
                 {
-                    Title = "%D",
+                    Title = $"%D",
                     StrokeThickness = 1.2,
+                    Color = OxyColors.Orange,
                     LineStyle = LineStyle.Dash,
                     XAxisKey = xAxis?.Key,
                     YAxisKey = axisKey
@@ -161,7 +107,7 @@ namespace ProfitProphet.Indicators.BuiltIn
             }
         }
 
-        // ---- belső számítások ----
+        // --- Internal Calculations ---
 
         private static double[] ComputeK(IReadOnlyList<OhlcPoint> cs, int period)
         {
@@ -190,7 +136,7 @@ namespace ProfitProphet.Indicators.BuiltIn
                 double range = highestHigh - lowestLow;
                 if (range <= 0)
                 {
-                    k[i] = 50.0;            // semleges érték, ha nincs range
+                    k[i] = 50.0;
                 }
                 else
                 {

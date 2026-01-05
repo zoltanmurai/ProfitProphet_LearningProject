@@ -1,0 +1,70 @@
+﻿<Window x:Class="ProfitProphet.Views.StrategyTestWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Stratégia Tesztelő" Height="450" Width="800"
+        Background="#1E1E1E" Foreground="White">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+            <TextBlock Text="Paraméterek" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+            <TextBlock Text="CMF Periódus:" Foreground="LightGray"/>
+            <TextBox Text="{Binding CmfPeriod}" Margin="0,0,0,10" Padding="3"/>
+
+            <TextBlock Text="CMF MA Periódus:" Foreground="LightGray"/>
+            <TextBox Text="{Binding CmfMaPeriod}" Margin="0,0,0,10" Padding="3"/>
+
+            <TextBlock Text="Árfolyam MA (Trend):" Foreground="LightGray"/>
+            <TextBox Text="{Binding PriceMaPeriod}" Margin="0,0,0,20" Padding="3"/>
+
+            <Button Content="FUTTATÁS" Command="{Binding RunCommand}" 
+                    Height="40" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
+
+        <Border Grid.Column="1" Background="#2D2D30" Padding="10" CornerRadius="5">
+            <StackPanel>
+                <TextBlock Text="Eredmények" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Összes Profit:" Grid.Row="0" Grid.Column="0" FontSize="14" Foreground="LightGray"/>
+                    <TextBlock Text="{Binding Result.TotalProfitLoss, StringFormat=C2}" Grid.Row="0" Grid.Column="1" FontSize="14" FontWeight="Bold" Foreground="#4CAF50"/>
+
+                    <TextBlock Text="Kötések száma:" Grid.Row="1" Grid.Column="0" Margin="0,5" Foreground="LightGray"/>
+                    <TextBlock Text="{Binding Result.TradeCount}" Grid.Row="1" Grid.Column="1" Margin="0,5"/>
+
+                    <TextBlock Text="Találati arány:" Grid.Row="2" Grid.Column="0" Margin="0,5" Foreground="LightGray"/>
+                    <TextBlock Text="{Binding Result.WinRate, StringFormat={}{0:0.0}%}" Grid.Row="2" Grid.Column="1" Margin="0,5"/>
+
+                    <TextBlock Text="Score (VBA):" Grid.Row="3" Grid.Column="0" Margin="0,5" Foreground="LightGray"/>
+                    <TextBlock Text="{Binding Result.Score, StringFormat=N2}" Grid.Row="3" Grid.Column="1" Margin="0,5" FontWeight="Bold" Foreground="Orange"/>
+                </Grid>
+
+                <TextBlock Text="Kötéslista:" Margin="0,15,0,5" FontWeight="Bold"/>
+                <DataGrid ItemsSource="{Binding Result.Trades}" Height="200" AutoGenerateColumns="False" 
+                          Background="#1E1E1E" RowBackground="#1E1E1E" Foreground="White" BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dátum" Binding="{Binding EntryDate, StringFormat=yyyy-MM-dd}" Width="*"/>
+                        <DataGridTextColumn Header="Vétel" Binding="{Binding EntryPrice, StringFormat=N2}" Width="*"/>
+                        <DataGridTextColumn Header="Eladás" Binding="{Binding ExitPrice, StringFormat=N2}" Width="*"/>
+                        <DataGridTextColumn Header="Profit" Binding="{Binding Profit, StringFormat=N2}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>

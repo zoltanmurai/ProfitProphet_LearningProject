@@ -322,7 +322,14 @@ namespace ProfitProphet.ViewModels
                     break;
 
                 case IndicatorType.CMF:
-                    // későbbre: cmf indikátor
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "cmf", p =>
+                    {
+                        // Kiolvassuk a "period"-ot
+                        p["Period"] = ParseOrDefault(cfg.Parameters, "period", 20);
+
+                        // Ha a felhasználó 0-t ír be, azzal kapcsolja ki.
+                        p["MaPeriod"] = ParseOrDefault(cfg.Parameters, "maPeriod", 10);
+                    });
                     break;
             }
         }
@@ -347,12 +354,33 @@ namespace ProfitProphet.ViewModels
             return def.ToString();
         }
 
+        //private static IndicatorConfigDto DefaultFor(IndicatorType t) => t switch
+        //{
+        //    IndicatorType.EMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
+        //    IndicatorType.SMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
+        //    IndicatorType.Stochastic => new() { Type = t, IsEnabled = true, Parameters = new() { ["kPeriod"] = "14", ["dPeriod"] = "3" } },
+        //    IndicatorType.CMF => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
+        //    _ => new() { Type = t, IsEnabled = true }
+        //};
+
         private static IndicatorConfigDto DefaultFor(IndicatorType t) => t switch
         {
             IndicatorType.EMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
             IndicatorType.SMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
             IndicatorType.Stochastic => new() { Type = t, IsEnabled = true, Parameters = new() { ["kPeriod"] = "14", ["dPeriod"] = "3" } },
-            IndicatorType.CMF => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
+
+            // UPDATE: Added maPeriod with default value 10
+            IndicatorType.CMF => new()
+            {
+                Type = t,
+                IsEnabled = true,
+                Parameters = new()
+                {
+                    ["period"] = "20",
+                    ["maPeriod"] = "10"
+                }
+            },
+
             _ => new() { Type = t, IsEnabled = true }
         };
 

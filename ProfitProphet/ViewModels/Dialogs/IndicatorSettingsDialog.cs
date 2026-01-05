@@ -73,6 +73,7 @@ namespace ProfitProphet.ViewModels.Dialogs
 
                 case IndicatorType.CMF:
                     AddRow("Periódus", "period", "20");
+                    AddRow("Signal MA (0=Ki)", "maPeriod", "10");
                     break;
             }
 
