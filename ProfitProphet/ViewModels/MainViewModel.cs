@@ -23,7 +23,10 @@ namespace ProfitProphet.ViewModels
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        private readonly IAppSettingsService _settingsService;
+        private readonly IStockApiClient _apiClient;
+        private readonly IAppSettingsService _settingsService; 
+        private readonly IChartSettingsService _chartSettingsService;
+        private readonly IIndicatorRegistry _indicatorRegistry;
         private readonly DataService _dataService;
         private readonly ChartBuilder _chartBuilder;
         private AppSettings _settings;

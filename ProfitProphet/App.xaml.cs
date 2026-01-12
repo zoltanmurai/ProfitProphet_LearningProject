@@ -1,59 +1,77 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using ProfitProphet.Data;
 using ProfitProphet.Services;
+using ProfitProphet.Services.APIs;
+using ProfitProphet.Services.Charting;
+using ProfitProphet.Services.Indicators;
+using ProfitProphet.ViewModels;
+using ProfitProphet.Views;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
 namespace ProfitProphet
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
-        public DataService DataService { get; private set; }
-        public IAppSettingsService SettingsService { get; private set; }
+        private IServiceProvider _serviceProvider;
+
+        public App()
+        {
+            var services = new ServiceCollection();
+            ConfigureServices(services);
+            _serviceProvider = services.BuildServiceProvider();
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            // 1. Adatbázis
+            services.AddDbContext<StockContext>();
+
+            // 2. Szolgáltatások (Singleton = egyetlen közös példány)
+            services.AddSingleton<ChartBuilder>(); // <-- Itt a lényeg a nyilakhoz!
+            services.AddSingleton<DataService>();
+            services.AddSingleton<IStockApiClient, YahooFinanceClient>();
+            services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>();
+            services.AddSingleton<IChartSettingsService, ChartSettingsService>();
+            services.AddSingleton<IChartProfileService, ChartProfileService>();
+
+            // Beállítások útvonala
+            var cfgPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "ProfitProphet", "settings.json");
+            services.AddSingleton<IAppSettingsService>(provider => new AppSettingsService(cfgPath));
+
+            // 3. ViewModels
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<ChartViewModel>();
+
+            // 4. Ablakok
+            services.AddSingleton<MainWindow>();
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            // DB migráció induláskor
-            using (var ctx = new StockContext())
+            // Adatbázis biztosítása
+            using (var scope = _serviceProvider.CreateScope())
             {
-                //ctx.Database.Migrate();
-                ctx.Database.EnsureCreated();
+                try
+                {
+                    var ctx = scope.ServiceProvider.GetRequiredService<StockContext>();
+                    ctx.Database.EnsureCreated();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Adatbázis hiba induláskor: {ex.Message}");
+                }
             }
-            var cfgPath = Path.Combine(
-           Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-           "ProfitProphet", "settings.json");
 
-            DataService = new DataService(new StockContext());
-            //SettingsService = new JsonAppSettingsService(cfgPath);
-            SettingsService = new AppSettingsService(cfgPath);
-
-
-#if DEBUG
-            var dbPath = Path.Combine(AppContext.BaseDirectory, "Candles.db");
-            using var c = new SqliteConnection($"Data Source={dbPath}");
-            c.Open();
-
-            using var cmd = c.CreateCommand();
-            cmd.CommandText = "SELECT name FROM sqlite_master WHERE type='table' ORDER BY 1;";
-            using var r = cmd.ExecuteReader();
-
-            var names = new List<string>();
-            while (r.Read()) names.Add(r.GetString(0));
-
-            Debug.WriteLine($"DB: {c.DataSource}");
-            Debug.WriteLine("Tables: " + string.Join(", ", names));
-#endif
+            // Kézi indítás (StartupUri helyett)
+            var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            mainWindow.Show();
         }
     }
 }

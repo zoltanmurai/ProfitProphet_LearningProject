@@ -18,10 +18,12 @@ namespace ProfitProphet
         //private string _symbol;
         //private string _interval;
 
-        public MainWindow()
+        //public MainWindow()
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            //DataContext = new MainViewModel();
+            DataContext = viewModel;
         }
         // Jobb klikknél jelölje ki az éppen célzott sort
         private void WatchlistListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
