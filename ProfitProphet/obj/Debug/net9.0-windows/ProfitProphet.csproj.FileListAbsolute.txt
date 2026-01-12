@@ -1361,3 +1361,5 @@ E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\P
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\ref\ProfitProphet.dll
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\StrategyTestWindow.baml
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\StrategyTestWindow.g.cs
+E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\StrategyEditorWindow.g.cs
+E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\StrategyEditorWindow.baml

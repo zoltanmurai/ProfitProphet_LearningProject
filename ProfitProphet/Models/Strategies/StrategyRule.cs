@@ -25,6 +25,8 @@ namespace ProfitProphet.Models.Strategies
         // Ha fix szám van a jobb oldalon:
         public double RightValue { get; set; }         // Pl. 0
 
+        public bool IsRightSideIndicator => RightSourceType == DataSourceType.Indicator;
+
         // Megjelenítéshez (hogy olvasható legyen a listában)
         public override string ToString()
         {

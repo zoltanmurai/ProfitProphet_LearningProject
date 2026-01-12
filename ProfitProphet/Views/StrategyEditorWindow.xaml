@@ -1,0 +1,134 @@
+﻿<Window x:Class="ProfitProphet.Views.StrategyEditorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:models="clr-namespace:ProfitProphet.Models.Strategies"
+        xmlns:converters="clr-namespace:ProfitProphet.Converters"
+        mc:Ignorable="d"
+        Title="Stratégia Szerkesztő" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        Background="#1E1E1E" Foreground="White">
+
+    <Window.Resources>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+
+        <DataTemplate x:Key="RuleTemplate">
+            <Border Background="#2D2D30" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="3" Margin="0,2,0,2" Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0,0,10,0">
+                        <TextBlock Text="Ha" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,5,0"/>
+                        <ComboBox ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
+                                  SelectedItem="{Binding LeftIndicatorName}" Width="80"/>
+                    </StackPanel>
+
+                    <TextBox Grid.Column="1" Text="{Binding LeftPeriod}" Margin="0,0,10,0" ToolTip="Periódus (pl. 20)"/>
+
+                    <ComboBox Grid.Column="2" 
+                              ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
+                              SelectedItem="{Binding Operator}" Margin="0,0,10,0"/>
+
+                    <ComboBox Grid.Column="3" 
+                              ItemsSource="{Binding DataContext.AvailableSourceTypes, RelativeSource={RelativeSource AncestorType=Window}}"
+                              SelectedItem="{Binding RightSourceType}" Margin="0,0,10,0"/>
+
+                    <Grid Grid.Column="4">
+                        <TextBox Text="{Binding RightValue}" 
+                                 Visibility="{Binding RightSourceType, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                                 ToolTip="Érték (pl. 0 vagy 30)"/>
+
+                        <StackPanel Orientation="Horizontal" 
+                                    Visibility="{Binding RightSourceType, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ComboBox ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
+                                      SelectedItem="{Binding RightIndicatorName}" Width="80" Margin="0,0,5,0"/>
+                            <TextBox Text="{Binding RightPeriod}" Width="50" ToolTip="Periódus"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Button Grid.Column="5" Content="X" 
+                            Background="Transparent" BorderThickness="0" Foreground="Red" FontWeight="Bold"
+                            Command="{Binding DataContext.RemoveEntryRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <TextBlock Text="Stratégia Beállítások" FontSize="20" FontWeight="Bold"/>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="Név:" VerticalAlignment="Center" Width="50" Foreground="Gray"/>
+                <TextBox Text="{Binding Profile.Name}" Width="200" Background="#2D2D30" Foreground="White" BorderBrush="Gray"/>
+
+                <TextBlock Text="Symbol:" VerticalAlignment="Center" Width="60" Margin="20,0,0,0" Foreground="Gray"/>
+                <TextBox Text="{Binding Profile.Symbol}" Width="80" IsReadOnly="True" Background="#2D2D30" Foreground="Gray" BorderBrush="Gray"/>
+            </StackPanel>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0" Header="Vételi Szabályok (Entry)" BorderBrush="LimeGreen">
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Content="+ Új Vételi Szabály" 
+                            Command="{Binding AddEntryRuleCommand}"
+                            Background="#2D2D30" Foreground="LimeGreen" Margin="0,5,0,0" BorderBrush="LimeGreen"/>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding EntryRules}" ItemTemplate="{StaticResource RuleTemplate}">
+                            <ItemsControl.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Command" Value="{Binding DataContext.RemoveEntryRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                </Style>
+                            </ItemsControl.Resources>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Column="2" Header="Eladási Szabályok (Exit)" BorderBrush="Red">
+                <DockPanel>
+                    <Button DockPanel.Dock="Bottom" Content="+ Új Eladási Szabály" 
+                            Command="{Binding AddExitRuleCommand}"
+                            Background="#2D2D30" Foreground="Red" Margin="0,5,0,0" BorderBrush="Red"/>
+
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <ItemsControl ItemsSource="{Binding ExitRules}" ItemTemplate="{StaticResource RuleTemplate}">
+                            <ItemsControl.Resources>
+                                <Style TargetType="Button">
+                                    <Setter Property="Command" Value="{Binding DataContext.RemoveExitRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                </Style>
+                            </ItemsControl.Resources>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </GroupBox>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="Mégse" IsCancel="True" Width="80" Height="30" Margin="0,0,10,0" Background="#3E3E42" Foreground="White"/>
+            <Button Content="MENTÉS" Command="{Binding SaveCommand}" Width="80" Height="30" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
+    </Grid>
+</Window>

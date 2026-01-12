@@ -22,6 +22,8 @@
             <StackPanel>
                 <TextBlock Text="Paraméterek" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
 
+                <Button Command="{Binding EditStrategyCommand}" Content="Stratégia Szerkesztése ✏️" Margin="0,0,0,20"/>
+
                 <TextBlock Text="Időszak Kezdete:" Foreground="Gray" Margin="0,5,0,5"/>
                 <DatePicker SelectedDate="{Binding StartDate}" Margin="0,0,0,10"
                             Background="#3E3E42" Foreground="Black" BorderBrush="Gray"/>
@@ -30,17 +32,15 @@
                 <DatePicker SelectedDate="{Binding EndDate}" Margin="0,0,0,20"
                             Background="#3E3E42" Foreground="Black" BorderBrush="Gray"/>
 
-                <Separator Background="#3E3E42" Margin="0,0,0,20"/>
+                <TextBlock Text="Kezdőtőke:" Foreground="Gray" Margin="0,5,0,5"/>
+                <TextBox Text="{Binding InitialCash, StringFormat=N0}" 
+                         Padding="5" 
+                         Background="#3E3E42" 
+                         Foreground="White" 
+                         BorderBrush="Gray"/>
 
-                <TextBlock Text="CMF Periódus:" Foreground="Gray" Margin="0,5,0,5"/>
-                <TextBox Text="{Binding CmfPeriod}" Padding="5" Background="#3E3E42" Foreground="White" BorderBrush="Gray"/>
-
-                <TextBlock Text="CMF MA Periódus:" Foreground="Gray" Margin="0,15,0,5"/>
-                <TextBox Text="{Binding CmfMaPeriod}" Padding="5" Background="#3E3E42" Foreground="White" BorderBrush="Gray"/>
-
-                <TextBlock Text="Árfolyam MA (Trend):" Foreground="Gray" Margin="0,15,0,5"/>
-                <TextBox Text="{Binding PriceMaPeriod}" Padding="5" Background="#3E3E42" Foreground="White" BorderBrush="Gray"/>
-
+                <Separator Background="#3E3E42" Margin="0,20,0,20"/>
+     
                 <Button Command="{Binding RunCommand}" 
                         Content="FUTTATÁS" 
                         Height="40" 

@@ -3,6 +3,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ProfitProphet.Entities;
 using ProfitProphet.Models.Backtesting;
+using ProfitProphet.Models.Strategies;
 using ProfitProphet.Services;
 using ProfitProphet.ViewModels.Commands;
 using System;
@@ -22,12 +23,22 @@ namespace ProfitProphet.ViewModels
         private readonly List<Candle> _candles;
         public event Action<BacktestResult> OnTestFinished;
 
+        public StrategyProfile CurrentProfile { get; set; }
+        public ICommand EditStrategyCommand { get; }
+
         // Paraméterek (a VBA-ban Steps, MAOnCMF1, MA)
-        public int CmfPeriod { get; set; } = 20;
-        public int CmfMaPeriod { get; set; } = 14;
-        public int PriceMaPeriod { get; set; } = 50;
+        //public int CmfPeriod { get; set; } = 20;
+        //public int CmfMaPeriod { get; set; } = 14;
+        //public int PriceMaPeriod { get; set; } = 50;
 
         public string Symbol { get; set; }
+
+        private double _initialCash = 10000; // Alapértéknek jó a 10k, de átírható
+        public double InitialCash
+        {
+            get => _initialCash;
+            set { _initialCash = value; OnPropertyChanged(); }
+        }
 
         private DateTime _startDate;
         public DateTime StartDate
@@ -67,6 +78,8 @@ namespace ProfitProphet.ViewModels
             _backtestService = new BacktestService();
             RunCommand = new RelayCommand(_ => RunTest());
 
+            
+
             if (_candles.Any())
             {
                 StartDate = _candles.First().TimestampUtc; // Vagy: DateTime.Now.AddYears(-1);
@@ -77,10 +90,40 @@ namespace ProfitProphet.ViewModels
                 StartDate = DateTime.Now.AddYears(-1);
                 EndDate = DateTime.Now;
             }
+
+            CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Teszt Stratégia" };
+
+            // Alapértelmezett szabály (hogy ne legyen üres)
+            CurrentProfile.EntryRules.Add(new StrategyRule
+            {
+                LeftIndicatorName = "CMF",
+                LeftPeriod = 20,
+                Operator = ComparisonOperator.GreaterThan,
+                RightValue = 0
+            });
+            EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
+        }
+
+        private void OpenStrategyEditor(object obj)
+        {
+            // Létrehozzuk a VM-et az aktuális profillal
+            var editorVm = new StrategyEditorViewModel(CurrentProfile);
+            var editorWin = new Views.StrategyEditorWindow();
+            editorWin.DataContext = editorVm;
+
+            // Ha a Save-re nyomott, lefut ez a bezárás
+            editorVm.OnRequestClose += () =>
+            {
+                editorWin.Close();
+                // Itt esetleg frissíthetjük a UI-t, ha kiírod a stratégia nevét
+            };
+
+            editorWin.ShowDialog(); // Modális ablak (nem enged máshova kattintani amíg nyitva van)
         }
 
         private void RunTest()
         {
+
             if (_candles == null || _candles.Count == 0)
             {
                 MessageBox.Show("Nincs betöltött adat a teszteléshez!", "Hiba");
@@ -92,6 +135,7 @@ namespace ProfitProphet.ViewModels
                 .OrderBy(c => c.TimestampUtc)
                 .ToList();
 
+
             if (filteredCandles.Count < 50) // Ha túl kevés adat maradt
             {
                 // Itt jelezhetnénk hibát, de most csak simán nem futtatjuk
@@ -100,11 +144,8 @@ namespace ProfitProphet.ViewModels
 
             // Futtatás
             var res = _backtestService.RunBacktest(
-                //_candles,
-                filteredCandles,
-                CmfPeriod,
-                CmfMaPeriod,
-                PriceMaPeriod
+                filteredCandles,  // 1. Az adatok
+                CurrentProfile    // 2. (ebben vannak a szabályok)
             );
 
             Result = res; // frissíti a felületet
