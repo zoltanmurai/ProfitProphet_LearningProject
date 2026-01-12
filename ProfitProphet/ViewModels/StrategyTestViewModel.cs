@@ -15,6 +15,7 @@ namespace ProfitProphet.ViewModels
     {
         private readonly BacktestService _backtestService;
         private readonly List<Candle> _candles;
+        public event Action<BacktestResult> OnTestFinished;
 
         // Paraméterek (a VBA-ban Steps, MAOnCMF1, MA)
         public int CmfPeriod { get; set; } = 20;
@@ -57,7 +58,8 @@ namespace ProfitProphet.ViewModels
                 PriceMaPeriod
             );
 
-            Result = res; // Ez frissíti a felületet
+            Result = res; // frissíti a felületet
+            OnTestFinished?.Invoke(res); // ESEMÉNY
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

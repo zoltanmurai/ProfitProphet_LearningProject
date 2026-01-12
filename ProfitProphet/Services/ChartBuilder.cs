@@ -290,6 +290,71 @@ namespace ProfitProphet.Services
             return Model;
         }
 
+        // nyilak kirajzolása
+        public void ShowTradeMarkers(List<TradeRecord> trades)
+        {
+            if (Model == null || _xAxis == null) return;
+
+            // 1. Előző nyilak törlése 
+            var oldAnnotations = Model.Annotations.Where(a => a.Tag is string t && t == "TradeMarker").ToList();
+            foreach (var ann in oldAnnotations)
+            {
+                Model.Annotations.Remove(ann);
+            }
+
+            // 2. Új nyilak kirajzolása
+            foreach (var trade in trades)
+            {
+                // VÉTEL JEL (Zöld nyíl felfelé)
+                double xIndex = Axis.ToDouble(trade.EntryDate);
+
+                // Mivel CategoryAxis-t használunk, a dátumot vissza kell keresni
+                var candleIndex = _candles.FindIndex(c => c.Timestamp == trade.EntryDate);
+                if (candleIndex >= 0)
+                {
+                    var buyArrow = new PointAnnotation
+                    {
+                        X = candleIndex,
+                        Y = (double)trade.EntryPrice,
+                        Shape = MarkerType.Triangle,
+                        Fill = OxyColors.LimeGreen,
+                        Stroke = OxyColors.Black,
+                        StrokeThickness = 1,
+                        Size = 10,
+                        Text = "B", // Buy
+                        TextVerticalAlignment = VerticalAlignment.Top, // Szöveg a pont alatt
+                        ToolTip = $"Vétel: {trade.EntryDate:yyyy-MM-dd} @ {trade.EntryPrice}",
+                        Tag = "TradeMarker",
+                        Layer = AnnotationLayer.AboveSeries
+                    };
+                    Model.Annotations.Add(buyArrow);
+                }
+
+                // ELADÁS JEL (Piros nyíl)
+                var exitIndex = _candles.FindIndex(c => c.Timestamp == trade.ExitDate);
+                if (exitIndex >= 0)
+                {
+                    var sellMarker = new PointAnnotation
+                    {
+                        X = exitIndex,
+                        Y = (double)trade.ExitPrice,
+                        Shape = MarkerType.Cross, // X jelöli a kiszállót
+                        Fill = OxyColors.Red,
+                        Stroke = OxyColors.Red,
+                        StrokeThickness = 2,
+                        Size = 8,
+                        ToolTip = $"Eladás: {trade.ExitDate:yyyy-MM-dd} @ {trade.ExitPrice}\nProfit: {trade.Profit:C2}",
+                        Tag = "TradeMarker",
+                        Layer = AnnotationLayer.AboveSeries
+                    };
+                    Model.Annotations.Add(sellMarker);
+                }
+            }
+
+            // 3. Frissítés
+            Model.InvalidatePlot(true);
+        }
+
         private void AddGapMarkers()
         {
             for (int i = 0; i < _candles.Count; i++)

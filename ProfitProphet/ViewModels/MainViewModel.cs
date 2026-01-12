@@ -23,6 +23,7 @@ namespace ProfitProphet.ViewModels
     {
         private readonly IAppSettingsService _settingsService;
         private readonly DataService _dataService;
+        private readonly ChartBuilder _chartBuilder = new ChartBuilder();
         private AppSettings _settings;
 
         private string _selectedSymbol;
@@ -361,6 +362,14 @@ namespace ProfitProphet.ViewModels
             }
 
             var vm = new StrategyTestViewModel(candles, SelectedSymbol);
+
+            // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat
+            vm.OnTestFinished += (result) =>
+            {
+                // MainViewModel-ben lévő chartBuilder példány
+                _chartBuilder.ShowTradeMarkers(result.Trades);
+            };
+
             var win = new Views.StrategyTestWindow(vm);
             win.Show();
         }
