@@ -96,12 +96,13 @@ namespace ProfitProphet.ViewModels
         public ChartViewModel(
             IAppSettingsService settingsService,
             AppSettings appSettings,
-            Func<string, string, Task<List<ChartBuilder.CandleData>>> loadCandlesAsync)
+            Func<string, string, Task<List<ChartBuilder.CandleData>>> loadCandlesAsync,
+            ChartBuilder chartBuilder)
         {
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
 
-            _chartBuilder = new ChartBuilder();
+            _chartBuilder = chartBuilder;
             _loadCandlesAsync = loadCandlesAsync ?? throw new ArgumentNullException(nameof(loadCandlesAsync));
 
             AddIndicatorWithDialogCommand = new RelayCommand(_ => AddIndicatorWithDialog(), _ => HasChartData);

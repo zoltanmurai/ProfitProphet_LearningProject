@@ -169,7 +169,8 @@ namespace ProfitProphet.ViewModels
                 }
 
                 return MapToCandleData(list);
-            });
+            },
+            _chartBuilder);
 
             Intervals = new ObservableCollection<IntervalItem>
             {
