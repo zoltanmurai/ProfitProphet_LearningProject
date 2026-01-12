@@ -1,4 +1,5 @@
 ﻿using ProfitProphet.Entities;
+using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Services;
 using ProfitProphet.ViewModels.Commands;
 using System;
@@ -8,6 +9,9 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 
 namespace ProfitProphet.ViewModels
 {
@@ -23,6 +27,13 @@ namespace ProfitProphet.ViewModels
         public int PriceMaPeriod { get; set; } = 50;
 
         public string Symbol { get; set; }
+
+        private PlotModel _equityModel;
+        public PlotModel EquityModel
+        {
+            get => _equityModel;
+            set { _equityModel = value; OnPropertyChanged(); }
+        }
 
         // Eredmény megjelenítéséhez
         private BacktestResult _result;
@@ -59,7 +70,56 @@ namespace ProfitProphet.ViewModels
             );
 
             Result = res; // frissíti a felületet
+            CreateEquityChart(res.EquityCurve);
             OnTestFinished?.Invoke(res); // ESEMÉNY
+        }
+
+        private void CreateEquityChart(List<EquityPoint> points)
+        {
+            var model = new PlotModel
+            {
+                Title = "Tőke Növekedés",
+                TextColor = OxyColors.White,
+                PlotAreaBorderColor = OxyColors.Transparent
+            };
+
+            // X tengely (Dátum)
+            model.Axes.Add(new DateTimeAxis
+            {
+                Position = AxisPosition.Bottom,
+                StringFormat = "yyyy.MM.dd",
+                TextColor = OxyColors.LightGray,
+                AxislineColor = OxyColors.Gray,
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray)
+            });
+
+            // Y tengely (Pénz)
+            model.Axes.Add(new LinearAxis
+            {
+                Position = AxisPosition.Left,
+                TextColor = OxyColors.LightGray,
+                AxislineColor = OxyColors.Gray,
+                MajorGridlineStyle = LineStyle.Solid,
+                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray),
+                StringFormat = "N0" // Ezres tagolás
+            });
+
+            // A Vonal
+            var series = new LineSeries
+            {
+                Color = OxyColors.LimeGreen, // Nyerő szín :)
+                StrokeThickness = 2,
+                MarkerType = MarkerType.None
+            };
+
+            foreach (var p in points)
+            {
+                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(p.Time), p.Equity));
+            }
+
+            model.Series.Add(series);
+            EquityModel = model;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

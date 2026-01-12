@@ -3,6 +3,7 @@ using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
 using ProfitProphet.Entities;
+using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Models.Charting;
 using ProfitProphet.Services.Charting;
 using ProfitProphet.Services.Indicators;

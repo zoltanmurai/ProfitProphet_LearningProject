@@ -1,32 +1,11 @@
 ﻿using ProfitProphet.Entities;
+using ProfitProphet.Models.Backtesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace ProfitProphet.Services
 {
-    public class BacktestResult
-    {
-        public string Symbol { get; set; } = string.Empty;
-        public double TotalProfitLoss { get; set; }
-        public int TradeCount { get; set; }
-        public double WinRate { get; set; }
-        public double MaxDrawdown { get; set; }
-        public double Score { get; set; } // VBA logika: PL - (0.5 * DD)
-        public List<TradeRecord> Trades { get; set; } = new();
-    }
-
-    public class TradeRecord
-    {
-        public DateTime EntryDate { get; set; }
-        public decimal EntryPrice { get; set; }
-        public DateTime ExitDate { get; set; }
-        public decimal ExitPrice { get; set; }
-        public decimal Profit { get; set; }
-        public decimal ProfitPercent { get; set; }
-        public string Type { get; set; } = "Long";
-    }
-
     public class BacktestService
     {
         public BacktestResult RunBacktest(
@@ -61,6 +40,8 @@ namespace ProfitProphet.Services
             // Drawdown & Score változók
             double peakEquity = initialCash;
             double maxDrawdownVal = 0; // abszolút értékben
+
+            result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = initialCash });
 
             for (int i = 1; i < candles.Count; i++)
             {
@@ -119,6 +100,12 @@ namespace ProfitProphet.Services
                         trade.ProfitPercent = (trade.ExitPrice - trade.EntryPrice) / trade.EntryPrice * 100;
 
                     result.Trades.Add(trade);
+
+                    result.EquityCurve.Add(new EquityPoint
+                    {
+                        Time = candles[i].TimestampUtc,
+                        Equity = cash
+                    });
 
                     inPosition = false;
                     holdings = 0;
