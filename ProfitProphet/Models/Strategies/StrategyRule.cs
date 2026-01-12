@@ -1,33 +1,80 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProfitProphet.Models.Strategies
 {
-    public class StrategyRule
+    // Mostantól ez is értesíti a felületet a változásokról
+    public class StrategyRule : INotifyPropertyChanged
     {
-        // --- BAL OLDAL (Mindig egy indikátor vagy árfolyam adat) ---
-        public string LeftIndicatorName { get; set; } // Pl. "CMF", "Close", "RSI"
-        public int LeftPeriod { get; set; }           // Pl. 20
+        private string _leftIndicatorName;
+        public string LeftIndicatorName
+        {
+            get => _leftIndicatorName;
+            set { _leftIndicatorName = value; OnPropertyChanged(); }
+        }
 
-        // --- KÖZÉP (Operátor) ---
-        public ComparisonOperator Operator { get; set; } // Pl. CrossesAbove
+        private int _leftPeriod;
+        public int LeftPeriod
+        {
+            get => _leftPeriod;
+            set { _leftPeriod = value; OnPropertyChanged(); }
+        }
 
-        // --- JOBB OLDAL (Lehet indikátor VAGY fix szám) ---
-        public DataSourceType RightSourceType { get; set; } = DataSourceType.Value;
+        private ComparisonOperator _operator;
+        public ComparisonOperator Operator
+        {
+            get => _operator;
+            set { _operator = value; OnPropertyChanged(); }
+        }
 
-        // Ha indikátor van a jobb oldalon:
-        public string RightIndicatorName { get; set; } // Pl. "SMA"
-        public int RightPeriod { get; set; }           // Pl. 50
+        private DataSourceType _rightSourceType = DataSourceType.Value;
+        public DataSourceType RightSourceType
+        {
+            get => _rightSourceType;
+            set
+            {
+                if (_rightSourceType != value)
+                {
+                    _rightSourceType = value;
+                    OnPropertyChanged();
 
-        // Ha fix szám van a jobb oldalon:
-        public double RightValue { get; set; }         // Pl. 0
+                    // EZ A KULCS: Ha a típus változik, szólunk, 
+                    // hogy a "IsRightSideIndicator" tulajdonság is megváltozott!
+                    // Így a felület tudni fogja, hogy cserélni kell a mezőket.
+                    OnPropertyChanged(nameof(IsRightSideIndicator));
+                }
+            }
+        }
 
+        private string _rightIndicatorName;
+        public string RightIndicatorName
+        {
+            get => _rightIndicatorName;
+            set { _rightIndicatorName = value; OnPropertyChanged(); }
+        }
+
+        private int _rightPeriod;
+        public int RightPeriod
+        {
+            get => _rightPeriod;
+            set { _rightPeriod = value; OnPropertyChanged(); }
+        }
+
+        private double _rightValue;
+        public double RightValue
+        {
+            get => _rightValue;
+            set { _rightValue = value; OnPropertyChanged(); }
+        }
+
+        // Ez a segédproperty vezérli a láthatóságot
         public bool IsRightSideIndicator => RightSourceType == DataSourceType.Indicator;
 
-        // Megjelenítéshez (hogy olvasható legyen a listában)
         public override string ToString()
         {
             string left = $"{LeftIndicatorName}({LeftPeriod})";
@@ -45,6 +92,13 @@ namespace ProfitProphet.Models.Strategies
                 : $"{RightValue}";
 
             return $"{left} {op} {right}";
+        }
+
+        // --- INotifyPropertyChanged Implementáció ---
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
