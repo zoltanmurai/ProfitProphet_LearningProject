@@ -1,17 +1,18 @@
-﻿using ProfitProphet.Entities;
+﻿using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using ProfitProphet.Entities;
 using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Services;
 using ProfitProphet.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 
 namespace ProfitProphet.ViewModels
 {
@@ -27,6 +28,20 @@ namespace ProfitProphet.ViewModels
         public int PriceMaPeriod { get; set; } = 50;
 
         public string Symbol { get; set; }
+
+        private DateTime _startDate;
+        public DateTime StartDate
+        {
+            get => _startDate;
+            set { _startDate = value; OnPropertyChanged(); }
+        }
+
+        private DateTime _endDate;
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set { _endDate = value; OnPropertyChanged(); }
+        }
 
         private PlotModel _equityModel;
         public PlotModel EquityModel
@@ -51,6 +66,17 @@ namespace ProfitProphet.ViewModels
             Symbol = symbol;
             _backtestService = new BacktestService();
             RunCommand = new RelayCommand(_ => RunTest());
+
+            if (_candles.Any())
+            {
+                StartDate = _candles.First().TimestampUtc; // Vagy: DateTime.Now.AddYears(-1);
+                EndDate = _candles.Last().TimestampUtc;
+            }
+            else
+            {
+                StartDate = DateTime.Now.AddYears(-1);
+                EndDate = DateTime.Now;
+            }
         }
 
         private void RunTest()
@@ -61,9 +87,21 @@ namespace ProfitProphet.ViewModels
                 return;
             }
 
+            var filteredCandles = _candles
+                .Where(c => c.TimestampUtc.Date >= StartDate.Date && c.TimestampUtc.Date <= EndDate.Date)
+                .OrderBy(c => c.TimestampUtc)
+                .ToList();
+
+            if (filteredCandles.Count < 50) // Ha túl kevés adat maradt
+            {
+                // Itt jelezhetnénk hibát, de most csak simán nem futtatjuk
+                return;
+            }
+
             // Futtatás
             var res = _backtestService.RunBacktest(
-                _candles,
+                //_candles,
+                filteredCandles,
                 CmfPeriod,
                 CmfMaPeriod,
                 PriceMaPeriod

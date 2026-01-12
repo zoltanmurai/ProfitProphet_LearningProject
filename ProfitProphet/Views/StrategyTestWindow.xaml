@@ -12,6 +12,19 @@
         <StackPanel Grid.Column="0" Margin="0,0,10,0">
             <TextBlock Text="Paraméterek" FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
 
+            <TextBlock Text="Időszak Kezdete:" Foreground="Gray" Margin="0,5,0,5"/>
+            <DatePicker SelectedDate="{Binding StartDate}" 
+                            Background="#3E3E42" 
+                            Foreground="Black"
+                            BorderBrush="Gray"/>
+
+            <TextBlock Text="Időszak Vége:" Foreground="Gray" Margin="0,10,0,5"/>
+            <DatePicker SelectedDate="{Binding EndDate}" 
+                            Background="#3E3E42" 
+                            Foreground="Black"
+                            BorderBrush="Gray"
+                            Margin="0,0,0,20"/>
+
             <TextBlock Text="CMF Periódus:" Foreground="LightGray"/>
             <TextBox Text="{Binding CmfPeriod}" Margin="0,0,0,10" Padding="3"/>
 
