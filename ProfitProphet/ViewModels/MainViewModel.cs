@@ -2,6 +2,8 @@
 using ProfitProphet.Data;
 using ProfitProphet.DTOs;
 using ProfitProphet.Services;
+using ProfitProphet.Services.Charting;
+using ProfitProphet.Services.Indicators;
 using ProfitProphet.Settings;
 using ProfitProphet.ViewModels.Commands;
 using ProfitProphet.Views;
@@ -23,7 +25,7 @@ namespace ProfitProphet.ViewModels
     {
         private readonly IAppSettingsService _settingsService;
         private readonly DataService _dataService;
-        private readonly ChartBuilder _chartBuilder = new ChartBuilder();
+        private readonly ChartBuilder _chartBuilder;
         private AppSettings _settings;
 
         private string _selectedSymbol;
@@ -108,8 +110,26 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-        public MainViewModel()
+        //public MainViewModel()
+        //{
+        public MainViewModel(
+            IStockApiClient apiClient,
+            DataService dataService,
+            IAppSettingsService settingsService,
+            IIndicatorRegistry indicatorRegistry,
+            IChartSettingsService chartSettingsService,
+            // ÚJ PARAMÉTER ITT:
+            ChartBuilder chartBuilder
+            )
         {
+            _apiClient = apiClient;
+            _dataService = dataService;
+            _settingsService = settingsService;
+            _indicatorRegistry = indicatorRegistry;
+            _chartSettingsService = chartSettingsService;
+
+            // ITT MENTJÜK EL A KÖZÖS PÉLDÁNYT:
+            _chartBuilder = chartBuilder;
             var cfgPath = System.IO.Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "ProfitProphet", "settings.json");
