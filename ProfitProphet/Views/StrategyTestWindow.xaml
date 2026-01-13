@@ -32,12 +32,48 @@
                 <DatePicker SelectedDate="{Binding EndDate}" Margin="0,0,0,20"
                             Background="#3E3E42" Foreground="Black" BorderBrush="Gray"/>
 
-                <TextBlock Text="Kezdőtőke:" Foreground="Gray" Margin="0,5,0,5"/>
-                <TextBox Text="{Binding InitialCash, StringFormat=N0}" 
-                         Padding="5" 
-                         Background="#3E3E42" 
-                         Foreground="White" 
-                         BorderBrush="Gray"/>
+                <GroupBox Header="Pénzügyek és Jutalékok" Margin="0,10,0,0" Foreground="LightGray" BorderBrush="#444">
+                    <StackPanel Margin="5">
+
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Text="Kezdő Tőke ($):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
+                            <TextBox Text="{Binding InitialCash}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
+                        </DockPanel>
+
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Text="Kötés Típus:" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
+
+                            <ComboBox ItemsSource="{Binding AmountTypes}" 
+                                  SelectedItem="{Binding CurrentProfile.AmountType}"
+                                  Width="120" Margin="0,0,5,0"/>
+
+                            <TextBox Text="{Binding CurrentProfile.TradeAmount}" Width="60" 
+                                 ToolTip="Írd be az értéket (Darab, Dollár vagy %)" 
+                                 Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
+                        </DockPanel>
+
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Text="Kötés Méret:" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
+                            <TextBox Text="{Binding CurrentProfile.TradeAmount}" ToolTip="Fix összeg ($) vagy Darab" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
+                        </DockPanel>
+
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Text="Jutalék (%):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
+                            <TextBox Text="{Binding CurrentProfile.CommissionPercent}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
+                        </DockPanel>
+
+                        <DockPanel Margin="0,0,0,5">
+                            <TextBlock Text="Min. Díj ($):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
+                            <TextBox Text="{Binding CurrentProfile.MinCommission}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
+                        </DockPanel>
+
+                        <DockPanel>
+                            <TextBlock Text="Napi Swap ($):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
+                            <TextBox Text="{Binding CurrentProfile.DailySwap}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
+                        </DockPanel>
+
+                    </StackPanel>
+                </GroupBox>
 
                 <Separator Background="#3E3E42" Margin="0,20,0,20"/>
      

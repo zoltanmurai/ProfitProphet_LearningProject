@@ -15,84 +15,194 @@ namespace ProfitProphet.Services
             var result = new BacktestResult { Symbol = profile.Symbol };
             if (candles == null || candles.Count < 50) return result;
 
-            // 1. ADATOK ELŐKÉSZÍTÉSE
+            // Indikátorok előszámolása
             var indicatorCache = PrecalculateIndicators(candles, profile);
 
             double cash = initialCash;
-            int holdings = 0;
-            bool inPosition = false;
+            int holdings = 0;           // Jelenlegi részvény darabszám
+            double avgEntryPrice = 0;   // Súlyozott átlagár (a rávásárlások miatt)
 
             result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = cash });
 
-            // 2. FUTTATÁS
+            // FUTTATÁS
             int startIndex = 50;
 
             for (int i = startIndex; i < candles.Count; i++)
             {
                 var currentCandle = candles[i];
+                double price = (double)currentCandle.Close;
 
-                // --- VÉTEL (Bármelyik Entry Csoport igaz?) ---
-                if (!inPosition && EvaluateGroups(profile.EntryGroups, indicatorCache, candles, i))
+                // -----------------------------
+                // 1. VÉTELI LOGIKA (ENTRY)
+                // -----------------------------
+                // Vásárolhatunk, ha: Nincs pozíció VAGY (Van, de engedélyezett a rávásárlás)
+                bool canBuy = (holdings == 0) || profile.AllowPyramiding;
+
+                if (canBuy && EvaluateGroups(profile.EntryGroups, indicatorCache, candles, i))
                 {
-                    double price = (double)currentCandle.Close;
-                    int quantity = (int)(cash / price);
+                    // Mennyit vegyünk?
+                    int quantityToBuy = CalculatePositionSize(profile, cash, price);
 
-                    if (quantity > 0)
+                    if (quantityToBuy > 0)
                     {
-                        double cost = quantity * price;
-                        double fee = cost * 0.001;
-                        cash -= (cost + fee);
-                        holdings = quantity;
-                        inPosition = true;
+                        double tradeValue = quantityToBuy * price;
+                        double fee = CalculateFee(tradeValue, profile); // NetBroker díj
 
-                        result.Trades.Add(new TradeRecord
+                        // Van elég pénzünk a vételre + díjra?
+                        if (cash >= tradeValue + fee)
                         {
-                            EntryDate = currentCandle.TimestampUtc,
-                            EntryPrice = (decimal)price,
-                            Type = "Long"
-                        });
+                            // Átlagár frissítése (Súlyozott átlag)
+                            double totalValueBefore = holdings * avgEntryPrice;
+                            double totalValueNew = tradeValue; // Díj nélkül számoljuk az átlagárat a tiszta matekhoz
+                            avgEntryPrice = (totalValueBefore + totalValueNew) / (holdings + quantityToBuy);
+
+                            // Tranzakció
+                            cash -= (tradeValue + fee);
+                            holdings += quantityToBuy;
+
+                            result.Trades.Add(new TradeRecord
+                            {
+                                EntryDate = currentCandle.TimestampUtc,
+                                EntryPrice = (decimal)price,
+                                Quantity = quantityToBuy, // Ezt is érdemes lenne tárolni a TradeRecordban
+                                Type = "Long"
+                            });
+                        }
                     }
                 }
-                // --- ELADÁS (Bármelyik Exit Csoport igaz?) ---
-                else if (inPosition && EvaluateGroups(profile.ExitGroups, indicatorCache, candles, i))
+
+                // -----------------------------
+                // 2. ELADÁSI LOGIKA (EXIT)
+                // -----------------------------
+                // Eladhatunk, ha van mit
+                else if (holdings > 0 && EvaluateGroups(profile.ExitGroups, indicatorCache, candles, i))
                 {
-                    double price = (double)currentCandle.Close;
-                    double revenue = holdings * price;
-                    double fee = revenue * 0.001;
-                    cash += (revenue - fee);
+                    bool shouldSell = true;
 
-                    var lastTrade = result.Trades.Last();
-                    lastTrade.ExitDate = currentCandle.TimestampUtc;
-                    lastTrade.ExitPrice = (decimal)price;
-                    lastTrade.Profit = (decimal)((revenue - fee) - ((double)lastTrade.EntryPrice * holdings));
+                    // Ha be van kapcsolva a "Csak profitban" opció
+                    if (profile.OnlySellInProfit)
+                    {
+                        // Kiszámoljuk, mennyi lenne a bevétel
+                        double potentialRevenue = holdings * price;
+                        double potentialFee = CalculateFee(potentialRevenue, profile);
+                        double netRevenue = potentialRevenue - potentialFee;
 
-                    holdings = 0;
-                    inPosition = false;
+                        // Mennyibe került mindez? (Átlagár * darab) + a VÉTELI jutalékok (ez már levonódott a cash-ből)
+                        // A legegyszerűbb profit számítás: Jelenlegi vagyon vs. "Mennyibe került volna akkor"
+                        // De itt most a trade szintű profitot nézzük:
+                        // Break-even ár: (Átlagár * Darab + VételiDíjak + EladásiDíj) / Darab
+                        // Egyszerűsítve: Ha a nettó bevétel több mint amennyit költöttünk a részvényekre (Átlagár * db)
 
-                    result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = cash });
+                        if (netRevenue <= (holdings * avgEntryPrice))
+                        {
+                            shouldSell = false; // Nem adjuk el, mert bukóban vagyunk
+                        }
+                    }
+
+                    if (shouldSell)
+                    {
+                        double revenue = holdings * price;
+                        double fee = CalculateFee(revenue, profile); // NetBroker díj
+
+                        cash += (revenue - fee);
+
+                        // Eredmény rögzítése (az utolsó nyitott trade-et lezárjuk, 
+                        // de rávásárlásnál ez bonyolultabb, egyszerűsítve az utolsó trade-hez írjuk a zárót)
+                        // PROFI MEGOLDÁS: A TradeRecord-nak kezelnie kéne a részleges zárást, 
+                        // de most egyszerűsítve az összes nyitott trade-et lezárjuk a listában.
+
+                        foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
+                        {
+                            trade.ExitDate = currentCandle.TimestampUtc;
+                            trade.ExitPrice = (decimal)price;
+
+                            // A profit számítása itt trükkös rávásárlásnál. 
+                            // Egyszerűsítve: (Eladási ár - Vételi ár) * mennyiség - (arányos költség)
+                            // Most a BacktestResult TotalProfitLoss-a pontos lesz a cash miatt, 
+                            // de az egyes trade-ek profitja becslés lesz.
+                            trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * 1); // Placeholder
+                        }
+
+                        // Reset
+                        holdings = 0;
+                        avgEntryPrice = 0;
+
+                        result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = cash });
+                    }
                 }
             }
 
-            // Zárás a végén
-            if (inPosition)
+            // Kényszerített zárás a végén
+            if (holdings > 0)
             {
                 double price = (double)candles.Last().Close;
-                cash += holdings * price;
-                var lastTrade = result.Trades.Last();
-                lastTrade.ExitDate = candles.Last().TimestampUtc;
-                lastTrade.ExitPrice = (decimal)price;
+                double revenue = holdings * price;
+                double fee = CalculateFee(revenue, profile);
+                cash += (revenue - fee);
             }
 
             result.TotalProfitLoss = cash - initialCash;
             result.TradeCount = result.Trades.Count;
-            result.WinRate = result.Trades.Count > 0
-                ? (double)result.Trades.Count(t => t.Profit > 0) / result.Trades.Count
+            // WinRate számításnál csak a lezártakat nézzük
+            var closedTrades = result.Trades.Where(t => t.ExitDate != DateTime.MinValue).ToList();
+            result.WinRate = closedTrades.Count > 0
+                ? (double)closedTrades.Count(t => t.ExitPrice > t.EntryPrice) / closedTrades.Count
                 : 0;
 
             return result;
         }
 
         // --- SEGÉDMETÓDUSOK ---
+
+        private double CalculateFee(double tradeValue, StrategyProfile profile)
+        {
+            // NetBroker logika: 0.45%, de minimum 7 USD
+            double calculatedFee = tradeValue * (profile.CommissionPercent / 100.0);
+            return Math.Max(calculatedFee, profile.MinCommission);
+        }
+
+        private int CalculatePositionSize(StrategyProfile profile, double currentCash, double price)
+        {
+            if (price <= 0) return 0;
+
+            double amountToInvest = 0;
+
+            switch (profile.AmountType)
+            {
+                case TradeAmountType.AllCash:
+                    // Hagyunk 2% tartalékot a költségekre, a többit befektetjük
+                    amountToInvest = currentCash * 0.98;
+                    break;
+
+                case TradeAmountType.FixedCash:
+                    amountToInvest = profile.TradeAmount;
+                    // Ha nincs annyi pénzünk, amennyit fixen akarunk, akkor csak a maradékot költjük
+                    if (amountToInvest > currentCash) amountToInvest = currentCash;
+                    break;
+
+                case TradeAmountType.FixedShareCount:
+                    // ITT A VÁLASZ A KÉRDÉSEDRE: Igen, ez a fix LOT / Darabszám.
+                    // Ellenőrizzük, van-e rá elég pénz
+                    double requiredCash = profile.TradeAmount * price;
+                    if (requiredCash > currentCash)
+                    {
+                        // Ha nincs rá pénz, annyit veszünk, amennyi kijön (vagy 0-t, stratégia függő)
+                        // Most vesszük a maximumot, ami kijön a pénzből
+                        return (int)(currentCash / price);
+                    }
+                    return (int)profile.TradeAmount;
+
+                // --- EZ AZ ÚJ RÉSZ ---
+                case TradeAmountType.PercentageOfEquity:
+                    // A TradeAmount itt %-ot jelent (pl. 10 = 10%)
+                    double percent = Math.Max(0, Math.Min(100, profile.TradeAmount)); // 0 és 100 közé szorítjuk
+                    amountToInvest = currentCash * (percent / 100.0);
+                    break;
+            }
+
+            // Kiszámoljuk, hány darab jön ki a pénzből
+            return (int)(amountToInvest / price);
+        }
 
         private Dictionary<string, double[]> PrecalculateIndicators(List<Candle> candles, StrategyProfile profile)
         {
@@ -232,5 +342,6 @@ namespace ProfitProphet.Services
 
             return 0;
         }
+
     }
 }

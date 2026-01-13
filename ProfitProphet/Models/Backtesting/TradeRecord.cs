@@ -15,5 +15,6 @@ namespace ProfitProphet.Models.Backtesting
         public decimal Profit { get; set; }
         public decimal ProfitPercent { get; set; }
         public string Type { get; set; } = "Long";
+        public int Quantity { get; internal set; }
     }
 }

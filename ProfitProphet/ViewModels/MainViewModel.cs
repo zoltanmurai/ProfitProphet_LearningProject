@@ -41,6 +41,7 @@ namespace ProfitProphet.ViewModels
         private bool _isRefreshing;
         private bool _autoRefreshEnabled;
         private int _refreshIntervalMinutes = 5;
+        private Dictionary<string, List<TradeRecord>> _tradeCache = new Dictionary<string, List<TradeRecord>>();
 
         public ObservableCollection<string> Watchlist { get; }
         public ObservableCollection<IntervalItem> Intervals { get; }
@@ -61,7 +62,22 @@ namespace ProfitProphet.ViewModels
                 if (Set(ref _selectedSymbol, value))
                 {
                     // Forward selection to ChartVM (it will reload itself)
-                    ChartVM.CurrentSymbol = value;
+                    //ChartVM.CurrentSymbol = value;
+                    if (Set(ref _selectedSymbol, value))
+                    {
+                        ChartVM.CurrentSymbol = value;
+
+                        // Trükk: Elindítunk egy névtelen aszinkron feladatot, ami megvárja a betöltést,
+                        // és utána visszarakja a nyilakat.
+                        _ = Task.Run(async () => {
+                            // Várunk egy picit, hogy a ChartVM biztosan elinduljon a Reload-dal
+                            await Task.Delay(100);
+                            // Megvárjuk, amíg a ChartVM végez (feltételezve, hogy az InitializeAsync-et hívja)
+                            await ChartVM.InitializeAsync();
+                            // Ha kész a chart, jöhetnek a nyilak
+                            Application.Current.Dispatcher.Invoke(() => RestoreSavedMarkers());
+                        });
+                    }
                 }
             }
         }
@@ -76,7 +92,22 @@ namespace ProfitProphet.ViewModels
                     _settings.DefaultInterval = value;
                     _ = _settingsService.SaveSettingsAsync(_settings);
                     // Forward interval change to ChartVM
-                    ChartVM.CurrentInterval = value;
+                    //ChartVM.CurrentInterval = value;
+                    if (Set(ref _selectedSymbol, value))
+                    {
+                        ChartVM.CurrentInterval = value;
+
+                        // Trükk: Elindítunk egy névtelen aszinkron feladatot, ami megvárja a betöltést,
+                        // és utána visszarakja a nyilakat.
+                        _ = Task.Run(async () => {
+                            // Várunk egy picit, hogy a ChartVM biztosan elinduljon a Reload-dal
+                            await Task.Delay(100);
+                            // Megvárjuk, amíg a ChartVM végez (feltételezve, hogy az InitializeAsync-et hívja)
+                            await ChartVM.InitializeAsync();
+                            // Ha kész a chart, jöhetnek a nyilak
+                            Application.Current.Dispatcher.Invoke(() => RestoreSavedMarkers());
+                        });
+                    }
                 }
             }
         }
@@ -271,6 +302,7 @@ namespace ProfitProphet.ViewModels
             {
                 IsRefreshing = false;
             }
+            RestoreSavedMarkers();
         }
 
         private async Task HandleAutoRefreshToggleAsync(bool enabled)
@@ -381,6 +413,7 @@ namespace ProfitProphet.ViewModels
 
             // Adatok lekérése a teszthez (lokális DB-ből)
             var candles = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
+            var vm = new StrategyTestViewModel(candles, SelectedSymbol, _strategyService);
 
             if (candles == null || candles.Count == 0)
             {
@@ -388,11 +421,13 @@ namespace ProfitProphet.ViewModels
                 return;
             }
 
-            var vm = new StrategyTestViewModel(candles, SelectedSymbol, _strategyService);
-
             // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat
             vm.OnTestFinished += (result) =>
             {
+                if (_tradeCache.ContainsKey(result.Symbol))
+                    _tradeCache[result.Symbol] = result.Trades;
+                else
+                    _tradeCache.Add(result.Symbol, result.Trades);
                 // MainViewModel-ben lévő chartBuilder példány
                 _chartBuilder.ShowTradeMarkers(result.Trades);
             };
@@ -432,6 +467,21 @@ namespace ProfitProphet.ViewModels
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+
+
+        private void RestoreSavedMarkers()
+        {
+            if (!string.IsNullOrEmpty(SelectedSymbol) && _tradeCache.ContainsKey(SelectedSymbol))
+            {
+                var savedTrades = _tradeCache[SelectedSymbol];
+                if (savedTrades != null && savedTrades.Count > 0)
+                {
+                    // Visszatesszük a nyilakat a közös _chartBuilder segítségével
+                    _chartBuilder.ShowTradeMarkers(savedTrades);
+                }
+            }
+        }
+
 
         protected bool Set<T>(ref T field, T value, [CallerMemberName] string name = null)
         {

@@ -94,6 +94,17 @@
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
             <TextBlock Text="Stratégia Szerkesztő (Logikai Mód)" FontSize="22" FontWeight="Bold" Foreground="White"/>
             <TextBlock Text="A csoportok között VAGY kapcsolat, a csoportokon belül ÉS kapcsolat van." Foreground="Gray" FontStyle="Italic"/>
+            
+            <StackPanel Orientation="Vertical" Margin="0,0,0,0">
+                <TextBlock Text="Extra beállítások:" Foreground="White" FontStyle="Italic" Margin="0,10,0,0"/>
+                <CheckBox Content="Rávásárlás engedélyezése (Pyramiding)" 
+                          IsChecked="{Binding Profile.AllowPyramiding}" 
+                          Foreground="White" Margin="10,0,20,0"/>
+
+                <CheckBox Content="Csak Profitban Zárás" 
+                          IsChecked="{Binding Profile.OnlySellInProfit}" 
+                          Foreground="White" ToolTip="Csak akkor ad el jelzésre, ha az árfolyam > átlagár + költségek" Margin="10,0,20,0"/>
+            </StackPanel>
         </StackPanel>
 
         <Grid Grid.Row="1">

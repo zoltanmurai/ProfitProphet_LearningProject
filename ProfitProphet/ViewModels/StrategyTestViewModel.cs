@@ -42,6 +42,8 @@ namespace ProfitProphet.ViewModels
             set { _initialCash = value; OnPropertyChanged(); }
         }
 
+        public IEnumerable<TradeAmountType> AmountTypes => Enum.GetValues(typeof(TradeAmountType)).Cast<TradeAmountType>();
+
         private DateTime _startDate;
         public DateTime StartDate
         {
