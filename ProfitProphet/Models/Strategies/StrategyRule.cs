@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProfitProphet.Models.Strategies
 {
@@ -16,14 +11,13 @@ namespace ProfitProphet.Models.Strategies
         public string LeftIndicatorName
         {
             get => _leftIndicatorName;
-            set
-            {
+            set 
+            { 
                 if (_leftIndicatorName != value)
                 {
-                    _leftIndicatorName = value;
+                    _leftIndicatorName = value; 
                     OnPropertyChanged();
-                    // HA VÁLTOZIK A BAL OLDAL, VÁLTOZZON A JOBB OLDAL!
-                    UpdateAllowedRightIndicators();
+                    UpdateAllowedRightIndicators(); // Frissítjük a jobb oldali listát!
                 }
             }
         }
@@ -42,6 +36,7 @@ namespace ProfitProphet.Models.Strategies
             set { _operator = value; OnPropertyChanged(); }
         }
 
+        // --- JOBB OLDAL TÍPUS ---
         private DataSourceType _rightSourceType = DataSourceType.Value;
         public DataSourceType RightSourceType
         {
@@ -52,12 +47,13 @@ namespace ProfitProphet.Models.Strategies
                 {
                     _rightSourceType = value;
                     OnPropertyChanged();
-
+                    // Szólunk a UI-nak, hogy változott a láthatóság!
                     OnPropertyChanged(nameof(IsRightSideIndicator));
                 }
             }
         }
 
+        // --- JOBB OLDAL ADATOK ---
         private string _rightIndicatorName;
         public string RightIndicatorName
         {
@@ -79,6 +75,7 @@ namespace ProfitProphet.Models.Strategies
             set { _rightValue = value; OnPropertyChanged(); }
         }
 
+        // --- OKOS LISTA (Context Aware) ---
         private ObservableCollection<string> _allowedRightIndicators;
         public ObservableCollection<string> AllowedRightIndicators
         {
@@ -86,82 +83,68 @@ namespace ProfitProphet.Models.Strategies
             set { _allowedRightIndicators = value; OnPropertyChanged(); }
         }
 
+        // Ez vezérli a mezők eltüntetését/megjelenítését
+        public bool IsRightSideIndicator => RightSourceType == DataSourceType.Indicator;
+
         public StrategyRule()
         {
             AllowedRightIndicators = new ObservableCollection<string>();
+            // Alapértelmezett lista
+            UpdateAllowedRightIndicators(); 
         }
 
+        // --- AZ AGY: ITT DÖNTJÜK EL, MIT AJÁNLUNK FEL ---
         private void UpdateAllowedRightIndicators()
         {
+            // Ha null a lista, létrehozzuk
+            if (AllowedRightIndicators == null) AllowedRightIndicators = new ObservableCollection<string>();
             AllowedRightIndicators.Clear();
 
             switch (LeftIndicatorName)
             {
                 case "CMF":
-                    // CMF-hez csak a saját mozgóátlaga illik
                     AllowedRightIndicators.Add("CMF_MA");
-                    // Esetleg beállíthatjuk alapértelmezettnek is rögtön:
-                    RightIndicatorName = "CMF_MA";
+                    if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "CMF_MA";
                     break;
 
                 case "RSI":
-                    // RSI-hez illik az RSI mozgóátlaga (ha van), vagy más oszcillátorok
                     AllowedRightIndicators.Add("RSI_MA");
+                    AllowedRightIndicators.Add("RSI"); // Önmagával is összevethető (pl. másik periódus)
                     break;
 
                 case "Stoch":
                     AllowedRightIndicators.Add("Stoch_Signal");
-                    RightIndicatorName = "Stoch_Signal";
                     break;
 
                 case "Close": // Árfolyam
                 case "Open":
                 case "High":
                 case "Low":
-                    // Árhoz bármilyen mozgóátlag illik
                     AllowedRightIndicators.Add("SMA");
                     AllowedRightIndicators.Add("EMA");
                     AllowedRightIndicators.Add("BollingerUpper");
                     AllowedRightIndicators.Add("BollingerLower");
-                    // Alapértelmezés
-                    if (string.IsNullOrEmpty(RightIndicatorName) || !AllowedRightIndicators.Contains(RightIndicatorName))
-                        RightIndicatorName = "SMA";
+                    if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "SMA";
                     break;
 
                 default:
-                    // Ha nem ismerjük, adunk egy általános listát
                     AllowedRightIndicators.Add("SMA");
                     AllowedRightIndicators.Add("EMA");
                     break;
             }
-
-            // Értesítjük a felületet, hogy változott a jobb oldali név is (ha automatikusan átírtuk)
-            OnPropertyChanged(nameof(RightIndicatorName));
+            OnPropertyChanged(nameof(AllowedRightIndicators));
         }
-
-        // segédproperty
-        public bool IsRightSideIndicator => RightSourceType == DataSourceType.Indicator;
 
         public override string ToString()
         {
             string left = $"{LeftIndicatorName}({LeftPeriod})";
-            string op = Operator switch
-            {
-                ComparisonOperator.GreaterThan => ">",
-                ComparisonOperator.LessThan => "<",
-                ComparisonOperator.Equals => "=",
-                ComparisonOperator.CrossesAbove => "Keresztezi Felfelé",
-                ComparisonOperator.CrossesBelow => "Keresztezi Lefelé",
-                _ => "?"
-            };
-            string right = RightSourceType == DataSourceType.Indicator
-                ? $"{RightIndicatorName}({RightPeriod})"
+            string op = Operator.ToString(); // Egyszerűsítve
+            string right = RightSourceType == DataSourceType.Indicator 
+                ? $"{RightIndicatorName}({RightPeriod})" 
                 : $"{RightValue}";
-
             return $"{left} {op} {right}";
         }
 
-        // --- INotifyPropertyChanged Implementáció ---
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {

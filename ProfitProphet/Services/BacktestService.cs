@@ -1,7 +1,7 @@
 ﻿using ProfitProphet.Entities;
 using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Models.Strategies;
-using ProfitProphet.Services.Indicators;
+using ProfitProphet.Services.Indicators; // Fontos!
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,39 +15,32 @@ namespace ProfitProphet.Services
             var result = new BacktestResult { Symbol = profile.Symbol };
             if (candles == null || candles.Count < 50) return result;
 
-            // 1. ADATOK ELŐKÉSZÍTÉSE (PRE-CALCULATION)
-            // Kigyűjtjük az összes szükséges adatsort (pl. "CMF_20", "SMA_50") egy szótárba
+            // 1. ADATOK ELŐKÉSZÍTÉSE
             var indicatorCache = PrecalculateIndicators(candles, profile);
 
-            // Egyenleg és állapot változók
             double cash = initialCash;
             int holdings = 0;
             bool inPosition = false;
 
-            // Kezdőpont a grafikonhoz
             result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = cash });
 
-            // 2. FUTTATÁS (A CIKLUS)
-            // Kezdjük az indexet kicsit beljebb, hogy a mozgóátlagoknak legyen adata (pl. 50. gyertya)
-            int startIndex = 50;
+            // 2. FUTTATÁS
+            int startIndex = 50; // Hagyunk időt az indikátoroknak felépülni
 
             for (int i = startIndex; i < candles.Count; i++)
             {
                 var currentCandle = candles[i];
 
-                // --- VÉTELI SZABÁLYOK ELLENŐRZÉSE ---
-                // Ha NEM vagyunk pozícióban, és MINDEN vételi szabály igaz
+                // --- VÉTEL ---
                 if (!inPosition && EvaluateRules(profile.EntryRules, indicatorCache, candles, i))
                 {
-                    // VÉTEL
                     double price = (double)currentCandle.Close;
-                    int quantity = (int)(cash / price); // Egyszerűsített "All-in"
+                    int quantity = (int)(cash / price);
 
                     if (quantity > 0)
                     {
                         double cost = quantity * price;
-                        double fee = cost * 0.001; // 0.1% jutalék (példa)
-
+                        double fee = cost * 0.001; // 0.1% jutalék
                         cash -= (cost + fee);
                         holdings = quantity;
                         inPosition = true;
@@ -60,34 +53,27 @@ namespace ProfitProphet.Services
                         });
                     }
                 }
-                // --- ELADÁSI SZABÁLYOK ELLENŐRZÉSE ---
-                // Ha pozícióban vagyunk, és BÁRMELYIK kilépési szabály igaz (vagy minden - stratégia függő)
-                // Most feltételezzük, hogy "ÉS" kapcsolat van a szabályok között, de kilépésnél gyakran "VAGY" kell (pl. StopLoss VAGY TakeProfit).
-                // Egyelőre maradjunk az "ÉS"-nél, vagy ha a lista üres, akkor sose lép ki (csak StopLoss-ra kéne).
+                // --- ELADÁS ---
                 else if (inPosition && EvaluateRules(profile.ExitRules, indicatorCache, candles, i))
                 {
-                    // ELADÁS
                     double price = (double)currentCandle.Close;
                     double revenue = holdings * price;
                     double fee = revenue * 0.001;
-
                     cash += (revenue - fee);
 
-                    // Utolsó trade frissítése
                     var lastTrade = result.Trades.Last();
                     lastTrade.ExitDate = currentCandle.TimestampUtc;
                     lastTrade.ExitPrice = (decimal)price;
-                    lastTrade.Profit = (decimal)((revenue - fee) - ((double)lastTrade.EntryPrice * holdings)); // (Pontosabb számítás kéne a fee-vel, de most egyszerűsítünk)
+                    lastTrade.Profit = (decimal)((revenue - fee) - ((double)lastTrade.EntryPrice * holdings));
 
                     holdings = 0;
                     inPosition = false;
 
-                    // Egyenleg mentése a grafikonhoz
                     result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = cash });
                 }
             }
 
-            // Pozíciók lezárása a végén (hogy ne lógjon a levegőben)
+            // Zárás a végén
             if (inPosition)
             {
                 double price = (double)candles.Last().Close;
@@ -97,7 +83,6 @@ namespace ProfitProphet.Services
                 lastTrade.ExitPrice = (decimal)price;
             }
 
-            // Eredmények összegzése
             result.TotalProfitLoss = cash - initialCash;
             result.TradeCount = result.Trades.Count;
             result.WinRate = result.Trades.Count > 0
@@ -107,7 +92,8 @@ namespace ProfitProphet.Services
             return result;
         }
 
-        // Segédszámítások
+        // --- SEGÉDMETÓDUSOK ---
+
         private Dictionary<string, double[]> PrecalculateIndicators(List<Candle> candles, StrategyProfile profile)
         {
             var cache = new Dictionary<string, double[]>();
@@ -115,88 +101,66 @@ namespace ProfitProphet.Services
 
             foreach (var rule in allRules)
             {
-                // 1. Bal oldal kiszámolása (Ez sima ügy)
+                // Bal oldal
                 EnsureIndicatorCalculated(rule.LeftIndicatorName, rule.LeftPeriod, 0, candles, cache);
 
-                // 2. Jobb oldal kiszámolása
+                // Jobb oldal (ha indikátor)
                 if (rule.RightSourceType == DataSourceType.Indicator)
                 {
-                    // TRÜKK: Átadjuk a bal oldal periódusát (rule.LeftPeriod) harmadik paraméternek!
-                    // Így a CMF_MA tudni fogja, hogy mekkora CMF-re kell számolnia.
-                    EnsureIndicatorCalculated(
-                        rule.RightIndicatorName,
-                        rule.RightPeriod,
-                        rule.LeftPeriod, // <--- EZT ADTUK HOZZÁ (DependencyPeriod)
-                        candles,
-                        cache
-                    );
+                    // Itt adjuk át a bal oldal periódusát függőségként!
+                    EnsureIndicatorCalculated(rule.RightIndicatorName, rule.RightPeriod, rule.LeftPeriod, candles, cache);
                 }
             }
             return cache;
         }
 
-        // Biztosítja, hogy az adott indikátor (pl. "SMA_50") benne legyen a cache-ben
         private void EnsureIndicatorCalculated(string name, int period, int dependencyPeriod, List<Candle> candles, Dictionary<string, double[]> cache)
         {
             string key = dependencyPeriod > 0
                 ? $"{name}_{period}_dep{dependencyPeriod}"
                 : $"{name}_{period}";
 
-            if (cache.ContainsKey(key)) return; // Már megvan
+            if (cache.ContainsKey(key)) return;
 
             double[] values = new double[candles.Count];
 
-            // ITT KELL BŐVÍTENI, ha új indikátort adsz hozzá!
             switch (name.ToUpper())
             {
-                case "SMA": // Simple Moving Average
+                case "SMA":
                     values = IndicatorAlgorithms.CalculateSMA(candles, period);
                     break;
-                case "EMA": // Exponential Moving Average (ha lesz ilyen)
-                    // values = CalculateEMA(candles, period);
-                    break;
-                case "CMF": // Chaikin Money Flow
+                case "CMF":
                     values = IndicatorAlgorithms.CalculateCMF(candles, period);
                     break;
-                case "CMF_MA":
-                    EnsureIndicatorCalculated("CMF", dependencyPeriod, 0, candles, cache);
-
-                    string parentKey = $"CMF_{dependencyPeriod}";
-                    if (cache.ContainsKey(parentKey))
-                    {
-                        var parentCmfData = cache[parentKey];
-
-                        values = IndicatorAlgorithms.CalculateSMAOnArray(parentCmfData, period);
-                    }
-                    break;
-                case "CLOSE": // Záróár (mint indikátor)
+                case "CLOSE":
                     values = candles.Select(c => (double)c.Close).ToArray();
                     break;
-                case "STOCH_SIGNAL":
-                    // Ugyanez a logika lenne itt is:
-                    // EnsureIndicatorCalculated("Stoch", dependencyPeriod, ...);
-                    // values = CalculateSMAOnArray(cache[$"Stoch_{dependencyPeriod}"], period);
-                    // most nem érdekel!
-                    break;
-                default:
-                    // Ha nem ismerjük, nullákkal töltjük fel (vagy dobhatunk hibát)
+                case "CMF_MA":
+                    // 1. Szülő CMF
+                    EnsureIndicatorCalculated("CMF", dependencyPeriod, 0, candles, cache);
+                    string parentKey = $"CMF_{dependencyPeriod}";
+
+                    // 2. MA a Szülőre
+                    if (cache.ContainsKey(parentKey))
+                    {
+                        values = IndicatorAlgorithms.CalculateSMAOnArray(cache[parentKey], period);
+                    }
                     break;
             }
 
             cache[key] = values;
         }
 
-        // 2. Szabályok kiértékelése (Evaluator)
         private bool EvaluateRules(List<StrategyRule> rules, Dictionary<string, double[]> cache, List<Candle> candles, int index)
         {
-            if (rules.Count == 0) return false; // Ha nincs szabály, nem csinálunk semmit
+            if (rules.Count == 0) return false;
 
             foreach (var rule in rules)
             {
-                // Bal érték lekérése
+                // Bal érték
                 double leftValue = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, rule.LeftIndicatorName == "Close", cache, candles, index);
 
-                // Jobb érték lekérése
+                // Jobb érték (Dependency-vel!)
                 double rightValue = 0;
                 if (rule.RightSourceType == DataSourceType.Value)
                 {
@@ -207,160 +171,51 @@ namespace ProfitProphet.Services
                     rightValue = GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightIndicatorName == "Close", cache, candles, index, rule.LeftPeriod);
                 }
 
-                // Összehasonlítás
                 bool conditionMet = false;
 
-                // Előző értékek (keresztezés vizsgálathoz)
+                // Előző értékek (keresztezéshez)
                 double leftPrev = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, false, cache, candles, index - 1);
-                //double rightPrev = rule.RightSourceType == DataSourceType.Value ? rule.RightValue : GetValue(rule.RightIndicatorName, rule.RightPeriod, false, cache, candles, index - 1);
-
-                double rightPrev = 0;
-                if (rule.RightSourceType == DataSourceType.Value)
-                {
-                    rightPrev = rule.RightValue;
-                }
-                else
-                {
-                    // Itt is át kell adni a dependency-t!
-                    rightPrev = GetValue(
-                        rule.RightIndicatorName,
-                        rule.RightPeriod,
-                        false,
-                        cache, candles, index - 1,
-                        rule.LeftPeriod // <--- ITT IS
-                    );
-                }
+                double rightPrev = rule.RightSourceType == DataSourceType.Value
+                    ? rule.RightValue
+                    : GetValue(rule.RightIndicatorName, rule.RightPeriod, false, cache, candles, index - 1, rule.LeftPeriod);
 
                 switch (rule.Operator)
                 {
                     case ComparisonOperator.GreaterThan:
-                        conditionMet = leftValue > rightValue;
-                        break;
+                        conditionMet = leftValue > rightValue; break;
                     case ComparisonOperator.LessThan:
-                        conditionMet = leftValue < rightValue;
-                        break;
+                        conditionMet = leftValue < rightValue; break;
                     case ComparisonOperator.Equals:
-                        conditionMet = Math.Abs(leftValue - rightValue) < 0.0001; // Lebegőpontos egyenlőség
-                        break;
+                        conditionMet = Math.Abs(leftValue - rightValue) < 0.0001; break;
                     case ComparisonOperator.CrossesAbove:
-                        // Most nagyobb, de előtte kisebb vagy egyenlő volt
-                        conditionMet = (leftValue > rightValue) && (leftPrev <= rightPrev);
-                        break;
+                        conditionMet = (leftValue > rightValue) && (leftPrev <= rightPrev); break;
                     case ComparisonOperator.CrossesBelow:
-                        // Most kisebb, de előtte nagyobb vagy egyenlő volt
-                        conditionMet = (leftValue < rightValue) && (leftPrev >= rightPrev);
-                        break;
+                        conditionMet = (leftValue < rightValue) && (leftPrev >= rightPrev); break;
                 }
 
-                if (!conditionMet) return false; // Ha EGY szabály is bukik, akkor az egész bukik (ÉS kapcsolat)
+                if (!conditionMet) return false;
             }
 
-            return true; // Minden szabály átment
+            return true;
         }
 
         private double GetValue(string name, int period, bool isPrice, Dictionary<string, double[]> cache, List<Candle> candles, int index, int dependencyPeriod = 0)
         {
             if (index < 0) return 0;
-
-            // Ha Árfolyam, azt közvetlenül is lekérhetjük
             if (name.ToUpper() == "CLOSE") return (double)candles[index].Close;
 
-            // 1. ELŐSZÖR A FÜGGŐSÉGES KULCS 
+            // 1. Próba függőséggel
             if (dependencyPeriod > 0)
             {
                 string keyWithDep = $"{name}_{period}_dep{dependencyPeriod}";
-                if (cache.ContainsKey(keyWithDep))
-                {
-                    return cache[keyWithDep][index];
-                }
+                if (cache.ContainsKey(keyWithDep)) return cache[keyWithDep][index];
             }
 
-            // 2. HA NINCS, A SIMA KULCCSAL
+            // 2. Próba simán
             string keySimple = $"{name}_{period}";
-            if (cache.ContainsKey(keySimple))
-            {
-                return cache[keySimple][index];
-            }
+            if (cache.ContainsKey(keySimple)) return cache[keySimple][index];
 
-            // Ha semmi nincs, 0-t adunk vissza
             return 0;
         }
-
-        // --- MATEMATIKAI IMPLEMENTÁCIÓK (Ide másold be a CMF és SMA logikát a régi kódodból) ---
-
-        //private double[] CalculateSMA(List<Candle> candles, int period)
-        //{
-        //    double[] result = new double[candles.Count];
-        //    for (int i = period - 1; i < candles.Count; i++)
-        //    {
-        //        double sum = 0;
-        //        for (int j = 0; j < period; j++) sum += (double)candles[i - j].Close;
-        //        result[i] = sum / period;
-        //    }
-        //    return result;
-        //}
-
-        //// A CMF számítást már ismered, azt is implementálni kell itt tömb visszatéréssel
-        //private double[] CalculateCMF(List<Candle> candles, int period)
-        //{
-        //    // ... (Ide jön a CMF logika, ami visszaad egy double[] tömböt) ...
-        //    // Ha kell, megírom ezt is teljes egészében, de valószínűleg át tudod emelni.
-        //    // Csak a struktúra kedvéért most üresen hagyom vagy egyszerűsítem:
-        //    double[] result = new double[candles.Count];
-        //    // (Implementáció helye)
-        //    return result;
-        //}
-
-        //// Ezt másold be a BacktestService osztályba, a többi private metódus mellé:
-        //private double[] CalculateSMAOnArray(double[] input, int period)
-        //{
-        //    double[] result = new double[input.Length];
-        //    for (int i = 0; i < input.Length; i++)
-        //    {
-        //        if (i < period - 1)
-        //        {
-        //            result[i] = 0; // Nincs elég adat az elején
-        //            continue;
-        //        }
-
-        //        double sum = 0;
-        //        for (int j = 0; j < period; j++)
-        //        {
-        //            sum += input[i - j];
-        //        }
-        //        result[i] = sum / period;
-        //    }
-        //    return result;
-        //}
-
-        //private double[] CalculateCmf(double[] high, double[] low, double[] close, double[] volume, int period)
-        //{
-        //    int n = high.Length;
-        //    var cmf = new double[n];
-        //    var mfv = new double[n];
-
-        //    for (int i = 0; i < n; i++)
-        //    {
-        //        double range = high[i] - low[i];
-        //        double multiplier = range == 0 ? 0 : ((close[i] - low[i]) - (high[i] - close[i])) / range;
-        //        double vol = volume[i];
-        //        mfv[i] = multiplier * vol;
-
-        //        if (i >= period - 1)
-        //        {
-        //            double sumMfv = 0;
-        //            double sumVol = 0;
-        //            for (int j = i - period + 1; j <= i; j++)
-        //            {
-        //                sumMfv += mfv[j];
-        //                sumVol += volume[j];
-        //            }
-        //            cmf[i] = sumVol == 0 ? 0 : sumMfv / sumVol;
-        //        }
-        //        else cmf[i] = double.NaN;
-        //    }
-        //    return cmf;
-        //}
-
     }
 }
