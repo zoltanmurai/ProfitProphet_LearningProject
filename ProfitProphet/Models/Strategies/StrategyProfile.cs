@@ -8,17 +8,18 @@ namespace ProfitProphet.Models.Strategies
 {
     public class StrategyProfile
     {
-        public int Id { get; set; } // DB azonosító
+        public int Id { get; set; }
         public string Name { get; set; } = "Új Stratégia";
-        public string Symbol { get; set; } // Melyik részvényhez tartozik (pl. "MSFT")
+        public string Symbol { get; set; }
 
-        // Mikor lépjünk be? (ÉS kapcsolat: minden szabálynak teljesülnie kell)
-        public List<StrategyRule> EntryRules { get; set; } = new List<StrategyRule>();
+        // VÉTEL: Csoportok listája (VAGY kapcsolat a csoportok között)
+        // Pl. (Trendkövető Csoport) VAGY (Fordulós Csoport)
+        public List<StrategyGroup> EntryGroups { get; set; } = new List<StrategyGroup>();
 
-        // Mikor lépjünk ki? (ÉS kapcsolat vagy VAGY kapcsolat - ezt majd a motor dönti el)
-        public List<StrategyRule> ExitRules { get; set; } = new List<StrategyRule>();
+        // ELADÁS: Csoportok listája (VAGY kapcsolat)
+        // Pl. (StopLoss Csoport) VAGY (TakeProfit Csoport) VAGY (Indikátor Jelzés)
+        public List<StrategyGroup> ExitGroups { get; set; } = new List<StrategyGroup>();
 
-        // Utolsó optimalizálás eredménye (hogy tudd, mennyire volt jó ez a beállítás)
         public double BestScore { get; set; }
         public double WinRate { get; set; }
     }

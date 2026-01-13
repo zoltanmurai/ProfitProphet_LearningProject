@@ -92,15 +92,26 @@ namespace ProfitProphet.ViewModels
             }
 
             CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Teszt Stratégia" };
+            var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
 
             // Alapértelmezett szabály (hogy ne legyen üres)
-            CurrentProfile.EntryRules.Add(new StrategyRule
+            //CurrentProfile.EntryRules.Add(new StrategyRule
+            //{
+            //    LeftIndicatorName = "CMF",
+            //    LeftPeriod = 20,
+            //    Operator = ComparisonOperator.GreaterThan,
+            //    RightValue = 0
+            //});
+            defaultGroup.Rules.Add(new StrategyRule
             {
                 LeftIndicatorName = "CMF",
                 LeftPeriod = 20,
                 Operator = ComparisonOperator.GreaterThan,
+                RightSourceType = DataSourceType.Value,
                 RightValue = 0
             });
+            CurrentProfile.EntryGroups.Add(defaultGroup);
+
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
         }
 

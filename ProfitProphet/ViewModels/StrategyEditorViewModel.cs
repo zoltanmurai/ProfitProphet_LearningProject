@@ -1,4 +1,4 @@
-﻿using ProfitProphet.Models.Strategies;
+﻿using ProfitProphet.Models.Strategies; // StrategyGroup, StrategyProfile
 using ProfitProphet.ViewModels.Commands;
 using System;
 using System.Collections.ObjectModel;
@@ -10,95 +10,123 @@ namespace ProfitProphet.ViewModels
 {
     public class StrategyEditorViewModel : INotifyPropertyChanged
     {
-        // Ez a profil, amit éppen szerkesztünk
         public StrategyProfile Profile { get; private set; }
 
-        // Listák a UI-nak (szabályok)
-        public ObservableCollection<StrategyRule> EntryRules { get; set; }
-        public ObservableCollection<StrategyRule> ExitRules { get; set; }
+        // LISTÁK A CSOPORTOKNAK
+        public ObservableCollection<StrategyGroup> EntryGroups { get; set; }
+        public ObservableCollection<StrategyGroup> ExitGroups { get; set; }
 
-        // --- LEGÖRDÜLŐ MENÜK TARTALMA ---
-        // Elérhető indikátorok (később jöhet a Registry-ből is)
+        // --- LEGÖRDÜLŐ MENÜK (Adatforrás a UI-nak) ---
         public ObservableCollection<string> AvailableIndicators { get; } = new ObservableCollection<string>
-        {
-            "CMF", "SMA", "EMA", "RSI", "Close", "Volume"
-        };
+        { "CMF", "SMA", "EMA", "RSI", "Stoch", "Close", "Open", "High", "Low", "Volume" };
 
-        // Elérhető operátorok (Enum-ból konvertálva)
         public ObservableCollection<ComparisonOperator> AvailableOperators { get; }
-
-        // Jobb oldal típusai
         public ObservableCollection<DataSourceType> AvailableSourceTypes { get; }
 
-        // Parancsok
-        public ICommand AddEntryRuleCommand { get; }
-        public ICommand RemoveEntryRuleCommand { get; }
-        public ICommand AddExitRuleCommand { get; }
-        public ICommand RemoveExitRuleCommand { get; }
+        // --- PARANCSOK ---
+        // Csoport műveletek
+        public ICommand AddEntryGroupCommand { get; }
+        //public ICommand RemoveEntryGroupCommand { get; }
+        public ICommand AddExitGroupCommand { get; }
+        //public ICommand RemoveExitGroupCommand { get; }
+        public ICommand RemoveGroupCommand { get; }
+
+        // Szabály műveletek (Csoporton belül)
+        public ICommand AddRuleToGroupCommand { get; }
+        public ICommand RemoveRuleCommand { get; } // Ez trükkös lesz
+
         public ICommand SaveCommand { get; }
-
-        // Esemény a mentéskor (hogy bezárhassuk az ablakot)
         public event Action OnRequestClose;
-
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-        }
 
         public StrategyEditorViewModel(StrategyProfile profile = null)
         {
-            // Ha nincs profil (új létrehozása), akkor csinálunk egy üreset
             Profile = profile ?? new StrategyProfile { Name = "Új Stratégia", Symbol = "MSFT" };
 
-            // Betöltjük a meglévő szabályokat szerkeszthető listákba
-            EntryRules = new ObservableCollection<StrategyRule>(Profile.EntryRules);
-            ExitRules = new ObservableCollection<StrategyRule>(Profile.ExitRules);
+            // Csoportok betöltése
+            EntryGroups = new ObservableCollection<StrategyGroup>(Profile.EntryGroups);
+            ExitGroups = new ObservableCollection<StrategyGroup>(Profile.ExitGroups);
 
-            // Enum listák feltöltése
-            AvailableOperators = new ObservableCollection<ComparisonOperator>(
-                Enum.GetValues(typeof(ComparisonOperator)).Cast<ComparisonOperator>());
+            // Enumok betöltése
+            AvailableOperators = new ObservableCollection<ComparisonOperator>(Enum.GetValues(typeof(ComparisonOperator)).Cast<ComparisonOperator>());
+            AvailableSourceTypes = new ObservableCollection<DataSourceType>(Enum.GetValues(typeof(DataSourceType)).Cast<DataSourceType>());
 
-            AvailableSourceTypes = new ObservableCollection<DataSourceType>(
-                Enum.GetValues(typeof(DataSourceType)).Cast<DataSourceType>());
+            // --- Parancsok bekötése ---
 
-            // Parancsok bekötése
-            AddEntryRuleCommand = new RelayCommand(_ => AddRule(EntryRules));
-            RemoveEntryRuleCommand = new RelayCommand(r => RemoveRule(EntryRules, r as StrategyRule));
+            // 1. Csoport hozzáadása (Üres csoport létrehozása)
+            AddEntryGroupCommand = new RelayCommand(_ => EntryGroups.Add(new StrategyGroup { Name = "Új Vételi Setup" }));
+            AddExitGroupCommand = new RelayCommand(_ => ExitGroups.Add(new StrategyGroup { Name = "Új Eladási Setup" }));
 
-            AddExitRuleCommand = new RelayCommand(_ => AddRule(ExitRules));
-            RemoveExitRuleCommand = new RelayCommand(r => RemoveRule(ExitRules, r as StrategyRule));
+            // 2. Csoport törlése
+            //RemoveEntryGroupCommand = new RelayCommand(g => EntryGroups.Remove(g as StrategyGroup));
+            //RemoveExitGroupCommand = new RelayCommand(g => ExitGroups.Remove(g as StrategyGroup));
+            //RemoveEntryGroupCommand = new RelayCommand(param =>
+            //{
+            //    if (param is StrategyGroup group)
+            //    {
+            //        // Ha a vételi listában van, onnan töröljük
+            //        if (EntryGroups.Contains(group))
+            //        {
+            //            EntryGroups.Remove(group);
+            //            return;
+            //        }
+            //        // Ha az eladási listában van, onnan töröljük
+            //        if (ExitGroups.Contains(group))
+            //        {
+            //            ExitGroups.Remove(group);
+            //            return;
+            //        }
+            //    }
+            //});
+
+            RemoveGroupCommand = new RelayCommand(param =>
+            {
+                if (param is StrategyGroup group)
+                {
+                    if (EntryGroups.Remove(group)) return; // Ha sikerült törölni a vételiből, kész.
+                    ExitGroups.Remove(group); // Ha nem, megpróbáljuk az eladásiból.
+                }
+            });
+
+            // 3. Szabály hozzáadása (Paraméter: A CSOPORT, amihez adjuk)
+            AddRuleToGroupCommand = new RelayCommand(param =>
+            {
+                if (param is StrategyGroup group)
+                {
+                    group.Rules.Add(new StrategyRule
+                    {
+                        LeftIndicatorName = "CMF",
+                        LeftPeriod = 20,
+                        Operator = ComparisonOperator.GreaterThan,
+                        RightValue = 0
+                    });
+                }
+            });
+
+            // 4. Szabály törlése (Megkeressük, melyik csoportban van, és kivesszük)
+            RemoveRuleCommand = new RelayCommand(param =>
+            {
+                if (param is StrategyRule rule)
+                {
+                    // Végignézzük az összes csoportot mindkét oldalon
+                    foreach (var group in EntryGroups) if (group.Rules.Remove(rule)) return;
+                    foreach (var group in ExitGroups) if (group.Rules.Remove(rule)) return;
+                }
+            });
 
             SaveCommand = new RelayCommand(_ => Save());
         }
 
-        private void AddRule(ObservableCollection<StrategyRule> collection)
-        {
-            // Alapértelmezett új szabály: CMF(20) > 0
-            collection.Add(new StrategyRule
-            {
-                LeftIndicatorName = "CMF",
-                LeftPeriod = 20,
-                Operator = ComparisonOperator.GreaterThan,
-                RightSourceType = DataSourceType.Value,
-                RightValue = 0
-            });
-        }
-
-        private void RemoveRule(ObservableCollection<StrategyRule> collection, StrategyRule rule)
-        {
-            if (rule != null) collection.Remove(rule);
-        }
-
         private void Save()
         {
-            // Visszamásoljuk a listákat a Profilba
-            Profile.EntryRules = EntryRules.ToList();
-            Profile.ExitRules = ExitRules.ToList();
-
-            // Jelezzük, hogy készen vagyunk (bezárás)
+            Profile.EntryGroups = EntryGroups.ToList();
+            Profile.ExitGroups = ExitGroups.ToList();
             OnRequestClose?.Invoke();
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
         }
     }
 }
