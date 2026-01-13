@@ -27,6 +27,7 @@ namespace ProfitProphet.ViewModels
         public StrategyProfile CurrentProfile { get; set; }
         public RelayCommand RunTestCommand { get; }
         public ICommand EditStrategyCommand { get; }
+        public RelayCommand OpenOptimizerCommand { get; }
 
         // Paraméterek (a VBA-ban Steps, MAOnCMF1, MA)
         //public int CmfPeriod { get; set; } = 20;
@@ -77,7 +78,7 @@ namespace ProfitProphet.ViewModels
 
         public ICommand RunCommand { get; }
 
-        public StrategyTestViewModel(List<Candle> candles, string symbol, IStrategySettingsService strategyService)
+        public StrategyTestViewModel(List<Candle> candles, string symbol, IStrategySettingsService strategyService, OptimizerService optimizerService)
         {
             _candles = candles;
             _strategyService = strategyService;
@@ -134,6 +135,17 @@ namespace ProfitProphet.ViewModels
 
             RunTestCommand = new RelayCommand(_ => RunTest());
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
+
+            OpenOptimizerCommand = new RelayCommand(_ =>
+            {
+                var optVm = new OptimizationViewModel(CurrentProfile, _candles, optimizerService);
+                var win = new Views.OptimizationWindow { DataContext = optVm };
+                win.ShowDialog();
+
+                // Miután bezárult az ablak, frissítjük a kijelzőt, mert a profil változhatott
+                OnPropertyChanged(nameof(CurrentProfile));
+                RunTest(); // Automatikusan futtassunk egy tesztet a legjobb beállításokkal
+            });
         }
 
         //public StrategyTestViewModel(List<Candle> candles, string selectedSymbol)
