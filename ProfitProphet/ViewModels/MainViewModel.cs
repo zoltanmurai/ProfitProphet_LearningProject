@@ -62,22 +62,16 @@ namespace ProfitProphet.ViewModels
                 if (Set(ref _selectedSymbol, value))
                 {
                     // Forward selection to ChartVM (it will reload itself)
-                    //ChartVM.CurrentSymbol = value;
-                    if (Set(ref _selectedSymbol, value))
-                    {
-                        ChartVM.CurrentSymbol = value;
-
-                        // Trükk: Elindítunk egy névtelen aszinkron feladatot, ami megvárja a betöltést,
-                        // és utána visszarakja a nyilakat.
-                        _ = Task.Run(async () => {
-                            // Várunk egy picit, hogy a ChartVM biztosan elinduljon a Reload-dal
-                            await Task.Delay(100);
-                            // Megvárjuk, amíg a ChartVM végez (feltételezve, hogy az InitializeAsync-et hívja)
-                            await ChartVM.InitializeAsync();
-                            // Ha kész a chart, jöhetnek a nyilak
-                            Application.Current.Dispatcher.Invoke(() => RestoreSavedMarkers());
-                        });
-                    }
+                    ChartVM.CurrentSymbol = value;
+                    //_ = Task.Run(async () =>
+                    //{
+                    //    // Várunk egy picit, hogy a ChartVM biztosan elinduljon a Reload-dal
+                    //    await Task.Delay(100);
+                    //    // Megvárjuk, amíg a ChartVM végez (feltételezve, hogy az InitializeAsync-et hívja)
+                    //    await ChartVM.InitializeAsync();
+                    //    // Ha kész a chart, jöhetnek a nyilak
+                    //    Application.Current.Dispatcher.Invoke(() => RestoreSavedMarkers());
+                    //});
                 }
             }
         }
@@ -92,22 +86,16 @@ namespace ProfitProphet.ViewModels
                     _settings.DefaultInterval = value;
                     _ = _settingsService.SaveSettingsAsync(_settings);
                     // Forward interval change to ChartVM
-                    //ChartVM.CurrentInterval = value;
-                    if (Set(ref _selectedSymbol, value))
-                    {
-                        ChartVM.CurrentInterval = value;
-
-                        // Trükk: Elindítunk egy névtelen aszinkron feladatot, ami megvárja a betöltést,
-                        // és utána visszarakja a nyilakat.
-                        _ = Task.Run(async () => {
-                            // Várunk egy picit, hogy a ChartVM biztosan elinduljon a Reload-dal
-                            await Task.Delay(100);
-                            // Megvárjuk, amíg a ChartVM végez (feltételezve, hogy az InitializeAsync-et hívja)
-                            await ChartVM.InitializeAsync();
-                            // Ha kész a chart, jöhetnek a nyilak
-                            Application.Current.Dispatcher.Invoke(() => RestoreSavedMarkers());
-                        });
-                    }
+                    ChartVM.CurrentInterval = value;
+                    //_ = Task.Run(async () =>
+                    //{
+                    //    // Várunk egy picit, hogy a ChartVM biztosan elinduljon a Reload-dal
+                    //    await Task.Delay(100);
+                    //    // Megvárjuk, amíg a ChartVM végez (feltételezve, hogy az InitializeAsync-et hívja)
+                    //    await ChartVM.InitializeAsync();
+                    //    // Ha kész a chart, jöhetnek a nyilak
+                    //    Application.Current.Dispatcher.Invoke(() => RestoreSavedMarkers());
+                    //});
                 }
             }
         }
@@ -233,6 +221,7 @@ namespace ProfitProphet.ViewModels
 
             RefreshNowCommand = new RelayCommand(async _ => await RefreshNowAsync(), _ => !IsRefreshing);
             ToggleAutoRefreshCommand = new RelayCommand(_ => AutoRefreshEnabled = !AutoRefreshEnabled);
+            ChartVM.ChartUpdated += () => RestoreSavedMarkers();
         }
 
         // Maps your entity DTO to ChartBuilder.CandleData for the ChartViewModel loader

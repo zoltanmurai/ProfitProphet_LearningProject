@@ -22,6 +22,7 @@ namespace ProfitProphet.ViewModels
 
         private readonly IAppSettingsService _settingsService;
         private AppSettings _appSettings;
+        public event Action ChartUpdated;
 
         public PlotModel ChartModel => _chartBuilder.Model;
 
@@ -136,6 +137,7 @@ namespace ProfitProphet.ViewModels
             LoadIndicatorsForCurrentContext();
 
             System.Diagnostics.Debug.WriteLine($"[ChartVM] candles: {_candles?.Count ?? 0} for {CurrentSymbol} {CurrentInterval}");
+            ChartUpdated?.Invoke();
         }
 
         // ---- GAP DETEKTÁLÁS SEGÉDFÜGGVÉNY ----
