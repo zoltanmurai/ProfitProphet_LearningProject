@@ -7,6 +7,7 @@
         xmlns:converters="clr-namespace:ProfitProphet.Converters"
         mc:Ignorable="d"
         Title="Stratégia Szerkesztő" Height="600" Width="900"
+        MinHeight="500" MinWidth="900"
         WindowStartupLocation="CenterScreen"
         Background="#1E1E1E" Foreground="White">
 
@@ -18,13 +19,22 @@
             <Border Background="#2D2D30" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="3" Margin="0,2,0,2" Padding="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
+                        <!--<ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="60"/>
                         <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="30"/>-->
+
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="4.5*"/>
+                        <ColumnDefinition Width="4.5*"/>
+                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
+                    
 
                     <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0,0,10,0">
                         <TextBlock Text="Ha" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,5,0"/>
@@ -47,12 +57,23 @@
                                  Visibility="{Binding RightSourceType, Converter={StaticResource InverseBoolToVisibilityConverter}}"
                                  ToolTip="Érték (pl. 0 vagy 30)"/>
 
-                        <StackPanel Orientation="Horizontal" 
+                        <!--<StackPanel Orientation="Horizontal" 
                                     Visibility="{Binding RightSourceType, Converter={StaticResource BoolToVisibilityConverter}}">
                             <ComboBox ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
                                       SelectedItem="{Binding RightIndicatorName}" Width="80" Margin="0,0,5,0"/>
                             <TextBox Text="{Binding RightPeriod}" Width="50" ToolTip="Periódus"/>
+                        </StackPanel>-->
+
+                        <StackPanel Orientation="Horizontal" 
+                                    Visibility="{Binding RightSourceType, Converter={StaticResource BoolToVisibilityConverter}}">
+
+                            <ComboBox ItemsSource="{Binding AllowedRightIndicators}"
+                                      SelectedItem="{Binding RightIndicatorName}" 
+                                      Width="100" Margin="0,0,5,0"/>
+
+                            <TextBox Text="{Binding RightPeriod}" Width="50" ToolTip="Periódus (pl. 14)"/>
                         </StackPanel>
+                        
                     </Grid>
 
                     <Button Grid.Column="5" Content="X" 

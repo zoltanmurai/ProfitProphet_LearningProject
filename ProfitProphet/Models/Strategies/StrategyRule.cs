@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -8,14 +9,23 @@ using System.Threading.Tasks;
 
 namespace ProfitProphet.Models.Strategies
 {
-    // Mostantól ez is értesíti a felületet a változásokról
     public class StrategyRule : INotifyPropertyChanged
     {
+        // --- BAL OLDAL ---
         private string _leftIndicatorName;
         public string LeftIndicatorName
         {
             get => _leftIndicatorName;
-            set { _leftIndicatorName = value; OnPropertyChanged(); }
+            set
+            {
+                if (_leftIndicatorName != value)
+                {
+                    _leftIndicatorName = value;
+                    OnPropertyChanged();
+                    // HA VÁLTOZIK A BAL OLDAL, VÁLTOZZON A JOBB OLDAL!
+                    UpdateAllowedRightIndicators();
+                }
+            }
         }
 
         private int _leftPeriod;
@@ -43,9 +53,6 @@ namespace ProfitProphet.Models.Strategies
                     _rightSourceType = value;
                     OnPropertyChanged();
 
-                    // EZ A KULCS: Ha a típus változik, szólunk, 
-                    // hogy a "IsRightSideIndicator" tulajdonság is megváltozott!
-                    // Így a felület tudni fogja, hogy cserélni kell a mezőket.
                     OnPropertyChanged(nameof(IsRightSideIndicator));
                 }
             }
@@ -72,7 +79,67 @@ namespace ProfitProphet.Models.Strategies
             set { _rightValue = value; OnPropertyChanged(); }
         }
 
-        // Ez a segédproperty vezérli a láthatóságot
+        private ObservableCollection<string> _allowedRightIndicators;
+        public ObservableCollection<string> AllowedRightIndicators
+        {
+            get => _allowedRightIndicators;
+            set { _allowedRightIndicators = value; OnPropertyChanged(); }
+        }
+
+        public StrategyRule()
+        {
+            AllowedRightIndicators = new ObservableCollection<string>();
+        }
+
+        private void UpdateAllowedRightIndicators()
+        {
+            AllowedRightIndicators.Clear();
+
+            switch (LeftIndicatorName)
+            {
+                case "CMF":
+                    // CMF-hez csak a saját mozgóátlaga illik
+                    AllowedRightIndicators.Add("CMF_MA");
+                    // Esetleg beállíthatjuk alapértelmezettnek is rögtön:
+                    RightIndicatorName = "CMF_MA";
+                    break;
+
+                case "RSI":
+                    // RSI-hez illik az RSI mozgóátlaga (ha van), vagy más oszcillátorok
+                    AllowedRightIndicators.Add("RSI_MA");
+                    break;
+
+                case "Stoch":
+                    AllowedRightIndicators.Add("Stoch_Signal");
+                    RightIndicatorName = "Stoch_Signal";
+                    break;
+
+                case "Close": // Árfolyam
+                case "Open":
+                case "High":
+                case "Low":
+                    // Árhoz bármilyen mozgóátlag illik
+                    AllowedRightIndicators.Add("SMA");
+                    AllowedRightIndicators.Add("EMA");
+                    AllowedRightIndicators.Add("BollingerUpper");
+                    AllowedRightIndicators.Add("BollingerLower");
+                    // Alapértelmezés
+                    if (string.IsNullOrEmpty(RightIndicatorName) || !AllowedRightIndicators.Contains(RightIndicatorName))
+                        RightIndicatorName = "SMA";
+                    break;
+
+                default:
+                    // Ha nem ismerjük, adunk egy általános listát
+                    AllowedRightIndicators.Add("SMA");
+                    AllowedRightIndicators.Add("EMA");
+                    break;
+            }
+
+            // Értesítjük a felületet, hogy változott a jobb oldali név is (ha automatikusan átírtuk)
+            OnPropertyChanged(nameof(RightIndicatorName));
+        }
+
+        // segédproperty
         public bool IsRightSideIndicator => RightSourceType == DataSourceType.Indicator;
 
         public override string ToString()
