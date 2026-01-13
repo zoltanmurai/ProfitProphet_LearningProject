@@ -129,6 +129,9 @@ namespace ProfitProphet.Services
                 case "SMA":
                     values = IndicatorAlgorithms.CalculateSMA(candles, period);
                     break;
+                case "EMA":
+                    values = IndicatorAlgorithms.CalculateEMA(candles, period);
+                    break;
                 case "CMF":
                     values = IndicatorAlgorithms.CalculateCMF(candles, period);
                     break;

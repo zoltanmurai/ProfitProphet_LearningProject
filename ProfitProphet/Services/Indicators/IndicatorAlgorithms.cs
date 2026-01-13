@@ -20,6 +20,33 @@ namespace ProfitProphet.Services.Indicators
             return result;
         }
 
+        public static double[] CalculateEMA(List<Candle> candles, int period)
+        {
+            if (candles == null || candles.Count == 0) return new double[0];
+
+            double[] result = new double[candles.Count];
+            double multiplier = 2.0 / (period + 1);
+
+            double sum = 0;
+            for (int i = 0; i < period && i < candles.Count; i++)
+            {
+                sum += (double)candles[i].Close;
+            }
+            if (period <= candles.Count) result[period - 1] = sum / period;
+
+            for (int i = period; i < candles.Count; i++)
+            {
+                double close = (double)candles[i].Close;
+                double prevEma = result[i - 1];
+
+                result[i] = (close - prevEma) * multiplier + prevEma;
+            }
+
+            for (int i = 0; i < period - 1; i++) result[i] = 0;
+
+            return result;
+        }
+
         public static double[] CalculateSMAOnArray(double[] input, int period)
         {
             if (input == null || input.Length == 0) return new double[0];
