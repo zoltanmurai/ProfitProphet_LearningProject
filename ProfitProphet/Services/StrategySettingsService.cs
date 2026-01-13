@@ -17,7 +17,21 @@ namespace ProfitProphet.Services
 
         public StrategySettingsService()
         {
-            _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SettingsFileName);
+            // 1. Megkeressük a szabványos AppData/Local mappát
+            string appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+            // 2. Hozzáfűzzük a program nevét ("ProfitProphet")
+            string folderPath = Path.Combine(appData, "ProfitProphet");
+
+            // 3. HA NEM LÉTEZIK, LÉTREHOZZUK! (Ez hiányzott, ezért nem tudott menteni)
+            if (!Directory.Exists(folderPath))
+            {
+                Directory.CreateDirectory(folderPath);
+            }
+
+            // 4. Összerakjuk a teljes fájl útvonalat
+            _filePath = Path.Combine(folderPath, SettingsFileName);
+
             LoadSettingsFromFile();
         }
 
@@ -30,8 +44,7 @@ namespace ProfitProphet.Services
         {
             if (profile == null) return;
 
-            // Megkeressük, van-e már ilyen ID-jú vagy nevű/szimbólumú profil
-            // Itt most egyszerűsítve a Symbol alapján frissítünk, ahogy kérted
+            // Ha már van ilyen szimbólumhoz mentés, kivesszük a régit
             var existing = _currentSettings.Profiles.FirstOrDefault(p => p.Symbol == profile.Symbol);
 
             if (existing != null)
@@ -39,6 +52,7 @@ namespace ProfitProphet.Services
                 _currentSettings.Profiles.Remove(existing);
             }
 
+            // Betesszük a frisset
             _currentSettings.Profiles.Add(profile);
 
             SaveSettingsToFile();
@@ -54,6 +68,7 @@ namespace ProfitProphet.Services
 
         private void LoadSettingsFromFile()
         {
+            // Ha a fájl nem létezik, üres listával indulunk
             if (!File.Exists(_filePath))
             {
                 _currentSettings = new StrategySettings();
@@ -72,7 +87,7 @@ namespace ProfitProphet.Services
             }
             catch
             {
-                // Ha sérült a fájl, üreset hozunk létre
+                // Ha sérült a fájl, inkább újat kezdünk, minthogy összeomoljon
                 _currentSettings = new StrategySettings();
             }
         }
@@ -87,11 +102,13 @@ namespace ProfitProphet.Services
                     Converters = { new JsonStringEnumConverter() }
                 };
                 string json = JsonSerializer.Serialize(_currentSettings, options);
+
+                // MENTÉS
                 File.WriteAllText(_filePath, json);
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Hiba a mentésnél: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"KRITIKUS HIBA a mentésnél: {ex.Message}");
             }
         }
     }

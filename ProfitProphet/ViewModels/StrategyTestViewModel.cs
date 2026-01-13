@@ -142,24 +142,30 @@ namespace ProfitProphet.ViewModels
 
         private void OpenStrategyEditor(object obj)
         {
-            // Létrehozzuk a VM-et az aktuális profillal
+            // 1. Létrehozzuk a VM-et az aktuális profillal
             var editorVm = new StrategyEditorViewModel(CurrentProfile);
+
+            // 2. Létrehozzuk az ablakot
             var editorWin = new Views.StrategyEditorWindow();
             editorWin.DataContext = editorVm;
 
-            // Ha a Save-re nyomott, lefut ez a bezárás
+            // 3. Feliratkozunk a bezárásra (hogy a ViewModel-ből a Mentés gomb be tudja zárni)
             editorVm.OnRequestClose += () =>
             {
+                editorWin.DialogResult = true; // Ez jelzi a ShowDialog-nak, hogy sikeres (true) volt a bezárás
                 editorWin.Close();
             };
 
-            //editorWin.ShowDialog(); // Modális ablak (nem enged máshova kattintani amíg nyitva van)
+            // 4. MEGJELENÍTÉS és EREDMÉNY VIZSGÁLAT
+            // Csak egyszer hívjuk meg a ShowDialog-ot!
+            bool? result = editorWin.ShowDialog();
 
-            if (editorWin.ShowDialog() == true)
+            if (result == true)
             {
+                // Ha a Mentés gombbal zárták be:
                 CurrentProfile = editorVm.Profile;
 
-                // MENTÉS A SERVICE-SZEL:
+                // MENTÉS A SERVICE-SZEL (Most már a jó mappába!)
                 _strategyService.SaveProfile(CurrentProfile);
 
                 OnPropertyChanged(nameof(CurrentProfile));
