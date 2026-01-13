@@ -21,9 +21,11 @@ namespace ProfitProphet.ViewModels
     {
         private readonly BacktestService _backtestService;
         private readonly List<Candle> _candles;
+        private readonly IStrategySettingsService _strategyService;
         public event Action<BacktestResult> OnTestFinished;
 
         public StrategyProfile CurrentProfile { get; set; }
+        public RelayCommand RunTestCommand { get; }
         public ICommand EditStrategyCommand { get; }
 
         // Paraméterek (a VBA-ban Steps, MAOnCMF1, MA)
@@ -63,6 +65,8 @@ namespace ProfitProphet.ViewModels
 
         // Eredmény megjelenítéséhez
         private BacktestResult _result;
+        private string selectedSymbol;
+
         public BacktestResult Result
         {
             get => _result;
@@ -71,14 +75,16 @@ namespace ProfitProphet.ViewModels
 
         public ICommand RunCommand { get; }
 
-        public StrategyTestViewModel(List<Candle> candles, string symbol)
+        public StrategyTestViewModel(List<Candle> candles, string symbol, IStrategySettingsService strategyService)
         {
             _candles = candles;
+            _strategyService = strategyService;
             Symbol = symbol;
             _backtestService = new BacktestService();
             RunCommand = new RelayCommand(_ => RunTest());
 
-            
+            var allProfiles = _strategyService.LoadProfiles();
+            var savedProfile = allProfiles.FirstOrDefault(p => p.Symbol == symbol);
 
             if (_candles.Any())
             {
@@ -91,8 +97,29 @@ namespace ProfitProphet.ViewModels
                 EndDate = DateTime.Now;
             }
 
-            CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Teszt Stratégia" };
-            var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
+            //CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Teszt Stratégia" };
+            //var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
+            if (savedProfile != null)
+            {
+                CurrentProfile = savedProfile;
+            }
+            else
+            {
+                // Ha nincs mentve, csinálunk egy alapértelmezettet
+                CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Alap Stratégia" };
+                // ... (Opcionális: alap csoport hozzáadása, hogy ne legyen üres) ...
+                var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
+                //defaultGroup.Rules.Add(new StrategyRule { LeftIndicatorName = "CMF", LeftPeriod = 20, Operator = ComparisonOperator.GreaterThan, RightValue = 0 });
+                defaultGroup.Rules.Add(new StrategyRule
+                {
+                    LeftIndicatorName = "CMF",
+                    LeftPeriod = 20,
+                    Operator = ComparisonOperator.GreaterThan,
+                    RightSourceType = DataSourceType.Value,
+                    RightValue = 0
+                });
+                CurrentProfile.EntryGroups.Add(defaultGroup);
+            }
 
             // Alapértelmezett szabály (hogy ne legyen üres)
             //CurrentProfile.EntryRules.Add(new StrategyRule
@@ -102,18 +129,16 @@ namespace ProfitProphet.ViewModels
             //    Operator = ComparisonOperator.GreaterThan,
             //    RightValue = 0
             //});
-            defaultGroup.Rules.Add(new StrategyRule
-            {
-                LeftIndicatorName = "CMF",
-                LeftPeriod = 20,
-                Operator = ComparisonOperator.GreaterThan,
-                RightSourceType = DataSourceType.Value,
-                RightValue = 0
-            });
-            CurrentProfile.EntryGroups.Add(defaultGroup);
 
+            RunTestCommand = new RelayCommand(_ => RunTest());
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
         }
+
+        //public StrategyTestViewModel(List<Candle> candles, string selectedSymbol)
+        //{
+        //    _candles = candles;
+        //    this.selectedSymbol = selectedSymbol;
+        //}
 
         private void OpenStrategyEditor(object obj)
         {
@@ -126,10 +151,19 @@ namespace ProfitProphet.ViewModels
             editorVm.OnRequestClose += () =>
             {
                 editorWin.Close();
-                // Itt esetleg frissíthetjük a UI-t, ha kiírod a stratégia nevét
             };
 
-            editorWin.ShowDialog(); // Modális ablak (nem enged máshova kattintani amíg nyitva van)
+            //editorWin.ShowDialog(); // Modális ablak (nem enged máshova kattintani amíg nyitva van)
+
+            if (editorWin.ShowDialog() == true)
+            {
+                CurrentProfile = editorVm.Profile;
+
+                // MENTÉS A SERVICE-SZEL:
+                _strategyService.SaveProfile(CurrentProfile);
+
+                OnPropertyChanged(nameof(CurrentProfile));
+            }
         }
 
         private void RunTest()

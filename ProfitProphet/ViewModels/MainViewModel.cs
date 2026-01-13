@@ -25,9 +25,10 @@ namespace ProfitProphet.ViewModels
     public class MainViewModel : INotifyPropertyChanged
     {
         private readonly IStockApiClient _apiClient;
-        private readonly IAppSettingsService _settingsService; 
+        private readonly IAppSettingsService _settingsService;
         private readonly IChartSettingsService _chartSettingsService;
         private readonly IIndicatorRegistry _indicatorRegistry;
+        private readonly IStrategySettingsService _strategyService;
         private readonly DataService _dataService;
         private readonly ChartBuilder _chartBuilder;
         private AppSettings _settings;
@@ -122,8 +123,8 @@ namespace ProfitProphet.ViewModels
             IAppSettingsService settingsService,
             IIndicatorRegistry indicatorRegistry,
             IChartSettingsService chartSettingsService,
-            // ÚJ PARAMÉTER ITT:
-            ChartBuilder chartBuilder
+            ChartBuilder chartBuilder,
+            IStrategySettingsService strategyService
             )
         {
             _apiClient = apiClient;
@@ -131,6 +132,7 @@ namespace ProfitProphet.ViewModels
             _settingsService = settingsService;
             _indicatorRegistry = indicatorRegistry;
             _chartSettingsService = chartSettingsService;
+            _strategyService = strategyService;
 
             // ITT MENTJÜK EL A KÖZÖS PÉLDÁNYT:
             _chartBuilder = chartBuilder;
@@ -386,7 +388,7 @@ namespace ProfitProphet.ViewModels
                 return;
             }
 
-            var vm = new StrategyTestViewModel(candles, SelectedSymbol);
+            var vm = new StrategyTestViewModel(candles, SelectedSymbol, _strategyService);
 
             // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat
             vm.OnTestFinished += (result) =>

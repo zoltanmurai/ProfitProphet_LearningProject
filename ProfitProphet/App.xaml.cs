@@ -36,6 +36,7 @@ namespace ProfitProphet
             services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>();
             services.AddSingleton<IChartSettingsService, ChartSettingsService>();
             services.AddSingleton<IChartProfileService, ChartProfileService>();
+            services.AddSingleton<IStrategySettingsService, StrategySettingsService>();
 
             // Beállítások útvonala
             var cfgPath = Path.Combine(
