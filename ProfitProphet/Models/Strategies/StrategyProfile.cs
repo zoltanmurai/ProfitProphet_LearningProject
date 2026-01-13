@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProfitProphet.Models.Backtesting;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -48,6 +49,8 @@ namespace ProfitProphet.Models.Strategies
 
         // Csak pluszban adhat el?
         public bool OnlySellInProfit { get; set; } = false;
+
+        public List<TradeRecord> LastTestTrades { get; set; } = new List<TradeRecord>();
 
         // -------------------------------------------
 

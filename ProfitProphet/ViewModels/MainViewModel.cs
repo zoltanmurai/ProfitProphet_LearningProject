@@ -41,7 +41,8 @@ namespace ProfitProphet.ViewModels
         private bool _isRefreshing;
         private bool _autoRefreshEnabled;
         private int _refreshIntervalMinutes = 5;
-        private Dictionary<string, List<TradeRecord>> _tradeCache = new Dictionary<string, List<TradeRecord>>();
+        //private Dictionary<string, List<TradeRecord>> _tradeCache = new Dictionary<string, List<TradeRecord>>();
+        private readonly BacktestService _backtestService;
 
         public ObservableCollection<string> Watchlist { get; }
         public ObservableCollection<IntervalItem> Intervals { get; }
@@ -143,7 +144,8 @@ namespace ProfitProphet.ViewModels
             IIndicatorRegistry indicatorRegistry,
             IChartSettingsService chartSettingsService,
             ChartBuilder chartBuilder,
-            IStrategySettingsService strategyService
+            IStrategySettingsService strategyService,
+            BacktestService backtestService
             )
         {
             _apiClient = apiClient;
@@ -152,6 +154,7 @@ namespace ProfitProphet.ViewModels
             _indicatorRegistry = indicatorRegistry;
             _chartSettingsService = chartSettingsService;
             _strategyService = strategyService;
+            _backtestService = backtestService;
 
             // ITT MENTJÜK EL A KÖZÖS PÉLDÁNYT:
             _chartBuilder = chartBuilder;
@@ -281,6 +284,7 @@ namespace ProfitProphet.ViewModels
 
                 // After data refresh, just tell ChartVM to reload
                 await ChartVM.InitializeAsync();
+                await UpdateAllWatchlistSignalsAsync();
             }
             catch (OperationCanceledException) { }
             catch (Exception ex)
@@ -292,6 +296,8 @@ namespace ProfitProphet.ViewModels
                 IsRefreshing = false;
             }
             RestoreSavedMarkers();
+            await ChartVM.InitializeAsync();
+            await UpdateLiveSignalsAsync();
         }
 
         private async Task HandleAutoRefreshToggleAsync(bool enabled)
@@ -413,10 +419,10 @@ namespace ProfitProphet.ViewModels
             // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat
             vm.OnTestFinished += (result) =>
             {
-                if (_tradeCache.ContainsKey(result.Symbol))
-                    _tradeCache[result.Symbol] = result.Trades;
-                else
-                    _tradeCache.Add(result.Symbol, result.Trades);
+            //    if (_tradeCache.ContainsKey(result.Symbol))
+            //        _tradeCache[result.Symbol] = result.Trades;
+            //    else
+            //        _tradeCache.Add(result.Symbol, result.Trades);
                 // MainViewModel-ben lévő chartBuilder példány
                 _chartBuilder.ShowTradeMarkers(result.Trades);
             };
@@ -460,15 +466,20 @@ namespace ProfitProphet.ViewModels
 
         private void RestoreSavedMarkers()
         {
-            if (!string.IsNullOrEmpty(SelectedSymbol) && _tradeCache.ContainsKey(SelectedSymbol))
+            if (string.IsNullOrEmpty(SelectedSymbol)) return;
+
+            Application.Current.Dispatcher.Invoke(() =>
             {
-                var savedTrades = _tradeCache[SelectedSymbol];
-                if (savedTrades != null && savedTrades.Count > 0)
+                // Megkeressük a mentett stratégiát ehhez a részvényhez
+                var profiles = _strategyService.LoadProfiles();
+                var currentProfile = profiles.FirstOrDefault(p => p.Symbol == SelectedSymbol);
+
+                // Ha van benne mentett kötés (nyíl), kirajzoljuk
+                if (currentProfile != null && currentProfile.LastTestTrades != null && currentProfile.LastTestTrades.Count > 0)
                 {
-                    // Visszatesszük a nyilakat a közös _chartBuilder segítségével
-                    _chartBuilder.ShowTradeMarkers(savedTrades);
+                    _chartBuilder.ShowTradeMarkers(currentProfile.LastTestTrades);
                 }
-            }
+            });
         }
 
 
@@ -478,6 +489,58 @@ namespace ProfitProphet.ViewModels
             field = value;
             OnPropertyChanged(name);
             return true;
+        }
+
+        private async Task UpdateLiveSignalsAsync()
+        {
+            if (string.IsNullOrEmpty(SelectedSymbol)) return;
+
+            // 1. Lekérjük a legfrissebb gyertyákat a helyi adatbázisból
+            var candles = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
+            if (candles == null || candles.Count == 0) return;
+
+            // 2. Betöltjük a hozzá tartozó stratégiát
+            var profile = _strategyService.LoadProfiles().FirstOrDefault(p => p.Symbol == SelectedSymbol);
+            if (profile == null) return;
+
+            // 3. Futtatunk egy "csendes" tesztet (ablaknyitás nélkül)
+            // Itt a kezdő tőkét a beállításokból vagy fixen is vehetjük
+            var result = _backtestService.RunBacktest(candles, profile, 10000);
+
+            // 4. Frissítjük a profilban a kötéseket és elmentjük
+            profile.LastTestTrades = result.Trades;
+            _strategyService.SaveProfile(profile);
+
+            // 5. Kirajzoljuk az új (frissített) nyilakat
+            RestoreSavedMarkers();
+        }
+        private async Task UpdateAllWatchlistSignalsAsync()
+        {
+            // 1. Lekérjük az összes mentett stratégiai profilt
+            var allProfiles = _strategyService.LoadProfiles();
+
+            // 2. Végigmegyünk a Watchlist összes elemén
+            foreach (var symbol in Watchlist)
+            {
+                // Megkeressük a hozzá tartozó profilt
+                var profile = allProfiles.FirstOrDefault(p => p.Symbol == symbol);
+                if (profile == null) continue;
+
+                // Lekérjük a legfrissebb gyertyákat a helyi DB-ből
+                var candles = await _dataService.GetLocalDataAsync(symbol, SelectedInterval);
+                if (candles == null || candles.Count == 0) continue;
+
+                // 3. Lefuttatjuk a "csendes" háttér-tesztet
+                // (A 10000-es tőke itt csak példa, használhatod a beállításokból is)
+                var result = _backtestService.RunBacktest(candles, profile, 10000);
+
+                // 4. Elmentjük az eredményt (nyilakat) a profilba és a fájlba
+                profile.LastTestTrades = result.Trades;
+                _strategyService.SaveProfile(profile);
+            }
+
+            // 5. Frissítjük a kijelzőt az aktuálisan nézett részvényre
+            RestoreSavedMarkers();
         }
     }
 

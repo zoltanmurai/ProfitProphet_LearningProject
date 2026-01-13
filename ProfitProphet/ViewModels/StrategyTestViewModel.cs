@@ -198,8 +198,12 @@ namespace ProfitProphet.ViewModels
             // Futtatás
             var res = _backtestService.RunBacktest(
                 filteredCandles,  // 1. Az adatok
-                CurrentProfile    // 2. (ebben vannak a szabályok)
+                CurrentProfile,    // 2. (ebben vannak a szabályok)
+                _initialCash      // 3. Kezdő tőke
             );
+
+            CurrentProfile.LastTestTrades = res.Trades;
+            _strategyService.SaveProfile(CurrentProfile);
 
             Result = res; // frissíti a felületet
             CreateEquityChart(res.EquityCurve);
