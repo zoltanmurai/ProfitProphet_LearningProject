@@ -8,10 +8,12 @@ namespace ProfitProphet.Models.Strategies
 {
     public class OptimizationResult
     {
-        public int[] Values { get; set; } // A paraméterek értékei (pl. 20, 14, 50)
+        public int[] Values { get; set; }
         public double Score { get; set; }
         public double Profit { get; set; }
-        public double MaxDrawdown { get; set; }
+        public double Drawdown { get; set; }
         public int TradeCount { get; set; }
+        public bool IsRobust { get; set; }
+        public double NeighborAvgScore { get; set; }
     }
 }

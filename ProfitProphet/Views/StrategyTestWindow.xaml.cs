@@ -20,7 +20,7 @@ namespace ProfitProphet.Views
         public StrategyTestWindow(StrategyTestViewModel vm)
         {
             InitializeComponent();
-            DataContext = vm;
+            this.DataContext = vm;
         }
     }
 }

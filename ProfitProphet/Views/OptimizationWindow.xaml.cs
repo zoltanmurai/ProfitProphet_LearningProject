@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProfitProphet.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,21 @@ namespace ProfitProphet.Views
         public OptimizationWindow()
         {
             InitializeComponent();
+        }
+        // Akkor hívódik meg, amikor az ablak Context-je (a ViewModel) megváltozik
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+
+            if (e.Property.Name == "DataContext" && DataContext is OptimizationViewModel vm)
+            {
+                // Feliratkozunk a bezárás eseményre (MVVM barát módon)
+                vm.OnRequestClose += (success) =>
+                {
+                    this.DialogResult = success;
+                    this.Close();
+                };
+            }
         }
     }
 }

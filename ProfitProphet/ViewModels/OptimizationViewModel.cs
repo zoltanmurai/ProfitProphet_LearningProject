@@ -20,6 +20,7 @@ namespace ProfitProphet.ViewModels
         private readonly List<Candle> _candles;
         private bool _isRunning;
         private string _statusText = "Készen áll az indításra";
+        public event Action<bool> OnRequestClose;
 
         public ObservableCollection<OptimizationParameterUI> AvailableParameters { get; } = new();
         public ICommand RunOptimizationCommand { get; }

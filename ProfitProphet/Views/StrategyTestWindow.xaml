@@ -43,7 +43,7 @@
                         <DockPanel Margin="0,0,0,5">
                             <TextBlock Text="Kötés Típus:" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
 
-                            <ComboBox ItemsSource="{Binding AmountTypes}" 
+                            <ComboBox ItemsSource="{Binding TradeAmountTypes}" 
                                   SelectedItem="{Binding CurrentProfile.AmountType}"
                                   Width="120" Margin="0,0,5,0"/>
 
@@ -83,8 +83,7 @@
                         Margin="0,30,0,0"
                         Background="#007ACC" 
                         Foreground="White"
-                        FontWeight="Bold"
-                        BorderThickness="0">
+                        FontWeight="Bold">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="3"/>

@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -20,30 +19,32 @@ namespace ProfitProphet.ViewModels
     public class StrategyTestViewModel : INotifyPropertyChanged
     {
         private readonly BacktestService _backtestService;
+        private readonly OptimizerService _optimizerService;
         private readonly List<Candle> _candles;
         private readonly IStrategySettingsService _strategyService;
         public event Action<BacktestResult> OnTestFinished;
+        public IEnumerable<TradeAmountType> TradeAmountTypes => Enum.GetValues(typeof(TradeAmountType)).Cast<TradeAmountType>();
 
-        public StrategyProfile CurrentProfile { get; set; }
-        public RelayCommand RunTestCommand { get; }
+        private StrategyProfile _currentProfile;
+        public StrategyProfile CurrentProfile
+        {
+            get => _currentProfile;
+            set { _currentProfile = value; OnPropertyChanged(); }
+        }
+
+        // Átnevezve RunTestCommand-ról RunCommand-ra, hogy egyezzen a XAML-el!
+        public ICommand RunCommand { get; }
         public ICommand EditStrategyCommand { get; }
-        public RelayCommand OpenOptimizerCommand { get; }
-
-        // Paraméterek (a VBA-ban Steps, MAOnCMF1, MA)
-        //public int CmfPeriod { get; set; } = 20;
-        //public int CmfMaPeriod { get; set; } = 14;
-        //public int PriceMaPeriod { get; set; } = 50;
+        public ICommand OpenOptimizerCommand { get; }
 
         public string Symbol { get; set; }
 
-        private double _initialCash = 10000; // Alapértéknek jó a 10k, de átírható
+        private double _initialCash = 10000;
         public double InitialCash
         {
             get => _initialCash;
             set { _initialCash = value; OnPropertyChanged(); }
         }
-
-        public IEnumerable<TradeAmountType> AmountTypes => Enum.GetValues(typeof(TradeAmountType)).Cast<TradeAmountType>();
 
         private DateTime _startDate;
         public DateTime StartDate
@@ -66,32 +67,53 @@ namespace ProfitProphet.ViewModels
             set { _equityModel = value; OnPropertyChanged(); }
         }
 
-        // Eredmény megjelenítéséhez
         private BacktestResult _result;
-        private string selectedSymbol;
-
         public BacktestResult Result
         {
             get => _result;
             set { _result = value; OnPropertyChanged(); }
         }
 
-        public ICommand RunCommand { get; }
-
-        public StrategyTestViewModel(List<Candle> candles, string symbol, IStrategySettingsService strategyService, OptimizerService optimizerService)
+        // KONSTRUKTOR JAVÍTVA: BacktestService-t is kap paraméterként a DI miatt!
+        public StrategyTestViewModel(
+            List<Candle> candles,
+            string symbol,
+            IStrategySettingsService strategyService,
+            OptimizerService optimizerService,
+            BacktestService backtestService)
         {
-            _candles = candles;
+            _candles = candles ?? new List<Candle>();
             _strategyService = strategyService;
+            _optimizerService = optimizerService;
+            _backtestService = backtestService; // Injektálva, nem 'new'-val példányosítva!
             Symbol = symbol;
-            _backtestService = new BacktestService();
-            RunCommand = new RelayCommand(_ => RunTest());
 
             var allProfiles = _strategyService.LoadProfiles();
             var savedProfile = allProfiles.FirstOrDefault(p => p.Symbol == symbol);
 
+            if (savedProfile != null)
+            {
+                CurrentProfile = savedProfile;
+            }
+            else
+            {
+                CurrentProfile = new StrategyProfile
+                {
+                    Symbol = symbol,
+                    Name = "Alap Stratégia",
+                    TradeAmount = 2000,
+                    CommissionPercent = 0.45,
+                    MinCommission = 7.0,
+                    AmountType = TradeAmountType.FixedCash
+                };
+                var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
+                defaultGroup.Rules.Add(new StrategyRule { LeftIndicatorName = "CMF", LeftPeriod = 20, Operator = ComparisonOperator.GreaterThan, RightValue = 0 });
+                CurrentProfile.EntryGroups.Add(defaultGroup);
+            }
+
             if (_candles.Any())
             {
-                StartDate = _candles.First().TimestampUtc; // Vagy: DateTime.Now.AddYears(-1);
+                StartDate = _candles.First().TimestampUtc;
                 EndDate = _candles.Last().TimestampUtc;
             }
             else
@@ -100,173 +122,101 @@ namespace ProfitProphet.ViewModels
                 EndDate = DateTime.Now;
             }
 
-            //CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Teszt Stratégia" };
-            //var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
-            if (savedProfile != null)
-            {
-                CurrentProfile = savedProfile;
-            }
-            else
-            {
-                // Ha nincs mentve, csinálunk egy alapértelmezettet
-                CurrentProfile = new StrategyProfile { Symbol = symbol, Name = "Alap Stratégia" };
-                // ... (Opcionális: alap csoport hozzáadása, hogy ne legyen üres) ...
-                var defaultGroup = new StrategyGroup { Name = "Alap Setup" };
-                //defaultGroup.Rules.Add(new StrategyRule { LeftIndicatorName = "CMF", LeftPeriod = 20, Operator = ComparisonOperator.GreaterThan, RightValue = 0 });
-                defaultGroup.Rules.Add(new StrategyRule
-                {
-                    LeftIndicatorName = "CMF",
-                    LeftPeriod = 20,
-                    Operator = ComparisonOperator.GreaterThan,
-                    RightSourceType = DataSourceType.Value,
-                    RightValue = 0
-                });
-                CurrentProfile.EntryGroups.Add(defaultGroup);
-            }
-
-            // Alapértelmezett szabály (hogy ne legyen üres)
-            //CurrentProfile.EntryRules.Add(new StrategyRule
-            //{
-            //    LeftIndicatorName = "CMF",
-            //    LeftPeriod = 20,
-            //    Operator = ComparisonOperator.GreaterThan,
-            //    RightValue = 0
-            //});
-
-            RunTestCommand = new RelayCommand(_ => RunTest());
+            // Kötések
+            RunCommand = new RelayCommand(_ => RunTest());
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
-
-            OpenOptimizerCommand = new RelayCommand(_ =>
-            {
-                var optVm = new OptimizationViewModel(CurrentProfile, _candles, optimizerService);
+            OpenOptimizerCommand = new RelayCommand(_ => {
+                var optVm = new OptimizationViewModel(CurrentProfile, _candles, _optimizerService);
                 var win = new Views.OptimizationWindow { DataContext = optVm };
-                win.ShowDialog();
-
-                // Miután bezárult az ablak, frissítjük a kijelzőt, mert a profil változhatott
-                OnPropertyChanged(nameof(CurrentProfile));
-                RunTest(); // Automatikusan futtassunk egy tesztet a legjobb beállításokkal
+                if (win.ShowDialog() == true)
+                {
+                    OnPropertyChanged(nameof(CurrentProfile));
+                    RunTest();
+                }
             });
         }
 
-        //public StrategyTestViewModel(List<Candle> candles, string selectedSymbol)
-        //{
-        //    _candles = candles;
-        //    this.selectedSymbol = selectedSymbol;
-        //}
-
         private void OpenStrategyEditor(object obj)
         {
-            // 1. Létrehozzuk a VM-et az aktuális profillal
             var editorVm = new StrategyEditorViewModel(CurrentProfile);
-
-            // 2. Létrehozzuk az ablakot
             var editorWin = new Views.StrategyEditorWindow();
             editorWin.DataContext = editorVm;
+            editorVm.OnRequestClose += () => { editorWin.DialogResult = true; editorWin.Close(); };
 
-            // 3. Feliratkozunk a bezárásra (hogy a ViewModel-ből a Mentés gomb be tudja zárni)
-            editorVm.OnRequestClose += () =>
+            if (editorWin.ShowDialog() == true)
             {
-                editorWin.DialogResult = true; // Ez jelzi a ShowDialog-nak, hogy sikeres (true) volt a bezárás
-                editorWin.Close();
-            };
-
-            // 4. MEGJELENÍTÉS és EREDMÉNY VIZSGÁLAT
-            // Csak egyszer hívjuk meg a ShowDialog-ot!
-            bool? result = editorWin.ShowDialog();
-
-            if (result == true)
-            {
-                // Ha a Mentés gombbal zárták be:
                 CurrentProfile = editorVm.Profile;
-
-                // MENTÉS A SERVICE-SZEL (Most már a jó mappába!)
                 _strategyService.SaveProfile(CurrentProfile);
-
                 OnPropertyChanged(nameof(CurrentProfile));
             }
         }
 
         private void RunTest()
         {
+            if (!_candles.Any()) return;
+            var filtered = _candles.Where(c => c.TimestampUtc.Date >= StartDate.Date && c.TimestampUtc.Date <= EndDate.Date).ToList();
+            if (filtered.Count < 10) return;
 
-            if (_candles == null || _candles.Count == 0)
-            {
-                MessageBox.Show("Nincs betöltött adat a teszteléshez!", "Hiba");
-                return;
-            }
+            var res = _backtestService.RunBacktest(filtered, CurrentProfile, InitialCash);
+            Result = res;
 
-            var filteredCandles = _candles
-                .Where(c => c.TimestampUtc.Date >= StartDate.Date && c.TimestampUtc.Date <= EndDate.Date)
-                .OrderBy(c => c.TimestampUtc)
-                .ToList();
-
-
-            if (filteredCandles.Count < 50) // Ha túl kevés adat maradt
-            {
-                // Itt jelezhetnénk hibát, de most csak simán nem futtatjuk
-                return;
-            }
-
-            // Futtatás
-            var res = _backtestService.RunBacktest(
-                filteredCandles,  // 1. Az adatok
-                CurrentProfile,    // 2. (ebben vannak a szabályok)
-                _initialCash      // 3. Kezdő tőke
-            );
-
-            CurrentProfile.LastTestTrades = res.Trades;
-            _strategyService.SaveProfile(CurrentProfile);
-
-            Result = res; // frissíti a felületet
+            // Itt hívd meg a chart frissítést, ha kész a metódus
             CreateEquityChart(res.EquityCurve);
-            OnTestFinished?.Invoke(res); // ESEMÉNY
+
+            OnTestFinished?.Invoke(res);
         }
 
         private void CreateEquityChart(List<EquityPoint> points)
         {
+            if (points == null || !points.Any()) return;
+
+            // Létrehozunk egy új PlotModel-t a sötét témához igazítva
             var model = new PlotModel
             {
-                Title = "Tőke Növekedés",
+                Title = "Tőke Alakulása",
                 TextColor = OxyColors.White,
-                PlotAreaBorderColor = OxyColors.Transparent
+                PlotAreaBorderColor = OxyColors.Gray,
+                Background = OxyColors.Transparent
             };
 
-            // X tengely (Dátum)
-            model.Axes.Add(new DateTimeAxis
+            // Idő tengely (X)
+            var dateAxis = new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
-                StringFormat = "yyyy.MM.dd",
+                StringFormat = "yyyy-MM-dd",
                 TextColor = OxyColors.LightGray,
-                AxislineColor = OxyColors.Gray,
-                MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray)
-            });
+                TicklineColor = OxyColors.Gray
+            };
+            model.Axes.Add(dateAxis);
 
-            // Y tengely (Pénz)
-            model.Axes.Add(new LinearAxis
+            // Érték tengely (Y)
+            var valueAxis = new LinearAxis
             {
                 Position = AxisPosition.Left,
                 TextColor = OxyColors.LightGray,
-                AxislineColor = OxyColors.Gray,
+                TicklineColor = OxyColors.Gray,
                 MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray),
-                StringFormat = "N0" // Ezres tagolás
-            });
+                MajorGridlineColor = OxyColor.FromAColor(30, OxyColors.White)
+            };
+            model.Axes.Add(valueAxis);
 
-            // A Vonal
+            // A görbe maga
             var series = new LineSeries
             {
-                Color = OxyColors.LimeGreen, // Nyerő szín :)
+                Title = "Equity",
+                Color = OxyColors.DodgerBlue, // Szép kék görbe
                 StrokeThickness = 2,
                 MarkerType = MarkerType.None
             };
 
-            foreach (var p in points)
+            foreach (var pt in points)
             {
-                series.Points.Add(new DataPoint(DateTimeAxis.ToDouble(p.Time), p.Equity));
+                series.Points.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
             }
 
             model.Series.Add(series);
+
+            // Frissítjük a tulajdonságot, ami értesíti a UI-t
             EquityModel = model;
         }
 

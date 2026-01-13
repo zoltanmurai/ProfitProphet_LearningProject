@@ -32,6 +32,7 @@ namespace ProfitProphet.ViewModels
         private readonly DataService _dataService;
         private readonly ChartBuilder _chartBuilder;
         private AppSettings _settings;
+        private readonly OptimizerService _optimizerService;
 
         private string _selectedSymbol;
         private string _selectedInterval;
@@ -145,7 +146,8 @@ namespace ProfitProphet.ViewModels
             IChartSettingsService chartSettingsService,
             ChartBuilder chartBuilder,
             IStrategySettingsService strategyService,
-            BacktestService backtestService
+            BacktestService backtestService,
+            OptimizerService optimizerService
             )
         {
             _apiClient = apiClient;
@@ -155,6 +157,7 @@ namespace ProfitProphet.ViewModels
             _chartSettingsService = chartSettingsService;
             _strategyService = strategyService;
             _backtestService = backtestService;
+            _optimizerService = optimizerService;
 
             // ITT MENTJÜK EL A KÖZÖS PÉLDÁNYT:
             _chartBuilder = chartBuilder;
@@ -408,7 +411,12 @@ namespace ProfitProphet.ViewModels
 
             // Adatok lekérése a teszthez (lokális DB-ből)
             var candles = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
-            var vm = new StrategyTestViewModel(candles, SelectedSymbol, _strategyService);
+            var vm = new StrategyTestViewModel(
+                candles,
+                SelectedSymbol,
+                _strategyService,
+                _optimizerService,
+                _backtestService);
 
             if (candles == null || candles.Count == 0)
             {
@@ -419,10 +427,10 @@ namespace ProfitProphet.ViewModels
             // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat
             vm.OnTestFinished += (result) =>
             {
-            //    if (_tradeCache.ContainsKey(result.Symbol))
-            //        _tradeCache[result.Symbol] = result.Trades;
-            //    else
-            //        _tradeCache.Add(result.Symbol, result.Trades);
+                //    if (_tradeCache.ContainsKey(result.Symbol))
+                //        _tradeCache[result.Symbol] = result.Trades;
+                //    else
+                //        _tradeCache.Add(result.Symbol, result.Trades);
                 // MainViewModel-ben lévő chartBuilder példány
                 _chartBuilder.ShowTradeMarkers(result.Trades);
             };
