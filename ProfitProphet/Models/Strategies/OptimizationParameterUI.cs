@@ -6,13 +6,23 @@ namespace ProfitProphet.Models.Strategies
     public class OptimizationParameterUI : INotifyPropertyChanged
     {
         private bool _isSelected;
-        private int _minValue = 10;
-        private int _maxValue = 100;
+        private double _minValue;
+        private double _maxValue;
+        private double _currentValue;
 
+        // Adatok
         public StrategyRule Rule { get; set; }
-        public bool IsLeftSide { get; set; } // Periódust vagy Értéket tekerünk?
+        public string ParameterName { get; set; } // Pl: "LeftPeriod"
+        public bool IsEntrySide { get; set; }
 
-        public string Name => $"{(IsLeftSide ? Rule.LeftIndicatorName : Rule.RightIndicatorName)} ({(IsLeftSide ? "Bal" : "Jobb")})";
+        // Megjelenítés
+        public string Name { get; set; }
+
+        public double CurrentValue
+        {
+            get => _currentValue;
+            set { _currentValue = value; OnPropertyChanged(); }
+        }
 
         public bool IsSelected
         {
@@ -20,13 +30,13 @@ namespace ProfitProphet.Models.Strategies
             set { _isSelected = value; OnPropertyChanged(); }
         }
 
-        public int MinValue
+        public double MinValue
         {
             get => _minValue;
             set { _minValue = value; OnPropertyChanged(); }
         }
 
-        public int MaxValue
+        public double MaxValue
         {
             get => _maxValue;
             set { _maxValue = value; OnPropertyChanged(); }

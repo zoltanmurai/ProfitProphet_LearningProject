@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfitProphet.Data;
 using ProfitProphet.DTOs;
+using ProfitProphet.Models.Backtesting;
+using ProfitProphet.Models.Strategies;
 using ProfitProphet.Services;
 using ProfitProphet.Services.Charting;
 using ProfitProphet.Services.Indicators;
@@ -18,7 +20,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using ProfitProphet.Models.Backtesting;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProfitProphet.ViewModels
 {
@@ -42,6 +44,8 @@ namespace ProfitProphet.ViewModels
         private bool _isRefreshing;
         private bool _autoRefreshEnabled;
         private int _refreshIntervalMinutes = 5;
+        private StrategyProfile profile;
+
         //private Dictionary<string, List<TradeRecord>> _tradeCache = new Dictionary<string, List<TradeRecord>>();
         private readonly BacktestService _backtestService;
 
@@ -409,29 +413,38 @@ namespace ProfitProphet.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SelectedSymbol)) return;
 
-            // Adatok lekérése a teszthez (lokális DB-ből)
-            var candles = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
-            var vm = new StrategyTestViewModel(
-                candles,
-                SelectedSymbol,
-                _strategyService,
-                _optimizerService,
-                _backtestService);
+            // 1. LÉPÉS: Megkeressük a kiválasztott szimbólumhoz tartozó stratégiát
+            var allProfiles = _strategyService.LoadProfiles();
+            var currentProfile = allProfiles.FirstOrDefault(p => p.Symbol == SelectedSymbol);
 
-            if (candles == null || candles.Count == 0)
+            // Ha nincs hozzá stratégia, szólunk a felhasználónak
+            if (currentProfile == null)
             {
-                MessageBox.Show("Nincs adat a teszteléshez!", "Hiba");
+                MessageBox.Show($"Nincs mentett stratégia ehhez a szimbólumhoz: {SelectedSymbol}\n\nKérlek, először hozz létre és ments el egyet a Stratégia Szerkesztőben!",
+                                "Nincs Stratégia", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat
+            // 2. Adatok lekérése a teszthez (lokális DB-ből)
+            var candles = await _dataService.GetLocalDataAsync(SelectedSymbol, SelectedInterval);
+
+            if (candles == null || candles.Count == 0)
+            {
+                MessageBox.Show("Nincs adat a teszteléshez! Kérlek frissítsd az adatokat.", "Hiányzó Adat", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // 3. ViewModel létrehozása a megtalált profillal
+            var vm = new StrategyTestViewModel(
+                _backtestService,
+                _strategyService,
+                candles,
+                currentProfile, // <--- MOST MÁR EZT ADJUK ÁT (nem a null-t)
+                _optimizerService);
+
+            // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat a főablakon is
             vm.OnTestFinished += (result) =>
             {
-                //    if (_tradeCache.ContainsKey(result.Symbol))
-                //        _tradeCache[result.Symbol] = result.Trades;
-                //    else
-                //        _tradeCache.Add(result.Symbol, result.Trades);
-                // MainViewModel-ben lévő chartBuilder példány
                 _chartBuilder.ShowTradeMarkers(result.Trades);
             };
 

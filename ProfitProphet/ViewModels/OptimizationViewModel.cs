@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ProfitProphet.ViewModels
@@ -19,17 +20,23 @@ namespace ProfitProphet.ViewModels
         private readonly StrategyProfile _profile;
         private readonly List<Candle> _candles;
         private bool _isRunning;
-        private string _statusText = "Készen áll az indításra";
+        private string _statusText = "Készen áll az indításra. Jelöld ki a paramétereket!";
+        private double _progressValue;
+
+        // EZT A SORT HAGYTAM KI VÉLETLENÜL - MOST PÓTOLVA:
         public event Action<bool> OnRequestClose;
 
         public ObservableCollection<OptimizationParameterUI> AvailableParameters { get; } = new();
+
         public ICommand RunOptimizationCommand { get; }
 
         public bool IsRunning
         {
             get => _isRunning;
-            set { _isRunning = value; OnPropertyChanged(); }
+            set { _isRunning = value; OnPropertyChanged(); OnPropertyChanged(nameof(IsNotRunning)); }
         }
+
+        public bool IsNotRunning => !_isRunning;
 
         public string StatusText
         {
@@ -37,70 +44,166 @@ namespace ProfitProphet.ViewModels
             set { _statusText = value; OnPropertyChanged(); }
         }
 
+        public double ProgressValue
+        {
+            get => _progressValue;
+            set { _progressValue = value; OnPropertyChanged(); }
+        }
+
         public OptimizationViewModel(StrategyProfile profile, List<Candle> candles, OptimizerService optimizerService)
         {
-            _profile = profile;
-            _candles = candles;
-            _optimizerService = optimizerService;
+            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
+            _candles = candles ?? throw new ArgumentNullException(nameof(candles));
+            _optimizerService = optimizerService ?? throw new ArgumentNullException(nameof(optimizerService));
 
-            // Összeszedjük a szabályokat a stratégiából, amiknek van periódusa (optimalizálhatóak)
-            var allRules = profile.EntryGroups.SelectMany(g => g.Rules)
-                                 .Concat(profile.ExitGroups.SelectMany(g => g.Rules));
+            LoadParametersFromProfile();
 
-            foreach (var rule in allRules)
+            RunOptimizationCommand = new RelayCommand(async (o) => await RunOptimization(), (o) => !IsRunning);
+        }
+
+        private void LoadParametersFromProfile()
+        {
+            AvailableParameters.Clear();
+
+            // 1. ENTRY (Vételi) csoportok feldolgozása
+            if (_profile.EntryGroups != null)
             {
-                // Bal oldal mindig optimalizálható (ha nem konstans ár)
-                AvailableParameters.Add(new OptimizationParameterUI { Rule = rule, IsLeftSide = true });
-
-                // Jobb oldal csak ha indikátor
-                if (rule.RightSourceType == DataSourceType.Indicator)
+                foreach (var group in _profile.EntryGroups)
                 {
-                    AvailableParameters.Add(new OptimizationParameterUI { Rule = rule, IsLeftSide = false });
+                    foreach (var rule in group.Rules)
+                    {
+                        AddRulesSpecificParameters(rule, true);
+                    }
                 }
             }
 
-            RunOptimizationCommand = new RelayCommand(async _ => await RunOptimizationAsync(), _ => !IsRunning);
+            // 2. EXIT (Eladási) csoportok feldolgozása
+            if (_profile.ExitGroups != null)
+            {
+                foreach (var group in _profile.ExitGroups)
+                {
+                    foreach (var rule in group.Rules)
+                    {
+                        AddRulesSpecificParameters(rule, false);
+                    }
+                }
+            }
         }
 
-        private async Task RunOptimizationAsync()
+        private void AddRulesSpecificParameters(StrategyRule rule, bool isEntry)
+        {
+            string prefix = isEntry ? "ENTRY" : "EXIT";
+
+            if (rule.LeftPeriod > 0)
+            {
+                AddParameterUI(rule, isEntry, "LeftPeriod", rule.LeftPeriod,
+                    $"{prefix} - {rule.LeftIndicatorName} (Bal): Period");
+            }
+
+            if (rule.RightSourceType == DataSourceType.Indicator && rule.RightPeriod > 0)
+            {
+                AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
+                    $"{prefix} - {rule.RightIndicatorName} (Jobb): Period");
+            }
+
+            if (rule.RightSourceType == DataSourceType.Value)
+            {
+                AddParameterUI(rule, isEntry, "RightValue", rule.RightValue,
+                    $"{prefix} - {rule.LeftIndicatorName} vs Fix Érték");
+            }
+        }
+
+        private void AddParameterUI(StrategyRule rule, bool isEntry, string paramName, double currentValue, string displayName)
+        {
+            int defaultMin = (int)Math.Max(1, Math.Floor(currentValue * 0.5));
+            int defaultMax = (int)Math.Ceiling(currentValue * 1.5);
+
+            if (defaultMax <= defaultMin) defaultMax = defaultMin + 5;
+
+            AvailableParameters.Add(new OptimizationParameterUI
+            {
+                Name = displayName,
+                Rule = rule,
+                ParameterName = paramName,
+                IsEntrySide = isEntry,
+                IsSelected = false,
+                CurrentValue = currentValue,
+                MinValue = defaultMin,
+                MaxValue = defaultMax
+            });
+        }
+
+        private async Task RunOptimization()
         {
             var selectedParams = AvailableParameters.Where(p => p.IsSelected).ToList();
-            if (!selectedParams.Any()) return;
+
+            if (!selectedParams.Any())
+            {
+                StatusText = "Hiba: Nincs kiválasztva paraméter!";
+                return;
+            }
 
             IsRunning = true;
-            StatusText = "Optimalizálás folyamatban (Zoli-logika: Coarse Search)...";
+            StatusText = $"Optimalizálás futtatása {selectedParams.Count} paraméteren...";
+            ProgressValue = 0;
 
             try
             {
-                // Átalakítjuk a UI paramétereket a motor számára érthető formátumba
                 var optParams = selectedParams.Select(p => new OptimizationParameter
                 {
                     Rule = p.Rule,
-                    IsLeftSide = p.IsLeftSide,
+                    IsEntrySide = p.IsEntrySide,
+                    ParameterName = p.ParameterName,
                     MinValue = p.MinValue,
                     MaxValue = p.MaxValue
                 }).ToList();
 
-                // INDÍTÁS
                 var result = await _optimizerService.OptimizeAsync(_candles, _profile, optParams);
 
                 if (result != null)
                 {
-                    StatusText = $"SIKER! Új Score: {result.Score:N2} | Profit: {result.Profit:N0}$ | Kötések: {result.TradeCount}";
-                    // Itt a motor már átírta az eredeti _profile értékeit a legjobbra!
+                    StatusText = $"KÉSZ! Score: {result.Score:N2} | Profit: {result.Profit:N0}$ | Kötés: {result.TradeCount}";
+
+                    MessageBox.Show($"Optimalizálás sikeres!\n\nÚj Profit: {result.Profit:N0}$\nKötések száma: {result.TradeCount}\nDrawdown: {result.Drawdown:P1}",
+                                    "Eredmény", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    RefreshCurrentValues(selectedParams);
+
+                    // Opcionális: Ha azt akarod, hogy sikeres futás után automatikusan záródjon be az ablak:
+                    // OnRequestClose?.Invoke(true); 
                 }
                 else
                 {
-                    StatusText = "Nem találtam a feltételeknek megfelelő beállítást.";
+                    StatusText = "Nem találtam jobb beállítást a jelenleginél.";
                 }
             }
             catch (Exception ex)
             {
-                StatusText = "Hiba történt: " + ex.Message;
+                StatusText = "Hiba: " + ex.Message;
+                MessageBox.Show(ex.ToString());
             }
             finally
             {
                 IsRunning = false;
+            }
+        }
+
+        private void RefreshCurrentValues(List<OptimizationParameterUI> selectedParams)
+        {
+            foreach (var p in selectedParams)
+            {
+                switch (p.ParameterName)
+                {
+                    case "LeftPeriod":
+                        p.CurrentValue = p.Rule.LeftPeriod;
+                        break;
+                    case "RightPeriod":
+                        p.CurrentValue = p.Rule.RightPeriod;
+                        break;
+                    case "RightValue":
+                        p.CurrentValue = p.Rule.RightValue;
+                        break;
+                }
             }
         }
 

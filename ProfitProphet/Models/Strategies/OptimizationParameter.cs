@@ -9,9 +9,9 @@ namespace ProfitProphet.Models.Strategies
     public class OptimizationParameter
     {
         public StrategyRule Rule { get; set; }
-        public bool IsLeftSide { get; set; } // Igaz, ha a LeftPeriod-ot állítjuk, hamis ha a Right-ot
-        public int MinValue { get; set; }
-        public int MaxValue { get; set; }
-        public string Name => $"{Rule.LeftIndicatorName} ({(IsLeftSide ? "L" : "R")})";
+        public bool IsEntrySide { get; set; } // true = Entry, false = Exit
+        public string ParameterName { get; set; }
+        public double MinValue { get; set; }
+        public double MaxValue { get; set; }
     }
 }
