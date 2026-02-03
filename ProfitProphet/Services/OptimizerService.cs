@@ -19,7 +19,9 @@ namespace ProfitProphet.Services
             _backtestService = backtestService ?? throw new ArgumentNullException(nameof(backtestService));
         }
 
-        public async Task<OptimizationResult> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters)
+        //public async Task<OptimizationResult> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters)
+        //{
+        public async Task<List<OptimizationResult>> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters)
         {
             int coarseStep = 5;
             OptimizationResult bestResult = null;
@@ -49,7 +51,16 @@ namespace ProfitProphet.Services
             var finalResult = await RunIterationAsync(candles, profile, fineParams, 1);
 
             // Ha a finom keresés jobb, azt adjuk vissza, egyébként a durvát
-            return finalResult ?? bestResult;
+            //return finalResult ?? bestResult;
+            //var allResults = await RunIterationAsync(candles, profile, parameters, 5);
+            //return allResults.OrderByDescending(r => r.Score).ToList();
+            var allResults = new List<OptimizationResult>();
+            var bestResultSingle = await RunIterationAsync(candles, profile, parameters, 5);
+            if (bestResultSingle != null)
+            {
+                allResults.Add(bestResultSingle);
+            }
+            return allResults.OrderByDescending(r => r.Score).ToList();
         }
 
         private async Task<OptimizationResult> RunIterationAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, int step)
@@ -79,6 +90,8 @@ namespace ProfitProphet.Services
                     // Csak akkor tároljuk el, ha van elég kötés (statisztikai minimum)
                     if (res.TradeCount >= 5)
                     {
+                        var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
+
                         results.Add(new OptimizationResult
                         {
                             Values = combo,

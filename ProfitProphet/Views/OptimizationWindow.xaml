@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:conv="clr-namespace:ProfitProphet.Converters"
         mc:Ignorable="d"
-        Title="Stratégia Optimalizálás" Height="500" Width="700" 
+        Title="Stratégia Optimalizálás" Height="600" Width="900" 
         Background="#1E1E1E" Foreground="#E0E0E0"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
+        <conv:IsPositiveConverter x:Key="IsPositiveConverter"/>
 
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="#333337"/>
@@ -24,8 +25,9 @@
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="200"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
@@ -65,12 +67,10 @@
                                     </StackPanel>
 
                                     <TextBlock Grid.Column="3" Text="Min:" VerticalAlignment="Center" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,5,0"/>
-                                    <TextBox Grid.Column="4" Text="{Binding MinValue}" 
-                                             IsEnabled="{Binding IsSelected}"/>
+                                    <TextBox Grid.Column="4" Text="{Binding MinValue}" IsEnabled="{Binding IsSelected}"/>
 
                                     <TextBlock Grid.Column="5" Text="Max:" VerticalAlignment="Center" Foreground="Gray" HorizontalAlignment="Right" Margin="0,0,5,0"/>
-                                    <TextBox Grid.Column="6" Text="{Binding MaxValue}" 
-                                             IsEnabled="{Binding IsSelected}"/>
+                                    <TextBox Grid.Column="6" Text="{Binding MaxValue}" IsEnabled="{Binding IsSelected}"/>
                                 </Grid>
                             </Border>
                         </DataTemplate>
@@ -79,7 +79,7 @@
             </ScrollViewer>
         </Border>
 
-        <Grid Grid.Row="2" Margin="0,15,0,0">
+        <Grid Grid.Row="2" Margin="0,15,0,15">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
@@ -106,5 +106,51 @@
                 </Button.Resources>
             </Button>
         </Grid>
+
+        <DataGrid Grid.Row="3" ItemsSource="{Binding OptimizationResults}" 
+                  AutoGenerateColumns="False" IsReadOnly="True" 
+                  Background="#252526" Foreground="White" RowBackground="#2D2D30"
+                  AlternatingRowBackground="#333337" GridLinesVisibility="None"
+                  HeadersVisibility="Column" BorderThickness="0">
+
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="#3E3E42"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Padding" Value="5"/>
+                </Style>
+            </DataGrid.Resources>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Paraméterek" Binding="{Binding ParameterSummary}" Width="*"/>
+
+                <DataGridTextColumn Header="Profit" Binding="{Binding Profit, StringFormat={}{0:N0} $}" Width="80">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Profit, Converter={StaticResource IsPositiveConverter}}" Value="True">
+                                    <Setter Property="Foreground" Value="LightGreen"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Kötés" Binding="{Binding TradeCount}" Width="50"/>
+
+                <DataGridTextColumn Header="Drawdown" Binding="{Binding Drawdown, StringFormat=P1}" Width="80">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="#FF6666"/>
+                            <Setter Property="HorizontalAlignment" Value="Right"/>
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Score" Binding="{Binding Score, StringFormat=N2}" Width="60" FontWeight="Bold"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </Window>

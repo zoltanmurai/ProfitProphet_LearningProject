@@ -417,12 +417,21 @@ namespace ProfitProphet.ViewModels
             var allProfiles = _strategyService.LoadProfiles();
             var currentProfile = allProfiles.FirstOrDefault(p => p.Symbol == SelectedSymbol);
 
-            // Ha nincs hozzá stratégia, szólunk a felhasználónak
+            // Ha nincs hozzá stratégia
             if (currentProfile == null)
             {
-                MessageBox.Show($"Nincs mentett stratégia ehhez a szimbólumhoz: {SelectedSymbol}\n\nKérlek, először hozz létre és ments el egyet a Stratégia Szerkesztőben!",
-                                "Nincs Stratégia", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                currentProfile = new ProfitProphet.Models.Strategies.StrategyProfile
+                {
+                    Symbol = SelectedSymbol,
+                    Name = "Új Stratégia",
+                    TradeAmount = 10,
+                    AmountType = ProfitProphet.Models.Strategies.TradeAmountType.FixedShareCount,
+                    EntryGroups = new System.Collections.Generic.List<ProfitProphet.Models.Strategies.StrategyGroup>(),
+                    ExitGroups = new System.Collections.Generic.List<ProfitProphet.Models.Strategies.StrategyGroup>()
+                };
+
+                // El is mentjük rögtön, hogy legközelebb már meglegyen
+                _strategyService.SaveProfile(currentProfile);
             }
 
             // 2. Adatok lekérése a teszthez (lokális DB-ből)

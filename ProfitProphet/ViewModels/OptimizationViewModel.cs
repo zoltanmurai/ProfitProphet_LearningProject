@@ -22,6 +22,7 @@ namespace ProfitProphet.ViewModels
         private bool _isRunning;
         private string _statusText = "Készen áll az indításra. Jelöld ki a paramétereket!";
         private double _progressValue;
+        public ObservableCollection<OptimizationResult> OptimizationResults { get; } = new();
 
         // EZT A SORT HAGYTAM KI VÉLETLENÜL - MOST PÓTOLVA:
         public event Action<bool> OnRequestClose;
@@ -144,8 +145,10 @@ namespace ProfitProphet.ViewModels
             }
 
             IsRunning = true;
-            StatusText = $"Optimalizálás futtatása {selectedParams.Count} paraméteren...";
-            ProgressValue = 0;
+            //StatusText = $"Optimalizálás futtatása {selectedParams.Count} paraméteren...";
+            StatusText = "Számítás folyamatban...";
+            OptimizationResults.Clear();
+            //ProgressValue = 0;
 
             try
             {
@@ -158,23 +161,30 @@ namespace ProfitProphet.ViewModels
                     MaxValue = p.MaxValue
                 }).ToList();
 
-                var result = await _optimizerService.OptimizeAsync(_candles, _profile, optParams);
+                var results = await _optimizerService.OptimizeAsync(_candles, _profile, optParams);
 
-                if (result != null)
+                if (results != null && results.Any())
                 {
-                    StatusText = $"KÉSZ! Score: {result.Score:N2} | Profit: {result.Profit:N0}$ | Kötés: {result.TradeCount}";
+                    foreach (var res in results)
+                    {
+                        OptimizationResults.Add(res);
+                    }
+                    StatusText = $"KÉSZ! {results.Count} eredményt találtam.";
+                }
+                //StatusText = $"KÉSZ! Score: {result.Score:N2} | Profit: {result.Profit:N0}$ | Kötés: {result.TradeCount}";
+                else
+                {
+                    StatusText = "Nem találtam megfelelő beállítást (kevés kötés vagy rossz eredmény).";
+                
 
-                    MessageBox.Show($"Optimalizálás sikeres!\n\nÚj Profit: {result.Profit:N0}$\nKötések száma: {result.TradeCount}\nDrawdown: {result.Drawdown:P1}",
-                                    "Eredmény", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                    RefreshCurrentValues(selectedParams);
+                    //MessageBox.Show($"Optimalizálás sikeres!\n\nÚj Profit: {result.Profit:N0}$\nKötések száma: {result.TradeCount}\nDrawdown: {result.Drawdown:P1}",
+                    //                "Eredmény", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                    //RefreshCurrentValues(selectedParams);
 
                     // Opcionális: Ha azt akarod, hogy sikeres futás után automatikusan záródjon be az ablak:
                     // OnRequestClose?.Invoke(true); 
-                }
-                else
-                {
-                    StatusText = "Nem találtam jobb beállítást a jelenleginél.";
                 }
             }
             catch (Exception ex)
