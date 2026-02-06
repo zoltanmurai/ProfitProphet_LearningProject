@@ -12,17 +12,29 @@ namespace ProfitProphet.Services
     {
         public BacktestResult RunBacktest(List<Candle> candles, StrategyProfile profile, double initialCash = 10000)
         {
-            var result = new BacktestResult { Symbol = profile.Symbol };
+            var result = new BacktestResult
+            {
+                Symbol = profile.Symbol,
+                EquityCurve = new List<EquityPoint>(),
+                Trades = new List<TradeRecord>()
+            };
+
             if (candles == null || candles.Count < 50) return result;
 
             // Indikátorok előszámolása
             var indicatorCache = PrecalculateIndicators(candles, profile);
 
             double cash = initialCash;
-            int holdings = 0;           // Jelenlegi részvény darabszám
-            double avgEntryPrice = 0;   // Súlyozott átlagár (a rávásárlások miatt)
 
-            result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = cash });
+            int holdings = 0;           // Jelenlegi részvény darabszám
+            double avgEntryPrice = 0;   // Súlyozott átlagár
+
+            // Statisztikai változók a Drawdown-hoz
+            double peakEquity = initialCash;
+            double maxDrawdown = 0;
+
+            // Kezdőpont rögzítése
+            result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = initialCash });
 
             // FUTTATÁS
             int startIndex = 50;
@@ -35,25 +47,24 @@ namespace ProfitProphet.Services
                 // -----------------------------
                 // 1. VÉTELI LOGIKA (ENTRY)
                 // -----------------------------
-                // Vásárolhatunk, ha: Nincs pozíció VAGY (Van, de engedélyezett a rávásárlás)
                 bool canBuy = (holdings == 0) || profile.AllowPyramiding;
 
+                // Fontos: Az "else if" miatt a te logikád szerint vagy veszünk, vagy eladunk egy körben.
+                // Ha a vételi feltétel igaz, akkor belépünk (és nem vizsgáljuk az eladást).
                 if (canBuy && EvaluateGroups(profile.EntryGroups, indicatorCache, candles, i))
                 {
-                    // Mennyit vegyünk?
                     int quantityToBuy = CalculatePositionSize(profile, cash, price);
 
                     if (quantityToBuy > 0)
                     {
                         double tradeValue = quantityToBuy * price;
-                        double fee = CalculateFee(tradeValue, profile); // NetBroker díj
+                        double fee = CalculateFee(tradeValue, profile);
 
-                        // Van elég pénzünk a vételre + díjra?
                         if (cash >= tradeValue + fee)
                         {
-                            // Átlagár frissítése (Súlyozott átlag)
+                            // Átlagár frissítése
                             double totalValueBefore = holdings * avgEntryPrice;
-                            double totalValueNew = tradeValue; // Díj nélkül számoljuk az átlagárat a tiszta matekhoz
+                            double totalValueNew = tradeValue;
                             avgEntryPrice = (totalValueBefore + totalValueNew) / (holdings + quantityToBuy);
 
                             // Tranzakció
@@ -64,75 +75,81 @@ namespace ProfitProphet.Services
                             {
                                 EntryDate = currentCandle.TimestampUtc,
                                 EntryPrice = (decimal)price,
-                                Quantity = quantityToBuy, // Ezt is érdemes lenne tárolni a TradeRecordban
+                                Quantity = quantityToBuy,
                                 Type = "Long"
                             });
                         }
                     }
                 }
-
                 // -----------------------------
                 // 2. ELADÁSI LOGIKA (EXIT)
                 // -----------------------------
-                // Eladhatunk, ha van mit
                 else if (holdings > 0 && EvaluateGroups(profile.ExitGroups, indicatorCache, candles, i))
                 {
                     bool shouldSell = true;
 
-                    // Ha be van kapcsolva a "Csak profitban" opció
                     if (profile.OnlySellInProfit)
                     {
-                        // Kiszámoljuk, mennyi lenne a bevétel
                         double potentialRevenue = holdings * price;
                         double potentialFee = CalculateFee(potentialRevenue, profile);
                         double netRevenue = potentialRevenue - potentialFee;
 
-                        // Mennyibe került mindez? (Átlagár * darab) + a VÉTELI jutalékok (ez már levonódott a cash-ből)
-                        // A legegyszerűbb profit számítás: Jelenlegi vagyon vs. "Mennyibe került volna akkor"
-                        // De itt most a trade szintű profitot nézzük:
-                        // Break-even ár: (Átlagár * Darab + VételiDíjak + EladásiDíj) / Darab
-                        // Egyszerűsítve: Ha a nettó bevétel több mint amennyit költöttünk a részvényekre (Átlagár * db)
-
+                        // Ha a nettó bevétel kisebb, mint amennyibe került (holdings * átlagár), nem adjuk el
                         if (netRevenue <= (holdings * avgEntryPrice))
                         {
-                            shouldSell = false; // Nem adjuk el, mert bukóban vagyunk
+                            shouldSell = false;
                         }
                     }
 
                     if (shouldSell)
                     {
                         double revenue = holdings * price;
-                        double fee = CalculateFee(revenue, profile); // NetBroker díj
+                        double fee = CalculateFee(revenue, profile);
 
                         cash += (revenue - fee);
 
-                        // Eredmény rögzítése (az utolsó nyitott trade-et lezárjuk, 
-                        // de rávásárlásnál ez bonyolultabb, egyszerűsítve az utolsó trade-hez írjuk a zárót)
-                        // PROFI MEGOLDÁS: A TradeRecord-nak kezelnie kéne a részleges zárást, 
-                        // de most egyszerűsítve az összes nyitott trade-et lezárjuk a listában.
-
+                        // Nyitott trade-ek lezárása a listában
                         foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
                         {
                             trade.ExitDate = currentCandle.TimestampUtc;
                             trade.ExitPrice = (decimal)price;
 
-                            // A profit számítása itt trükkös rávásárlásnál. 
-                            // Egyszerűsítve: (Eladási ár - Vételi ár) * mennyiség - (arányos költség)
-                            // Most a BacktestResult TotalProfitLoss-a pontos lesz a cash miatt, 
-                            // de az egyes trade-ek profitja becslés lesz.
-                            trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * 1); // Placeholder
+                            // Egyszerűsített profit számítás a trade-re
+                            double grossProfit = (double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity;
+                            trade.Profit = (decimal)grossProfit;
                         }
 
-                        // Reset
                         holdings = 0;
                         avgEntryPrice = 0;
-
-                        result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = cash });
                     }
                 }
+
+                // -----------------------------
+                // 3. EQUITY ÉS DRAWDOWN FRISSÍTÉS (MINDEN GYERTYÁNÁL!)
+                // -----------------------------
+                // EZ HIÁNYZOTT: Minden egyes nap kiszámoljuk, mennyit ér a vagyonunk
+                double currentEquity = cash + (holdings * price);
+
+                // Drawdown (Visszaesés) számítása
+                if (currentEquity > peakEquity)
+                {
+                    peakEquity = currentEquity; // Új csúcs
+                }
+                else
+                {
+                    double dd = (peakEquity - currentEquity) / peakEquity;
+                    if (dd > maxDrawdown) maxDrawdown = dd;
+                }
+
+                // Görbe pont hozzáadása
+                result.EquityCurve.Add(new EquityPoint
+                {
+                    Time = currentCandle.TimestampUtc,
+                    Equity = currentEquity
+                });
             }
 
-            // Kényszerített zárás a végén
+            // Kényszerített zárás a végén a pontos végeredményhez
             if (holdings > 0)
             {
                 double price = (double)candles.Last().Close;
@@ -142,8 +159,9 @@ namespace ProfitProphet.Services
             }
 
             result.TotalProfitLoss = cash - initialCash;
+            result.MaxDrawdown = maxDrawdown; // Itt mentjük el a maximumot a táblázathoz
             result.TradeCount = result.Trades.Count;
-            // WinRate számításnál csak a lezártakat nézzük
+
             var closedTrades = result.Trades.Where(t => t.ExitDate != DateTime.MinValue).ToList();
             result.WinRate = closedTrades.Count > 0
                 ? (double)closedTrades.Count(t => t.ExitPrice > t.EntryPrice) / closedTrades.Count
@@ -152,11 +170,10 @@ namespace ProfitProphet.Services
             return result;
         }
 
-        // --- SEGÉDMETÓDUSOK ---
+        // --- SEGÉDMETÓDUSOK (Ezek változatlanul maradhatnak, de a teljesség kedvéért itt vannak) ---
 
         private double CalculateFee(double tradeValue, StrategyProfile profile)
         {
-            // NetBroker logika: 0.45%, de minimum 7 USD
             double calculatedFee = tradeValue * (profile.CommissionPercent / 100.0);
             return Math.Max(calculatedFee, profile.MinCommission);
         }
@@ -164,51 +181,32 @@ namespace ProfitProphet.Services
         private int CalculatePositionSize(StrategyProfile profile, double currentCash, double price)
         {
             if (price <= 0) return 0;
-
             double amountToInvest = 0;
 
             switch (profile.AmountType)
             {
                 case TradeAmountType.AllCash:
-                    // Hagyunk 2% tartalékot a költségekre, a többit befektetjük
                     amountToInvest = currentCash * 0.98;
                     break;
-
                 case TradeAmountType.FixedCash:
                     amountToInvest = profile.TradeAmount;
-                    // Ha nincs annyi pénzünk, amennyit fixen akarunk, akkor csak a maradékot költjük
                     if (amountToInvest > currentCash) amountToInvest = currentCash;
                     break;
-
                 case TradeAmountType.FixedShareCount:
-                    // ITT A VÁLASZ A KÉRDÉSEDRE: Igen, ez a fix LOT / Darabszám.
-                    // Ellenőrizzük, van-e rá elég pénz
                     double requiredCash = profile.TradeAmount * price;
-                    if (requiredCash > currentCash)
-                    {
-                        // Ha nincs rá pénz, annyit veszünk, amennyi kijön (vagy 0-t, stratégia függő)
-                        // Most vesszük a maximumot, ami kijön a pénzből
-                        return (int)(currentCash / price);
-                    }
+                    if (requiredCash > currentCash) return (int)(currentCash / price);
                     return (int)profile.TradeAmount;
-
-                // --- EZ AZ ÚJ RÉSZ ---
                 case TradeAmountType.PercentageOfEquity:
-                    // A TradeAmount itt %-ot jelent (pl. 10 = 10%)
-                    double percent = Math.Max(0, Math.Min(100, profile.TradeAmount)); // 0 és 100 közé szorítjuk
+                    double percent = Math.Max(0, Math.Min(100, profile.TradeAmount));
                     amountToInvest = currentCash * (percent / 100.0);
                     break;
             }
-
-            // Kiszámoljuk, hány darab jön ki a pénzből
             return (int)(amountToInvest / price);
         }
 
         private Dictionary<string, double[]> PrecalculateIndicators(List<Candle> candles, StrategyProfile profile)
         {
             var cache = new Dictionary<string, double[]>();
-
-            // Itt most már a Csoportokon belül keressük a szabályokat (.SelectMany)
             var allEntryRules = profile.EntryGroups.SelectMany(g => g.Rules);
             var allExitRules = profile.ExitGroups.SelectMany(g => g.Rules);
             var allRules = allEntryRules.Concat(allExitRules);
@@ -224,49 +222,32 @@ namespace ProfitProphet.Services
             return cache;
         }
 
-        // --- A FŐ LOGIKA (DNF Kiértékelés) ---
         private bool EvaluateGroups(List<StrategyGroup> groups, Dictionary<string, double[]> cache, List<Candle> candles, int index)
         {
             if (groups == null || groups.Count == 0) return false;
-
-            // 1. Szint: VAGY kapcsolat (Bármelyik csoport teljesül, az jó)
             foreach (var group in groups)
             {
                 if (group.Rules.Count == 0) continue;
-
                 bool isGroupValid = true;
-
-                // 2. Szint: ÉS kapcsolat (A csoporton belül mindennek igaznak kell lennie)
                 foreach (var rule in group.Rules)
                 {
                     if (!EvaluateSingleRule(rule, cache, candles, index))
                     {
                         isGroupValid = false;
-                        break; // Bukott a csoport, nem kell tovább nézni a szabályait
+                        break;
                     }
                 }
-
-                // Ha a csoport "túlélte" a vizsgálatot (minden szabálya igaz), akkor BINGO!
                 if (isGroupValid) return true;
             }
-
-            // Ha végigértünk az összes csoporton és egyik sem nyert
             return false;
         }
 
         private bool EvaluateSingleRule(StrategyRule rule, Dictionary<string, double[]> cache, List<Candle> candles, int index)
         {
             double leftValue = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, rule.LeftIndicatorName == "Close", cache, candles, index);
-
-            double rightValue = 0;
-            if (rule.RightSourceType == DataSourceType.Value)
-            {
-                rightValue = rule.RightValue;
-            }
-            else
-            {
-                rightValue = GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightIndicatorName == "Close", cache, candles, index, rule.LeftPeriod);
-            }
+            double rightValue = rule.RightSourceType == DataSourceType.Value
+                ? rule.RightValue
+                : GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightIndicatorName == "Close", cache, candles, index, rule.LeftPeriod);
 
             double leftPrev = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, false, cache, candles, index - 1);
             double rightPrev = rule.RightSourceType == DataSourceType.Value
@@ -286,14 +267,10 @@ namespace ProfitProphet.Services
 
         private void EnsureIndicatorCalculated(string name, int period, int dependencyPeriod, List<Candle> candles, Dictionary<string, double[]> cache)
         {
-            string key = dependencyPeriod > 0
-                ? $"{name}_{period}_dep{dependencyPeriod}"
-                : $"{name}_{period}";
-
+            string key = dependencyPeriod > 0 ? $"{name}_{period}_dep{dependencyPeriod}" : $"{name}_{period}";
             if (cache.ContainsKey(key)) return;
 
             double[] values = new double[candles.Count];
-
             switch (name.ToUpper())
             {
                 case "SMA": values = IndicatorAlgorithms.CalculateSMA(candles, period); break;
@@ -313,35 +290,26 @@ namespace ProfitProphet.Services
         private double GetValue(string name, int period, bool isPrice, Dictionary<string, double[]> cache, List<Candle> candles, int index, int dependencyPeriod = 0)
         {
             if (index < 0) return 0;
-            //if (name.ToUpper() == "CLOSE") return (double)candles[index].Close;
-
             if (isPrice || name.ToUpper() == "CLOSE" || name.ToUpper() == "OPEN" || name.ToUpper() == "HIGH" || name.ToUpper() == "LOW")
             {
-                int targetIndex = index - period; // Itt történik az eltolás (pl. index - 1)
-
-                // Védelem: Ha a chart eleje előtt vagyunk, 0-t adunk vissza
+                int targetIndex = index - period;
                 if (targetIndex < 0) return 0;
-
                 switch (name.ToUpper())
                 {
                     case "OPEN": return (double)candles[targetIndex].Open;
                     case "HIGH": return (double)candles[targetIndex].High;
                     case "LOW": return (double)candles[targetIndex].Low;
-                    default: return (double)candles[targetIndex].Close; // Alapértelmezés a Close
+                    default: return (double)candles[targetIndex].Close;
                 }
             }
-
             if (dependencyPeriod > 0)
             {
                 string keyWithDep = $"{name}_{period}_dep{dependencyPeriod}";
                 if (cache.ContainsKey(keyWithDep)) return cache[keyWithDep][index];
             }
-
             string keySimple = $"{name}_{period}";
             if (cache.ContainsKey(keySimple)) return cache[keySimple][index];
-
             return 0;
         }
-
     }
 }

@@ -7,193 +7,252 @@
         xmlns:local="clr-namespace:ProfitProphet.Views"
         mc:Ignorable="d"
         Title="Stratégia Tesztelő" 
-        Height="700" Width="1000"
-        MinHeight="600" MinWidth="800"
+        Height="720" Width="1100"
+        MinHeight="600" MinWidth="900"
         WindowStartupLocation="CenterScreen"
+        ResizeMode="CanResizeWithGrip"
         Background="#1E1E1E">
+
+    <Window.Resources>
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="#252526"/>
+        </Style>
+    </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/> <ColumnDefinition Width="*"/>   </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,1,0" Padding="15">
-            <StackPanel>
-                <TextBlock Text="Paraméterek" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+        <Border Grid.Column="0" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,1,0" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
 
-                <Button Command="{Binding EditStrategyCommand}" Content="Stratégia Szerkesztése ✏️" Margin="0,0,0,20"/>
+                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10">
+                    <StackPanel>
+                        <TextBlock Text="Vezérlőpult" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,15"/>
 
-                <TextBlock Text="Vezérlőpult" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,20"/>
+                        <TextBlock Text="{Binding CurrentProfile.Name}" Foreground="#007ACC" FontWeight="Bold" FontSize="15" TextWrapping="Wrap" Margin="0,0,0,2"/>
+                        <TextBlock Text="{Binding Symbol}" Foreground="Gray" FontWeight="SemiBold" Margin="0,0,0,10"/>
 
-                <TextBlock Text="{Binding CurrentProfile.Name}" Foreground="#007ACC" FontWeight="Bold" FontSize="16" Margin="0,0,0,5" TextWrapping="Wrap"/>
-                <TextBlock Text="{Binding Symbol}" Foreground="Gray" Margin="0,0,0,20"/>
+                        <Button Command="{Binding EditStrategyCommand}" 
+                                Content="Stratégia tervező ✏️" 
+                                Height="28" Margin="0,0,0,15"
+                                Background="#3E3E42" Foreground="White" BorderThickness="0"/>
 
-                <Button Command="{Binding EditStrategyCommand}" 
-                        Content="Stratégia Szerkesztése ✏️" 
-                        Height="35" Margin="0,0,0,10"
-                        Background="#3E3E42" Foreground="White" BorderThickness="0"/>
+                        <Separator Background="#3E3E42" Margin="0,0,0,15"/>
 
-                <Button Command="{Binding OpenOptimizerCommand}" 
-                        Content="OPTIMALIZÁLÁS 🚀" 
-                        Height="40" Margin="0,0,0,20"
-                        Background="#FF8C00" Foreground="White" FontWeight="Bold" BorderThickness="0">
+                        <TextBlock Text="Időszak Kezdete:" Foreground="Gray" Margin="0,0,0,2"/>
+                        <DatePicker SelectedDate="{Binding StartDate}" Margin="0,0,0,8" Background="#333" Foreground="Black"/>
+
+                        <TextBlock Text="Időszak Vége:" Foreground="Gray" Margin="0,0,0,2"/>
+                        <DatePicker SelectedDate="{Binding EndDate}" Margin="0,0,0,15" Background="#333" Foreground="Black"/>
+
+                        <GroupBox Header="Pénzügyek és Jutalékok" Foreground="LightGray" BorderBrush="#444" Margin="0,0,0,15">
+                            <Grid Margin="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Kezdő Tőke ($):" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitialCash}" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Kötés Típus:" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TradeAmountTypes}" SelectedItem="{Binding CurrentProfile.AmountType}" Margin="0,0,0,4"/>
+
+                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Kötés Méret:" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentProfile.TradeAmount}" ToolTip="Darabszám vagy Fix összeg ($)" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+
+                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Jutalék (%):" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentProfile.CommissionPercent}" ToolTip="Pl. 0.45" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+
+                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Min. Díj ($):" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentProfile.MinCommission}" ToolTip="Minimum fizetendő díj (pl. 7 USD)" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Napi Swap ($):" VerticalAlignment="Center" Foreground="Gray"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentProfile.DailySwap}" ToolTip="Naponta levont költség pozíciónként" Background="#333" Foreground="White" BorderBrush="#555" Padding="2"/>
+                            </Grid>
+                        </GroupBox>
+
+                        <Border Background="#2D2D30" CornerRadius="4" Padding="8" Margin="0,0,0,10">
+                            <StackPanel>
+                                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                                    <CheckBox IsChecked="{Binding UseOptimization}" VerticalAlignment="Center">
+                                        <CheckBox.LayoutTransform>
+                                            <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
+                                        </CheckBox.LayoutTransform>
+                                    </CheckBox>
+                                    <TextBlock Text="Optimalizálás" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="White" FontWeight="SemiBold"/>
+                                </StackPanel>
+
+                                <Button Command="{Binding OpenOptimizerCommand}" 
+                                    Content="Beállítások ⚙️" 
+                                    Height="28" 
+                                    IsEnabled="{Binding UseOptimization}"
+                                    BorderThickness="0">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#444"/>
+                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="3">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+
+                                            <Style.Triggers>
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Background" Value="#252526"/>
+                                                    <Setter Property="Foreground" Value="#555"/>
+                                                </Trigger>
+
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#555"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <Button Grid.Row="1" 
+                        Command="{Binding RunCommand}" 
+                        Content="FUTTATÁS ▶" 
+                        Height="45" 
+                        Background="#007ACC" Foreground="White" FontWeight="Bold" FontSize="16" BorderThickness="0">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="4"/>
                         </Style>
                     </Button.Resources>
                 </Button>
-
-                <Separator Background="#3E3E42" Margin="0,0,0,20"/>
-
-                <TextBlock Text="Időszak Kezdete:" Foreground="Gray" Margin="0,5,0,5"/>
-                <DatePicker SelectedDate="{Binding StartDate}" Margin="0,0,0,10"
-                            Background="#3E3E42" Foreground="Black" BorderBrush="Gray"/>
-
-                <TextBlock Text="Időszak Vége:" Foreground="Gray" Margin="0,5,0,5"/>
-                <DatePicker SelectedDate="{Binding EndDate}" Margin="0,0,0,20"
-                            Background="#3E3E42" Foreground="Black" BorderBrush="Gray"/>
-
-                <GroupBox Header="Pénzügyek és Jutalékok" Margin="0,10,0,0" Foreground="LightGray" BorderBrush="#444">
-                    <StackPanel Margin="5">
-
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Text="Kezdő Tőke ($):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
-                            <TextBox Text="{Binding InitialCash}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
-                        </DockPanel>
-
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Text="Kötés Típus:" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
-
-                            <ComboBox ItemsSource="{Binding TradeAmountTypes}" 
-                                  SelectedItem="{Binding CurrentProfile.AmountType}"
-                                  Width="120" Margin="0,0,5,0"/>
-
-                            <TextBox Text="{Binding CurrentProfile.TradeAmount}" Width="60" 
-                                 ToolTip="Írd be az értéket (Darab, Dollár vagy %)" 
-                                 Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
-                        </DockPanel>
-
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Text="Kötés Méret:" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
-                            <TextBox Text="{Binding CurrentProfile.TradeAmount}" ToolTip="Fix összeg ($) vagy Darab" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
-                        </DockPanel>
-
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Text="Jutalék (%):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
-                            <TextBox Text="{Binding CurrentProfile.CommissionPercent}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
-                        </DockPanel>
-
-                        <DockPanel Margin="0,0,0,5">
-                            <TextBlock Text="Min. Díj ($):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
-                            <TextBox Text="{Binding CurrentProfile.MinCommission}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
-                        </DockPanel>
-
-                        <DockPanel>
-                            <TextBlock Text="Napi Swap ($):" Width="100" VerticalAlignment="Center" Foreground="Gray"/>
-                            <TextBox Text="{Binding CurrentProfile.DailySwap}" Background="#333" Foreground="White" BorderBrush="Gray" Padding="2"/>
-                        </DockPanel>
-
-                    </StackPanel>
-                </GroupBox>
-
-                <Separator Background="#3E3E42" Margin="0,20,0,20"/>
-     
-                <Button Command="{Binding RunCommand}" 
-                        Content="FUTTATÁS" 
-                        Height="40" 
-                        Margin="0,30,0,0"
-                        Background="#007ACC" 
-                        Foreground="White"
-                        FontWeight="Bold">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="3"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-            </StackPanel>
+            </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="20">
+        <Grid Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="1.5*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="2*"/>
-            </Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>    <RowDefinition Height="Auto"/>  <RowDefinition Height="1.5*"/>  </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" Text="Tőke Görbe" Foreground="#CCCCCC" FontWeight="Bold" Margin="0,0,0,5"/>
-
-            <Border Grid.Row="1" BorderBrush="#3E3E42" BorderThickness="1" CornerRadius="3" Background="#1E1E1E" Margin="0,0,0,15">
+            <Border Grid.Row="0" BorderBrush="#3E3E42" BorderThickness="1" Background="#1E1E1E" Margin="0,0,0,5">
                 <oxy:PlotView Model="{Binding EquityModel}" Background="Transparent"/>
             </Border>
 
-            <StackPanel Grid.Row="2" Margin="0,0,0,20">
-                <TextBlock Text="Eredmények" FontSize="16" FontWeight="Bold" Foreground="White" Margin="0,0,0,10"/>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="150"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Összes Profit:" Foreground="Gray" Margin="0,2"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Result.TotalProfitLoss, StringFormat=C2}" 
-                               Foreground="{Binding Result.TotalProfitLoss, Converter={StaticResource BoolToVisibilityConverter}}" FontWeight="Bold"
-                               TextElement.Foreground="#4CC638"/>
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Kötések száma:" Foreground="Gray" Margin="0,2"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Result.TradeCount}" Foreground="White"/>
-
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Találati arány:" Foreground="Gray" Margin="0,2"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Result.WinRate, StringFormat={}{0:P1}}" Foreground="White"/>
-
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Score:" Foreground="Gray" Margin="0,2"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding Result.Score, StringFormat=N2}" Foreground="#FFA500" FontWeight="Bold"/>
-                </Grid>
+            <StackPanel Grid.Row="1" Margin="0,5,0,10">
+                <TextBox Text="{Binding IndicatorTestValues}" 
+                         IsReadOnly="True" TextWrapping="Wrap"
+                         Background="#252526" Foreground="#FFD700" BorderBrush="#3E3E42" 
+                         Padding="6" FontSize="12" FontFamily="Consolas"/>
             </StackPanel>
 
-            <TextBlock Grid.Row="3" Text="Kötéslista" Foreground="#CCCCCC" FontWeight="Bold" Margin="0,0,0,5"/>
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <TextBlock Grid.Row="0" Text="Eredmények Listája" Foreground="#CCCCCC" FontWeight="Bold" Margin="0,0,0,5"/>
 
-            <DataGrid Grid.Row="4" 
-                      ItemsSource="{Binding Result.Trades}" 
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      IsReadOnly="True"
-                      Background="#1E1E1E"
-                      RowBackground="#252526"
-                      AlternatingRowBackground="#2D2D30"
-                      Foreground="White"
-                      BorderBrush="#3E3E42"
-                      HeadersVisibility="Column"
-                      GridLinesVisibility="Horizontal"
-                      HorizontalGridLinesBrush="#3E3E42">
+                <DataGrid Grid.Row="1" 
+                          ItemsSource="{Binding OptimizationResults}" 
+                          SelectedItem="{Binding SelectedResult}"
+                          AutoGenerateColumns="False" 
+                          IsReadOnly="True"
+                          EnableRowVirtualization="True"
+                          EnableColumnVirtualization="True"
+                          VirtualizingPanel.IsVirtualizing="True"
+                          VirtualizingPanel.VirtualizationMode="Recycling"
+                          Background="#1E1E1E" RowBackground="#252526" AlternatingRowBackground="#2D2D30"
+                          Foreground="White" BorderBrush="#3E3E42" GridLinesVisibility="None" HeadersVisibility="Column">
 
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Background" Value="#3E3E42"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <Setter Property="Padding" Value="5"/>
-                        <Setter Property="BorderThickness" Value="0,0,1,1"/>
-                        <Setter Property="BorderBrush" Value="#1E1E1E"/>
-                    </Style>
-                </DataGrid.Resources>
+                    <DataGrid.InputBindings>
+                        <MouseBinding MouseAction="LeftDoubleClick" 
+                                      Command="{Binding ApplyResultCommand}" 
+                                      CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=DataGrid}, Path=SelectedItem}"/>
+                    </DataGrid.InputBindings>
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Dátum" Binding="{Binding EntryDate, StringFormat=yyyy-MM-dd}" Width="*"/>
-                    <DataGridTextColumn Header="Vétel" Binding="{Binding EntryPrice, StringFormat=N2}" Width="*"/>
-                    <DataGridTextColumn Header="Eladás" Binding="{Binding ExitPrice, StringFormat=N2}" Width="*"/>
-                    <DataGridTextColumn Header="Profit" Binding="{Binding Profit, StringFormat=N2}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Background" Value="#3E3E42"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Padding" Value="8,5"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,0"/>
+                            <Setter Property="BorderBrush" Value="#222"/>
+                        </Style>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="DataGridCell">
+                                        <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="Background" Value="#007ACC"/>
+                                    <Setter Property="Foreground" Value="White"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.Resources>
 
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Profit ($)" Binding="{Binding Profit, StringFormat=N0}" Width="100" FontWeight="Bold">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Kötés" Binding="{Binding TradeCount}" Width="60">
+                             <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Drawdown" Binding="{Binding Drawdown, StringFormat=P1}" Width="80">
+                             <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="#FF6666"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Score" Binding="{Binding Score, StringFormat=N2}" Width="80">
+                             <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter Property="Foreground" Value="#FFA500"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Paraméterek" Binding="{Binding ParameterSummary}" Width="*"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -16,50 +16,33 @@ namespace ProfitProphet.ViewModels
 {
     public class OptimizationViewModel : INotifyPropertyChanged
     {
-        private readonly OptimizerService _optimizerService;
         private readonly StrategyProfile _profile;
-        private readonly List<Candle> _candles;
-        private bool _isRunning;
-        private string _statusText = "Készen áll az indításra. Jelöld ki a paramétereket!";
-        private double _progressValue;
-        public ObservableCollection<OptimizationResult> OptimizationResults { get; } = new();
 
-        // EZT A SORT HAGYTAM KI VÉLETLENÜL - MOST PÓTOLVA:
+        // Esemény az ablak bezárásához (True = OK, False = Mégse)
         public event Action<bool> OnRequestClose;
 
+        // A paraméterek listája
         public ObservableCollection<OptimizationParameterUI> AvailableParameters { get; } = new();
 
-        public ICommand RunOptimizationCommand { get; }
+        // Parancsok
+        public ICommand OkCommand { get; }
+        public ICommand CancelCommand { get; }
 
-        public bool IsRunning
+        public OptimizationViewModel(StrategyProfile profile)
         {
-            get => _isRunning;
-            set { _isRunning = value; OnPropertyChanged(); OnPropertyChanged(nameof(IsNotRunning)); }
-        }
+            _profile = profile;
 
-        public bool IsNotRunning => !_isRunning;
-
-        public string StatusText
-        {
-            get => _statusText;
-            set { _statusText = value; OnPropertyChanged(); }
-        }
-
-        public double ProgressValue
-        {
-            get => _progressValue;
-            set { _progressValue = value; OnPropertyChanged(); }
-        }
-
-        public OptimizationViewModel(StrategyProfile profile, List<Candle> candles, OptimizerService optimizerService)
-        {
-            _profile = profile ?? throw new ArgumentNullException(nameof(profile));
-            _candles = candles ?? throw new ArgumentNullException(nameof(candles));
-            _optimizerService = optimizerService ?? throw new ArgumentNullException(nameof(optimizerService));
-
+            // Betöltjük az adatokat a profilból
             LoadParametersFromProfile();
 
-            RunOptimizationCommand = new RelayCommand(async (o) => await RunOptimization(), (o) => !IsRunning);
+            // Gombok bekötése
+            OkCommand = new RelayCommand(o => Close(true));
+            CancelCommand = new RelayCommand(o => Close(false));
+        }
+
+        private void Close(bool result)
+        {
+            OnRequestClose?.Invoke(result);
         }
 
         private void LoadParametersFromProfile()
@@ -116,6 +99,7 @@ namespace ProfitProphet.ViewModels
 
         private void AddParameterUI(StrategyRule rule, bool isEntry, string paramName, double currentValue, string displayName)
         {
+            // Alapértelmezett tartományok (pl. +/- 50%)
             int defaultMin = (int)Math.Max(1, Math.Floor(currentValue * 0.5));
             int defaultMax = (int)Math.Ceiling(currentValue * 1.5);
 
@@ -127,96 +111,14 @@ namespace ProfitProphet.ViewModels
                 Rule = rule,
                 ParameterName = paramName,
                 IsEntrySide = isEntry,
-                IsSelected = false,
+                IsSelected = false, // Alapból nincs kijelölve
                 CurrentValue = currentValue,
                 MinValue = defaultMin,
                 MaxValue = defaultMax
             });
         }
 
-        private async Task RunOptimization()
-        {
-            var selectedParams = AvailableParameters.Where(p => p.IsSelected).ToList();
-
-            if (!selectedParams.Any())
-            {
-                StatusText = "Hiba: Nincs kiválasztva paraméter!";
-                return;
-            }
-
-            IsRunning = true;
-            //StatusText = $"Optimalizálás futtatása {selectedParams.Count} paraméteren...";
-            StatusText = "Számítás folyamatban...";
-            OptimizationResults.Clear();
-            //ProgressValue = 0;
-
-            try
-            {
-                var optParams = selectedParams.Select(p => new OptimizationParameter
-                {
-                    Rule = p.Rule,
-                    IsEntrySide = p.IsEntrySide,
-                    ParameterName = p.ParameterName,
-                    MinValue = p.MinValue,
-                    MaxValue = p.MaxValue
-                }).ToList();
-
-                var results = await _optimizerService.OptimizeAsync(_candles, _profile, optParams);
-
-                if (results != null && results.Any())
-                {
-                    foreach (var res in results)
-                    {
-                        OptimizationResults.Add(res);
-                    }
-                    StatusText = $"KÉSZ! {results.Count} eredményt találtam.";
-                }
-                //StatusText = $"KÉSZ! Score: {result.Score:N2} | Profit: {result.Profit:N0}$ | Kötés: {result.TradeCount}";
-                else
-                {
-                    StatusText = "Nem találtam megfelelő beállítást (kevés kötés vagy rossz eredmény).";
-                
-
-
-                    //MessageBox.Show($"Optimalizálás sikeres!\n\nÚj Profit: {result.Profit:N0}$\nKötések száma: {result.TradeCount}\nDrawdown: {result.Drawdown:P1}",
-                    //                "Eredmény", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    //RefreshCurrentValues(selectedParams);
-
-                    // Opcionális: Ha azt akarod, hogy sikeres futás után automatikusan záródjon be az ablak:
-                    // OnRequestClose?.Invoke(true); 
-                }
-            }
-            catch (Exception ex)
-            {
-                StatusText = "Hiba: " + ex.Message;
-                MessageBox.Show(ex.ToString());
-            }
-            finally
-            {
-                IsRunning = false;
-            }
-        }
-
-        private void RefreshCurrentValues(List<OptimizationParameterUI> selectedParams)
-        {
-            foreach (var p in selectedParams)
-            {
-                switch (p.ParameterName)
-                {
-                    case "LeftPeriod":
-                        p.CurrentValue = p.Rule.LeftPeriod;
-                        break;
-                    case "RightPeriod":
-                        p.CurrentValue = p.Rule.RightPeriod;
-                        break;
-                    case "RightValue":
-                        p.CurrentValue = p.Rule.RightValue;
-                        break;
-                }
-            }
-        }
-
+        // --- INotifyPropertyChanged Implementáció ---
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

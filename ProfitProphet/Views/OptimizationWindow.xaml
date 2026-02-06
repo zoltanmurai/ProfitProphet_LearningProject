@@ -3,16 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:conv="clr-namespace:ProfitProphet.Converters"
         mc:Ignorable="d"
-        Title="Stratégia Optimalizálás" Height="600" Width="900" 
+        Title="Stratégia Optimalizálás Beállítása" Height="500" Width="700" 
         Background="#1E1E1E" Foreground="#E0E0E0"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <conv:BoolToVisibilityConverter x:Key="BoolToVis"/>
-        <conv:IsPositiveConverter x:Key="IsPositiveConverter"/>
-
         <Style TargetType="TextBox">
             <Setter Property="Background" Value="#333337"/>
             <Setter Property="Foreground" Value="White"/>
@@ -25,14 +21,14 @@
     <Grid Margin="15">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="200"/>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="Optimalizációs Paraméterek" FontSize="20" FontWeight="Bold" Foreground="#007ACC"/>
-            <TextBlock Text="Jelöld ki a változókat és add meg a keresési tartományt." FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+            <TextBlock Text="Optimalizációs Tartományok" FontSize="20" FontWeight="Bold" Foreground="#007ACC"/>
+            <TextBlock Text="Válaszd ki, mely paramétereket akarod optimalizálni, és add meg a határokat." 
+                       FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
         </StackPanel>
 
         <Border Grid.Row="1" BorderBrush="#3F3F46" BorderThickness="1" Background="#252526" Padding="5">
@@ -52,13 +48,11 @@
                                         <ColumnDefinition Width="60"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" 
-                                              VerticalAlignment="Center"
-                                              IsEnabled="{Binding DataContext.IsNotRunning, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center"/>
 
                                     <TextBlock Grid.Column="1" Text="{Binding Name}" 
-                                               VerticalAlignment="Center" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
-                                               ToolTip="{Binding Name}"/>
+                                               VerticalAlignment="Center" FontWeight="SemiBold" 
+                                               TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
 
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                                         <TextBlock Text="(" Foreground="Gray"/>
@@ -79,78 +73,14 @@
             </ScrollViewer>
         </Border>
 
-        <Grid Grid.Row="2" Margin="0,15,0,15">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="Mégse" Command="{Binding CancelCommand}" 
+                    Width="100" Height="30" Margin="0,0,10,0" 
+                    Background="#444" Foreground="White"/>
 
-            <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                <TextBlock Text="{Binding StatusText}" Foreground="#007ACC" FontWeight="Bold" Margin="0,0,0,5"/>
-                <ProgressBar Height="10" 
-                             Value="{Binding ProgressValue}" Maximum="100"
-                             IsIndeterminate="{Binding IsRunning}"
-                             Visibility="{Binding IsRunning, Converter={StaticResource BoolToVis}}"
-                             BorderThickness="0" Background="#333"/>
-            </StackPanel>
-
-            <Button Grid.Column="1" Content="OPTIMALIZÁLÁS FUTTATÁSA" 
-                    Command="{Binding RunOptimizationCommand}"
-                    Width="200" Height="40" 
-                    Background="#007ACC" Foreground="White" FontWeight="Bold"
-                    BorderThickness="0" Margin="10,0,0,0">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="3"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
-        </Grid>
-
-        <DataGrid Grid.Row="3" ItemsSource="{Binding OptimizationResults}" 
-                  AutoGenerateColumns="False" IsReadOnly="True" 
-                  Background="#252526" Foreground="White" RowBackground="#2D2D30"
-                  AlternatingRowBackground="#333337" GridLinesVisibility="None"
-                  HeadersVisibility="Column" BorderThickness="0">
-
-            <DataGrid.Resources>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="Background" Value="#3E3E42"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Padding" Value="5"/>
-                </Style>
-            </DataGrid.Resources>
-
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Paraméterek" Binding="{Binding ParameterSummary}" Width="*"/>
-
-                <DataGridTextColumn Header="Profit" Binding="{Binding Profit, StringFormat={}{0:N0} $}" Width="80">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Profit, Converter={StaticResource IsPositiveConverter}}" Value="True">
-                                    <Setter Property="Foreground" Value="LightGreen"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Header="Kötés" Binding="{Binding TradeCount}" Width="50"/>
-
-                <DataGridTextColumn Header="Drawdown" Binding="{Binding Drawdown, StringFormat=P1}" Width="80">
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="Foreground" Value="#FF6666"/>
-                            <Setter Property="HorizontalAlignment" Value="Right"/>
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
-
-                <DataGridTextColumn Header="Score" Binding="{Binding Score, StringFormat=N2}" Width="60" FontWeight="Bold"/>
-            </DataGrid.Columns>
-        </DataGrid>
-
+            <Button Content="BEÁLLÍTÁS KÉSZ (OK)" Command="{Binding OkCommand}" 
+                    Width="150" Height="30" 
+                    Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -6,9 +6,10 @@ using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Models.Strategies;
 using ProfitProphet.Services;
 using ProfitProphet.ViewModels.Commands;
-using ProfitProphet.Views; // Kell az ablak megnyitásához
+using ProfitProphet.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -21,12 +22,11 @@ namespace ProfitProphet.ViewModels
     {
         private readonly BacktestService _backtestService;
         private readonly IStrategySettingsService _strategyService;
-        private readonly OptimizerService _optimizerService; // <--- Új Service
+        private readonly OptimizerService _optimizerService;
 
         private readonly List<Candle> _candles;
         public event Action<BacktestResult> OnTestFinished;
 
-        // Nem használjuk az Enum.GetValues-t közvetlenül a bindinghoz, ha nem muszáj, de itt maradhat
         public IEnumerable<TradeAmountType> TradeAmountTypes => Enum.GetValues(typeof(TradeAmountType)).Cast<TradeAmountType>();
 
         private StrategyProfile _currentProfile;
@@ -38,9 +38,53 @@ namespace ProfitProphet.ViewModels
 
         public ICommand RunCommand { get; }
         public ICommand EditStrategyCommand { get; }
-        public ICommand OpenOptimizerCommand { get; } // <--- Új Parancs
+        public ICommand OpenOptimizerCommand { get; }
+
+        private bool _useOptimization;
+        public bool UseOptimization
+        {
+            get => _useOptimization;
+            set { _useOptimization = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<OptimizationResult> OptimizationResults { get; } = new();
+
+        private OptimizationResult _selectedResult;
+        public OptimizationResult SelectedResult
+        {
+            get => _selectedResult;
+            set
+            {
+                if (_selectedResult != value)
+                {
+                    _selectedResult = value;
+                    OnPropertyChanged();
+                    if (value != null)
+                    {
+                        // KATTINTÁS: Újraszámolás és rajzolás
+                        ShowResultOnChart(value);
+                    }
+                }
+            }
+        }
+
+        private string _indicatorTestValues;
+        public string IndicatorTestValues
+        {
+            get => _indicatorTestValues;
+            set { _indicatorTestValues = value; OnPropertyChanged(); }
+        }
+
+        private List<OptimizationParameter> _currentOptimizationParams;
 
         public string Symbol { get; private set; }
+
+        private double _initialCash = 10000;
+        public double InitialCash
+        {
+            get => _initialCash;
+            set { _initialCash = value; OnPropertyChanged(); }
+        }
 
         private DateTime _startDate;
         public DateTime StartDate
@@ -70,7 +114,6 @@ namespace ProfitProphet.ViewModels
             set { _equityModel = value; OnPropertyChanged(); }
         }
 
-        // Konstruktor: Most már 5 paramétert vár!
         public StrategyTestViewModel(
             BacktestService backtestService,
             IStrategySettingsService strategyService,
@@ -84,22 +127,15 @@ namespace ProfitProphet.ViewModels
             _candles = candles ?? throw new ArgumentNullException(nameof(candles));
             CurrentProfile = profile ?? throw new ArgumentNullException(nameof(profile));
 
-            // Candle property javítások:
             if (_candles.Any())
             {
-                Symbol = _candles.First().Symbol; // TickerSymbol helyett Symbol
-                StartDate = _candles.Min(c => c.TimestampUtc); // Time helyett TimestampUtc
-                EndDate = _candles.Max(c => c.TimestampUtc);   // Time helyett TimestampUtc
+                Symbol = _candles.First().Symbol;
+                StartDate = _candles.Min(c => c.TimestampUtc);
+                EndDate = _candles.Max(c => c.TimestampUtc);
             }
 
             RunCommand = new RelayCommand(o => RunTest());
-
-            // Az "Edit" parancs üres volt az eredetiben, de ha kell, ide írhatod a logikát
-            //EditStrategyCommand = new RelayCommand(o => MessageBox.Show("Szerkesztés..."));
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
-
-
-            // Optimizer gomb bekötése
             OpenOptimizerCommand = new RelayCommand(o => OpenOptimizer());
         }
 
@@ -118,60 +154,89 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-
-        private void RunTest()
+        private async void RunTest()
         {
-            if (CurrentProfile == null || _candles == null || !_candles.Any()) return;
+            if (CurrentProfile == null || _candles == null) return;
 
-            // Szűrés a dátumokra (TimestampUtc használatával)
-            var filteredCandles = _candles.Where(c => c.TimestampUtc >= StartDate && c.TimestampUtc <= filteredEndDate()).ToList();
-
-            // Segédfüggvény a dátumhoz, mert az EndDate általában 00:00:00, a gyertyák meg napközbeniek lehetnek
-            DateTime filteredEndDate() => EndDate.Date.AddDays(1).AddTicks(-1);
-
-            if (!filteredCandles.Any())
+            if (UseOptimization)
             {
-                MessageBox.Show("Nincs adat a kiválasztott időszakban!");
-                return;
+                if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
+                {
+                    MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek! Kattints a ceruza ikonra.");
+                    return;
+                }
+
+                OptimizationResults.Clear();
+
+                // Most már Listát kapunk vissza!
+                var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
+
+                foreach (var res in results.OrderByDescending(r => r.Score))
+                {
+                    OptimizationResults.Add(res);
+                }
+
+                if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
+            }
+            else
+            {
+                //var res = _backtestService.RunBacktest(_candles, CurrentProfile);
+                var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+                Result = res;
+                UpdateChart(res.EquityCurve);
+                IndicatorTestValues = "Egyedi futtatás a jelenlegi beállításokkal.";
+            }
+        }
+
+        private void ShowResultOnChart(OptimizationResult optRes)
+        {
+            if (optRes == null || _currentOptimizationParams == null) return;
+
+            var tempProfile = _optimizerService.DeepCopyProfile(CurrentProfile);
+
+            // 2. Értékek alkalmazása 
+            for (int i = 0; i < _currentOptimizationParams.Count; i++)
+            {
+                if (i < optRes.Values.Length)
+                {
+                    _optimizerService.ApplyValue(tempProfile, _currentOptimizationParams[i], optRes.Values[i]);
+                }
             }
 
-            // Futtatás
-            Result = _backtestService.RunBacktest(filteredCandles, CurrentProfile);
+            //var res = _backtestService.RunBacktest(_candles, tempProfile);
+            var res = _backtestService.RunBacktest(_candles, tempProfile, InitialCash);
+            UpdateChart(res.EquityCurve);
+            Result = res;
 
-            // Grafikon frissítése
-            UpdateChart(Result.EquityCurve);
-
-            OnTestFinished?.Invoke(Result);
+            IndicatorTestValues = $"KIVÁLASZTVA:\n{optRes.ParameterSummary}\n" +
+                                  $"Profit: {optRes.Profit:N0}$ | Score: {optRes.Score:N2}";
         }
 
         private void OpenOptimizer()
         {
-            // Ellenőrzés
-            if (CurrentProfile == null || _candles == null || !_candles.Any())
-            {
-                MessageBox.Show("Nincs betöltött stratégia vagy adat!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
+            var vm = new OptimizationViewModel(CurrentProfile);
+            var win = new OptimizationWindow { DataContext = vm, Owner = Application.Current.MainWindow };
 
-            // 1. ViewModel létrehozása
-            // Fontos: Itt a teljes gyertya listát átadjuk, az Optimizer majd szűri ha kell, 
-            // vagy használhatjuk a szűrt listát is. Most a teljeset adjuk át a robusztusság miatt.
-            var vm = new OptimizationViewModel(CurrentProfile, _candles, _optimizerService);
-
-            // 2. Ablak példányosítás
-            var window = new OptimizationWindow
+            vm.OnRequestClose += (result) =>
             {
-                DataContext = vm,
-                Owner = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive)
+                if (result)
+                {
+                    _currentOptimizationParams = vm.AvailableParameters
+                        .Where(p => p.IsSelected)
+                        .Select(p => new OptimizationParameter
+                        {
+                            Rule = p.Rule,
+                            IsEntrySide = p.IsEntrySide,
+                            ParameterName = p.ParameterName,
+                            MinValue = p.MinValue,
+                            MaxValue = p.MaxValue
+                        })
+                        .ToList();
+                    UseOptimization = true;
+                }
+                win.Close();
             };
-
-            // 3. Megjelenítés
-            if (window.ShowDialog() == true)
-            {
-                // Ha sikeres (DialogResult = true), akkor a profil már frissült a háttérben.
-                // Futtassuk újra a tesztet, hogy lássuk az eredményt!
-                RunTest();
-            }
+            win.ShowDialog();
         }
 
         private void UpdateChart(List<EquityPoint> points)
@@ -180,29 +245,70 @@ namespace ProfitProphet.ViewModels
 
             var model = new PlotModel
             {
-                Title = "Tőke Görbe (Equity)",
+                Title = UseOptimization ? "Tőke Görbe (Optimalizált)" : "Tőke Görbe (Alap)",
                 TextColor = OxyColors.White,
                 PlotAreaBorderColor = OxyColors.Gray,
                 Background = OxyColors.Transparent
             };
 
-            // X Tengely (Idő)
+            // 1. IDŐ TENGELY (X) SZÁMÍTÁSA
+            double minDate = DateTimeAxis.ToDouble(StartDate);
+            double maxDate = DateTimeAxis.ToDouble(EndDate);
+
+            var viewPoints = new List<DataPoint>();
+            foreach (var pt in points)
+            {
+                viewPoints.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
+            }
+
+            // Záró pont hozzáadása a végéhez (hogy végigérjen a vonal)
+            if (points.Last().Time < EndDate)
+            {
+                viewPoints.Add(DateTimeAxis.CreateDataPoint(EndDate, points.Last().Equity));
+            }
+
+            // 2. PÉNZ TENGELY (Y) SZÁMÍTÁSA (Dinamikus Zoom!)
+            double minEquity = points.Min(p => p.Equity);
+            double maxEquity = points.Max(p => p.Equity);
+
+            // Ha a görbe teljesen lapos (nincs kötés), csinálunk egy kis mesterséges margót
+            if (Math.Abs(maxEquity - minEquity) < 0.1)
+            {
+                minEquity -= 100;
+                maxEquity += 100;
+            }
+            else
+            {
+                // Ha van mozgás, adunk hozzá 10% margót alul-felül, hogy szép legyen
+                double margin = (maxEquity - minEquity) * 0.1;
+                minEquity -= margin;
+                maxEquity += margin;
+            }
+
+            // X Tengely
             model.Axes.Add(new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
                 StringFormat = "yyyy.MM.dd",
                 TextColor = OxyColors.LightGray,
                 MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray)
+                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray),
+                Minimum = minDate,
+                Maximum = maxDate
             });
 
-            // Y Tengely (Pénz)
+            // Y Tengely (Pénz) - ITT A LÉNYEG!
             model.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
                 TextColor = OxyColors.LightGray,
                 MajorGridlineStyle = LineStyle.Solid,
-                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray)
+                MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray),
+                // Kényszerítjük a skálát a számított értékekre:
+                Minimum = minEquity,
+                Maximum = maxEquity,
+                // Opcionális: formátum (pl. 10k helyett 10,000)
+                StringFormat = "N0"
             });
 
             // Vonal
@@ -211,17 +317,24 @@ namespace ProfitProphet.ViewModels
                 Title = "Equity",
                 Color = OxyColors.LimeGreen,
                 StrokeThickness = 2,
-                MarkerType = MarkerType.None
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 3,
+                MarkerFill = OxyColors.White
             };
 
-            foreach (var pt in points)
-            {
-                series.Points.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
-            }
-
+            series.Points.AddRange(viewPoints);
             model.Series.Add(series);
+
             EquityModel = model;
         }
+
+        public ICommand ApplyResultCommand => new RelayCommand(obj =>
+        {
+            if (obj is OptimizationResult res)
+            {
+                MessageBox.Show("Ez a funkció véglegesítené a beállításokat. (Még nincs implementálva)");
+            }
+        });
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null)
