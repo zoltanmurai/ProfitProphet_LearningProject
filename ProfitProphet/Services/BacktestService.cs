@@ -35,6 +35,7 @@ namespace ProfitProphet.Services
 
             // Kezdőpont rögzítése
             result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = initialCash });
+            result.BalanceCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = initialCash });
 
             // FUTTATÁS
             int startIndex = 50;
@@ -127,8 +128,11 @@ namespace ProfitProphet.Services
                 // -----------------------------
                 // 3. EQUITY ÉS DRAWDOWN FRISSÍTÉS (MINDEN GYERTYÁNÁL!)
                 // -----------------------------
-                // EZ HIÁNYZOTT: Minden egyes nap kiszámoljuk, mennyit ér a vagyonunk
+                // Minden gyertyánál kiszámoljuk, mennyit ér (nem realizált)
                 double currentEquity = cash + (holdings * price);
+
+                // BALANCE (Realizált): Cash + (Darab * BEKERÜLÉSI Ár)
+                double currentBalance = cash + (holdings * avgEntryPrice);
 
                 // Drawdown (Visszaesés) számítása
                 if (currentEquity > peakEquity)
@@ -146,6 +150,12 @@ namespace ProfitProphet.Services
                 {
                     Time = currentCandle.TimestampUtc,
                     Equity = currentEquity
+                });
+                //Balance mentése
+                result.BalanceCurve.Add(new EquityPoint
+                {
+                    Time = currentCandle.TimestampUtc,
+                    Equity = currentBalance // Itt a Balance értéket mentjük Equity néven a pontba
                 });
             }
 

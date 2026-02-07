@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Axes;
+using OxyPlot.Legends;
 using OxyPlot.Series;
 using ProfitProphet.Entities;
 using ProfitProphet.Models.Backtesting;
@@ -162,13 +163,11 @@ namespace ProfitProphet.ViewModels
             {
                 if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
                 {
-                    MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek! Kattints a ceruza ikonra.");
+                    MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!");
                     return;
                 }
 
                 OptimizationResults.Clear();
-
-                // Most már Listát kapunk vissza!
                 var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
 
                 foreach (var res in results.OrderByDescending(r => r.Score))
@@ -180,10 +179,14 @@ namespace ProfitProphet.ViewModels
             }
             else
             {
-                //var res = _backtestService.RunBacktest(_candles, CurrentProfile);
+                // JAVÍTÁS: Átadjuk az InitialCash-t
                 var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+
                 Result = res;
-                UpdateChart(res.EquityCurve);
+
+                // JAVÍTÁS: A teljes 'res' objektumot adjuk át az UpdateChart-nak!
+                UpdateChart(res);
+
                 IndicatorTestValues = "Egyedi futtatás a jelenlegi beállításokkal.";
             }
         }
@@ -194,7 +197,6 @@ namespace ProfitProphet.ViewModels
 
             var tempProfile = _optimizerService.DeepCopyProfile(CurrentProfile);
 
-            // 2. Értékek alkalmazása 
             for (int i = 0; i < _currentOptimizationParams.Count; i++)
             {
                 if (i < optRes.Values.Length)
@@ -203,9 +205,12 @@ namespace ProfitProphet.ViewModels
                 }
             }
 
-            //var res = _backtestService.RunBacktest(_candles, tempProfile);
+            // JAVÍTÁS: InitialCash átadása
             var res = _backtestService.RunBacktest(_candles, tempProfile, InitialCash);
-            UpdateChart(res.EquityCurve);
+
+            // JAVÍTÁS: Teljes 'res' átadása a grafikonnak
+            UpdateChart(res);
+
             Result = res;
 
             IndicatorTestValues = $"KIVÁLASZTVA:\n{optRes.ParameterSummary}\n" +
@@ -239,53 +244,48 @@ namespace ProfitProphet.ViewModels
             win.ShowDialog();
         }
 
-        private void UpdateChart(List<EquityPoint> points)
+        // a teljes BacktestResult-ot várjuk, nem csak a pontokat!
+        private void UpdateChart(BacktestResult res)
         {
-            if (points == null || !points.Any()) return;
+            if (res == null || res.EquityCurve == null || !res.EquityCurve.Any()) return;
+
+            // 1. JAVÍTÁS: Egységes változónevek (equityPoints és balancePoints)
+            var equityPoints = res.EquityCurve;
+            var balancePoints = res.BalanceCurve;
 
             var model = new PlotModel
             {
                 Title = UseOptimization ? "Tőke Görbe (Optimalizált)" : "Tőke Görbe (Alap)",
                 TextColor = OxyColors.White,
                 PlotAreaBorderColor = OxyColors.Gray,
-                Background = OxyColors.Transparent
+                Background = OxyColors.Transparent,
+                // 2. JAVÍTÁS: A LegendPosition már nem tulajdonság, hanem külön objektum kell
+                // LegendPosition = LegendPosition.TopLeft (EZT TÖRÖLTÜK)
             };
 
-            // 1. IDŐ TENGELY (X) SZÁMÍTÁSA
+            // Így kell hozzáadni a jelmagyarázatot az új OxyPlot-ban:
+            model.Legends.Add(new Legend
+            {
+                LegendPosition = LegendPosition.TopLeft,
+                LegendTextColor = OxyColors.White,
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.Black), // Opcionális: félig átlátszó háttér
+                LegendBorder = OxyColors.Gray
+            });
+
+            // --- 1. IDŐ TENGELY (X) ---
             double minDate = DateTimeAxis.ToDouble(StartDate);
             double maxDate = DateTimeAxis.ToDouble(EndDate);
 
             var viewPoints = new List<DataPoint>();
-            foreach (var pt in points)
+            foreach (var pt in equityPoints)
             {
                 viewPoints.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
             }
-
-            // Záró pont hozzáadása a végéhez (hogy végigérjen a vonal)
-            if (points.Last().Time < EndDate)
+            if (equityPoints.Last().Time < EndDate)
             {
-                viewPoints.Add(DateTimeAxis.CreateDataPoint(EndDate, points.Last().Equity));
+                viewPoints.Add(DateTimeAxis.CreateDataPoint(EndDate, equityPoints.Last().Equity));
             }
 
-            // 2. PÉNZ TENGELY (Y) SZÁMÍTÁSA (Dinamikus Zoom!)
-            double minEquity = points.Min(p => p.Equity);
-            double maxEquity = points.Max(p => p.Equity);
-
-            // Ha a görbe teljesen lapos (nincs kötés), csinálunk egy kis mesterséges margót
-            if (Math.Abs(maxEquity - minEquity) < 0.1)
-            {
-                minEquity -= 100;
-                maxEquity += 100;
-            }
-            else
-            {
-                // Ha van mozgás, adunk hozzá 10% margót alul-felül, hogy szép legyen
-                double margin = (maxEquity - minEquity) * 0.1;
-                minEquity -= margin;
-                maxEquity += margin;
-            }
-
-            // X Tengely
             model.Axes.Add(new DateTimeAxis
             {
                 Position = AxisPosition.Bottom,
@@ -297,33 +297,84 @@ namespace ProfitProphet.ViewModels
                 Maximum = maxDate
             });
 
-            // Y Tengely (Pénz) - ITT A LÉNYEG!
+            // --- 2. PÉNZ TENGELY (Y) ---
+            // Kiszámoljuk a minimumot és maximumot mindkét görbére
+            double minVal = Math.Min(equityPoints.Min(p => p.Equity), balancePoints?.Any() == true ? balancePoints.Min(p => p.Equity) : double.MaxValue);
+            double maxVal = Math.Max(equityPoints.Max(p => p.Equity), balancePoints?.Any() == true ? balancePoints.Max(p => p.Equity) : double.MinValue);
+
+            // 3. JAVÍTÁS: A minVal és maxVal változókat használjuk a számításhoz
+            if (Math.Abs(maxVal - minVal) < 0.1)
+            {
+                minVal -= 100; maxVal += 100;
+            }
+            else
+            {
+                double margin = (maxVal - minVal) * 0.1;
+                minVal -= margin; maxVal += margin;
+            }
+
             model.Axes.Add(new LinearAxis
             {
                 Position = AxisPosition.Left,
                 TextColor = OxyColors.LightGray,
                 MajorGridlineStyle = LineStyle.Solid,
                 MajorGridlineColor = OxyColor.FromAColor(40, OxyColors.Gray),
-                // Kényszerítjük a skálát a számított értékekre:
-                Minimum = minEquity,
-                Maximum = maxEquity,
-                // Opcionális: formátum (pl. 10k helyett 10,000)
+                Minimum = minVal,
+                Maximum = maxVal,
                 StringFormat = "N0"
             });
 
-            // Vonal
-            var series = new LineSeries
+            // --- 3. RÉTEG: BALANCE (KÉK VONAL) ---
+            if (balancePoints != null && balancePoints.Any())
             {
-                Title = "Equity",
+                var balanceSeries = new LineSeries
+                {
+                    Title = "Balance (Realizált)",
+                    Color = OxyColors.DodgerBlue,
+                    StrokeThickness = 2,
+                    MarkerType = MarkerType.None
+                };
+
+                foreach (var pt in balancePoints) balanceSeries.Points.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
+                if (balancePoints.Last().Time < EndDate) balanceSeries.Points.Add(DateTimeAxis.CreateDataPoint(EndDate, balancePoints.Last().Equity));
+
+                model.Series.Add(balanceSeries);
+            }
+
+            // --- 4. RÉTEG: EQUITY (ZÖLD VONAL) ---
+            var equitySeries = new LineSeries
+            {
+                Title = "Equity (Lebegő)",
                 Color = OxyColors.LimeGreen,
                 StrokeThickness = 2,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 3,
-                MarkerFill = OxyColors.White
+                MarkerType = MarkerType.None,
             };
+            equitySeries.Points.AddRange(viewPoints);
+            model.Series.Add(equitySeries);
 
-            series.Points.AddRange(viewPoints);
-            model.Series.Add(series);
+            // --- 5. RÉTEG: KÖTÉSEK (PÖTTYÖK) ---
+            if (res.Trades != null && res.Trades.Any())
+            {
+                var tradeSeries = new ScatterSeries
+                {
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 4,
+                    MarkerFill = OxyColors.White,
+                    MarkerStroke = OxyColors.Black,
+                    MarkerStrokeThickness = 1,
+                    Title = "Kötések"
+                };
+
+                foreach (var trade in res.Trades)
+                {
+                    var matchingPoint = equityPoints.FirstOrDefault(p => p.Time == trade.EntryDate);
+                    if (matchingPoint != null)
+                    {
+                        tradeSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(trade.EntryDate), matchingPoint.Equity));
+                    }
+                }
+                model.Series.Add(tradeSeries);
+            }
 
             EquityModel = model;
         }

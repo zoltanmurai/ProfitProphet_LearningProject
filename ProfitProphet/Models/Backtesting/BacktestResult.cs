@@ -14,7 +14,9 @@ namespace ProfitProphet.Models.Backtesting
         public double WinRate { get; set; }
         public double MaxDrawdown { get; set; }
         public double Score { get; set; } // VBA logika: PL - (0.5 * DD)
-        public List<TradeRecord> Trades { get; set; } = new(); 
+        //public List<TradeRecord> Trades { get; set; } = new(); 
         public List<EquityPoint> EquityCurve { get; set; } = new();
+        public List<EquityPoint> BalanceCurve { get; set; } = new List<EquityPoint>();
+        public List<TradeRecord> Trades { get; set; } = new List<TradeRecord>();
     }
 }
