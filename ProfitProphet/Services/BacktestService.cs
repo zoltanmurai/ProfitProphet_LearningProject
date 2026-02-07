@@ -16,28 +16,27 @@ namespace ProfitProphet.Services
             {
                 Symbol = profile.Symbol,
                 EquityCurve = new List<EquityPoint>(),
+                BalanceCurve = new List<EquityPoint>(),
                 Trades = new List<TradeRecord>()
             };
 
             if (candles == null || candles.Count < 50) return result;
 
-            // Indikátorok előszámolása
             var indicatorCache = PrecalculateIndicators(candles, profile);
 
             double cash = initialCash;
+            int holdings = 0;
 
-            int holdings = 0;           // Jelenlegi részvény darabszám
-            double avgEntryPrice = 0;   // Súlyozott átlagár
+            // Kétféle átlagárat tartunk nyilván:
+            double avgEntryPriceRaw = 0;      // Tiszta árfolyam (a Balance számításhoz)
+            double avgBreakEvenPrice = 0;     // Árfolyam + Vételi Jutalék (a Profit logikához)
 
-            // Statisztikai változók a Drawdown-hoz
             double peakEquity = initialCash;
             double maxDrawdown = 0;
 
-            // Kezdőpont rögzítése
-            result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = initialCash });
-            result.BalanceCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = initialCash });
+            result.EquityCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = cash });
+            result.BalanceCurve.Add(new EquityPoint { Time = candles[0].TimestampUtc, Equity = cash });
 
-            // FUTTATÁS
             int startIndex = 50;
 
             for (int i = startIndex; i < candles.Count; i++)
@@ -45,13 +44,9 @@ namespace ProfitProphet.Services
                 var currentCandle = candles[i];
                 double price = (double)currentCandle.Close;
 
-                // -----------------------------
-                // 1. VÉTELI LOGIKA (ENTRY)
-                // -----------------------------
+                // --- 1. VÉTEL ---
                 bool canBuy = (holdings == 0) || profile.AllowPyramiding;
 
-                // Fontos: Az "else if" miatt a te logikád szerint vagy veszünk, vagy eladunk egy körben.
-                // Ha a vételi feltétel igaz, akkor belépünk (és nem vizsgáljuk az eladást).
                 if (canBuy && EvaluateGroups(profile.EntryGroups, indicatorCache, candles, i))
                 {
                     int quantityToBuy = CalculatePositionSize(profile, cash, price);
@@ -63,12 +58,14 @@ namespace ProfitProphet.Services
 
                         if (cash >= tradeValue + fee)
                         {
-                            // Átlagár frissítése
-                            double totalValueBefore = holdings * avgEntryPrice;
-                            double totalValueNew = tradeValue;
-                            avgEntryPrice = (totalValueBefore + totalValueNew) / (holdings + quantityToBuy);
+                            // A) Tiszta átlagár frissítése (Balance-hoz)
+                            double totalValueRaw = (holdings * avgEntryPriceRaw) + tradeValue;
+                            avgEntryPriceRaw = totalValueRaw / (holdings + quantityToBuy);
 
-                            // Tranzakció
+                            // B) Fedezeti ár frissítése (Profit Logikához) - Itt hozzáadjuk a vételi díjat is!
+                            double totalCostWithFee = (holdings * avgBreakEvenPrice) + (tradeValue + fee);
+                            avgBreakEvenPrice = totalCostWithFee / (holdings + quantityToBuy);
+
                             cash -= (tradeValue + fee);
                             holdings += quantityToBuy;
 
@@ -82,23 +79,21 @@ namespace ProfitProphet.Services
                         }
                     }
                 }
-                // -----------------------------
-                // 2. ELADÁSI LOGIKA (EXIT)
-                // -----------------------------
+                // --- 2. ELADÁS ---
                 else if (holdings > 0 && EvaluateGroups(profile.ExitGroups, indicatorCache, candles, i))
                 {
                     bool shouldSell = true;
 
                     if (profile.OnlySellInProfit)
                     {
-                        double potentialRevenue = holdings * price;
-                        double potentialFee = CalculateFee(potentialRevenue, profile);
-                        double netRevenue = potentialRevenue - potentialFee;
+                        double revenue = holdings * price;
+                        double sellFee = CalculateFee(revenue, profile);
 
-                        // Ha a nettó bevétel kisebb, mint amennyibe került (holdings * átlagár), nem adjuk el
-                        if (netRevenue <= (holdings * avgEntryPrice))
+                        // JAVÍTOTT LOGIKA: 
+                        // A bevételnek (mínusz eladási díj) nagyobbnak kell lennie, mint a teljes bekerülési költség (vételi díjjal együtt)
+                        if ((revenue - sellFee) <= (holdings * avgBreakEvenPrice))
                         {
-                            shouldSell = false;
+                            shouldSell = false; // Még nem vagyunk valódi pluszban
                         }
                     }
 
@@ -109,57 +104,40 @@ namespace ProfitProphet.Services
 
                         cash += (revenue - fee);
 
-                        // Nyitott trade-ek lezárása a listában
                         foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
                         {
                             trade.ExitDate = currentCandle.TimestampUtc;
                             trade.ExitPrice = (decimal)price;
-
-                            // Egyszerűsített profit számítás a trade-re
-                            double grossProfit = (double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity;
-                            trade.Profit = (decimal)grossProfit;
+                            // Profit = (Eladási ár - Vételi ár) * db
+                            // Megjegyzés: Ez bruttó profit a trade listában, a díjakat a cash kezeli pontosan
+                            trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity);
                         }
 
                         holdings = 0;
-                        avgEntryPrice = 0;
+                        avgEntryPriceRaw = 0;
+                        avgBreakEvenPrice = 0;
                     }
                 }
 
-                // -----------------------------
-                // 3. EQUITY ÉS DRAWDOWN FRISSÍTÉS (MINDEN GYERTYÁNÁL!)
-                // -----------------------------
-                // Minden gyertyánál kiszámoljuk, mennyit ér (nem realizált)
+                // --- 3. GÖRBÉK ---
                 double currentEquity = cash + (holdings * price);
 
-                // BALANCE (Realizált): Cash + (Darab * BEKERÜLÉSI Ár)
-                double currentBalance = cash + (holdings * avgEntryPrice);
+                // Balance: A "lekötött" pénzt a tiszta bekerülési áron számoljuk
+                // Ez így vízszintes marad, amíg nem adunk el (csak a vételi jutalék miatt ugrik egy picit lejjebb vételkor)
+                double currentBalance = cash + (holdings * avgEntryPriceRaw);
 
-                // Drawdown (Visszaesés) számítása
-                if (currentEquity > peakEquity)
-                {
-                    peakEquity = currentEquity; // Új csúcs
-                }
+                if (currentEquity > peakEquity) peakEquity = currentEquity;
                 else
                 {
                     double dd = (peakEquity - currentEquity) / peakEquity;
                     if (dd > maxDrawdown) maxDrawdown = dd;
                 }
 
-                // Görbe pont hozzáadása
-                result.EquityCurve.Add(new EquityPoint
-                {
-                    Time = currentCandle.TimestampUtc,
-                    Equity = currentEquity
-                });
-                //Balance mentése
-                result.BalanceCurve.Add(new EquityPoint
-                {
-                    Time = currentCandle.TimestampUtc,
-                    Equity = currentBalance // Itt a Balance értéket mentjük Equity néven a pontba
-                });
+                result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = currentEquity });
+                result.BalanceCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = currentBalance });
             }
 
-            // Kényszerített zárás a végén a pontos végeredményhez
+            // Kényszerített zárás a végén
             if (holdings > 0)
             {
                 double price = (double)candles.Last().Close;
@@ -169,7 +147,7 @@ namespace ProfitProphet.Services
             }
 
             result.TotalProfitLoss = cash - initialCash;
-            result.MaxDrawdown = maxDrawdown; // Itt mentjük el a maximumot a táblázathoz
+            result.MaxDrawdown = maxDrawdown;
             result.TradeCount = result.Trades.Count;
 
             var closedTrades = result.Trades.Where(t => t.ExitDate != DateTime.MinValue).ToList();
@@ -180,8 +158,7 @@ namespace ProfitProphet.Services
             return result;
         }
 
-        // --- SEGÉDMETÓDUSOK (Ezek változatlanul maradhatnak, de a teljesség kedvéért itt vannak) ---
-
+        // --- SEGÉDMETÓDUSOK (Változatlanok) ---
         private double CalculateFee(double tradeValue, StrategyProfile profile)
         {
             double calculatedFee = tradeValue * (profile.CommissionPercent / 100.0);
@@ -195,9 +172,7 @@ namespace ProfitProphet.Services
 
             switch (profile.AmountType)
             {
-                case TradeAmountType.AllCash:
-                    amountToInvest = currentCash * 0.98;
-                    break;
+                case TradeAmountType.AllCash: amountToInvest = currentCash * 0.98; break;
                 case TradeAmountType.FixedCash:
                     amountToInvest = profile.TradeAmount;
                     if (amountToInvest > currentCash) amountToInvest = currentCash;
@@ -217,17 +192,11 @@ namespace ProfitProphet.Services
         private Dictionary<string, double[]> PrecalculateIndicators(List<Candle> candles, StrategyProfile profile)
         {
             var cache = new Dictionary<string, double[]>();
-            var allEntryRules = profile.EntryGroups.SelectMany(g => g.Rules);
-            var allExitRules = profile.ExitGroups.SelectMany(g => g.Rules);
-            var allRules = allEntryRules.Concat(allExitRules);
-
+            var allRules = profile.EntryGroups.SelectMany(g => g.Rules).Concat(profile.ExitGroups.SelectMany(g => g.Rules));
             foreach (var rule in allRules)
             {
                 EnsureIndicatorCalculated(rule.LeftIndicatorName, rule.LeftPeriod, 0, candles, cache);
-                if (rule.RightSourceType == DataSourceType.Indicator)
-                {
-                    EnsureIndicatorCalculated(rule.RightIndicatorName, rule.RightPeriod, rule.LeftPeriod, candles, cache);
-                }
+                if (rule.RightSourceType == DataSourceType.Indicator) EnsureIndicatorCalculated(rule.RightIndicatorName, rule.RightPeriod, rule.LeftPeriod, candles, cache);
             }
             return cache;
         }
@@ -239,14 +208,7 @@ namespace ProfitProphet.Services
             {
                 if (group.Rules.Count == 0) continue;
                 bool isGroupValid = true;
-                foreach (var rule in group.Rules)
-                {
-                    if (!EvaluateSingleRule(rule, cache, candles, index))
-                    {
-                        isGroupValid = false;
-                        break;
-                    }
-                }
+                foreach (var rule in group.Rules) { if (!EvaluateSingleRule(rule, cache, candles, index)) { isGroupValid = false; break; } }
                 if (isGroupValid) return true;
             }
             return false;
@@ -255,14 +217,9 @@ namespace ProfitProphet.Services
         private bool EvaluateSingleRule(StrategyRule rule, Dictionary<string, double[]> cache, List<Candle> candles, int index)
         {
             double leftValue = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, rule.LeftIndicatorName == "Close", cache, candles, index);
-            double rightValue = rule.RightSourceType == DataSourceType.Value
-                ? rule.RightValue
-                : GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightIndicatorName == "Close", cache, candles, index, rule.LeftPeriod);
-
+            double rightValue = rule.RightSourceType == DataSourceType.Value ? rule.RightValue : GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightIndicatorName == "Close", cache, candles, index, rule.LeftPeriod);
             double leftPrev = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, false, cache, candles, index - 1);
-            double rightPrev = rule.RightSourceType == DataSourceType.Value
-                ? rule.RightValue
-                : GetValue(rule.RightIndicatorName, rule.RightPeriod, false, cache, candles, index - 1, rule.LeftPeriod);
+            double rightPrev = rule.RightSourceType == DataSourceType.Value ? rule.RightValue : GetValue(rule.RightIndicatorName, rule.RightPeriod, false, cache, candles, index - 1, rule.LeftPeriod);
 
             switch (rule.Operator)
             {
@@ -279,7 +236,6 @@ namespace ProfitProphet.Services
         {
             string key = dependencyPeriod > 0 ? $"{name}_{period}_dep{dependencyPeriod}" : $"{name}_{period}";
             if (cache.ContainsKey(key)) return;
-
             double[] values = new double[candles.Count];
             switch (name.ToUpper())
             {
@@ -287,12 +243,7 @@ namespace ProfitProphet.Services
                 case "EMA": values = IndicatorAlgorithms.CalculateEMA(candles, period); break;
                 case "CMF": values = IndicatorAlgorithms.CalculateCMF(candles, period); break;
                 case "CLOSE": values = candles.Select(c => (double)c.Close).ToArray(); break;
-                case "CMF_MA":
-                    EnsureIndicatorCalculated("CMF", dependencyPeriod, 0, candles, cache);
-                    string parentKey = $"CMF_{dependencyPeriod}";
-                    if (cache.ContainsKey(parentKey))
-                        values = IndicatorAlgorithms.CalculateSMAOnArray(cache[parentKey], period);
-                    break;
+                case "CMF_MA": EnsureIndicatorCalculated("CMF", dependencyPeriod, 0, candles, cache); string parentKey = $"CMF_{dependencyPeriod}"; if (cache.ContainsKey(parentKey)) values = IndicatorAlgorithms.CalculateSMAOnArray(cache[parentKey], period); break;
             }
             cache[key] = values;
         }
@@ -302,23 +253,11 @@ namespace ProfitProphet.Services
             if (index < 0) return 0;
             if (isPrice || name.ToUpper() == "CLOSE" || name.ToUpper() == "OPEN" || name.ToUpper() == "HIGH" || name.ToUpper() == "LOW")
             {
-                int targetIndex = index - period;
-                if (targetIndex < 0) return 0;
-                switch (name.ToUpper())
-                {
-                    case "OPEN": return (double)candles[targetIndex].Open;
-                    case "HIGH": return (double)candles[targetIndex].High;
-                    case "LOW": return (double)candles[targetIndex].Low;
-                    default: return (double)candles[targetIndex].Close;
-                }
+                int targetIndex = index - period; if (targetIndex < 0) return 0;
+                switch (name.ToUpper()) { case "OPEN": return (double)candles[targetIndex].Open; case "HIGH": return (double)candles[targetIndex].High; case "LOW": return (double)candles[targetIndex].Low; default: return (double)candles[targetIndex].Close; }
             }
-            if (dependencyPeriod > 0)
-            {
-                string keyWithDep = $"{name}_{period}_dep{dependencyPeriod}";
-                if (cache.ContainsKey(keyWithDep)) return cache[keyWithDep][index];
-            }
-            string keySimple = $"{name}_{period}";
-            if (cache.ContainsKey(keySimple)) return cache[keySimple][index];
+            if (dependencyPeriod > 0) { string keyWithDep = $"{name}_{period}_dep{dependencyPeriod}"; if (cache.ContainsKey(keyWithDep)) return cache[keyWithDep][index]; }
+            string keySimple = $"{name}_{period}"; if (cache.ContainsKey(keySimple)) return cache[keySimple][index];
             return 0;
         }
     }

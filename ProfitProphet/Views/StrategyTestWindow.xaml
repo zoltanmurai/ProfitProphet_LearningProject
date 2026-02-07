@@ -5,8 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:oxy="http://oxyplot.org/wpf"
         xmlns:local="clr-namespace:ProfitProphet.Views"
+        xmlns:converters="clr-namespace:ProfitProphet.Converters"
+        
         mc:Ignorable="d"
         Title="Stratégia Tesztelő" 
+        
         Height="720" Width="1100"
         MinHeight="600" MinWidth="900"
         WindowStartupLocation="CenterScreen"
@@ -17,16 +20,22 @@
         <Style TargetType="ScrollBar">
             <Setter Property="Background" Value="#252526"/>
         </Style>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+        <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="280"/> <ColumnDefinition Width="*"/>   </Grid.ColumnDefinitions>
+            <ColumnDefinition Width="280"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,1,0" Padding="10">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>    <RowDefinition Height="Auto"/> </Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
                 <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10">
                     <StackPanel>
@@ -95,10 +104,10 @@
                                 </StackPanel>
 
                                 <Button Command="{Binding OpenOptimizerCommand}" 
-                                    Content="Beállítások ⚙️" 
-                                    Height="28" 
-                                    IsEnabled="{Binding UseOptimization}"
-                                    BorderThickness="0">
+                                        Content="Beállítások ⚙️" 
+                                        Height="28" 
+                                        IsEnabled="{Binding UseOptimization}"
+                                        BorderThickness="0">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="#444"/>
@@ -112,13 +121,11 @@
                                                     </ControlTemplate>
                                                 </Setter.Value>
                                             </Setter>
-
                                             <Style.Triggers>
                                                 <Trigger Property="IsEnabled" Value="False">
                                                     <Setter Property="Background" Value="#252526"/>
                                                     <Setter Property="Foreground" Value="#555"/>
                                                 </Trigger>
-
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="#555"/>
                                                 </Trigger>
@@ -131,10 +138,16 @@
                     </StackPanel>
                 </ScrollViewer>
 
+                <ProgressBar Height="4" Margin="0,0,0,5" 
+                     IsIndeterminate="True" 
+                     Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibilityConverter}}" 
+                     BorderThickness="0" Background="Transparent" Foreground="#007ACC"/>
+
                 <Button Grid.Row="1" 
                         Command="{Binding RunCommand}" 
                         Content="FUTTATÁS ▶" 
                         Height="45" 
+                        IsEnabled="{Binding IsRunning, Converter={StaticResource InverseBoolConverter}}"
                         Background="#007ACC" Foreground="White" FontWeight="Bold" FontSize="16" BorderThickness="0">
                     <Button.Resources>
                         <Style TargetType="Border">
@@ -147,7 +160,10 @@
 
         <Grid Grid.Column="1" Margin="10">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"/>    <RowDefinition Height="Auto"/>  <RowDefinition Height="1.5*"/>  </Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="1.5*"/>
+            </Grid.RowDefinitions>
 
             <Border Grid.Row="0" BorderBrush="#3E3E42" BorderThickness="1" Background="#1E1E1E" Margin="0,0,0,5">
                 <oxy:PlotView Model="{Binding EquityModel}" Background="Transparent"/>
@@ -165,7 +181,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <TextBlock Grid.Row="0" Text="Eredmények Listája" Foreground="#CCCCCC" FontWeight="Bold" Margin="0,0,0,5"/>
 
                 <DataGrid Grid.Row="1" 
@@ -224,7 +240,7 @@
                         </DataGridTextColumn>
 
                         <DataGridTextColumn Header="Kötés" Binding="{Binding TradeCount}" Width="60">
-                             <DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
                                 </Style>
@@ -232,7 +248,7 @@
                         </DataGridTextColumn>
 
                         <DataGridTextColumn Header="Drawdown" Binding="{Binding Drawdown, StringFormat=P1}" Width="80">
-                             <DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>
                                     <Setter Property="Foreground" Value="#FF6666"/>
@@ -241,7 +257,7 @@
                         </DataGridTextColumn>
 
                         <DataGridTextColumn Header="Score" Binding="{Binding Score, StringFormat=N2}" Width="80">
-                             <DataGridTextColumn.ElementStyle>
+                            <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>
                                     <Setter Property="Foreground" Value="#FFA500"/>

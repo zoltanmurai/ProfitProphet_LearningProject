@@ -14,6 +14,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -35,6 +36,13 @@ namespace ProfitProphet.ViewModels
         {
             get => _currentProfile;
             set { _currentProfile = value; OnPropertyChanged(); }
+        }
+
+        private bool _isRunning;
+        public bool IsRunning
+        {
+            get => _isRunning;
+            set { _isRunning = value; OnPropertyChanged(); }
         }
 
         public ICommand RunCommand { get; }
@@ -155,40 +163,89 @@ namespace ProfitProphet.ViewModels
             }
         }
 
+        //private async void RunTest()
+        //{
+        //    if (CurrentProfile == null || _candles == null) return;
+
+        //    if (UseOptimization)
+        //    {
+        //        if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
+        //        {
+        //            MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!");
+        //            return;
+        //        }
+
+        //        OptimizationResults.Clear();
+        //        var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
+
+        //        foreach (var res in results.OrderByDescending(r => r.Score))
+        //        {
+        //            OptimizationResults.Add(res);
+        //        }
+
+        //        if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
+        //    }
+        //    else
+        //    {
+        //        // JAVÍTÁS: Átadjuk az InitialCash-t
+        //        var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+
+        //        Result = res;
+
+        //        // JAVÍTÁS: A teljes 'res' objektumot adjuk át az UpdateChart-nak!
+        //        UpdateChart(res);
+
+        //        IndicatorTestValues = "Egyedi futtatás a jelenlegi beállításokkal.";
+        //    }
+        //}
         private async void RunTest()
         {
             if (CurrentProfile == null || _candles == null) return;
 
-            if (UseOptimization)
+            // UI Zárolása és jelzés
+            IsRunning = true;
+
+            // A számításigényes feladatot kiszervezzük egy háttérszálra, hogy a felület ne fagyjon le
+            await Task.Run(async () =>
             {
-                if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
+                if (UseOptimization)
                 {
-                    MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!");
-                    return;
+                    if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
+                    {
+                        Application.Current.Dispatcher.Invoke(() => MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!"));
+                        return;
+                    }
+
+                    // Mivel az ObservableCollection nem módosítható más szálról, a törlést a Dispatcher-re bízzuk
+                    Application.Current.Dispatcher.Invoke(() => OptimizationResults.Clear());
+
+                    var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        foreach (var res in results.OrderByDescending(r => r.Score))
+                        {
+                            OptimizationResults.Add(res);
+                        }
+                        if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
+                    });
                 }
-
-                OptimizationResults.Clear();
-                var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
-
-                foreach (var res in results.OrderByDescending(r => r.Score))
+                else
                 {
-                    OptimizationResults.Add(res);
+                    // Sima futtatás
+                    var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        Result = res;
+                        UpdateChart(res);
+                        IndicatorTestValues = "Egyedi futtatás kész.";
+                    });
                 }
+            });
 
-                if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
-            }
-            else
-            {
-                // JAVÍTÁS: Átadjuk az InitialCash-t
-                var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
-
-                Result = res;
-
-                // JAVÍTÁS: A teljes 'res' objektumot adjuk át az UpdateChart-nak!
-                UpdateChart(res);
-
-                IndicatorTestValues = "Egyedi futtatás a jelenlegi beállításokkal.";
-            }
+            // UI Feloldása
+            IsRunning = false;
         }
 
         private void ShowResultOnChart(OptimizationResult optRes)
