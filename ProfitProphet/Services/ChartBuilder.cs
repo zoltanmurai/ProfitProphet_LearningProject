@@ -292,47 +292,129 @@ namespace ProfitProphet.Services
         }
 
         // nyilak kirajzolása
+        //public void ShowTradeMarkers(List<TradeRecord> trades)
+        //{
+        //    if (Model == null || _xAxis == null || _candles == null || _candles.Count == 0) return;
+
+        //    // 1. Előző nyilak törlése 
+        //    var oldAnnotations = Model.Annotations.Where(a => a.Tag is string t && t == "TradeMarker").ToList();
+        //    foreach (var ann in oldAnnotations)
+        //    {
+        //        Model.Annotations.Remove(ann);
+        //    }
+
+        //    double avgPrice = _candles.Average(c => c.Close);
+        //    double offset = avgPrice * 0.005; // 0.5% távolság
+
+        //    // 2. Új nyilak kirajzolása
+        //    foreach (var trade in trades)
+        //    {
+        //        // VÉTEL JEL (Zöld nyíl felfelé)
+        //        double xIndex = Axis.ToDouble(trade.EntryDate);
+
+        //        // Mivel CategoryAxis-t használunk, a dátumot vissza kell keresni
+        //        //var candleIndex = _candles.FindIndex(c => c.Timestamp == trade.EntryDate);
+        //        var buyCandleIndex = _candles.FindIndex(c => c.Timestamp.Date == trade.EntryDate.Date);
+
+        //        if (buyCandleIndex >= 0)
+        //        {
+        //            var candle = _candles[buyCandleIndex];
+
+        //            var buyArrow = new PointAnnotation
+        //            {
+        //                X = buyCandleIndex,
+        //                // A gyertya ALJA alá tesszük az offsettel
+        //                Y = candle.Low - offset,
+        //                Shape = MarkerType.Triangle, // Felfelé mutató háromszög
+        //                Fill = OxyColors.LimeGreen,
+        //                Stroke = OxyColors.Black,
+        //                StrokeThickness = 1,
+        //                Size = 8, // Kicsit kisebb, elegánsabb méret
+        //                Text = "B",
+        //                TextColor = OxyColors.White,
+        //                TextVerticalAlignment = VerticalAlignment.Top, // Szöveg a pont alatt
+        //                ToolTip = $"Vétel: {trade.EntryDate:yyyy-MM-dd}\nÁr: {trade.EntryPrice}",
+        //                Tag = "TradeMarker",
+        //                Layer = AnnotationLayer.AboveSeries
+        //            };
+        //            Model.Annotations.Add(buyArrow);
+        //        }
+
+        //        var sellCandleIndex = _candles.FindIndex(c => c.Timestamp.Date == trade.ExitDate.Date);
+
+        //        if (sellCandleIndex >= 0)
+        //        {
+        //            var candle = _candles[sellCandleIndex];
+
+        //            var sellMarker = new PointAnnotation
+        //            {
+        //                X = sellCandleIndex,
+        //                Y = candle.High + offset, // A gyertya TETEJE fölé
+        //                Shape = MarkerType.Cross, // <--- Marad a Cross
+        //                Fill = OxyColors.Red,
+        //                Stroke = OxyColors.Red, // A keresztnek a Stroke adja a színét
+        //                StrokeThickness = 3,    // Legyen vastagabb, hogy jól látsszon
+        //                Size = 10,
+        //                // Text = "S", // A keresztnél zavaró lehet a szöveg, de kiveheted a kommentet ha kell
+        //                // TextColor = OxyColors.White,
+        //                // TextVerticalAlignment = VerticalAlignment.Bottom,
+        //                ToolTip = $"Eladás: {trade.ExitDate:yyyy-MM-dd}\nÁr: {trade.ExitPrice}\nProfit: {trade.Profit:C2}",
+        //                Tag = "TradeMarker",
+        //                Layer = AnnotationLayer.AboveSeries
+        //            };
+        //            Model.Annotations.Add(sellMarker);
+        //        }
+        //    }
+
+        //    // 3. Frissítés
+        //    Model.InvalidatePlot(true);
+        //}
+
         public void ShowTradeMarkers(List<TradeRecord> trades)
         {
             if (Model == null || _xAxis == null || _candles == null || _candles.Count == 0) return;
 
-            // 1. Előző nyilak törlése 
+            // 1. Előző nyilak törlése (marad a régi logika)
             var oldAnnotations = Model.Annotations.Where(a => a.Tag is string t && t == "TradeMarker").ToList();
             foreach (var ann in oldAnnotations)
             {
                 Model.Annotations.Remove(ann);
             }
 
+            // Offset számítása (marad)
             double avgPrice = _candles.Average(c => c.Close);
-            double offset = avgPrice * 0.005; // 0.5% távolság
+            double offset = avgPrice * 0.015; // 0.5% távolság
 
-            // 2. Új nyilak kirajzolása
+            // 2. Új nyilak kirajzolása Webdings betűtípussal
             foreach (var trade in trades)
             {
-                // VÉTEL JEL (Zöld nyíl felfelé)
-                double xIndex = Axis.ToDouble(trade.EntryDate);
-
-                // Mivel CategoryAxis-t használunk, a dátumot vissza kell keresni
-                //var candleIndex = _candles.FindIndex(c => c.Timestamp == trade.EntryDate);
+                // --- VÉTEL (BUY) ---
+                // Keressük meg a gyertya indexét
                 var buyCandleIndex = _candles.FindIndex(c => c.Timestamp.Date == trade.EntryDate.Date);
 
                 if (buyCandleIndex >= 0)
                 {
                     var candle = _candles[buyCandleIndex];
 
-                    var buyArrow = new PointAnnotation
+                    // PointAnnotation HELYETT TextAnnotation
+                    var buyArrow = new OxyPlot.Annotations.TextAnnotation
                     {
-                        X = buyCandleIndex,
-                        // A gyertya ALJA alá tesszük az offsettel
-                        Y = candle.Low - offset,
-                        Shape = MarkerType.Triangle, // Felfelé mutató háromszög
-                        Fill = OxyColors.LimeGreen,
-                        Stroke = OxyColors.Black,
-                        StrokeThickness = 1,
-                        Size = 8, // Kicsit kisebb, elegánsabb méret
-                        Text = "B",
-                        TextColor = OxyColors.White,
-                        TextVerticalAlignment = VerticalAlignment.Top, // Szöveg a pont alatt
+                        // Hova tegye: X = Index, Y = Low alatt
+                        TextPosition = new DataPoint(buyCandleIndex, candle.Low - offset),
+
+                        //Text = "5",                 // Webdings "5" = Felfelé nyíl
+                        Text = "▲",
+                        //Font = "Webdings",    // Betűtípus
+                        FontSize = 24,              // Méret
+
+                        Stroke = OxyColors.Transparent,
+                        TextColor = OxyColors.LimeGreen, // Zöld szín
+                        FontWeight = OxyPlot.FontWeights.Bold,
+
+                        // IGAZÍTÁS: A pont legyen a szöveg TETEJE (tehát a nyíl a pont alatt lóg)
+                        TextVerticalAlignment = OxyPlot.VerticalAlignment.Top,
+                        TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
+
                         ToolTip = $"Vétel: {trade.EntryDate:yyyy-MM-dd}\nÁr: {trade.EntryPrice}",
                         Tag = "TradeMarker",
                         Layer = AnnotationLayer.AboveSeries
@@ -340,29 +422,37 @@ namespace ProfitProphet.Services
                     Model.Annotations.Add(buyArrow);
                 }
 
+                // --- ELADÁS (SELL) ---
                 var sellCandleIndex = _candles.FindIndex(c => c.Timestamp.Date == trade.ExitDate.Date);
 
                 if (sellCandleIndex >= 0)
                 {
                     var candle = _candles[sellCandleIndex];
 
-                    var sellMarker = new PointAnnotation
+                    // PointAnnotation HELYETT TextAnnotation
+                    var sellArrow = new OxyPlot.Annotations.TextAnnotation
                     {
-                        X = sellCandleIndex,
-                        Y = candle.High + offset, // A gyertya TETEJE fölé
-                        Shape = MarkerType.Cross, // <--- Marad a Cross
-                        Fill = OxyColors.Red,
-                        Stroke = OxyColors.Red, // A keresztnek a Stroke adja a színét
-                        StrokeThickness = 3,    // Legyen vastagabb, hogy jól látsszon
-                        Size = 10,
-                        // Text = "S", // A keresztnél zavaró lehet a szöveg, de kiveheted a kommentet ha kell
-                        // TextColor = OxyColors.White,
-                        // TextVerticalAlignment = VerticalAlignment.Bottom,
+                        // Hova tegye: X = Index, Y = High fölött
+                        TextPosition = new DataPoint(sellCandleIndex, candle.High + offset),
+
+                        //Text = "6",                 // Webdings "6" = Lefelé nyíl
+                        Text = "▼",
+                        //Font = "Webdings",
+                        FontSize = 24,
+
+                        Stroke = OxyColors.Transparent,
+                        TextColor = OxyColors.Red,   // Piros szín
+                        FontWeight = OxyPlot.FontWeights.Bold,
+
+                        // IGAZÍTÁS: A pont legyen a szöveg ALJA (tehát a nyíl a pont fölött ül)
+                        TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
+                        TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
+
                         ToolTip = $"Eladás: {trade.ExitDate:yyyy-MM-dd}\nÁr: {trade.ExitPrice}\nProfit: {trade.Profit:C2}",
                         Tag = "TradeMarker",
                         Layer = AnnotationLayer.AboveSeries
                     };
-                    Model.Annotations.Add(sellMarker);
+                    Model.Annotations.Add(sellArrow);
                 }
             }
 

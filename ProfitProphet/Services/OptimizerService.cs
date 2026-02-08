@@ -23,7 +23,8 @@ namespace ProfitProphet.Services
         // FONTOS: Itt List<OptimizationResult> a visszatérési érték!
         public async Task<List<OptimizationResult>> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, IProgress<int> progress, CancellationToken token)
         {
-            return await RunIterationAsync(candles, profile, parameters, 5, progress, token);
+            //return await RunIterationAsync(candles, profile, parameters, 5, progress, token);
+            return await RunIterationAsync(candles, profile, parameters, 1, progress, token);
         }
 
         // Itt is List<OptimizationResult> a típus!
@@ -83,24 +84,38 @@ namespace ProfitProphet.Services
         }
 
         // ... A többi segédmetódus (GenerateCombinations, GenerateRecursive) maradhat változatlan ...
-        private List<int[]> GenerateCombinations(List<OptimizationParameter> parameters, int step)
+        private List<int[]> GenerateCombinations(List<OptimizationParameter> parameters, int step_IGNORED)
         {
             var results = new List<int[]>();
-            GenerateRecursive(parameters, 0, new int[parameters.Count], results, step);
+            // Itt hívjuk meg, már a 'step' nélkül:
+            GenerateRecursive(parameters, 0, new int[parameters.Count], results);
             return results;
         }
 
-        private void GenerateRecursive(List<OptimizationParameter> parameters, int depth, int[] current, List<int[]> results, int step)
+        // Vedd ki a "int step" paramétert a végéről!
+        private void GenerateRecursive(List<OptimizationParameter> parameters, int depth, int[] current, List<int[]> results)
         {
+            // Kilépési feltétel (ha elértük a mélységet)
             if (depth == parameters.Count)
             {
                 results.Add((int[])current.Clone());
                 return;
             }
-            for (int v = (int)parameters[depth].MinValue; v <= (int)parameters[depth].MaxValue; v += step)
+
+            // 1. Megszerezzük az aktuális paraméter saját lépésközét
+            // Feltételezve, hogy hozzáadtad a .Step property-t az OptimizationParameter osztályhoz!
+            int currentStep = (int)parameters[depth].Step;
+
+            // Biztonsági védelem: Ha 0 vagy negatív lenne, legyen 1, különben végtelen ciklus!
+            if (currentStep <= 0) currentStep = 1;
+
+            // 2. A ciklusban a 'currentStep'-et használjuk a növeléshez (v += currentStep)
+            for (int v = (int)parameters[depth].MinValue; v <= (int)parameters[depth].MaxValue; v += currentStep)
             {
                 current[depth] = v;
-                GenerateRecursive(parameters, depth + 1, current, results, step);
+
+                // Rekurzív hívás (már nem kell átadni a step-et)
+                GenerateRecursive(parameters, depth + 1, current, results);
             }
         }
 

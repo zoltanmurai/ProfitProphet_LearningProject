@@ -27,6 +27,7 @@ namespace ProfitProphet.ViewModels
         private readonly IStrategySettingsService _strategyService;
         private readonly OptimizerService _optimizerService;
         private CancellationTokenSource _cts;
+        private List<OptimizationParameterUI> _savedOptimizerState;
 
         private readonly List<Candle> _candles;
         public event Action<BacktestResult> OnTestFinished;
@@ -47,15 +48,39 @@ namespace ProfitProphet.ViewModels
             set { _isRunning = value; OnPropertyChanged(); }
         }
 
+        private string _optimizationStatusMessage;
+        public string OptimizationStatusMessage
+        {
+            get => _optimizationStatusMessage;
+            set { _optimizationStatusMessage = value; OnPropertyChanged(); }
+        }
+
+        private System.Windows.Media.Brush _optimizationStatusColor;
+        public System.Windows.Media.Brush OptimizationStatusColor
+        {
+            get => _optimizationStatusColor;
+            set { _optimizationStatusColor = value; OnPropertyChanged(); }
+        }
+
         public ICommand RunCommand { get; }
         public ICommand EditStrategyCommand { get; }
         public ICommand OpenOptimizerCommand { get; }
 
         private bool _useOptimization;
+        //public bool UseOptimization
+        //{
+        //    get => _useOptimization;
+        //    set { _useOptimization = value; OnPropertyChanged(); }
+        //}
         public bool UseOptimization
         {
             get => _useOptimization;
-            set { _useOptimization = value; OnPropertyChanged(); }
+            set
+            {
+                _useOptimization = value;
+                OnPropertyChanged();
+                UpdateOptimizationStatus(); // ITT HÍVJUK MEG!
+            }
         }
 
         public ObservableCollection<OptimizationResult> OptimizationResults { get; } = new();
@@ -317,12 +342,44 @@ namespace ProfitProphet.ViewModels
         private void OpenOptimizer()
         {
             var vm = new OptimizationViewModel(CurrentProfile);
+            // --- MEMÓRIA VISSZATÖLTÉSE (ÚJ RÉSZ) ---
+            // Ha van elmentett állapotunk, akkor felülírjuk az alapértelmezett értékeket
+            if (_savedOptimizerState != null)
+            {
+                foreach (var savedParam in _savedOptimizerState)
+                {
+                    // Megkeressük a megfelelő paramétert a mostani listában a név alapján
+                    var targetParam = vm.AvailableParameters.FirstOrDefault(p => p.Name == savedParam.Name);
+                    if (targetParam != null)
+                    {
+                        // Visszatöltjük a beállításokat
+                        targetParam.IsSelected = savedParam.IsSelected;
+                        targetParam.MinValue = savedParam.MinValue;
+                        targetParam.MaxValue = savedParam.MaxValue;
+                        targetParam.Step = savedParam.Step; // A lépésközt is!
+                    }
+                }
+            }
+
+            //var win = new OptimizationWindow { DataContext = vm };
             var win = new OptimizationWindow { DataContext = vm, Owner = Application.Current.MainWindow };
 
             vm.OnRequestClose += (result) =>
             {
                 if (result)
                 {
+                    // --- ÁLLAPOT MENTÉSE ---
+                    // elmentjük a jelenlegi beállításokat a memóriába
+                    _savedOptimizerState = vm.AvailableParameters.Select(p => new OptimizationParameterUI
+                    {
+                        Name = p.Name, // név az azonosításhoz
+                        IsSelected = p.IsSelected,
+                        MinValue = p.MinValue,
+                        MaxValue = p.MaxValue,
+                        Step = p.Step,
+                    }).ToList();
+                    // ---------------------------------
+
                     _currentOptimizationParams = vm.AvailableParameters
                         .Where(p => p.IsSelected)
                         .Select(p => new OptimizationParameter
@@ -331,12 +388,14 @@ namespace ProfitProphet.ViewModels
                             IsEntrySide = p.IsEntrySide,
                             ParameterName = p.ParameterName,
                             MinValue = p.MinValue,
-                            MaxValue = p.MaxValue
+                            MaxValue = p.MaxValue,
+                            Step = p.Step
                         })
                         .ToList();
                     UseOptimization = true;
                 }
                 win.Close();
+                UpdateOptimizationStatus();
             };
             win.ShowDialog();
         }
@@ -485,11 +544,99 @@ namespace ProfitProphet.ViewModels
             EquityModel = model;
         }
 
+        // 5. & 6. KÖTÉSEK JELÖLÉSE (ANNOTÁCIÓKKAL) - ÚJ!
+        //    if (res.Trades != null && res.Trades.Any())
+        //    {
+        //        foreach (var trade in res.Trades)
+        //        {
+        //            // VÉTEL (Entry) - Zöld Nyíl felfelé
+        //            var entryPoint = equityPoints.FirstOrDefault(p => p.Time == trade.EntryDate);
+        //            if (entryPoint != null)
+        //            {
+        //                var buyAnnotation = new OxyPlot.Annotations.TextAnnotation
+        //                {
+        //                    TextPosition = new DataPoint(DateTimeAxis.ToDouble(trade.EntryDate), entryPoint.Equity),
+        //                    Text = "▲", // Vagy Wingdings esetén pl: "é"
+        //                    // FontFamily = "Wingdings", // Ha Wingdings-et akarsz, vedd ki a kommentet
+        //                    FontSize = 20,
+        //                    Stroke = OxyColors.Transparent,
+        //                    TextColor = OxyColors.LimeGreen, // Zöld szín a vételnek
+        //                    FontWeight = 700, // Félkövér
+        //                    TextVerticalAlignment = OxyPlot.VerticalAlignment.Top // A pont ALÁ rajzolja, hogy felfelé mutasson
+        //                };
+        //                model.Annotations.Add(buyAnnotation);
+        //            }
+
+        //            // ELADÁS (Exit) - Piros Nyíl lefelé
+        //            if (trade.ExitDate != DateTime.MinValue)
+        //            {
+        //                var exitPoint = equityPoints.FirstOrDefault(p => p.Time == trade.ExitDate);
+        //                if (exitPoint != null)
+        //                {
+        //                    var sellAnnotation = new OxyPlot.Annotations.TextAnnotation
+        //                    {
+        //                        TextPosition = new DataPoint(DateTimeAxis.ToDouble(trade.ExitDate), exitPoint.Equity),
+        //                        Text = "▼", // Vagy Wingdings esetén pl: "ê"
+        //                        // FontFamily = "Wingdings",
+        //                        FontSize = 20,
+        //                        Stroke = OxyColors.Transparent,
+        //                        TextColor = OxyColors.Red, // Piros szín az eladásnak
+        //                        FontWeight = 700,
+        //                        TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom // A pont FÖLÉ rajzolja
+        //                    };
+        //                    model.Annotations.Add(sellAnnotation);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    EquityModel = model;
+        //}
+
+        private void UpdateOptimizationStatus()
+        {
+            if (!UseOptimization)
+            {
+                OptimizationStatusMessage = ""; // Ha nincs pipa, nincs üzenet
+                return;
+            }
+
+            if (_currentOptimizationParams != null && _currentOptimizationParams.Any())
+            {
+                OptimizationStatusMessage = "✅ Paraméterek beállítva. Indíthatod a tesztet!";
+                OptimizationStatusColor = System.Windows.Media.Brushes.LimeGreen;
+            }
+            else
+            {
+                OptimizationStatusMessage = "⚠️ Nincsenek beállítva intervallumok!\nKattints a 'Beállítások' gombra.";
+                OptimizationStatusColor = System.Windows.Media.Brushes.OrangeRed; // Vagy Red
+            }
+        }
+
         public ICommand ApplyResultCommand => new RelayCommand(obj =>
         {
-            if (obj is OptimizationResult res)
+            // Ellenőrizzük, hogy érvényes eredményre kattintott-e és vannak-e ismert paramétereink
+            if (obj is OptimizationResult res && _currentOptimizationParams != null)
             {
-                MessageBox.Show("Ez a funkció véglegesítené a beállításokat. (Még nincs implementálva)");
+                // Végigmegyünk a paramétereken és alkalmazzuk őket a Jelenlegi Profilra
+                for (int i = 0; i < _currentOptimizationParams.Count; i++)
+                {
+                    if (i < res.Values.Length)
+                    {
+                        // A Service-ben lévő segédfüggvényt használjuk az érték beállítására
+                        _optimizerService.ApplyValue(CurrentProfile, _currentOptimizationParams[i], res.Values[i]);
+                    }
+                }
+
+                // Értesítés a felhasználónak
+                // Opcionális: Automatikusan újra is futtathatjuk a tesztet az új beállításokkal
+                // RunTest(); 
+        
+                MessageBox.Show($"Beállítások sikeresen alkalmazva!\n\nÚj Score: {res.Score:N2}\nProfit: {res.Profit:N0}$", 
+                                "Sikeres betöltés", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Frissítjük a nézetet, hogy a UI-n is látszódjanak az új számok (ha vannak kötve textboxok)
+                OnPropertyChanged(nameof(CurrentProfile));
             }
         });
 

@@ -42,6 +42,13 @@ namespace ProfitProphet.Models.Strategies
             set { _maxValue = value; OnPropertyChanged(); }
         }
 
+        private double _step = 1; // Alapértelmezés: 1
+        public double Step
+        {
+            get => _step;
+            set { _step = value; OnPropertyChanged(); }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

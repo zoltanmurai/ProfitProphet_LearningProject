@@ -13,5 +13,7 @@ namespace ProfitProphet.Models.Strategies
         public string ParameterName { get; set; }
         public double MinValue { get; set; }
         public double MaxValue { get; set; }
+        public bool UseOptimization { get; internal set; }
+        public double Step { get; set; } = 1; // Alapértelmezésben 1
     }
 }

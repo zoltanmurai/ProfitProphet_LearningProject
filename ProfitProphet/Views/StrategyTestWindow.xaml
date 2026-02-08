@@ -133,6 +133,14 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
+                                <TextBlock Text="{Binding OptimizationStatusMessage}" 
+                                       Foreground="{Binding OptimizationStatusColor}" 
+                                       FontSize="12" 
+                                       FontWeight="Bold" 
+                                       TextWrapping="Wrap" 
+                                       TextAlignment="Center" 
+                                       Margin="0,10,0,0"
+                                       Visibility="{Binding UseOptimization, Converter={StaticResource BoolToVisibilityConverter}}"/>                                   
                             </StackPanel>
                         </Border>
                     </StackPanel>
