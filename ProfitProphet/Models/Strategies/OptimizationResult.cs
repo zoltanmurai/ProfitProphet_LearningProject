@@ -16,5 +16,6 @@ namespace ProfitProphet.Models.Strategies
         public bool IsRobust { get; set; }
         public double NeighborAvgScore { get; set; }
         public string ParameterSummary { get; internal set; }
+        public double ProfitFactor { get; set; }
     }
 }

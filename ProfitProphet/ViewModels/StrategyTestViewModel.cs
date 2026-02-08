@@ -17,6 +17,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Threading;
 
 namespace ProfitProphet.ViewModels
 {
@@ -25,6 +26,7 @@ namespace ProfitProphet.ViewModels
         private readonly BacktestService _backtestService;
         private readonly IStrategySettingsService _strategyService;
         private readonly OptimizerService _optimizerService;
+        private CancellationTokenSource _cts;
 
         private readonly List<Candle> _candles;
         public event Action<BacktestResult> OnTestFinished;
@@ -123,6 +125,13 @@ namespace ProfitProphet.ViewModels
             set { _equityModel = value; OnPropertyChanged(); }
         }
 
+        private int _progressValue;
+        public int ProgressValue
+        {
+            get => _progressValue;
+            set { _progressValue = value; OnPropertyChanged(); }
+        }
+
         public StrategyTestViewModel(
             BacktestService backtestService,
             IStrategySettingsService strategyService,
@@ -200,52 +209,83 @@ namespace ProfitProphet.ViewModels
         //}
         private async void RunTest()
         {
+            // A. HA MÁR FUT -> LEÁLLÍTJUK
+            if (IsRunning)
+            {
+                _cts?.Cancel(); // Jelezzük a leállást
+                IndicatorTestValues = "Leállítás folyamatban...";
+                return; // Kilépünk, a feladat a catch ágban fog megállni
+            }
+
+            // B. HA NEM FUT -> INDÍTJUK
             if (CurrentProfile == null || _candles == null) return;
 
-            // UI Zárolása és jelzés
             IsRunning = true;
+            ProgressValue = 0;
 
-            // A számításigényes feladatot kiszervezzük egy háttérszálra, hogy a felület ne fagyjon le
-            await Task.Run(async () =>
+            // Új "leállító gomb" létrehozása
+            _cts = new CancellationTokenSource();
+            var token = _cts.Token;
+
+            IProgress<int> progressIndicator = new Progress<int>(value => ProgressValue = value);
+
+            try
             {
-                if (UseOptimization)
+                await Task.Run(async () =>
                 {
-                    if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
+                    if (UseOptimization)
                     {
-                        Application.Current.Dispatcher.Invoke(() => MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!"));
-                        return;
-                    }
-
-                    // Mivel az ObservableCollection nem módosítható más szálról, a törlést a Dispatcher-re bízzuk
-                    Application.Current.Dispatcher.Invoke(() => OptimizationResults.Clear());
-
-                    var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
-
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        foreach (var res in results.OrderByDescending(r => r.Score))
+                        if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
                         {
-                            OptimizationResults.Add(res);
+                            Application.Current.Dispatcher.Invoke(() => MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!"));
+                            return;
                         }
-                        if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
-                    });
-                }
-                else
-                {
-                    // Sima futtatás
-                    var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
 
-                    Application.Current.Dispatcher.Invoke(() =>
+                        Application.Current.Dispatcher.Invoke(() => OptimizationResults.Clear());
+
+                        // Átadjuk a tokent is!
+                        var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams, progressIndicator, token);
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            OptimizationResults.Clear(); // Biztonság kedvéért törlünk, ha duplikálódna
+                            foreach (var res in results.OrderByDescending(r => r.Score)) OptimizationResults.Add(res);
+
+                            if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
+                        });
+                    }
+                    else
                     {
-                        Result = res;
-                        UpdateChart(res);
-                        IndicatorTestValues = "Egyedi futtatás kész.";
-                    });
-                }
-            });
+                        // Sima futtatás
+                        progressIndicator.Report(10);
+                        if (token.IsCancellationRequested) return; // Gyors ellenőrzés
 
-            // UI Feloldása
-            IsRunning = false;
+                        var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+
+                        progressIndicator.Report(100);
+                        if (token.IsCancellationRequested) return;
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            Result = res;
+                            UpdateChart(res);
+                            IndicatorTestValues = $"Egyedi futtatás kész. Profit Faktor: {res.ProfitFactor:N2}";
+                        });
+                    }
+                }, token); // A Task.Run-nak is átadjuk
+            }
+            catch (OperationCanceledException)
+            {
+                IndicatorTestValues = "A műveletet a felhasználó megszakította.";
+                ProgressValue = 0;
+            }
+            finally
+            {
+                // Mindenképp visszaállítjuk a gombot, akár lefutott, akár leállították
+                IsRunning = false;
+                _cts?.Dispose();
+                _cts = null;
+            }
         }
 
         private void ShowResultOnChart(OptimizationResult optRes)
@@ -306,7 +346,6 @@ namespace ProfitProphet.ViewModels
         {
             if (res == null || res.EquityCurve == null || !res.EquityCurve.Any()) return;
 
-            // 1. JAVÍTÁS: Egységes változónevek (equityPoints és balancePoints)
             var equityPoints = res.EquityCurve;
             var balancePoints = res.BalanceCurve;
 
@@ -316,32 +355,26 @@ namespace ProfitProphet.ViewModels
                 TextColor = OxyColors.White,
                 PlotAreaBorderColor = OxyColors.Gray,
                 Background = OxyColors.Transparent,
-                // 2. JAVÍTÁS: A LegendPosition már nem tulajdonság, hanem külön objektum kell
-                // LegendPosition = LegendPosition.TopLeft (EZT TÖRÖLTÜK)
             };
 
-            // Így kell hozzáadni a jelmagyarázatot az új OxyPlot-ban:
+            // Jelmagyarázat
             model.Legends.Add(new Legend
             {
                 LegendPosition = LegendPosition.TopLeft,
                 LegendTextColor = OxyColors.White,
-                LegendBackground = OxyColor.FromAColor(200, OxyColors.Black), // Opcionális: félig átlátszó háttér
+                LegendBackground = OxyColor.FromAColor(200, OxyColors.Black),
                 LegendBorder = OxyColors.Gray
             });
 
-            // --- 1. IDŐ TENGELY (X) ---
+            // 1. IDŐ TENGELY (X)
             double minDate = DateTimeAxis.ToDouble(StartDate);
             double maxDate = DateTimeAxis.ToDouble(EndDate);
 
             var viewPoints = new List<DataPoint>();
-            foreach (var pt in equityPoints)
-            {
-                viewPoints.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
-            }
-            if (equityPoints.Last().Time < EndDate)
-            {
-                viewPoints.Add(DateTimeAxis.CreateDataPoint(EndDate, equityPoints.Last().Equity));
-            }
+            foreach (var pt in equityPoints) viewPoints.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
+
+            // Kiegészítés a végéig
+            if (equityPoints.Last().Time < EndDate) viewPoints.Add(DateTimeAxis.CreateDataPoint(EndDate, equityPoints.Last().Equity));
 
             model.Axes.Add(new DateTimeAxis
             {
@@ -354,21 +387,12 @@ namespace ProfitProphet.ViewModels
                 Maximum = maxDate
             });
 
-            // --- 2. PÉNZ TENGELY (Y) ---
-            // Kiszámoljuk a minimumot és maximumot mindkét görbére
+            // 2. PÉNZ TENGELY (Y)
             double minVal = Math.Min(equityPoints.Min(p => p.Equity), balancePoints?.Any() == true ? balancePoints.Min(p => p.Equity) : double.MaxValue);
             double maxVal = Math.Max(equityPoints.Max(p => p.Equity), balancePoints?.Any() == true ? balancePoints.Max(p => p.Equity) : double.MinValue);
 
-            // 3. JAVÍTÁS: A minVal és maxVal változókat használjuk a számításhoz
-            if (Math.Abs(maxVal - minVal) < 0.1)
-            {
-                minVal -= 100; maxVal += 100;
-            }
-            else
-            {
-                double margin = (maxVal - minVal) * 0.1;
-                minVal -= margin; maxVal += margin;
-            }
+            if (Math.Abs(maxVal - minVal) < 0.1) { minVal -= 100; maxVal += 100; }
+            else { double margin = (maxVal - minVal) * 0.1; minVal -= margin; maxVal += margin; }
 
             model.Axes.Add(new LinearAxis
             {
@@ -381,7 +405,7 @@ namespace ProfitProphet.ViewModels
                 StringFormat = "N0"
             });
 
-            // --- 3. RÉTEG: BALANCE (KÉK VONAL) ---
+            // 3. BALANCE GÖRBE (Kék)
             if (balancePoints != null && balancePoints.Any())
             {
                 var balanceSeries = new LineSeries
@@ -391,14 +415,12 @@ namespace ProfitProphet.ViewModels
                     StrokeThickness = 2,
                     MarkerType = MarkerType.None
                 };
-
                 foreach (var pt in balancePoints) balanceSeries.Points.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
                 if (balancePoints.Last().Time < EndDate) balanceSeries.Points.Add(DateTimeAxis.CreateDataPoint(EndDate, balancePoints.Last().Equity));
-
                 model.Series.Add(balanceSeries);
             }
 
-            // --- 4. RÉTEG: EQUITY (ZÖLD VONAL) ---
+            // 4. EQUITY GÖRBE (Zöld)
             var equitySeries = new LineSeries
             {
                 Title = "Equity (Lebegő)",
@@ -409,28 +431,55 @@ namespace ProfitProphet.ViewModels
             equitySeries.Points.AddRange(viewPoints);
             model.Series.Add(equitySeries);
 
-            // --- 5. RÉTEG: KÖTÉSEK (PÖTTYÖK) ---
+            // 5. KÖTÉSEK (VÉTEL - Fehér Pötty)
             if (res.Trades != null && res.Trades.Any())
             {
-                var tradeSeries = new ScatterSeries
+                var buySeries = new ScatterSeries
                 {
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 4,
-                    MarkerFill = OxyColors.White,
+                    MarkerFill = OxyColors.White, // FEHÉR = VÉTEL
                     MarkerStroke = OxyColors.Black,
                     MarkerStrokeThickness = 1,
-                    Title = "Kötések"
+                    Title = "Vétel"
+                };
+
+                // 6. KÖTÉSEK (ELADÁS - Piros Pötty) - EZ AZ ÚJ!
+                var sellSeries = new ScatterSeries
+                {
+                    MarkerType = MarkerType.Circle, // Vagy MarkerType.Square ha más alakot akarsz
+                    MarkerSize = 4,
+                    MarkerFill = OxyColors.Red,   // PIROS = ELADÁS
+                    MarkerStroke = OxyColors.White,
+                    MarkerStrokeThickness = 1,
+                    Title = "Eladás"
                 };
 
                 foreach (var trade in res.Trades)
                 {
-                    var matchingPoint = equityPoints.FirstOrDefault(p => p.Time == trade.EntryDate);
-                    if (matchingPoint != null)
+                    // VÉTEL PONT (EntryDate)
+                    var entryPoint = equityPoints.FirstOrDefault(p => p.Time == trade.EntryDate);
+                    if (entryPoint != null)
                     {
-                        tradeSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(trade.EntryDate), matchingPoint.Equity));
+                        buySeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(trade.EntryDate), entryPoint.Equity));
+                    }
+
+                    // ELADÁS PONT (ExitDate) - Csak ha már lezártuk
+                    if (trade.ExitDate != DateTime.MinValue)
+                    {
+                        var exitPoint = equityPoints.FirstOrDefault(p => p.Time == trade.ExitDate);
+
+                        // Ha pontosan arra az időpontra nincs pont (ritka), keressük a legközelebbit, 
+                        // de itt a BacktestService ugyanazt az időbélyeget használja, szóval egyeznie kell.
+                        if (exitPoint != null)
+                        {
+                            sellSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(trade.ExitDate), exitPoint.Equity));
+                        }
                     }
                 }
-                model.Series.Add(tradeSeries);
+
+                model.Series.Add(buySeries);
+                model.Series.Add(sellSeries);
             }
 
             EquityModel = model;

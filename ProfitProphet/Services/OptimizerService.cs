@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ProfitProphet.Entities;
+using ProfitProphet.Models.Backtesting;
+using ProfitProphet.Models.Strategies;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using ProfitProphet.Entities;
-using ProfitProphet.Models.Backtesting;
-using ProfitProphet.Models.Strategies;
 
 namespace ProfitProphet.Services
 {
@@ -20,51 +21,64 @@ namespace ProfitProphet.Services
         }
 
         // FONTOS: Itt List<OptimizationResult> a visszatérési érték!
-        public async Task<List<OptimizationResult>> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters)
+        public async Task<List<OptimizationResult>> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, IProgress<int> progress, CancellationToken token)
         {
-            // Durva keresés (5-ös lépésköz) az összes kombinációra
-            return await RunIterationAsync(candles, profile, parameters, 5);
+            return await RunIterationAsync(candles, profile, parameters, 5, progress, token);
         }
 
         // Itt is List<OptimizationResult> a típus!
-        private async Task<List<OptimizationResult>> RunIterationAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, int step)
+        private async Task<List<OptimizationResult>> RunIterationAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, int step, IProgress<int> progress, CancellationToken token)
         {
             var combinations = GenerateCombinations(parameters, step);
             var results = new System.Collections.Concurrent.ConcurrentBag<OptimizationResult>();
 
+            int total = combinations.Count;
+            int current = 0;
+
             await Task.Run(() =>
             {
-                Parallel.ForEach(combinations, (combo) =>
+                try
                 {
-                    var testProfile = DeepCopyProfile(profile);
-                    for (int i = 0; i < parameters.Count; i++)
+                    // ITT A VÁLTOZÁS: Átadjuk a tokent a ParallelOptions-nek
+                    var options = new ParallelOptions { CancellationToken = token, MaxDegreeOfParallelism = Environment.ProcessorCount };
+
+                    Parallel.ForEach(combinations, options, (combo) =>
                     {
-                        ApplyValue(testProfile, parameters[i], combo[i]);
-                    }
+                        // Minden körben ellenőrizzük, kérték-e a leállást (opcionális, mert az options kezeli, de jó ha itt is van)
+                        options.CancellationToken.ThrowIfCancellationRequested();
 
-                    var res = _backtestService.RunBacktest(candles, testProfile);
-                    double score = res.TotalProfitLoss - (K_DD * Math.Abs(res.MaxDrawdown));
+                        var testProfile = DeepCopyProfile(profile);
+                        for (int i = 0; i < parameters.Count; i++) ApplyValue(testProfile, parameters[i], combo[i]);
 
-                    // Csak a releváns eredményeket mentjük el (min. 5 kötés)
-                    if (res.TradeCount >= 5)
-                    {
-                        // Paraméterek szöveges összefűzése a táblázathoz
-                        var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
+                        var res = _backtestService.RunBacktest(candles, testProfile); // Sima futtatás
 
-                        results.Add(new OptimizationResult
+                        // ... (A Score számítás és eredmény hozzáadás marad a régi) ...
+                        if (res.TradeCount >= 5)
                         {
-                            Values = combo,
-                            ParameterSummary = paramSummary, // FONTOS: Ez kell a táblázatba!
-                            Score = score,
-                            Profit = res.TotalProfitLoss,
-                            Drawdown = res.MaxDrawdown,
-                            TradeCount = res.TradeCount
-                        });
-                    }
-                });
+                            // ... (marad a régi)
+                            var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
+                            results.Add(new OptimizationResult
+                            {
+                                Values = combo,
+                                ParameterSummary = paramSummary,
+                                Score = res.TotalProfitLoss, // Vagy ProfitFactor, ahogy beszéltük
+                                Profit = res.TotalProfitLoss,
+                                Drawdown = res.MaxDrawdown,
+                                TradeCount = res.TradeCount
+                            });
+                        }
+
+                        // Progress
+                        int c = System.Threading.Interlocked.Increment(ref current);
+                        if (total > 0 && c % (total / 100 + 1) == 0) progress?.Report((int)((double)c / total * 100));
+                    });
+                }
+                catch (OperationCanceledException)
+                {
+                    // Ha leállították, nem csinálunk semmit, csak kilépünk a catch-be
+                }
             });
 
-            // Visszaadjuk a teljes listát
             return results.OrderByDescending(r => r.Score).ToList();
         }
 

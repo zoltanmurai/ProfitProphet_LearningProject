@@ -18,5 +18,6 @@ namespace ProfitProphet.Models.Backtesting
         public List<EquityPoint> EquityCurve { get; set; } = new();
         public List<EquityPoint> BalanceCurve { get; set; } = new List<EquityPoint>();
         public List<TradeRecord> Trades { get; set; } = new List<TradeRecord>();
+        public double ProfitFactor { get; set; }
     }
 }

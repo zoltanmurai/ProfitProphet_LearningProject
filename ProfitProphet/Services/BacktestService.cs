@@ -133,24 +133,79 @@ namespace ProfitProphet.Services
                     if (dd > maxDrawdown) maxDrawdown = dd;
                 }
 
+                result.TotalProfitLoss = cash - initialCash;
+                result.MaxDrawdown = maxDrawdown;
+                result.TradeCount = result.Trades.Count;
                 result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = currentEquity });
                 result.BalanceCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = currentBalance });
             }
 
             // Kényszerített zárás a végén
+            //if (holdings > 0)
+            //{
+            //    double price = (double)candles.Last().Close;
+            //    double revenue = holdings * price;
+            //    double fee = CalculateFee(revenue, profile);
+            //    cash += (revenue - fee);
+            //}
+
+            //result.TotalProfitLoss = cash - initialCash;
+            //result.MaxDrawdown = maxDrawdown;
+            //result.TradeCount = result.Trades.Count;
+
+            //var closedTrades = result.Trades.Where(t => t.ExitDate != DateTime.MinValue).ToList();
+
+            //double grossProfit = closedTrades.Where(t => t.Profit > 0).Sum(t => (double)t.Profit);
+            //double grossLoss = closedTrades.Where(t => t.Profit < 0).Sum(t => Math.Abs((double)t.Profit));
+
+            //result.ProfitFactor = grossLoss == 0 ? grossProfit : grossProfit / grossLoss;
+
+            //result.WinRate = closedTrades.Count > 0
+            //    ? (double)closedTrades.Count(t => t.ExitPrice > t.EntryPrice) / closedTrades.Count
+            //    : 0;
+
+            //return result;
+            // Kényszerített zárás a végén (ha maradt részvényünk)
             if (holdings > 0)
             {
-                double price = (double)candles.Last().Close;
-                double revenue = holdings * price;
+                double lastPrice = (double)candles.Last().Close;
+                double revenue = holdings * lastPrice;
                 double fee = CalculateFee(revenue, profile);
                 cash += (revenue - fee);
+
+                // JAVÍTÁS: A Trade listában is lezárjuk a nyitott pozíciókat!
+                foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
+                {
+                    trade.ExitDate = candles.Last().TimestampUtc;
+                    trade.ExitPrice = (decimal)lastPrice;
+                    // Profit számítása
+                    trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity);
+                }
             }
 
             result.TotalProfitLoss = cash - initialCash;
             result.MaxDrawdown = maxDrawdown;
             result.TradeCount = result.Trades.Count;
 
+            // --- PROFIT FAKTOR SZÁMÍTÁS (JAVÍTOTT) ---
+            // Csak a lezárt trade-eket nézzük (de a fenti javítás miatt most már mind le van zárva)
             var closedTrades = result.Trades.Where(t => t.ExitDate != DateTime.MinValue).ToList();
+
+            double grossProfit = closedTrades.Where(t => t.Profit > 0).Sum(t => (double)t.Profit);
+            double grossLoss = closedTrades.Where(t => t.Profit < 0).Sum(t => Math.Abs((double)t.Profit));
+
+            if (grossLoss == 0)
+            {
+                // Ha nincs veszteség, a Profit Faktor végtelen lenne. 
+                // Ilyenkor 0-t adunk vissza, ha profit sincs, vagy 100-at (mint "tökéletes"), ha van profit.
+                result.ProfitFactor = grossProfit > 0 ? 100 : 0;
+            }
+            else
+            {
+                result.ProfitFactor = grossProfit / grossLoss;
+            }
+
+            // WinRate
             result.WinRate = closedTrades.Count > 0
                 ? (double)closedTrades.Count(t => t.ExitPrice > t.EntryPrice) / closedTrades.Count
                 : 0;
