@@ -6,18 +6,21 @@ using ProfitProphet.Entities;
 using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Models.Strategies;
 using ProfitProphet.Services;
+using ProfitProphet.Services.Indicators;
 using ProfitProphet.ViewModels.Commands;
 using ProfitProphet.Views;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Threading;
+using System.Windows.Threading;
 
 namespace ProfitProphet.ViewModels
 {
@@ -27,7 +30,15 @@ namespace ProfitProphet.ViewModels
         private readonly IStrategySettingsService _strategyService;
         private readonly OptimizerService _optimizerService;
         private CancellationTokenSource _cts;
-        private List<OptimizationParameterUI> _savedOptimizerState;
+
+        // STATIKUS MEZŐK A MEMÓRIA MEGŐRZÉSÉHEZ
+        private static List<OptimizationParameterUI> _savedOptimizerState;
+        private static bool _cachedUseOptimization = false;
+        private static List<OptimizationResult> _cachedOptimizationResults;
+        private static BacktestResult _cachedSingleResult;
+        private static string _cachedLogText;
+        private static int _cachedSelectedIndex = -1;
+        private readonly IIndicatorRegistry _indicatorRegistry;
 
         private readonly List<Candle> _candles;
         public event Action<BacktestResult> OnTestFinished;
@@ -62,24 +73,31 @@ namespace ProfitProphet.ViewModels
             set { _optimizationStatusColor = value; OnPropertyChanged(); }
         }
 
+        private bool _isVisualMode = true; // Alapértelmezetten legyen bekapcsolva a "Show" kedvéért
+        public bool IsVisualMode
+        {
+            get => _isVisualMode;
+            set { _isVisualMode = value; OnPropertyChanged(); }
+        }
+
         public ICommand RunCommand { get; }
         public ICommand EditStrategyCommand { get; }
         public ICommand OpenOptimizerCommand { get; }
+        public ICommand ApplyResultCommand { get; private set; }
 
         private bool _useOptimization;
-        //public bool UseOptimization
-        //{
-        //    get => _useOptimization;
-        //    set { _useOptimization = value; OnPropertyChanged(); }
-        //}
         public bool UseOptimization
         {
             get => _useOptimization;
             set
             {
-                _useOptimization = value;
-                OnPropertyChanged();
-                UpdateOptimizationStatus(); // ITT HÍVJUK MEG!
+                if (_useOptimization != value)
+                {
+                    _useOptimization = value;
+                    _cachedUseOptimization = value; // Statikus mentés
+                    OnPropertyChanged();
+                    UpdateOptimizationStatus();
+                }
             }
         }
 
@@ -95,10 +113,35 @@ namespace ProfitProphet.ViewModels
                 {
                     _selectedResult = value;
                     OnPropertyChanged();
-                    if (value != null)
+
+                    // --- 1. MENTJÜK A KIVÁLASZTÁST ---
+                    if (OptimizationResults != null)
                     {
-                        // KATTINTÁS: Újraszámolás és rajzolás
-                        ShowResultOnChart(value);
+                        _cachedSelectedIndex = OptimizationResults.IndexOf(value);
+                    }
+
+                    if (IsRunning) return;
+
+                    // --- 2. GRAFIKON FRISSÍTÉSE ---
+                    // Csak akkor tudunk rajzolni, ha vannak paraméter-szabályaink!
+                    if (value != null && _currentOptimizationParams != null && _currentOptimizationParams.Count > 0)
+                    {
+                        // Paraméterek alkalmazása
+                        for (int i = 0; i < _currentOptimizationParams.Count; i++)
+                        {
+                            if (i < value.Values.Length)
+                            {
+                                _optimizerService.ApplyValue(CurrentProfile, _currentOptimizationParams[i], value.Values[i]);
+                            }
+                        }
+
+                        // Teszt futtatása és rajzolás
+                        var chartResult = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+
+                        Result = chartResult;
+                        UpdateChart(chartResult);
+
+                        _cachedSingleResult = chartResult;
                     }
                 }
             }
@@ -162,13 +205,92 @@ namespace ProfitProphet.ViewModels
             IStrategySettingsService strategyService,
             List<Candle> candles,
             StrategyProfile profile,
-            OptimizerService optimizerService)
+            OptimizerService optimizerService,
+            IIndicatorRegistry indicatorRegistry)
         {
+            // Visszatöltjük a checkbox állapotát
+            UseOptimization = _cachedUseOptimization;
+
             _backtestService = backtestService ?? throw new ArgumentNullException(nameof(backtestService));
             _strategyService = strategyService ?? throw new ArgumentNullException(nameof(strategyService));
             _optimizerService = optimizerService ?? throw new ArgumentNullException(nameof(optimizerService));
             _candles = candles ?? throw new ArgumentNullException(nameof(candles));
+            _indicatorRegistry = indicatorRegistry;
             CurrentProfile = profile ?? throw new ArgumentNullException(nameof(profile));
+
+            OpenOptimizerCommand = new RelayCommand(o => OpenOptimizer());
+            ApplyResultCommand = new RelayCommand(obj => ApplyResult(obj));
+
+            OptimizationResults = new ObservableCollection<OptimizationResult>();
+
+            // ==============================================================================
+            // 1. PARAMÉTEREK VISSZAÁLLÍTÁSA (INDEX ALAPJÁN - JAVÍTOTT!)
+            // ==============================================================================
+            if (_savedOptimizerState != null && _savedOptimizerState.Any())
+            {
+                var tempVm = new OptimizationViewModel(CurrentProfile);
+
+                // Név helyett INDEX alapján megyünk végig
+                for (int i = 0; i < tempVm.AvailableParameters.Count; i++)
+                {
+                    // Ha a mentett listában létezik ez az index
+                    if (i < _savedOptimizerState.Count)
+                    {
+                        var saved = _savedOptimizerState[i];
+                        var current = tempVm.AvailableParameters[i];
+
+                        // Felülírjuk az értékeket vakon, a sorrend alapján
+                        current.IsSelected = saved.IsSelected;
+                        current.MinValue = saved.MinValue;
+                        current.MaxValue = saved.MaxValue;
+                        current.Step = saved.Step;
+                    }
+                }
+
+                // Lista újraépítése a motor számára (hogy működjön a rajzolás)
+                _currentOptimizationParams = tempVm.AvailableParameters
+                    .Where(p => p.IsSelected)
+                    .Select(p => new OptimizationParameter
+                    {
+                        Rule = p.Rule, // Így megvan a helyes Rule referencia!
+                        ParameterName = p.ParameterName,
+                        MinValue = p.MinValue,
+                        MaxValue = p.MaxValue,
+                        Step = p.Step
+                    }).ToList();
+
+                UseOptimization = true;
+                UpdateOptimizationStatus();
+            }
+
+            // ==============================================================================
+            // 2. LISTA ÉS KIVÁLASZTÁS VISSZATÖLTÉSE
+            // ==============================================================================
+            if (_cachedOptimizationResults != null && _cachedOptimizationResults.Any())
+            {
+                foreach (var res in _cachedOptimizationResults)
+                {
+                    OptimizationResults.Add(res);
+                }
+
+                // Visszajelöljük az utolsót
+                if (_cachedSelectedIndex >= 0 && _cachedSelectedIndex < OptimizationResults.Count)
+                {
+                    // Mivel a _currentOptimizationParams fentebb helyreállt,
+                    // a SelectedResult setter most már tudni fogja, mit kell rajzolni!
+                    SelectedResult = OptimizationResults[_cachedSelectedIndex];
+                }
+            }
+            else if (_cachedSingleResult != null)
+            {
+                Result = _cachedSingleResult;
+                UpdateChart(_cachedSingleResult);
+            }
+
+            if (!string.IsNullOrEmpty(_cachedLogText))
+            {
+                IndicatorTestValues = _cachedLogText;
+            }
 
             if (_candles.Any())
             {
@@ -180,11 +302,16 @@ namespace ProfitProphet.ViewModels
             RunCommand = new RelayCommand(o => RunTest());
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
             OpenOptimizerCommand = new RelayCommand(o => OpenOptimizer());
+
+            if (OptimizationResults.Any() && SelectedResult == null)
+            {
+                SelectedResult = OptimizationResults.First();
+            }
         }
 
         private void OpenStrategyEditor(object obj)
         {
-            var editorVm = new StrategyEditorViewModel(CurrentProfile);
+            var editorVm = new StrategyEditorViewModel(CurrentProfile, _indicatorRegistry);
             var editorWin = new Views.StrategyEditorWindow();
             editorWin.DataContext = editorVm;
             editorVm.OnRequestClose += () => { editorWin.DialogResult = true; editorWin.Close(); };
@@ -197,49 +324,14 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-        //private async void RunTest()
-        //{
-        //    if (CurrentProfile == null || _candles == null) return;
-
-        //    if (UseOptimization)
-        //    {
-        //        if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
-        //        {
-        //            MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!");
-        //            return;
-        //        }
-
-        //        OptimizationResults.Clear();
-        //        var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams);
-
-        //        foreach (var res in results.OrderByDescending(r => r.Score))
-        //        {
-        //            OptimizationResults.Add(res);
-        //        }
-
-        //        if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
-        //    }
-        //    else
-        //    {
-        //        // JAVÍTÁS: Átadjuk az InitialCash-t
-        //        var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
-
-        //        Result = res;
-
-        //        // JAVÍTÁS: A teljes 'res' objektumot adjuk át az UpdateChart-nak!
-        //        UpdateChart(res);
-
-        //        IndicatorTestValues = "Egyedi futtatás a jelenlegi beállításokkal.";
-        //    }
-        //}
         private async void RunTest()
         {
             // A. HA MÁR FUT -> LEÁLLÍTJUK
             if (IsRunning)
             {
-                _cts?.Cancel(); // Jelezzük a leállást
+                _cts?.Cancel();
                 IndicatorTestValues = "Leállítás folyamatban...";
-                return; // Kilépünk, a feladat a catch ágban fog megállni
+                return;
             }
 
             // B. HA NEM FUT -> INDÍTJUK
@@ -248,11 +340,99 @@ namespace ProfitProphet.ViewModels
             IsRunning = true;
             ProgressValue = 0;
 
-            // Új "leállító gomb" létrehozása
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
 
             IProgress<int> progressIndicator = new Progress<int>(value => ProgressValue = value);
+
+            // --- 1. PUFFERELÉS ELŐKÉSZÍTÉSE ---
+            // Ide gyűjtjük az adatokat a háttérből, hogy ne terheljük a UI-t egyesével
+            var pendingResults = new ConcurrentQueue<OptimizationResult>();
+
+            // UI Időzítő: 300ms-enként frissít (így a táblázat nem villog és nem fagy)
+            var uiTimer = new DispatcherTimer();
+            uiTimer.Interval = TimeSpan.FromMilliseconds(300);
+
+            // Globális legjobb érték követése
+            double globalBestScore = double.MinValue;
+
+            // Lista törlése
+            OptimizationResults.Clear();
+
+            // --- 2. AZ IDŐZÍTŐ LOGIKÁJA (Ez fut a UI Szálon 300ms-enként) ---
+            uiTimer.Tick += (s, args) =>
+            {
+                // Kivesszük az összeset, ami összegyűlt az elmúlt 300ms-ben
+                var batch = new List<OptimizationResult>();
+                while (pendingResults.TryDequeue(out var res))
+                {
+                    batch.Add(res);
+                }
+
+                if (batch.Count == 0) return;
+
+                // Csak a legjobbakat dolgozzuk fel a Chartnak, de mindet a listának
+                bool chartUpdated = false;
+
+                foreach (var res in batch)
+                {
+                    // A) Lista frissítése (Okos beszúrás nélkül, csak a végére, majd a végén rendezünk
+                    // VAGY egyszerűsített beszúrás, ha nem túl nagy a batch).
+                    // A fagyás elkerülése érdekében most csak hozzáadjuk, a rendezést a DataGridre bízzuk,
+                    // vagy csak a legjobb 100-at tartjuk meg.
+
+                    OptimizationResults.Add(res);
+
+                    // B) Chart Frissítés (Csak ha rekord)
+                    if (res.Score > globalBestScore)
+                    {
+                        globalBestScore = res.Score;
+
+                        // Csak a legutolsó rekordot rajzoljuk ki a batch-ből
+                        if (!chartUpdated && res.EquityCurve != null && res.EquityCurve.Count > 0)
+                        {
+                            // 1. KIVÁLASZTJUK A LISTÁBAN (Így látszik a kijelölés!)
+                            // Mivel levédtük a settert (IsRunning check), ez nem okoz lassulást.
+                            SelectedResult = res;
+
+                            // 2. KIRAJZOLJUK A CHARTOT (Kötésekkel együtt!)
+                            var tempResult = new BacktestResult
+                            {
+                                EquityCurve = res.EquityCurve,
+                                BalanceCurve = res.BalanceCurve ?? new List<EquityPoint>(),
+
+                                // ITT A LÉNYEG: Átadjuk a kötéseket is, így megjelennek a pöttyök!
+                                Trades = res.Trades ?? new List<TradeRecord>()
+                            };
+
+                            UpdateChart(tempResult);
+                            chartUpdated = true;
+                        }
+                    }
+                }
+
+                // RAM VÉDELEM: Ha túl sok az elem, a régieket/rosszakat kidobjuk
+                // Ez kritikus, ha 100.000 iteráció fut!
+                if (OptimizationResults.Count > 500)
+                {
+                    // Ez egy lassú művelet lehet, ritkábban kéne, de a stabilitás miatt:
+                    // Inkább csak a lista végét vágjuk le, ha nem fér el.
+                    // A leggyorsabb, ha nem rendezzük itt, hanem csak a View-ban.
+                    // De ha nagyon kell a rendezés:
+                    var sorted = OptimizationResults.OrderByDescending(x => x.Score).Take(200).ToList();
+                    OptimizationResults.Clear();
+                    foreach (var item in sorted) OptimizationResults.Add(item);
+                }
+            };
+
+            // --- 3. A HANDLER MÓDOSÍTÁSA ---
+            // Mostantól a handler NEM nyúl a UI-hoz, csak bedobja a közösbe.
+            var realTimeHandler = new Progress<OptimizationResult>(res =>
+            {
+                pendingResults.Enqueue(res);
+            });
+
+            uiTimer.Start(); // Indul a frissítés
 
             try
             {
@@ -266,38 +446,53 @@ namespace ProfitProphet.ViewModels
                             return;
                         }
 
-                        Application.Current.Dispatcher.Invoke(() => OptimizationResults.Clear());
+                        // Indítás
+                        var results = await _optimizerService.OptimizeAsync(
+                            _candles,
+                            CurrentProfile,
+                            _currentOptimizationParams,
+                            progressIndicator,
+                            token,
+                            IsVisualMode,
+                            realTimeHandler    // <--- Ez most már csak a Queue-ba ír
+                        );
 
-                        // Átadjuk a tokent is!
-                        var results = await _optimizerService.OptimizeAsync(_candles, CurrentProfile, _currentOptimizationParams, progressIndicator, token);
-
+                        // VÉGSŐ FRISSÍTÉS UI SZÁLON
                         Application.Current.Dispatcher.Invoke(() =>
                         {
-                            OptimizationResults.Clear(); // Biztonság kedvéért törlünk, ha duplikálódna
+                            uiTimer.Stop(); // Leállítjuk a köztes frissítést
+
+                            // A maradékot még feldolgozzuk
+                            while (pendingResults.TryDequeue(out var res)) results.Add(res);
+
+                            OptimizationResults.Clear();
+                            // Most már rendezhetjük az egészet nyugodtan
                             foreach (var res in results.OrderByDescending(r => r.Score)) OptimizationResults.Add(res);
 
+                            _cachedOptimizationResults = OptimizationResults.ToList();
                             if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
                         });
                     }
                     else
                     {
-                        // Sima futtatás
+                        // ... Sima futtatás ág (Változatlan) ...
                         progressIndicator.Report(10);
-                        if (token.IsCancellationRequested) return; // Gyors ellenőrzés
-
-                        var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
-
-                        progressIndicator.Report(100);
                         if (token.IsCancellationRequested) return;
+                        var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+                        progressIndicator.Report(100);
 
                         Application.Current.Dispatcher.Invoke(() =>
                         {
+                            uiTimer.Stop(); // Biztos ami biztos
                             Result = res;
                             UpdateChart(res);
                             IndicatorTestValues = $"Egyedi futtatás kész. Profit Faktor: {res.ProfitFactor:N2}";
+                            _cachedSingleResult = res;
+                            _cachedLogText = IndicatorTestValues;
                         });
                     }
-                }, token); // A Task.Run-nak is átadjuk
+
+                }, token);
             }
             catch (OperationCanceledException)
             {
@@ -306,79 +501,73 @@ namespace ProfitProphet.ViewModels
             }
             finally
             {
-                // Mindenképp visszaállítjuk a gombot, akár lefutott, akár leállították
+                uiTimer.Stop(); // Mindenképp megállítjuk
                 IsRunning = false;
                 _cts?.Dispose();
                 _cts = null;
             }
         }
 
-        private void ShowResultOnChart(OptimizationResult optRes)
+        private void ApplyResult(object obj)
         {
-            if (optRes == null || _currentOptimizationParams == null) return;
-
-            var tempProfile = _optimizerService.DeepCopyProfile(CurrentProfile);
-
-            for (int i = 0; i < _currentOptimizationParams.Count; i++)
+            if (obj is OptimizationResult res && _currentOptimizationParams != null)
             {
-                if (i < optRes.Values.Length)
+                for (int i = 0; i < _currentOptimizationParams.Count; i++)
                 {
-                    _optimizerService.ApplyValue(tempProfile, _currentOptimizationParams[i], optRes.Values[i]);
+                    if (i < res.Values.Length)
+                    {
+                        _optimizerService.ApplyValue(CurrentProfile, _currentOptimizationParams[i], res.Values[i]);
+                    }
                 }
+
+                System.Windows.MessageBox.Show(
+                    $"Beállítások sikeresen alkalmazva!\n\nÚj Score: {res.Score:N2}\nProfit: {res.Profit:N0}$",
+                    "Sikeres betöltés",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Information);
+
+                OnPropertyChanged(nameof(CurrentProfile));
             }
-
-            // JAVÍTÁS: InitialCash átadása
-            var res = _backtestService.RunBacktest(_candles, tempProfile, InitialCash);
-
-            // JAVÍTÁS: Teljes 'res' átadása a grafikonnak
-            UpdateChart(res);
-
-            Result = res;
-
-            IndicatorTestValues = $"KIVÁLASZTVA:\n{optRes.ParameterSummary}\n" +
-                                  $"Profit: {optRes.Profit:N0}$ | Score: {optRes.Score:N2}";
         }
 
         private void OpenOptimizer()
         {
             var vm = new OptimizationViewModel(CurrentProfile);
-            // --- MEMÓRIA VISSZATÖLTÉSE (ÚJ RÉSZ) ---
-            // Ha van elmentett állapotunk, akkor felülírjuk az alapértelmezett értékeket
+
+            // --- MEMÓRIA VISSZATÖLTÉSE (INDEX ALAPJÁN) ---
             if (_savedOptimizerState != null)
             {
-                foreach (var savedParam in _savedOptimizerState)
+                // Név helyett INDEX alapján
+                for (int i = 0; i < vm.AvailableParameters.Count; i++)
                 {
-                    // Megkeressük a megfelelő paramétert a mostani listában a név alapján
-                    var targetParam = vm.AvailableParameters.FirstOrDefault(p => p.Name == savedParam.Name);
-                    if (targetParam != null)
+                    if (i < _savedOptimizerState.Count)
                     {
-                        // Visszatöltjük a beállításokat
-                        targetParam.IsSelected = savedParam.IsSelected;
-                        targetParam.MinValue = savedParam.MinValue;
-                        targetParam.MaxValue = savedParam.MaxValue;
-                        targetParam.Step = savedParam.Step; // A lépésközt is!
+                        var saved = _savedOptimizerState[i];
+                        var current = vm.AvailableParameters[i];
+
+                        current.IsSelected = saved.IsSelected;
+                        current.MinValue = saved.MinValue;
+                        current.MaxValue = saved.MaxValue;
+                        current.Step = saved.Step;
                     }
                 }
             }
 
-            //var win = new OptimizationWindow { DataContext = vm };
             var win = new OptimizationWindow { DataContext = vm, Owner = Application.Current.MainWindow };
 
             vm.OnRequestClose += (result) =>
             {
                 if (result)
                 {
-                    // --- ÁLLAPOT MENTÉSE ---
-                    // elmentjük a jelenlegi beállításokat a memóriába
+                    // --- ÁLLAPOT MENTÉSE (SORRENDHELYESEN) ---
                     _savedOptimizerState = vm.AvailableParameters.Select(p => new OptimizationParameterUI
                     {
-                        Name = p.Name, // név az azonosításhoz
+                        Name = p.Name,
                         IsSelected = p.IsSelected,
                         MinValue = p.MinValue,
                         MaxValue = p.MaxValue,
                         Step = p.Step,
                     }).ToList();
-                    // ---------------------------------
 
                     _currentOptimizationParams = vm.AvailableParameters
                         .Where(p => p.IsSelected)
@@ -392,6 +581,7 @@ namespace ProfitProphet.ViewModels
                             Step = p.Step
                         })
                         .ToList();
+
                     UseOptimization = true;
                 }
                 win.Close();
@@ -400,7 +590,6 @@ namespace ProfitProphet.ViewModels
             win.ShowDialog();
         }
 
-        // a teljes BacktestResult-ot várjuk, nem csak a pontokat!
         private void UpdateChart(BacktestResult res)
         {
             if (res == null || res.EquityCurve == null || !res.EquityCurve.Any()) return;
@@ -416,7 +605,6 @@ namespace ProfitProphet.ViewModels
                 Background = OxyColors.Transparent,
             };
 
-            // Jelmagyarázat
             model.Legends.Add(new Legend
             {
                 LegendPosition = LegendPosition.TopLeft,
@@ -432,7 +620,6 @@ namespace ProfitProphet.ViewModels
             var viewPoints = new List<DataPoint>();
             foreach (var pt in equityPoints) viewPoints.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
 
-            // Kiegészítés a végéig
             if (equityPoints.Last().Time < EndDate) viewPoints.Add(DateTimeAxis.CreateDataPoint(EndDate, equityPoints.Last().Equity));
 
             model.Axes.Add(new DateTimeAxis
@@ -464,7 +651,7 @@ namespace ProfitProphet.ViewModels
                 StringFormat = "N0"
             });
 
-            // 3. BALANCE GÖRBE (Kék)
+            // 3. BALANCE GÖRBE
             if (balancePoints != null && balancePoints.Any())
             {
                 var balanceSeries = new LineSeries
@@ -479,7 +666,7 @@ namespace ProfitProphet.ViewModels
                 model.Series.Add(balanceSeries);
             }
 
-            // 4. EQUITY GÖRBE (Zöld)
+            // 4. EQUITY GÖRBE
             var equitySeries = new LineSeries
             {
                 Title = "Equity (Lebegő)",
@@ -490,25 +677,25 @@ namespace ProfitProphet.ViewModels
             equitySeries.Points.AddRange(viewPoints);
             model.Series.Add(equitySeries);
 
-            // 5. KÖTÉSEK (VÉTEL - Fehér Pötty)
+            // 5. KÖTÉSEK (VÉTEL)
             if (res.Trades != null && res.Trades.Any())
             {
                 var buySeries = new ScatterSeries
                 {
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 4,
-                    MarkerFill = OxyColors.White, // FEHÉR = VÉTEL
+                    MarkerFill = OxyColors.White,
                     MarkerStroke = OxyColors.Black,
                     MarkerStrokeThickness = 1,
                     Title = "Vétel"
                 };
 
-                // 6. KÖTÉSEK (ELADÁS - Piros Pötty) - EZ AZ ÚJ!
+                // 6. KÖTÉSEK (ELADÁS)
                 var sellSeries = new ScatterSeries
                 {
-                    MarkerType = MarkerType.Circle, // Vagy MarkerType.Square ha más alakot akarsz
+                    MarkerType = MarkerType.Circle,
                     MarkerSize = 4,
-                    MarkerFill = OxyColors.Red,   // PIROS = ELADÁS
+                    MarkerFill = OxyColors.Red,
                     MarkerStroke = OxyColors.White,
                     MarkerStrokeThickness = 1,
                     Title = "Eladás"
@@ -516,20 +703,15 @@ namespace ProfitProphet.ViewModels
 
                 foreach (var trade in res.Trades)
                 {
-                    // VÉTEL PONT (EntryDate)
                     var entryPoint = equityPoints.FirstOrDefault(p => p.Time == trade.EntryDate);
                     if (entryPoint != null)
                     {
                         buySeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(trade.EntryDate), entryPoint.Equity));
                     }
 
-                    // ELADÁS PONT (ExitDate) - Csak ha már lezártuk
                     if (trade.ExitDate != DateTime.MinValue)
                     {
                         var exitPoint = equityPoints.FirstOrDefault(p => p.Time == trade.ExitDate);
-
-                        // Ha pontosan arra az időpontra nincs pont (ritka), keressük a legközelebbit, 
-                        // de itt a BacktestService ugyanazt az időbélyeget használja, szóval egyeznie kell.
                         if (exitPoint != null)
                         {
                             sellSeries.Points.Add(new ScatterPoint(DateTimeAxis.ToDouble(trade.ExitDate), exitPoint.Equity));
@@ -544,60 +726,11 @@ namespace ProfitProphet.ViewModels
             EquityModel = model;
         }
 
-        // 5. & 6. KÖTÉSEK JELÖLÉSE (ANNOTÁCIÓKKAL) - ÚJ!
-        //    if (res.Trades != null && res.Trades.Any())
-        //    {
-        //        foreach (var trade in res.Trades)
-        //        {
-        //            // VÉTEL (Entry) - Zöld Nyíl felfelé
-        //            var entryPoint = equityPoints.FirstOrDefault(p => p.Time == trade.EntryDate);
-        //            if (entryPoint != null)
-        //            {
-        //                var buyAnnotation = new OxyPlot.Annotations.TextAnnotation
-        //                {
-        //                    TextPosition = new DataPoint(DateTimeAxis.ToDouble(trade.EntryDate), entryPoint.Equity),
-        //                    Text = "▲", // Vagy Wingdings esetén pl: "é"
-        //                    // FontFamily = "Wingdings", // Ha Wingdings-et akarsz, vedd ki a kommentet
-        //                    FontSize = 20,
-        //                    Stroke = OxyColors.Transparent,
-        //                    TextColor = OxyColors.LimeGreen, // Zöld szín a vételnek
-        //                    FontWeight = 700, // Félkövér
-        //                    TextVerticalAlignment = OxyPlot.VerticalAlignment.Top // A pont ALÁ rajzolja, hogy felfelé mutasson
-        //                };
-        //                model.Annotations.Add(buyAnnotation);
-        //            }
-
-        //            // ELADÁS (Exit) - Piros Nyíl lefelé
-        //            if (trade.ExitDate != DateTime.MinValue)
-        //            {
-        //                var exitPoint = equityPoints.FirstOrDefault(p => p.Time == trade.ExitDate);
-        //                if (exitPoint != null)
-        //                {
-        //                    var sellAnnotation = new OxyPlot.Annotations.TextAnnotation
-        //                    {
-        //                        TextPosition = new DataPoint(DateTimeAxis.ToDouble(trade.ExitDate), exitPoint.Equity),
-        //                        Text = "▼", // Vagy Wingdings esetén pl: "ê"
-        //                        // FontFamily = "Wingdings",
-        //                        FontSize = 20,
-        //                        Stroke = OxyColors.Transparent,
-        //                        TextColor = OxyColors.Red, // Piros szín az eladásnak
-        //                        FontWeight = 700,
-        //                        TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom // A pont FÖLÉ rajzolja
-        //                    };
-        //                    model.Annotations.Add(sellAnnotation);
-        //                }
-        //            }
-        //        }
-        //    }
-
-        //    EquityModel = model;
-        //}
-
         private void UpdateOptimizationStatus()
         {
             if (!UseOptimization)
             {
-                OptimizationStatusMessage = ""; // Ha nincs pipa, nincs üzenet
+                OptimizationStatusMessage = "";
                 return;
             }
 
@@ -609,36 +742,9 @@ namespace ProfitProphet.ViewModels
             else
             {
                 OptimizationStatusMessage = "⚠️ Nincsenek beállítva intervallumok!\nKattints a 'Beállítások' gombra.";
-                OptimizationStatusColor = System.Windows.Media.Brushes.OrangeRed; // Vagy Red
+                OptimizationStatusColor = System.Windows.Media.Brushes.OrangeRed;
             }
         }
-
-        public ICommand ApplyResultCommand => new RelayCommand(obj =>
-        {
-            // Ellenőrizzük, hogy érvényes eredményre kattintott-e és vannak-e ismert paramétereink
-            if (obj is OptimizationResult res && _currentOptimizationParams != null)
-            {
-                // Végigmegyünk a paramétereken és alkalmazzuk őket a Jelenlegi Profilra
-                for (int i = 0; i < _currentOptimizationParams.Count; i++)
-                {
-                    if (i < res.Values.Length)
-                    {
-                        // A Service-ben lévő segédfüggvényt használjuk az érték beállítására
-                        _optimizerService.ApplyValue(CurrentProfile, _currentOptimizationParams[i], res.Values[i]);
-                    }
-                }
-
-                // Értesítés a felhasználónak
-                // Opcionális: Automatikusan újra is futtathatjuk a tesztet az új beállításokkal
-                // RunTest(); 
-        
-                MessageBox.Show($"Beállítások sikeresen alkalmazva!\n\nÚj Score: {res.Score:N2}\nProfit: {res.Profit:N0}$", 
-                                "Sikeres betöltés", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // Frissítjük a nézetet, hogy a UI-n is látszódjanak az új számok (ha vannak kötve textboxok)
-                OnPropertyChanged(nameof(CurrentProfile));
-            }
-        });
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string name = null)

@@ -7,6 +7,7 @@ using ProfitProphet.Services.Charting;
 using ProfitProphet.Services.Indicators;
 using ProfitProphet.ViewModels;
 using ProfitProphet.Views;
+using ProfitProphet.Settings; // Fontos a Settings névtér!
 using System;
 using System.IO;
 using System.Windows;
@@ -29,30 +30,39 @@ namespace ProfitProphet
             // 1. Adatbázis
             services.AddDbContext<StockContext>();
 
-            // 2. Szolgáltatások (Singleton = egyetlen közös példány)
-            services.AddSingleton<ChartBuilder>(); // <-- Itt a lényeg a nyilakhoz!
-            services.AddSingleton<DataService>();
-            services.AddSingleton<IStockApiClient, YahooFinanceClient>();
-            services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>();
-            services.AddSingleton<IChartSettingsService, ChartSettingsService>();
-            services.AddSingleton<IChartProfileService, ChartProfileService>();
-            services.AddSingleton<IStrategySettingsService, StrategySettingsService>();
-            services.AddSingleton<BacktestService>();
-            services.AddSingleton<OptimizerService>();
-            services.AddSingleton<MainViewModel>();
-            services.AddTransient<MainWindow>();
-
+            // 2. Alap szolgáltatások
             // Beállítások útvonala
             var cfgPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "ProfitProphet", "settings.json");
+
+            // Regisztráljuk a Service-t (aki ír/olvas)
             services.AddSingleton<IAppSettingsService>(provider => new AppSettingsService(cfgPath));
 
-            // 3. ViewModels
-            services.AddSingleton<MainViewModel>();
-            services.AddSingleton<ChartViewModel>();
+            // FONTOS: Regisztráljuk magát a Beállítás Objektumot is!
+            // Így ha a ChartViewModel 'AppSettings'-t kér (nem a service-t), akkor a DI konténer tudni fogja, mit adjon.
+            services.AddSingleton<AppSettings>(provider => provider.GetRequiredService<IAppSettingsService>().CurrentSettings);
 
-            // 4. Ablakok
+            // 3. Üzleti logika és Indikátorok
+            services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>(); // <--- Ez kell a modularitáshoz!
+            services.AddSingleton<ChartBuilder>(); // <-- Ő majd kéri a Registry-t, és meg is kapja
+            services.AddSingleton<DataService>();
+            services.AddSingleton<IStockApiClient, YahooFinanceClient>();
+
+            services.AddSingleton<IChartSettingsService, ChartSettingsService>();
+            services.AddSingleton<IChartProfileService, ChartProfileService>();
+            services.AddSingleton<IStrategySettingsService, StrategySettingsService>();
+
+            services.AddSingleton<BacktestService>();
+            services.AddSingleton<OptimizerService>();
+
+            // 4. ViewModels (Automatikusan megkapják a fenti service-eket)
+            services.AddSingleton<ChartViewModel>(); // Ő kéri: ChartSettings, Builder, AppSettings, Registry
+            services.AddSingleton<MainViewModel>();
+            services.AddSingleton<OptimizationViewModel>(); // Ha kell
+
+            // 5. Ablakok
+            // Singleton, hogy ne vesszenek el az adatok bezárás/újranyitás között (opcionális, lehet Transient is)
             services.AddSingleton<MainWindow>();
         }
 
@@ -74,7 +84,6 @@ namespace ProfitProphet
                 }
             }
 
-            // Kézi indítás (StartupUri helyett)
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
             mainWindow.Show();
         }

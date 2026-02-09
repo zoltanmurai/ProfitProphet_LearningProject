@@ -13,113 +13,149 @@ namespace ProfitProphet.Services
     public class OptimizerService
     {
         private readonly BacktestService _backtestService;
-        private const double K_DD = 0.5;
 
         public OptimizerService(BacktestService backtestService)
         {
             _backtestService = backtestService ?? throw new ArgumentNullException(nameof(backtestService));
         }
 
-        // FONTOS: Itt List<OptimizationResult> a visszatérési érték!
-        public async Task<List<OptimizationResult>> OptimizeAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, IProgress<int> progress, CancellationToken token)
+        public async Task<List<OptimizationResult>> OptimizeAsync(
+            List<Candle> candles,
+            StrategyProfile profile,
+            List<OptimizationParameter> parameters,
+            IProgress<int> progress,
+            CancellationToken token,
+            bool visualMode,
+            IProgress<OptimizationResult> realtimeHandler)
         {
-            //return await RunIterationAsync(candles, profile, parameters, 5, progress, token);
-            return await RunIterationAsync(candles, profile, parameters, 1, progress, token);
+            // És itt továbbadjuk őket a belső, privát metódusnak:
+            return await RunIterationAsync(candles, profile, parameters, progress, token, visualMode, realtimeHandler);
         }
 
-        // Itt is List<OptimizationResult> a típus!
-        private async Task<List<OptimizationResult>> RunIterationAsync(List<Candle> candles, StrategyProfile profile, List<OptimizationParameter> parameters, int step, IProgress<int> progress, CancellationToken token)
+        private async Task<List<OptimizationResult>> RunIterationAsync(
+            List<Candle> candles,
+            StrategyProfile profile,
+            List<OptimizationParameter> parameters,
+            IProgress<int> progress,
+            CancellationToken token,
+            bool visualMode,
+            IProgress<OptimizationResult> realtimeHandler) 
         {
-            var combinations = GenerateCombinations(parameters, step);
+            var combinations = GenerateCombinations(parameters);
             var results = new System.Collections.Concurrent.ConcurrentBag<OptimizationResult>();
 
             int total = combinations.Count;
             int current = 0;
 
+            // Egy egyszerű lock objektum, hogy ne egyszerre akarjon minden szál rajzolni
+            object syncLock = new object();
+            double bestScoreSoFar = double.MinValue;
+
             await Task.Run(() =>
             {
                 try
                 {
-                    // ITT A VÁLTOZÁS: Átadjuk a tokent a ParallelOptions-nek
                     var options = new ParallelOptions { CancellationToken = token, MaxDegreeOfParallelism = Environment.ProcessorCount };
 
                     Parallel.ForEach(combinations, options, (combo) =>
                     {
-                        // Minden körben ellenőrizzük, kérték-e a leállást (opcionális, mert az options kezeli, de jó ha itt is van)
                         options.CancellationToken.ThrowIfCancellationRequested();
 
                         var testProfile = DeepCopyProfile(profile);
                         for (int i = 0; i < parameters.Count; i++) ApplyValue(testProfile, parameters[i], combo[i]);
 
-                        var res = _backtestService.RunBacktest(candles, testProfile); // Sima futtatás
+                        // Futtatás
+                        var res = _backtestService.RunBacktest(candles, testProfile);
 
-                        // ... (A Score számítás és eredmény hozzáadás marad a régi) ...
                         if (res.TradeCount >= 5)
                         {
-                            // ... (marad a régi)
                             var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
-                            results.Add(new OptimizationResult
+
+                            var optRes = new OptimizationResult
                             {
                                 Values = combo,
                                 ParameterSummary = paramSummary,
-                                Score = res.TotalProfitLoss, // Vagy ProfitFactor, ahogy beszéltük
+                                Score = res.TotalProfitLoss, // Vagy ProfitFactor
                                 Profit = res.TotalProfitLoss,
                                 Drawdown = res.MaxDrawdown,
-                                TradeCount = res.TradeCount
-                            });
+                                TradeCount = res.TradeCount,
+                                ProfitFactor = res.ProfitFactor,
+                                // KULCSFONTOSSÁGÚ: Ha vizuális mód van, el kell mentenünk a görbét,
+                                // hogy a ViewModel ki tudja rajzolni!
+                                EquityCurve = visualMode ? res.EquityCurve : null,
+                                BalanceCurve = visualMode ? res.BalanceCurve : null,
+                                Trades = visualMode ? res.Trades : null
+                            };
+
+                            results.Add(optRes);
+
+                            // --- ITT TÖRTÉNIK A VARÁZSLAT ---
+                            if (visualMode && realtimeHandler != null)
+                            {
+                                // Teljesítmény védelem: Csak akkor küldjük ki a GUI-ra frissítésre,
+                                // ha ez az eredmény jobb, mint amit eddig találtunk (így a Chart mindig javul),
+                                // VAGY ha mindenképp látni akarjuk a listában a profitosokat.
+
+                                bool isNewBest = false;
+                                lock (syncLock)
+                                {
+                                    // Itt döntheted el: Profit vagy ProfitFactor alapján mi a "legjobb"
+                                    if (optRes.Score > bestScoreSoFar)
+                                    {
+                                        bestScoreSoFar = optRes.Score;
+                                        isNewBest = true;
+                                    }
+                                }
+
+                                // Ha ez egy új rekord, vagy legalábbis profitos, küldjük a GUI-nak
+                                if (isNewBest || optRes.Profit > 0)
+                                {
+                                    realtimeHandler.Report(optRes);
+                                }
+                            }
                         }
 
-                        // Progress
+                        // Progress update (százalék)
                         int c = System.Threading.Interlocked.Increment(ref current);
-                        if (total > 0 && c % (total / 100 + 1) == 0) progress?.Report((int)((double)c / total * 100));
+                        if (total > 0 && c % (Math.Max(1, total / 100)) == 0)
+                            progress?.Report((int)((double)c / total * 100));
                     });
                 }
-                catch (OperationCanceledException)
-                {
-                    // Ha leállították, nem csinálunk semmit, csak kilépünk a catch-be
-                }
+                catch (OperationCanceledException) { }
             });
 
             return results.OrderByDescending(r => r.Score).ToList();
         }
 
-        // ... A többi segédmetódus (GenerateCombinations, GenerateRecursive) maradhat változatlan ...
-        private List<int[]> GenerateCombinations(List<OptimizationParameter> parameters, int step_IGNORED)
+        private List<int[]> GenerateCombinations(List<OptimizationParameter> parameters)
         {
             var results = new List<int[]>();
-            // Itt hívjuk meg, már a 'step' nélkül:
+            // Elindítjuk a rekurziót 0. mélységről
             GenerateRecursive(parameters, 0, new int[parameters.Count], results);
             return results;
         }
 
-        // Vedd ki a "int step" paramétert a végéről!
         private void GenerateRecursive(List<OptimizationParameter> parameters, int depth, int[] current, List<int[]> results)
         {
-            // Kilépési feltétel (ha elértük a mélységet)
+            // Kilépési feltétel (ha minden paraméternek van értéke)
             if (depth == parameters.Count)
             {
                 results.Add((int[])current.Clone());
                 return;
             }
 
-            // 1. Megszerezzük az aktuális paraméter saját lépésközét
-            // Feltételezve, hogy hozzáadtad a .Step property-t az OptimizationParameter osztályhoz!
-            int currentStep = (int)parameters[depth].Step;
+            // Feltételezzük, hogy az OptimizationParameter objektumnak van 'Step' tulajdonsága (int).
+            // Ha nincs, akkor itt helyettesítsd be a kívánt fix lépésközt (pl. 1).
+            int currentStep = 1;
+            // int currentStep = (int)parameters[depth].Step; // Ha van Step property
 
-            // Biztonsági védelem: Ha 0 vagy negatív lenne, legyen 1, különben végtelen ciklus!
-            if (currentStep <= 0) currentStep = 1;
-
-            // 2. A ciklusban a 'currentStep'-et használjuk a növeléshez (v += currentStep)
             for (int v = (int)parameters[depth].MinValue; v <= (int)parameters[depth].MaxValue; v += currentStep)
             {
                 current[depth] = v;
-
-                // Rekurzív hívás (már nem kell átadni a step-et)
                 GenerateRecursive(parameters, depth + 1, current, results);
             }
         }
 
-        // FONTOS: Ennek PUBLIC-nak kell lennie a ViewModel miatt!
         public void ApplyValue(StrategyProfile profile, OptimizationParameter param, int value)
         {
             var targetList = param.IsEntrySide ? profile.EntryGroups : profile.ExitGroups;
@@ -144,7 +180,6 @@ namespace ProfitProphet.Services
             }
         }
 
-        // FONTOS: Ennek is PUBLIC-nak kell lennie!
         public StrategyProfile DeepCopyProfile(StrategyProfile original)
         {
             var copy = new StrategyProfile

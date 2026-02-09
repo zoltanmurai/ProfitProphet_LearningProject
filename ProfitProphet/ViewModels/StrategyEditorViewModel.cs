@@ -1,10 +1,12 @@
 ﻿using ProfitProphet.Models.Strategies; // StrategyGroup, StrategyProfile
 using ProfitProphet.ViewModels.Commands;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
+using ProfitProphet.Services.Indicators;
 
 namespace ProfitProphet.ViewModels
 {
@@ -17,8 +19,14 @@ namespace ProfitProphet.ViewModels
         public ObservableCollection<StrategyGroup> ExitGroups { get; set; }
 
         // --- LEGÖRDÜLŐ MENÜK (Adatforrás a UI-nak) ---
-        public ObservableCollection<string> AvailableIndicators { get; } = new ObservableCollection<string>
-        { "CMF", "SMA", "EMA", "RSI", "Stoch", "Close", "Open", "High", "Low", "Volume" };
+        //public ObservableCollection<string> AvailableIndicators { get; } = new ObservableCollection<string>
+        //{ "CMF", "SMA", "EMA", "RSI", "Stoch", "Close", "Open", "High", "Low", "Volume" };
+        private List<string> _availableIndicators;
+        public List<string> AvailableIndicators
+        {
+            get => _availableIndicators;
+            set { _availableIndicators = value; OnPropertyChanged(); }
+        }
 
         public ObservableCollection<ComparisonOperator> AvailableOperators { get; }
         public ObservableCollection<DataSourceType> AvailableSourceTypes { get; }
@@ -36,11 +44,16 @@ namespace ProfitProphet.ViewModels
         public ICommand RemoveRuleCommand { get; } // Ez trükkös lesz
 
         public ICommand SaveCommand { get; }
+        public ICommand CancelCommand { get; }
         public event Action OnRequestClose;
 
-        public StrategyEditorViewModel(StrategyProfile profile = null)
+        public StrategyEditorViewModel(StrategyProfile profile, IIndicatorRegistry registry)
         {
             Profile = profile ?? new StrategyProfile { Name = "Új Stratégia", Symbol = "MSFT" };
+            PopulateIndicators(registry);
+
+            SaveCommand = new RelayCommand(o => Save());
+            CancelCommand = new RelayCommand(o => Cancel());
 
             // Csoportok betöltése
             EntryGroups = new ObservableCollection<StrategyGroup>(Profile.EntryGroups);
@@ -115,11 +128,65 @@ namespace ProfitProphet.ViewModels
 
             SaveCommand = new RelayCommand(_ => Save());
         }
+        private void PopulateIndicators(IIndicatorRegistry registry)
+        {
+            var list = new List<string>();
+
+            // A) Alapvető árfolyam adatok (Ezek mindig kellenek)
+            list.AddRange(new[] { "Close", "Open", "High", "Low", "Volume" });
+
+            // B) Lekérjük a Registry-ből az összes indikátort
+            if (registry != null)
+            {
+                var registeredIndicators = registry.GetAll();
+
+                foreach (var indicator in registeredIndicators)
+                {
+                    // Itt egy kis trükk kell: 
+                    // A BacktestService switch-case alapján tudnunk kell, 
+                    // hogy melyik indikátornak vannak "al-vonalai".
+
+                    string id = indicator.Id.ToUpper(); // pl. "MACD"
+
+                    if (id == "MACD")
+                    {
+                        // A MACD-nek több kimenete van, ezeket külön kell felvenni,
+                        // hogy a stratégiában ki tudd választani pl: MACD_Main > MACD_Signal
+                        list.Add("MACD_MAIN");
+                        list.Add("MACD_SIGNAL");
+                        list.Add("MACD_HIST");
+                    }
+                    else if (id == "BB" || id == "BOLLINGER")
+                    {
+                        list.Add("BB_UPPER");  // Felső szalag
+                        list.Add("BB_LOWER");  // Alsó szalag
+                        list.Add("BB_MIDDLE"); // Középső szalag (ami valójában az SMA)
+                    }
+                    else
+                    {
+                        // Egyszerű indikátorok (RSI, SMA, EMA, CMF...)
+                        // Csak simán a nevüket (ID) adjuk hozzá
+                        list.Add(indicator.Id.ToUpper()); // pl. "RSI", "SMA"
+                    }
+                }
+            }
+            else
+            {
+                // Fallback, ha nincs registry (teszteléshez)
+                list.AddRange(new[] { "SMA", "EMA", "RSI", "CMF", "MACD_MAIN", "MACD_SIGNAL" });
+            }
+
+            AvailableIndicators = list;
+        }
 
         private void Save()
         {
             Profile.EntryGroups = EntryGroups.ToList();
             Profile.ExitGroups = ExitGroups.ToList();
+            OnRequestClose?.Invoke();
+        }
+        private void Cancel()
+        {
             OnRequestClose?.Invoke();
         }
 

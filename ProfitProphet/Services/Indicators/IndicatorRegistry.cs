@@ -20,6 +20,9 @@ namespace ProfitProphet.Services.Indicators
                 { IndicatorType.SMA, "sma" },
                 { IndicatorType.Stochastic, "stoch" },
                 { IndicatorType.CMF, "cmf" },
+                { IndicatorType.RSI, "rsi" },
+                { IndicatorType.MACD, "macd" },
+                { IndicatorType.Bollinger, "bb" },
             };
 
         public IndicatorRegistry()
@@ -29,6 +32,9 @@ namespace ProfitProphet.Services.Indicators
             Register(new SmaIndicator());   // Id == "sma"
             Register(new StochasticIndicator()); // Id == "stoch"
             Register(new CmfIndicator());        // Id == "cmf"
+            Register(new RsiIndicator());
+            Register(new MacdIndicator());
+            Register(new BollingerIndicator());
         }
 
         public IIndicator? Get(string id) =>

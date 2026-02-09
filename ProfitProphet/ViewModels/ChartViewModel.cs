@@ -1,9 +1,12 @@
 ﻿using OxyPlot;
 using ProfitProphet.DTOs;
 using ProfitProphet.Services;
+using ProfitProphet.Services.Indicators;
+using ProfitProphet.Settings;
 using ProfitProphet.ViewModels.Commands;
 using ProfitProphet.ViewModels.Dialogs;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,7 +14,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using ProfitProphet.Settings;
 
 namespace ProfitProphet.ViewModels
 {
@@ -73,15 +75,18 @@ namespace ProfitProphet.ViewModels
             set
             {
                 if (_selectedIndicatorType == value) return;
-
                 _selectedIndicatorType = value;
                 OnPropertyChanged();
 
-                if (value is not null &&
-                    HasChartData &&
-                    AddIndicatorWithDialogCommand.CanExecute(null))
+                // HA KIVÁLASZTOTTUNK VALAMIT, INDÍTJUK A FOLYAMATOT:
+                if (value.HasValue)
                 {
-                    AddIndicatorWithDialogCommand.Execute(null);
+                    // Itt volt a hiba: át kell adni a "value.Value"-t paraméterként!
+                    AddIndicatorWithDialog(value.Value);
+
+                    // Visszaállítjuk null-ra, hogy újra kiválasztható legyen ugyanaz
+                    _selectedIndicatorType = null;
+                    OnPropertyChanged();
                 }
             }
         }
@@ -93,20 +98,32 @@ namespace ProfitProphet.ViewModels
         public ICommand AddIndicatorWithDialogCommand { get; }
         public ICommand EditIndicatorCommand { get; }
         public ICommand DeleteIndicatorCommand { get; }
+        private readonly IIndicatorRegistry _indicatorRegistry;
 
         public ChartViewModel(
             IAppSettingsService settingsService,
             AppSettings appSettings,
             Func<string, string, Task<List<ChartBuilder.CandleData>>> loadCandlesAsync,
-            ChartBuilder chartBuilder)
+            ChartBuilder chartBuilder,
+            IIndicatorRegistry indicatorRegistry)
         {
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
 
             _chartBuilder = chartBuilder;
             _loadCandlesAsync = loadCandlesAsync ?? throw new ArgumentNullException(nameof(loadCandlesAsync));
+            //_indicatorRegistry = indicatorRegistry;
+            _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
 
-            AddIndicatorWithDialogCommand = new RelayCommand(_ => AddIndicatorWithDialog(), _ => HasChartData);
+            AddIndicatorWithDialogCommand = new RelayCommand(param =>
+            {
+                // Ellenőrizzük, hogy a kapott paraméter tényleg IndicatorType-e
+                if (param is IndicatorType type)
+                {
+                    AddIndicatorWithDialog(type);
+                }
+            }, _ => HasChartData);
+
             EditIndicatorCommand = new RelayCommand(p => { if (p is IndicatorConfigDto c) EditIndicator(c); }, _ => HasChartData);
             DeleteIndicatorCommand = new RelayCommand(p => { if (p is IndicatorConfigDto c) DeleteIndicator(c); }, _ => HasChartData);
         }
@@ -242,36 +259,88 @@ namespace ProfitProphet.ViewModels
             LoadIndicatorsForCurrentContext();
         }
 
-        private void AddIndicatorWithDialog()
+        //private void AddIndicatorWithDialog()
+        //{
+        //    if (SelectedIndicatorType is not IndicatorType t) return;
+
+        //    var cfg = DefaultFor(t);
+        //    if (!IndicatorSettingsDialog.Show(ref cfg))
+        //    {
+        //        SelectedIndicatorType = null;
+        //        return;
+        //    }
+
+        //    Indicators.Add(cfg);
+        //    ApplyIndicatorsFromList();
+
+        //    _ = SaveIndicatorsForCurrentContextAsync();
+        //    SelectedIndicatorType = null;
+        //}
+        private void AddIndicatorWithDialog(IndicatorType targetType)
         {
-            if (SelectedIndicatorType is not IndicatorType t) return;
+            // 1. Megkérdezzük a Registry-t: "Mi ez az indikátor és mik a paraméterei?"
+            // (Ez a kulcs! Ha ez nincs, az ablak nem tudja mit rajzoljon ki)
+            var indicatorDef = _indicatorRegistry.Resolve(targetType);
 
-            var cfg = DefaultFor(t);
-            if (!IndicatorSettingsDialog.Show(ref cfg))
+            // 2. Létrehozunk egy alap konfigurációt (üres paraméterekkel)
+            var newConfig = new IndicatorConfigDto
             {
-                SelectedIndicatorType = null;
-                return;
+                Type = targetType,
+                IsEnabled = true,
+                Parameters = new Dictionary<string, string>(),
+                Color = "#FFFFFF" // Alapértelmezett szín (majd a ChartBuilder felülírja ha kell)
+            };
+
+            // 3. MEGNYITJUK AZ ÚJ ABLAKOT (IndicatorSettingsWindow)
+            // Átadjuk neki a configot ÉS a definíciót is!
+            var win = new Views.IndicatorSettingsWindow(newConfig, indicatorDef);
+
+            // Szülő ablak beállítása (hogy középen legyen)
+            if (Application.Current?.MainWindow != null)
+                win.Owner = Application.Current.MainWindow;
+
+            // 4. Ha a felhasználó a "Mentés" gombra kattintott...
+            if (win.ShowDialog() == true)
+            {
+                // ...akkor a newConfig.Parameters már fel van töltve a beírt adatokkal!
+                Indicators.Add(newConfig);
+
+                // Chart frissítése
+                ApplyIndicatorsFromList();
+                _ = SaveIndicatorsForCurrentContextAsync();
             }
-
-            Indicators.Add(cfg);
-            ApplyIndicatorsFromList();
-
-            _ = SaveIndicatorsForCurrentContextAsync();
-            SelectedIndicatorType = null;
         }
 
         private void EditIndicator(IndicatorConfigDto cfg)
         {
             if (cfg is null) return;
 
+            // 1. Lépés: Megkeressük a definíciót (hogy tudjuk, milyen mezőket kell kirajzolni)
+            var indicatorDef = _indicatorRegistry.Resolve(cfg.Type);
+
+            // 2. Készítünk egy másolatot a konfigról (hogy ne az élőt szerkesszük, ha a Mégse gombra nyom)
             var copy = Clone(cfg);
-            if (!IndicatorSettingsDialog.Show(ref copy)) return;
 
-            var ix = Indicators.IndexOf(cfg);
-            if (ix >= 0) Indicators[ix] = copy;
+            // 3. MEGNYITJUK AZ ÚJ ABLAKOT (IndicatorSettingsWindow) a régi helyett
+            var win = new Views.IndicatorSettingsWindow(copy, indicatorDef);
 
-            ApplyIndicatorsFromList();
-            _ = SaveIndicatorsForCurrentContextAsync();
+            if (Application.Current?.MainWindow != null)
+                win.Owner = Application.Current.MainWindow;
+
+            // 4. Ha a felhasználó mentett...
+            if (win.ShowDialog() == true)
+            {
+                // ...megkeressük az eredetit a listában és kicseréljük az újra (amiben már az új paraméterek vannak)
+                var ix = Indicators.IndexOf(cfg);
+                if (ix >= 0)
+                {
+                    Indicators[ix] = copy;
+                }
+
+                // Chart frissítése
+                ApplyIndicatorsFromList();
+                _ = SaveIndicatorsForCurrentContextAsync();
+            }
         }
 
         private void DeleteIndicator(IndicatorConfigDto cfg)
@@ -299,42 +368,96 @@ namespace ProfitProphet.ViewModels
                 case IndicatorType.EMA:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "ema", p =>
                     {
-                        p["Period"] = ParseOrDefault(cfg.Parameters, "period", 20);
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20); // Int
                         p["Source"] = "Close";
+                        p["Color"] = cfg.Color; // Szín átadása
                     });
                     break;
 
                 case IndicatorType.SMA:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "sma", p =>
                     {
-                        p["Period"] = ParseOrDefault(cfg.Parameters, "period", 20);
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20); // Int
                         p["Source"] = "Close";
+                        p["Color"] = cfg.Color;
                     });
                     break;
 
                 case IndicatorType.Stochastic:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "stoch", p =>
                     {
-                        p["kPeriod"] = ParseOrDefault(cfg.Parameters, "kPeriod", 14);
-                        p["dPeriod"] = ParseOrDefault(cfg.Parameters, "dPeriod", 3);
-                        p["outputD"] = cfg.Parameters.TryGetValue("outputD", out var v) ? v : "true";
+                        p["kPeriod"] = ParseInt(cfg.Parameters, "kPeriod", 14);
+                        p["dPeriod"] = ParseInt(cfg.Parameters, "dPeriod", 3);
+                        p["outputD"] = ParseString(cfg.Parameters, "outputD", "true");
                     });
-                    // később a Pane:
-                    // var st = _chartSettings.GetForSymbol(CurrentSymbol);
-                    // st.Indicators.Last().Pane = "sub";
                     break;
 
                 case IndicatorType.CMF:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "cmf", p =>
                     {
-                        // Kiolvassuk a "period"-ot
-                        p["Period"] = ParseOrDefault(cfg.Parameters, "period", 20);
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20);
+                        p["MaPeriod"] = ParseInt(cfg.Parameters, "MaPeriod", 10);
+                    });
+                    break;
 
-                        // Ha a felhasználó 0-t ír be, azzal kapcsolja ki.
-                        p["MaPeriod"] = ParseOrDefault(cfg.Parameters, "maPeriod", 10);
+                // --- AZ ÚJ INDIKÁTOROK (Ezek hiányoztak!) ---
+
+                case IndicatorType.RSI:
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "rsi", p =>
+                    {
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 14);
+                        p["Source"] = "Close";
+                        p["Color"] = cfg.Color;
+                    });
+                    break;
+
+                case IndicatorType.MACD:
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "macd", p =>
+                    {
+                        p["FastPeriod"] = ParseInt(cfg.Parameters, "FastPeriod", 12);
+                        p["SlowPeriod"] = ParseInt(cfg.Parameters, "SlowPeriod", 26);
+                        p["SignalPeriod"] = ParseInt(cfg.Parameters, "SignalPeriod", 9);
+                        p["Source"] = "Close";
+                    });
+                    break;
+
+                case IndicatorType.Bollinger:
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "bb", p =>
+                    {
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20);
+                        p["Multiplier"] = ParseDouble(cfg.Parameters, "Multiplier", 2.0);
+                        p["Source"] = "Close";
                     });
                     break;
             }
+        }
+
+        private static string? GetValueIgnoreCase(Dictionary<string, string> dict, string key)
+        {
+            if (dict == null) return null;
+            var match = dict.Keys.FirstOrDefault(k => k.Equals(key, StringComparison.OrdinalIgnoreCase));
+            return match != null ? dict[match] : null;
+        }
+
+        private static int ParseInt(Dictionary<string, string> dict, string key, int def)
+        {
+            var val = GetValueIgnoreCase(dict, key);
+            if (val != null && double.TryParse(val, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var d))
+                return (int)d; // Biztonságosabb double-ként olvasni majd int-re castolni
+            return def;
+        }
+
+        private static double ParseDouble(Dictionary<string, string> dict, string key, double def)
+        {
+            var val = GetValueIgnoreCase(dict, key);
+            if (val != null && double.TryParse(val, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var v))
+                return v;
+            return def;
+        }
+
+        private static string ParseString(Dictionary<string, string> dict, string key, string def)
+        {
+            return GetValueIgnoreCase(dict, key) ?? def;
         }
 
         private async Task SaveIndicatorsForCurrentContextAsync()

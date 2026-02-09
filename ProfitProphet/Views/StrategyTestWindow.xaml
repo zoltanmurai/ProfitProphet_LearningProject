@@ -104,10 +104,10 @@
                                 </StackPanel>
 
                                 <Button Command="{Binding OpenOptimizerCommand}" 
-                                        Content="Beállítások ⚙️" 
-                                        Height="28" 
-                                        IsEnabled="{Binding UseOptimization}"
-                                        BorderThickness="0">
+                Content="Beállítások ⚙️" 
+                Height="28" 
+                IsEnabled="{Binding UseOptimization}"
+                BorderThickness="0">
                                     <Button.Style>
                                         <Style TargetType="Button">
                                             <Setter Property="Background" Value="#444"/>
@@ -133,14 +133,26 @@
                                         </Style>
                                     </Button.Style>
                                 </Button>
+
+                                <CheckBox Content="Élő vizualizáció (Lassabb!)" 
+                  IsChecked="{Binding IsVisualMode}" 
+                  IsEnabled="{Binding UseOptimization}"
+                  Foreground="#CCCCCC"
+                  FontSize="11"
+                  Margin="2,8,0,0" 
+                  VerticalAlignment="Center">
+                                    <CheckBox.ToolTip>
+                                        <ToolTip Content="Ha be van kapcsolva, valós időben látod a legjobb tőkegörbét a charton."/>
+                                    </CheckBox.ToolTip>
+                                </CheckBox>
                                 <TextBlock Text="{Binding OptimizationStatusMessage}" 
-                                       Foreground="{Binding OptimizationStatusColor}" 
-                                       FontSize="12" 
-                                       FontWeight="Bold" 
-                                       TextWrapping="Wrap" 
-                                       TextAlignment="Center" 
-                                       Margin="0,10,0,0"
-                                       Visibility="{Binding UseOptimization, Converter={StaticResource BoolToVisibilityConverter}}"/>                                   
+               Foreground="{Binding OptimizationStatusColor}" 
+               FontSize="12" 
+               FontWeight="Bold" 
+               TextWrapping="Wrap" 
+               TextAlignment="Center" 
+               Margin="0,10,0,0"
+               Visibility="{Binding UseOptimization, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>

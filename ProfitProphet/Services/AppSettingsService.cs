@@ -10,6 +10,7 @@ namespace ProfitProphet.Services
     {
         //private const string FileName = "AppSettings.json";
         private readonly string _filePath;
+        public AppSettings CurrentSettings { get; private set; }
 
         public AppSettingsService(string filePath)
         {

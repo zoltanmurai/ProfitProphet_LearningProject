@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProfitProphet.Models.Backtesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,5 +18,8 @@ namespace ProfitProphet.Models.Strategies
         public double NeighborAvgScore { get; set; }
         public string ParameterSummary { get; internal set; }
         public double ProfitFactor { get; set; }
+        public List<EquityPoint> EquityCurve { get; set; }
+        public List<EquityPoint> BalanceCurve { get; set; }
+        public List<TradeRecord> Trades { get; set; }
     }
 }

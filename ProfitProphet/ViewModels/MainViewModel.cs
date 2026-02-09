@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using ProfitProphet.Data;
 using ProfitProphet.DTOs;
 using ProfitProphet.Models.Backtesting;
@@ -180,6 +181,7 @@ namespace ProfitProphet.ViewModels
             //    var list = await _dataService.GetLocalDataAsync(symbol, interval);
             //    return MapToCandleData(list);
             //});
+            var registry = new ProfitProphet.Services.Indicators.IndicatorRegistry();
             ChartVM = new ChartViewModel(_settingsService, _settings, async (symbol, interval) =>
             {
                 var list = await _dataService.GetLocalDataAsync(symbol, interval);
@@ -202,7 +204,8 @@ namespace ProfitProphet.ViewModels
 
                 return MapToCandleData(list);
             },
-            _chartBuilder);
+            _chartBuilder,
+            registry);
 
             Intervals = new ObservableCollection<IntervalItem>
             {
@@ -448,8 +451,9 @@ namespace ProfitProphet.ViewModels
                 _backtestService,
                 _strategyService,
                 candles,
-                currentProfile, // <--- MOST MÁR EZT ADJUK ÁT (nem a null-t)
-                _optimizerService);
+                currentProfile,
+                _optimizerService,
+                _indicatorRegistry);
 
             // Amikor a teszt lefut a másik ablakban, megkapjuk az eredményt és kirajzoljuk a nyilakat a főablakon is
             vm.OnTestFinished += (result) =>

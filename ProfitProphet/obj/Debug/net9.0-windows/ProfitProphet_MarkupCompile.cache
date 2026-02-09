@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\App.xaml
-7-420399373
+8-20203017
 
-87851856350
+92-1224122844
 2211893033130
-MainWindow.xaml;Views\ApiSettingsControl.xaml;Views\DataImportControl.xaml;Views\OptimizationWindow.xaml;Views\SettingsWindow.xaml;Views\StrategyEditorWindow.xaml;Views\StrategyTestWindow.xaml;
+MainWindow.xaml;Views\ApiSettingsControl.xaml;Views\DataImportControl.xaml;Views\IndicatorSettingsWindow.xaml;Views\OptimizationWindow.xaml;Views\SettingsWindow.xaml;Views\StrategyEditorWindow.xaml;Views\StrategyTestWindow.xaml;
 
 False
 
