@@ -71,6 +71,14 @@ namespace ProfitProphet.ViewModels
             {
                 if (Set(ref _selectedSymbol, value))
                 {
+                    // Ha van alertes signal, jelöljük meg "látottnak"
+                    var selectedItem = Watchlist.FirstOrDefault(w => w.Symbol == value);
+                    if (selectedItem != null && selectedItem.HasSignal && !selectedItem.IsAcknowledged)
+                    {
+                        selectedItem.IsAcknowledged = true;
+                        // A narancssárga keret eltűnik, de a Buy/Sell felirat marad
+                    }
+
                     // Forward selection to ChartVM (it will reload itself)
                     ChartVM.CurrentSymbol = value;
                     //_ = Task.Run(async () =>
@@ -615,13 +623,19 @@ namespace ProfitProphet.ViewModels
                 {
                     if (signalTrade != null)
                     {
-                        bool isNewSignal = !symbol.HasSignal;
+                        // Ellenőrizzük, hogy ez egy TELJESEN ÚJ signal-e (nem volt korábban VAGY más típusú volt)
+                        bool isNewSignal = !symbol.HasSignal || symbol.SignalType != signalTrade.Type;
+
                         symbol.HasSignal = true;
                         symbol.SignalType = signalTrade.Type; // "Buy" vagy "Sell"
 
-                        // Ha új signal, akkor értesítést küldünk
+                        // Ha új signal, akkor:
+                        // 1. Visszaállítjuk "nem látott" állapotba (narancssárga keret)
+                        // 2. Értesítést küldünk
                         if (isNewSignal)
                         {
+                            symbol.IsAcknowledged = false; // ÚJ signal -> narancssárga keret kell
+
                             // Hang lejátszása
                             SystemSounds.Asterisk.Play();
 
@@ -629,11 +643,14 @@ namespace ProfitProphet.ViewModels
                             var alertWindow = new SignalAlertWindow(symbol.Symbol, signalTrade.Type);
                             alertWindow.Show();
                         }
+                        // Ha ugyanaz a signal maradt, de közben láttuk -> marad Acknowledged (nincs keret, csak felirat)
                     }
                     else
                     {
+                        // Nincs signal -> minden törölve
                         symbol.HasSignal = false;
                         symbol.SignalType = null;
+                        symbol.IsAcknowledged = false; // Reset acknowledged állapot is
                     }
                 });
 

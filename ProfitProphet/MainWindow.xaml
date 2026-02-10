@@ -70,7 +70,7 @@
                                             <Style TargetType="Border">
                                                 <Setter Property="BorderBrush" Value="Transparent"/>
                                                 <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding HasSignal}" Value="True">
+                                                    <DataTrigger Binding="{Binding IsNewSignal}" Value="True">
                                                         <Setter Property="BorderBrush" Value="Orange"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
