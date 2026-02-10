@@ -39,6 +39,7 @@ namespace ProfitProphet.Services
 
             // Hagyunk időt az indikátoroknak (pl. EMA 50 vagy MACD Slow 26)
             int startIndex = 50;
+            int lastEntryIndex = -999;
 
             for (int i = startIndex; i < candles.Count; i++)
             {
@@ -50,6 +51,20 @@ namespace ProfitProphet.Services
 
                 if (canBuy && EvaluateGroups(profile.EntryGroups, indicatorCache, candles, i))
                 {
+                    if (i - lastEntryIndex < 5)
+                    {
+                        continue; // Ugrunk a következő napra/órára
+                    }
+
+                    if (holdings > 0)
+                    {
+                        int activeTradesCount = result.Trades.Count(t => t.ExitDate == DateTime.MinValue);
+                        if (activeTradesCount >= 5) // Max 5 rávásárlás
+                        {
+                            continue;
+                        }
+                    }
+
                     int quantityToBuy = CalculatePositionSize(profile, cash, price);
 
                     if (quantityToBuy > 0)
@@ -75,6 +90,7 @@ namespace ProfitProphet.Services
                                 Quantity = quantityToBuy,
                                 Type = "Long"
                             });
+                            lastEntryIndex = i;
                         }
                     }
                 }
@@ -234,17 +250,26 @@ namespace ProfitProphet.Services
             return false;
         }
 
-        // --- JAVÍTOTT EVALUATE (HASZNÁLJA A TÖBBI PARAMÉTERT IS) ---
+        // --- JAVÍTOTT EVALUATE (MEGJAVÍTVA: LeftShift és RightShift kezelése) ---
         private bool EvaluateSingleRule(StrategyRule rule, Dictionary<string, double[]> cache, List<Candle> candles, int currentIndex)
         {
-            int index = currentIndex - rule.Shift;
-            if (index < 1) return false;
+            // 1. Bal index kiszámítása (LeftShift)
+            int leftIndex = currentIndex - rule.LeftShift;
+            if (leftIndex < 0 || leftIndex >= candles.Count) return false;
 
-            // Bal oldal lekérése (p1, p2, p3)
+            // 2. Jobb index kiszámítása (RightShift)
+            int rightIndex = currentIndex - rule.RightShift;
+            // Ha a jobb oldal indikátor, ellenőrizzük a határokat
+            if (rule.RightSourceType == DataSourceType.Indicator)
+            {
+                if (rightIndex < 0 || rightIndex >= candles.Count) return false;
+            }
+
+            // Bal oldal lekérése
             double leftValue = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, rule.LeftParameter2, rule.LeftParameter3,
-                                        rule.LeftIndicatorName == "Close", cache, candles, index);
+                                        rule.LeftIndicatorName == "Close", cache, candles, leftIndex);
 
-            // Jobb oldal lekérése (p1, p2, p3)
+            // Jobb oldal lekérése
             double rightValue;
             if (rule.RightSourceType == DataSourceType.Value)
             {
@@ -253,11 +278,12 @@ namespace ProfitProphet.Services
             else
             {
                 rightValue = GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightParameter2, rule.RightParameter3,
-                                      rule.RightIndicatorName == "Close", cache, candles, index, rule.LeftPeriod);
+                                      rule.RightIndicatorName == "Close", cache, candles, rightIndex, rule.LeftPeriod);
             }
 
             // Előző értékek (Crosses figyeléshez)
-            double leftPrev = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, rule.LeftParameter2, rule.LeftParameter3, false, cache, candles, index - 1);
+            // Itt is a SHIFTELT indexekből vonunk le 1-et!
+            double leftPrev = GetValue(rule.LeftIndicatorName, rule.LeftPeriod, rule.LeftParameter2, rule.LeftParameter3, false, cache, candles, leftIndex - 1);
 
             double rightPrev;
             if (rule.RightSourceType == DataSourceType.Value)
@@ -266,7 +292,7 @@ namespace ProfitProphet.Services
             }
             else
             {
-                rightPrev = GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightParameter2, rule.RightParameter3, false, cache, candles, index - 1, rule.LeftPeriod);
+                rightPrev = GetValue(rule.RightIndicatorName, rule.RightPeriod, rule.RightParameter2, rule.RightParameter3, false, cache, candles, rightIndex - 1, rule.LeftPeriod);
             }
 
             // Ha bármelyik érték NaN (azaz érvénytelen adat a chart elején), nem adunk jelzést
@@ -299,11 +325,6 @@ namespace ProfitProphet.Services
             double[] values = new double[candles.Count];
             var prices = candles.Select(c => (double)c.Close).ToList();
 
-            // Alapértelmezések kezelése, ha a felhasználó 0-t hagyott ott
-            // MACD (12, 26, 9)
-            // Stoch (14, 3, 3)
-            // Bollinger (20, 2)
-
             switch (name.ToUpper())
             {
                 case "SMA":
@@ -330,24 +351,17 @@ namespace ProfitProphet.Services
                     break;
                 case "RSI_MA":
                     {
-                        // 1. Először biztosítjuk, hogy az alap RSI ki legyen számolva
-                        // (p1 az RSI periódusa, pl. 14)
                         EnsureIndicatorCalculated("RSI", p1, 0, 0, 0, candles, cache);
-
-                        // 2. Megkeressük a cache-ben az alap RSI adatait
                         string rsiKey = $"RSI_{p1}_0_0";
                         if (cache.ContainsKey(rsiKey))
                         {
-                            // 3. Lefuttatunk rajta egy SMA-t (p2 lesz a mozgóátlag hossza, pl. 9)
-                            // Fontos: p2 paramétert használjuk a hosszhoz!
-                            int maPeriod = p2 == 0 ? 9 : p2; // Ha 0, akkor alapértelmezett 9
-
+                            int maPeriod = p2 == 0 ? 9 : p2;
                             values = IndicatorAlgorithms.CalculateSMAOnArray(cache[rsiKey], maPeriod);
                         }
                     }
                     break;
                 case "MACD_MAIN":
-                case "MACD": // Ha valaki csak simán MACD-t választ
+                case "MACD":
                     {
                         int fast = p1 == 0 ? 12 : p1;
                         int slow = p2 == 0 ? 26 : p2;
@@ -393,9 +407,7 @@ namespace ProfitProphet.Services
                         int slow = p3 == 0 ? 3 : p3;
 
                         var stoch = IndicatorAlgorithms.CalculateStoch(candles, kPer, dPer, slow);
-
-                        // Item2-t mentjük el, ami a D%!
-                        values = stoch.Item2.ToArray();
+                        values = stoch.Item2.ToArray(); // Item2 = D%
                     }
                     break;
 
@@ -431,45 +443,11 @@ namespace ProfitProphet.Services
             cache[key] = values;
         }
 
-        // --- JAVÍTOTT GETVALUE (KIBŐVÍTETT PARAMÉTEREK) ---
-        //private double GetValue(string name, int p1, int p2, int p3, bool isPrice, Dictionary<string, double[]> cache, List<Candle> candles, int index, int dependencyPeriod = 0)
-        //{
-        //    if (index < 0) return double.NaN;
-
-        //    if (isPrice || name.ToUpper() == "CLOSE" || name.ToUpper() == "OPEN" || name.ToUpper() == "HIGH" || name.ToUpper() == "LOW")
-        //    {
-        //        if (string.IsNullOrEmpty(name)) return double.NaN;
-        //        int targetIndex = index - p1; // "p1" itt eltolást jelenthet a Close-nál
-        //        if (targetIndex < 0) return double.NaN;
-
-        //        switch (name.ToUpper())
-        //        {
-        //            case "OPEN": return (double)candles[targetIndex].Open;
-        //            case "HIGH": return (double)candles[targetIndex].High;
-        //            case "LOW": return (double)candles[targetIndex].Low;
-        //            default: return (double)candles[targetIndex].Close;
-        //        }
-        //    }
-
-        //    // Kulcs generálás a lekéréshez (ugyanaz a logika, mint fent)
-        //    if (dependencyPeriod > 0)
-        //    {
-        //        string keyWithDep = $"{name}_{p1}_{p2}_{p3}_dep{dependencyPeriod}";
-        //        if (cache.ContainsKey(keyWithDep)) return cache[keyWithDep][index];
-        //    }
-
-        //    string keySimple = $"{name}_{p1}_{p2}_{p3}";
-        //    if (cache.ContainsKey(keySimple)) return cache[keySimple][index];
-
-        //    return double.NaN;
-        //}
         private double GetValue(string name, int p1, int p2, int p3, bool isPrice, Dictionary<string, double[]> cache, List<Candle> candles, int index, int dependencyPeriod = 0)
         {
-            // 1. VÉDELEM: Ha nincs név, vagy rossz az index, azonnal kilépünk.
             if (string.IsNullOrEmpty(name)) return double.NaN;
             if (index < 0) return double.NaN;
 
-            // 2. VÉDELEM: string.Equals használata .ToUpper() helyett (ez NULL-biztos!)
             bool isClose = string.Equals(name, "CLOSE", StringComparison.OrdinalIgnoreCase);
             bool isOpen = string.Equals(name, "OPEN", StringComparison.OrdinalIgnoreCase);
             bool isHigh = string.Equals(name, "HIGH", StringComparison.OrdinalIgnoreCase);
@@ -484,11 +462,9 @@ namespace ProfitProphet.Services
                 if (isHigh) return (double)candles[targetIndex].High;
                 if (isLow) return (double)candles[targetIndex].Low;
 
-                // Default is Close
                 return (double)candles[targetIndex].Close;
             }
 
-            // Kulcs generálás (dependency kezelés)
             string key;
             if (dependencyPeriod > 0)
             {
@@ -499,10 +475,8 @@ namespace ProfitProphet.Services
                 key = $"{name}_{p1}_{p2}_{p3}";
             }
 
-            // Érték kiolvasása a cache-ből
             if (cache != null && cache.ContainsKey(key))
             {
-                // Extra védelem: index határok ellenőrzése a tömbön belül
                 double[] values = cache[key];
                 if (index < values.Length)
                 {

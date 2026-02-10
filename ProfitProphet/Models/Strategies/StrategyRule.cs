@@ -156,11 +156,33 @@ namespace ProfitProphet.Models.Strategies
             set { _rightValue = value; OnPropertyChanged(); }
         }
 
-        private int _shift = 0;
+        private int _leftShift = 0;
+        public int LeftShift
+        {
+            get => _leftShift;
+            set { _leftShift = value; OnPropertyChanged(); }
+        }
+
+        // --- ÚJ: JOBB OLDALI ELTOLÁS ---
+        private int _rightShift = 0;
+        public int RightShift
+        {
+            get => _rightShift;
+            set { _rightShift = value; OnPropertyChanged(); }
+        }
+
         public int Shift
         {
-            get => _shift;
-            set { _shift = value; OnPropertyChanged(); }
+            get => RightShift;
+            set
+            {
+                if (RightShift != value)
+                {
+                    RightShift = value;
+                    OnPropertyChanged();
+                    LeftShift = value; OnPropertyChanged(nameof(LeftShift));
+                }
+            }
         }
 
         // --- OKOS LISTA (Context Aware) ---

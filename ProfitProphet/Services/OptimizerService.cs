@@ -77,9 +77,30 @@ namespace ProfitProphet.Services
                         // Futtatás
                         var res = _backtestService.RunBacktest(candles, testProfile);
 
-                        if (res.TradeCount >= 5)
+                        //if (res.TradeCount >= 5)
+                        if (visualMode || res.TradeCount > 0)
                         {
-                            var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
+                            //var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
+                            var paramSummary = string.Join(", ", parameters.Select((p, idx) =>
+                            {
+                                // Megnézzük, hogy a paraméter neve alapján a Jobb vagy a Bal oldalt állítjuk-e
+                                string name;
+
+                                if (p.ParameterName.Contains("Right"))
+                                {
+                                    // Ha a jobb oldalt állítjuk (pl. RightPeriod), akkor a jobb indikátor nevét írjuk ki
+                                    name = !string.IsNullOrEmpty(p.Rule.RightIndicatorName)
+                                           ? p.Rule.RightIndicatorName
+                                           : "Right Value"; // Ha fix érték
+                                }
+                                else
+                                {
+                                    // Ha a bal oldalt (pl. LeftPeriod), akkor a bal indikátort
+                                    name = p.Rule.LeftIndicatorName;
+                                }
+
+                                return $"{name}: {combo[idx]}";
+                            }));
 
                             var optRes = new OptimizationResult
                             {
@@ -99,18 +120,13 @@ namespace ProfitProphet.Services
 
                             results.Add(optRes);
 
-                            // --- ITT TÖRTÉNIK A VARÁZSLAT ---
                             if (visualMode && realtimeHandler != null)
                             {
-                                // Teljesítmény védelem: Csak akkor küldjük ki a GUI-ra frissítésre,
-                                // ha ez az eredmény jobb, mint amit eddig találtunk (így a Chart mindig javul),
-                                // VAGY ha mindenképp látni akarjuk a listában a profitosokat.
                                 if (options.CancellationToken.IsCancellationRequested) return;
 
                                 bool isNewBest = false;
                                 lock (syncLock)
                                 {
-                                    // Itt döntheted el: Profit vagy ProfitFactor alapján mi a "legjobb"
                                     if (optRes.Score > bestScoreSoFar)
                                     {
                                         bestScoreSoFar = optRes.Score;
@@ -118,8 +134,11 @@ namespace ProfitProphet.Services
                                     }
                                 }
 
-                                // Ha ez egy új rekord, vagy legalábbis profitos, küldjük a GUI-nak
-                                if (isNewBest || optRes.Profit > 0)
+                                //if (isNewBest || optRes.Profit > 0)
+                                //{
+                                //    realtimeHandler.Report(optRes);
+                                //}
+                                if (isNewBest || optRes.Profit > 0 || results.Count < 5)
                                 {
                                     realtimeHandler.Report(optRes);
                                 }
@@ -192,8 +211,10 @@ namespace ProfitProphet.Services
                         case "LeftPeriod": ruleToUpdate.LeftPeriod = value; break;
                         case "RightPeriod": ruleToUpdate.RightPeriod = value; break;
                         case "RightValue": ruleToUpdate.RightValue = value; break;
+
+                        case "LeftShift": ruleToUpdate.LeftShift = value; break;   // Feltételezve, hogy a StrategyRule-ban így hívják
+                        case "RightShift": ruleToUpdate.RightShift = value; break; // Feltételezve, hogy a StrategyRule-ban így hívják
                     }
-                    return;
                 }
             }
         }
