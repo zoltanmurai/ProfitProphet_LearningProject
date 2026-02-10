@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Media;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,7 +51,8 @@ namespace ProfitProphet.ViewModels
         //private Dictionary<string, List<TradeRecord>> _tradeCache = new Dictionary<string, List<TradeRecord>>();
         private readonly BacktestService _backtestService;
 
-        public ObservableCollection<string> Watchlist { get; }
+        //public ObservableCollection<string> Watchlist { get; }
+        public ObservableCollection<WatchlistItemViewModel> Watchlist { get; }
         public ObservableCollection<IntervalItem> Intervals { get; }
 
         public ChartViewModel ChartVM { get; }
@@ -60,6 +62,7 @@ namespace ProfitProphet.ViewModels
         public ICommand RefreshNowCommand { get; }
         public ICommand ToggleAutoRefreshCommand { get; }
         public ICommand OpenStrategyTestCommand { get; }
+        public ICommand TestAlertCommand { get; }
 
         public string SelectedSymbol
         {
@@ -174,6 +177,7 @@ namespace ProfitProphet.ViewModels
             _settings = _settingsService.LoadSettings();
 
             _dataService = new DataService(new StockContext());
+            TestAlertCommand = new RelayCommand(_ => ExecuteTestAlert());
 
             // ChartVM uses DataService via mapping to ChartBuilder.CandleData
             //ChartVM = new ChartViewModel(async (symbol, interval) =>
@@ -214,10 +218,20 @@ namespace ProfitProphet.ViewModels
                 new IntervalItem("1W", "1wk")
             };
 
-            Watchlist = new ObservableCollection<string>(_settings.Watchlist ?? new());
-            if (Watchlist.Count == 0) Watchlist.Add("MSFT");
+            //Watchlist = new ObservableCollection<string>(_settings.Watchlist ?? new());
+            //if (Watchlist.Count == 0) Watchlist.Add("MSFT");
 
-            _selectedSymbol = Watchlist.FirstOrDefault();
+            //_selectedSymbol = Watchlist.FirstOrDefault();
+
+            var savedSymbols = _settings.Watchlist ?? new List<string>();
+            if (savedSymbols.Count == 0) savedSymbols.Add("MSFT");
+
+            // Átalakítjuk a stringeket ViewModel-lé
+            Watchlist = new ObservableCollection<WatchlistItemViewModel>(
+                savedSymbols.Select(s => new WatchlistItemViewModel(s))
+            );
+
+            _selectedSymbol = Watchlist.FirstOrDefault()?.Symbol;
             _selectedInterval = _settings.DefaultInterval ?? "1d";
 
             // Initialize ChartVM with current selection
@@ -260,10 +274,19 @@ namespace ProfitProphet.ViewModels
             if (string.IsNullOrWhiteSpace(input)) return;
 
             var symbol = input.Trim().ToUpperInvariant();
-            if (!Watchlist.Contains(symbol))
+            //if (!Watchlist.Contains(symbol))
+            //{
+            //    Watchlist.Add(symbol);
+            //    _settings.Watchlist = Watchlist.ToList();
+            //    _ = _settingsService.SaveSettingsAsync(_settings);
+            //}
+            if (!Watchlist.Any(x => x.Symbol == symbol))
             {
-                Watchlist.Add(symbol);
-                _settings.Watchlist = Watchlist.ToList();
+                // ÚJ: WatchlistItemViewModel-t adunk hozzá
+                Watchlist.Add(new WatchlistItemViewModel(symbol));
+
+                // Mentésnél visszaalakítjuk string listává
+                _settings.Watchlist = Watchlist.Select(x => x.Symbol).ToList();
                 _ = _settingsService.SaveSettingsAsync(_settings);
             }
 
@@ -290,7 +313,8 @@ namespace ProfitProphet.ViewModels
                 IsRefreshing = true;
 
                 // Refresh visible symbols (your existing service API)
-                await _dataService.RefreshAllVisibleAsync(Watchlist.ToList(), SelectedInterval, token);
+                //await _dataService.RefreshAllVisibleAsync(Watchlist.ToList(), SelectedInterval, token);
+                await _dataService.RefreshAllVisibleAsync(Watchlist.Select(item => item.Symbol).ToList(), SelectedInterval, token);
 
                 // After data refresh, just tell ChartVM to reload
                 await ChartVM.InitializeAsync();
@@ -386,11 +410,15 @@ namespace ProfitProphet.ViewModels
                 }
 
                 await _dataService.RemoveSymbolAndCandlesAsync(symbol);
+                var itemToRemove = Watchlist.FirstOrDefault(item => item.Symbol == symbol);
 
-                if (Watchlist.Contains(symbol))
-                    Watchlist.Remove(symbol);
+                //if (Watchlist.Contains(symbol))
+                //    Watchlist.Remove(symbol);
+                if (itemToRemove != null)
+                    Watchlist.Remove(itemToRemove);
 
-                _settings.Watchlist = Watchlist.ToList();
+                //_settings.Watchlist = Watchlist.ToList();
+                _settings.Watchlist = Watchlist.Select(x => x.Symbol).ToList();
                 _ = _settingsService.SaveSettingsAsync(_settings);
 
                 //if (SelectedSymbol == removed)
@@ -557,24 +585,92 @@ namespace ProfitProphet.ViewModels
             foreach (var symbol in Watchlist)
             {
                 // Megkeressük a hozzá tartozó profilt
-                var profile = allProfiles.FirstOrDefault(p => p.Symbol == symbol);
-                if (profile == null) continue;
+                //var profile = allProfiles.FirstOrDefault(p => p.Symbol == symbol);
+                //if (profile == null) continue;
+                var profile = allProfiles.FirstOrDefault(p => p.Symbol == symbol.Symbol);
+                if (profile == null)
+                {
+                    symbol.HasSignal = false;
+                    continue;
+                }
 
                 // Lekérjük a legfrissebb gyertyákat a helyi DB-ből
-                var candles = await _dataService.GetLocalDataAsync(symbol, SelectedInterval);
+                var candles = await _dataService.GetLocalDataAsync(symbol.Symbol, SelectedInterval);
                 if (candles == null || candles.Count == 0) continue;
 
                 // 3. Lefuttatjuk a "csendes" háttér-tesztet
                 // (A 10000-es tőke itt csak példa, használhatod a beállításokból is)
                 var result = _backtestService.RunBacktest(candles, profile, 10000);
 
+                if (result.Trades.Count > 0)
+                {
+                    profile.LastTestTrades = result.Trades;
+                    _strategyService.SaveProfile(profile);
+                }
+
+                var lastCandleTime = candles.Last().TimestampUtc;
+                var signalTrade = result.Trades.FirstOrDefault(t => t.EntryDate == lastCandleTime);
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    if (signalTrade != null)
+                    {
+                        bool isNewSignal = !symbol.HasSignal;
+                        symbol.HasSignal = true;
+                        symbol.SignalType = signalTrade.Type; // "Buy" vagy "Sell"
+
+                        // Ha új signal, akkor értesítést küldünk
+                        if (isNewSignal)
+                        {
+                            // Hang lejátszása
+                            SystemSounds.Asterisk.Play();
+
+                            // Szép custom popup ablak megjelenítése
+                            var alertWindow = new SignalAlertWindow(symbol.Symbol, signalTrade.Type);
+                            alertWindow.Show();
+                        }
+                    }
+                    else
+                    {
+                        symbol.HasSignal = false;
+                        symbol.SignalType = null;
+                    }
+                });
+
                 // 4. Elmentjük az eredményt (nyilakat) a profilba és a fájlba
-                profile.LastTestTrades = result.Trades;
-                _strategyService.SaveProfile(profile);
+                //profile.LastTestTrades = result.Trades;
+                //_strategyService.SaveProfile(profile);
             }
 
             // 5. Frissítjük a kijelzőt az aktuálisan nézett részvényre
             RestoreSavedMarkers();
+        }
+
+        private void ExecuteTestAlert()
+        {
+            if (Watchlist.Count == 0) return;
+
+            // Vegyük az első elemet a watchlistből
+            var testSymbol = Watchlist[0];
+
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                // Szimuláljuk, hogy nincs signal
+                testSymbol.HasSignal = false;
+
+                // Majd utána adjunk neki egyet
+                System.Threading.Thread.Sleep(100); // Kis szünet
+
+                testSymbol.HasSignal = true;
+                testSymbol.SignalType = "Buy";
+
+                // Hang
+                SystemSounds.Asterisk.Play();
+
+                // Popup
+                var alertWindow = new SignalAlertWindow(testSymbol.Symbol, "Buy");
+                alertWindow.Show();
+            });
         }
     }
 

@@ -17,6 +17,9 @@
     <Compile Update="Views\SettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\Signalalertwindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\StrategyEditorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -41,7 +41,8 @@
             <ListBox Grid.Row="1"
                  x:Name="WatchlistListBox"
                  ItemsSource="{Binding Watchlist}"
-                 SelectedItem="{Binding SelectedSymbol, Mode=TwoWay}"
+                 SelectedValue="{Binding SelectedSymbol, Mode=TwoWay}"
+                 SelectedValuePath="Symbol"
                  Background="#0e1117"
                  Foreground="White"
                  BorderThickness="0"
@@ -59,11 +60,52 @@
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
                                     <Border x:Name="row"
-                                Background="#0e1117"
-                                CornerRadius="4"
-                                Padding="8">
-                                        <ContentPresenter />
+                                        Background="#0e1117"
+                                        CornerRadius="4"
+                                        Padding="8"
+                                        BorderThickness="2">    
+
+                                        <!-- Border Style a HasSignal trigger kezeléséhez -->
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding HasSignal}" Value="True">
+                                                        <Setter Property="BorderBrush" Value="Orange"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+
+                                            <ContentPresenter Grid.Column="0"/>
+
+                                            <TextBlock Grid.Column="1" 
+                                               Text="{Binding SignalType}" 
+                                               Foreground="Orange" 
+                                               FontSize="11" 
+                                               FontWeight="Bold" 
+                                               VerticalAlignment="Center" 
+                                               Margin="10,0,0,0">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding HasSignal}" Value="True">
+                                                                <Setter Property="Visibility" Value="Visible"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                        </Grid>
                                     </Border>
+
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter TargetName="row" Property="Background" Value="#2563eb"/>
@@ -78,13 +120,18 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
 
-                <!-- Jobb klikkes menü -->
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Symbol}" FontWeight="Bold" FontSize="14"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Remove from Watchlist"
-                      Click="RemoveMenuItem_Click" />
+                        <MenuItem Header="Remove from Watchlist" Click="RemoveMenuItem_Click" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
+
             </ListBox>
 
             <!-- + Gomb -->
@@ -145,6 +192,15 @@
                         Stretch="Uniform"
                         Width="24" Height="24"/>
                 </Button>
+
+                <Button Content="🧪 Test Alert" 
+                    Command="{Binding TestAlertCommand}"
+                    Margin="5"
+                    Padding="10,5"
+                    Background="#ff6b35"
+                    Foreground="White"
+                    BorderThickness="0"
+                    Cursor="Hand"/>
 
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
 

@@ -1367,3 +1367,5 @@ E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\V
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\OptimizationWindow.baml
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\IndicatorSettingsWindow.baml
 E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\IndicatorSettingsWindow.g.cs
+E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\Signalalertwindow.baml
+E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\obj\Debug\net9.0-windows\Views\Signalalertwindow.g.cs
