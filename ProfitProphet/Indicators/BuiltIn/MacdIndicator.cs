@@ -3,7 +3,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ProfitProphet.Indicators.Abstractions;
 using ProfitProphet.Models.Charting;
-using ProfitProphet.Services.Indicators;
+using ProfitProphet.Services; // Itt van az IndicatorAlgorithms
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +15,7 @@ namespace ProfitProphet.Indicators.BuiltIn
         public string Id => "macd";
         public string DisplayName => "MACD";
 
+        // Paraméterek definíciója (Fast, Slow, Signal)
         private static readonly List<IndicatorParamDef> _params = new()
         {
             new IndicatorParamDef { Name = "FastPeriod", Type = typeof(int), DefaultValue = 12, Min = 1 },
@@ -25,16 +26,19 @@ namespace ProfitProphet.Indicators.BuiltIn
 
         public IndicatorResult Compute(IReadOnlyList<OhlcPoint> candles, IndicatorParams values)
         {
-            int fast = Convert.ToInt32(values.TryGetValue("FastPeriod", out var f) ? f : 12);
-            int slow = Convert.ToInt32(values.TryGetValue("SlowPeriod", out var s) ? s : 26);
-            int sig = Convert.ToInt32(values.TryGetValue("SignalPeriod", out var sg) ? sg : 9);
+            // 1. Paraméterek kiolvasása biztonságosan
+            int fast = values.TryGetValue("FastPeriod", out var f) ? Convert.ToInt32(f) : 12;
+            int slow = values.TryGetValue("SlowPeriod", out var s) ? Convert.ToInt32(s) : 26;
+            int sig = values.TryGetValue("SignalPeriod", out var sg) ? Convert.ToInt32(sg) : 9;
 
-            var prices = candles.Select(c => c.Close).ToList();
+            // 2. Árak kinyerése
+            // Fontos: explicit double konverzió
+            var prices = candles.Select(c => (double)c.Close).ToList();
+
+            // 3. Számítás az új algoritmussal (Tuple visszatérés)
             var (macd, signal, hist) = IndicatorAlgorithms.CalculateMACD(prices, fast, slow, sig);
 
-            // ✅ Az algoritmus már helyesen kezeli a NaN értékeket, 
-            //    nem kell felülírni semmit!
-
+            // 4. Eredmény összeállítása
             var r = new IndicatorResult();
             r.Series["macd"] = macd.ToArray();
             r.Series["signal"] = signal.ToArray();
@@ -48,22 +52,29 @@ namespace ProfitProphet.Indicators.BuiltIn
             string xKey = xAxis?.Key;
             string yKey = yAxis?.Key;
 
-            // 1. Hisztogram (LineSeries)
+            // 1. Hisztogram (StemSeries - Pálcika diagram szebb, mint a pöttyös vonal)
             if (result.Series.TryGetValue("hist", out var hObj) && hObj is double[] hist)
             {
-                var hs = new LineSeries
+                // Ha inkább a régi pöttyös vonal kell, cseréld vissza LineSeries-re!
+                var stemSeries = new StemSeries
                 {
                     Title = "Histogram",
                     Color = OxyColors.Gray,
                     StrokeThickness = 1,
-                    LineStyle = LineStyle.Dot,
                     XAxisKey = xKey,
-                    YAxisKey = yKey
+                    YAxisKey = yKey,
+                    TrackerFormatString = "{0}\n{1}: {2:0.###}\n{3}: {4:0.###}" // Hogy szépen írja ki az értéket
                 };
+
                 for (int i = 0; i < hist.Length; i++)
+                {
+                    // Csak akkor rajzoljuk, ha nem NaN (bár az algo 0-t ad vissza az elején)
                     if (!double.IsNaN(hist[i]))
-                        hs.Points.Add(new DataPoint(i, hist[i]));
-                model.Series.Add(hs);
+                    {
+                        stemSeries.Points.Add(new DataPoint(i, hist[i]));
+                    }
+                }
+                model.Series.Add(stemSeries);
             }
 
             // 2. MACD vonal (Fehér)
@@ -78,8 +89,10 @@ namespace ProfitProphet.Indicators.BuiltIn
                     YAxisKey = yKey
                 };
                 for (int i = 0; i < macd.Length; i++)
+                {
                     if (!double.IsNaN(macd[i]))
                         ms.Points.Add(new DataPoint(i, macd[i]));
+                }
                 model.Series.Add(ms);
             }
 
@@ -95,8 +108,10 @@ namespace ProfitProphet.Indicators.BuiltIn
                     YAxisKey = yKey
                 };
                 for (int i = 0; i < signal.Length; i++)
+                {
                     if (!double.IsNaN(signal[i]))
                         ss.Points.Add(new DataPoint(i, signal[i]));
+                }
                 model.Series.Add(ss);
             }
         }

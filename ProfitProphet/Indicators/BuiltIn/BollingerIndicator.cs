@@ -3,7 +3,7 @@ using OxyPlot.Axes;
 using OxyPlot.Series;
 using ProfitProphet.Indicators.Abstractions;
 using ProfitProphet.Models.Charting;
-using ProfitProphet.Services.Indicators;
+using ProfitProphet.Services; // IndicatorAlgorithms miatt
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,10 +25,14 @@ namespace ProfitProphet.Indicators.BuiltIn
 
         public IndicatorResult Compute(IReadOnlyList<OhlcPoint> candles, IndicatorParams values)
         {
-            int period = Convert.ToInt32(values.TryGetValue("Period", out var p) ? p : 20);
-            double mult = Convert.ToDouble(values.TryGetValue("Multiplier", out var m) ? m : 2.0);
+            // Paraméterek kiolvasása
+            int period = values.TryGetValue("Period", out var p) ? Convert.ToInt32(p) : 20;
+            double mult = values.TryGetValue("Multiplier", out var m) ? Convert.ToDouble(m) : 2.0;
 
-            var prices = candles.Select(c => c.Close).ToList();
+            // Árak konverziója (Fontos a (double) cast!)
+            var prices = candles.Select(c => (double)c.Close).ToList();
+
+            // Számítás (Vigyázat: a visszatérési sorrend Middle, Upper, Lower!)
             var (mid, up, low) = IndicatorAlgorithms.CalculateBollingerBands(prices, period, mult);
 
             var r = new IndicatorResult();
@@ -43,19 +47,40 @@ namespace ProfitProphet.Indicators.BuiltIn
             string xKey = xAxis?.Key;
             string yKey = yAxis?.Key;
 
-            void AddLine(string key, OxyColor color, double thick)
+            // Segédfüggvény a vonalrajzoláshoz
+            void AddLineSeries(string key, string title, OxyColor color, double thickness, LineStyle style = LineStyle.Solid)
             {
                 if (result.Series.TryGetValue(key, out var obj) && obj is double[] arr)
                 {
-                    var ls = new LineSeries { Color = color, StrokeThickness = thick, XAxisKey = xKey, YAxisKey = yKey };
-                    for (int i = 0; i < arr.Length; i++) if (!double.IsNaN(arr[i])) ls.Points.Add(new DataPoint(i, arr[i]));
+                    var ls = new LineSeries
+                    {
+                        Title = title,
+                        Color = color,
+                        StrokeThickness = thickness,
+                        LineStyle = style,
+                        XAxisKey = xKey,
+                        YAxisKey = yKey
+                    };
+
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        if (!double.IsNaN(arr[i]))
+                        {
+                            ls.Points.Add(new DataPoint(i, arr[i]));
+                        }
+                    }
                     model.Series.Add(ls);
                 }
             }
 
-            AddLine("upper", OxyColors.Yellow, 1.2);
-            AddLine("lower", OxyColors.Yellow, 1.2);
-            AddLine("middle", OxyColor.FromArgb(128, 255, 255, 0), 1.0); // Halványabb közép
+            // 1. Felső szalag (Sárga)
+            AddLineSeries("upper", "Upper Band", OxyColors.Gold, 1.2);
+
+            // 2. Alsó szalag (Sárga)
+            AddLineSeries("lower", "Lower Band", OxyColors.Gold, 1.2);
+
+            // 3. Középső vonal (SMA) - Halványabb/Vékonyabb
+            AddLineSeries("middle", "Middle Band", OxyColor.FromArgb(150, 255, 215, 0), 1.0, LineStyle.Dash);
         }
     }
 }

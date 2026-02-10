@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:ProfitProphet.Converters"
         mc:Ignorable="d"
-        Title="Stratégia Szerkesztő (Profi Mód)" Height="700" Width="1200"
+        Title="Stratégia Szerkesztő (Profi Mód)" Height="700" Width="1280"
         WindowStartupLocation="CenterScreen"
         Background="#1E1E1E" Foreground="White">
 
@@ -19,10 +19,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="1.5*"/>
-                        <ColumnDefinition Width="0.6*"/>
-                        <ColumnDefinition Width="1.5*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="1.2*"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="1.2*"/>
+                        <ColumnDefinition Width="2.5*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
 
@@ -30,7 +31,14 @@
 
                     <ComboBox Grid.Column="1" ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
                               SelectedItem="{Binding LeftIndicatorName}" Margin="0,0,5,0"/>
-                    <TextBox Grid.Column="2" Text="{Binding LeftPeriod}" Margin="0,0,10,0" ToolTip="Periódus"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,10,0" VerticalAlignment="Center">
+                        <TextBox Text="{Binding LeftPeriod}" Width="40" Margin="0,0,2,0" ToolTip="Period 1 / Fast / Length" TextAlignment="Center"/>
+                        <TextBox Text="{Binding LeftParameter2}" Width="40" Margin="0,0,2,0" ToolTip="Period 2 / Slow / Deviation" TextAlignment="Center"
+                                 Visibility="{Binding ShowLeftParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <TextBox Text="{Binding LeftParameter3}" Width="40" Margin="0,0,2,0" ToolTip="Period 3 / Signal / Slowing" TextAlignment="Center"
+                                 Visibility="{Binding ShowLeftParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    </StackPanel>
 
                     <ComboBox Grid.Column="3" ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
                               SelectedItem="{Binding Operator}" Margin="0,0,10,0"/>
@@ -40,13 +48,23 @@
 
                     <Grid Grid.Column="5">
                         <TextBox Text="{Binding RightValue}" Visibility="{Binding IsRightSideIndicator, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+
                         <StackPanel Orientation="Horizontal" Visibility="{Binding IsRightSideIndicator, Converter={StaticResource BoolToVisibilityConverter}}">
                             <ComboBox ItemsSource="{Binding AllowedRightIndicators}" SelectedItem="{Binding RightIndicatorName}" Width="100" Margin="0,0,5,0"/>
-                            <TextBox Text="{Binding RightPeriod}" Width="40"/>
+                            <TextBox Text="{Binding RightPeriod}" Width="40" Margin="0,0,2,0" ToolTip="Period 1" TextAlignment="Center"/>
+                            <TextBox Text="{Binding RightParameter2}" Width="40" Margin="0,0,2,0" ToolTip="Period 2" TextAlignment="Center"
+                                     Visibility="{Binding ShowRightParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                            <TextBox Text="{Binding RightParameter3}" Width="40" Margin="0,0,2,0" ToolTip="Period 3" TextAlignment="Center"
+                                     Visibility="{Binding ShowRightParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         </StackPanel>
                     </Grid>
 
-                    <Button Grid.Column="6" Content="🗑" Background="Transparent" BorderThickness="0" Foreground="#FF5555"
+                    <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
+                        <TextBlock Text="Shift:" Foreground="Gray" VerticalAlignment="Center" Margin="0,0,3,0" FontSize="10"/>
+                        <TextBox Text="{Binding Shift}" Width="30" ToolTip="Mennyivel nézzük vissza a múltat? (0=most, 1=előző gyertya)" TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="7" Content="🗑" Background="Transparent" BorderThickness="0" Foreground="#FF5555"
                             Command="{Binding DataContext.RemoveRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding}"/>
                 </Grid>
@@ -92,9 +110,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Stratégia Szerkesztő (Logikai Mód)" FontSize="22" FontWeight="Bold" Foreground="White"/>
+            <TextBlock Text="Stratégia Szerkesztő (Profi Mód)" FontSize="22" FontWeight="Bold" Foreground="White"/>
             <TextBlock Text="A csoportok között VAGY kapcsolat, a csoportokon belül ÉS kapcsolat van." Foreground="Gray" FontStyle="Italic"/>
-            
+
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
                 <TextBlock Text="Extra beállítások:" Foreground="White" FontStyle="Italic" Margin="0,10,0,0"/>
                 <CheckBox Content="Rávásárlás engedélyezése (Pyramiding)" 
@@ -141,7 +159,7 @@
         </Grid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button Content="Mégse" IsCancel="True" Width="80" Height="30" Margin="0,0,10,0" Background="#3E3E42" Foreground="White"/>
+            <Button Content="Mégse" IsCancel="True" Command="{Binding CancelCommand}" Width="80" Height="30" Margin="0,0,10,0" Background="#3E3E42" Foreground="White"/>
             <Button Content="MENTÉS" Command="{Binding SaveCommand}" Width="80" Height="30" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
         </StackPanel>
     </Grid>

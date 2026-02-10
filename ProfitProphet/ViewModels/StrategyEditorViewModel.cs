@@ -173,7 +173,7 @@ namespace ProfitProphet.ViewModels
             else
             {
                 // Fallback, ha nincs registry (teszteléshez)
-                list.AddRange(new[] { "SMA", "EMA", "RSI", "CMF", "MACD_MAIN", "MACD_SIGNAL" });
+                list.AddRange(new[] { "SMA", "EMA", "RSI", "CMF", "STOCH", "STOCH_SIGNAL", "MACD_MAIN", "MACD_SIGNAL" });
             }
 
             AvailableIndicators = list;

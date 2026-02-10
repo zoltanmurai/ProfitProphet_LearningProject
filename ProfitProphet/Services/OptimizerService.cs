@@ -55,11 +55,21 @@ namespace ProfitProphet.Services
             {
                 try
                 {
-                    var options = new ParallelOptions { CancellationToken = token, MaxDegreeOfParallelism = Environment.ProcessorCount };
+                    var options = new ParallelOptions 
+                    { 
+                        CancellationToken = token, 
+                        MaxDegreeOfParallelism = Environment.ProcessorCount
+                    };
 
-                    Parallel.ForEach(combinations, options, (combo) =>
+                    Parallel.ForEach(combinations, options, (combo, state) =>
                     {
-                        options.CancellationToken.ThrowIfCancellationRequested();
+                        //options.CancellationToken.ThrowIfCancellationRequested();
+                        if (options.CancellationToken.IsCancellationRequested)
+                        {
+                            state.Stop(); // Jelzi a többi szálnak, hogy álljanak le
+                            return;       // Kilépünk az aktuális iterációból
+                        }
+                        if (state.ShouldExitCurrentIteration) return;
 
                         var testProfile = DeepCopyProfile(profile);
                         for (int i = 0; i < parameters.Count; i++) ApplyValue(testProfile, parameters[i], combo[i]);
@@ -95,6 +105,7 @@ namespace ProfitProphet.Services
                                 // Teljesítmény védelem: Csak akkor küldjük ki a GUI-ra frissítésre,
                                 // ha ez az eredmény jobb, mint amit eddig találtunk (így a Chart mindig javul),
                                 // VAGY ha mindenképp látni akarjuk a listában a profitosokat.
+                                if (options.CancellationToken.IsCancellationRequested) return;
 
                                 bool isNewBest = false;
                                 lock (syncLock)
@@ -116,12 +127,19 @@ namespace ProfitProphet.Services
                         }
 
                         // Progress update (százalék)
-                        int c = System.Threading.Interlocked.Increment(ref current);
-                        if (total > 0 && c % (Math.Max(1, total / 100)) == 0)
-                            progress?.Report((int)((double)c / total * 100));
+                        if (!options.CancellationToken.IsCancellationRequested)
+                        {
+                            int c = System.Threading.Interlocked.Increment(ref current);
+                            if (total > 0 && c % (Math.Max(1, total / 100)) == 0)
+                                progress?.Report((int)((double)c / total * 100));
+                        }
                     });
                 }
                 catch (OperationCanceledException) { }
+                catch (AggregateException ae)
+                {
+                    ae.Handle(ex => ex is OperationCanceledException); // Ha csak Cancel volt, "lenyeljük" a hibát
+                }
             });
 
             return results.OrderByDescending(r => r.Score).ToList();

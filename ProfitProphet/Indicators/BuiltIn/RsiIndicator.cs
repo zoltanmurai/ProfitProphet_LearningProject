@@ -8,6 +8,7 @@ using ProfitProphet.Services.Indicators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProfitProphet.Services;
 
 namespace ProfitProphet.Indicators.BuiltIn
 {
