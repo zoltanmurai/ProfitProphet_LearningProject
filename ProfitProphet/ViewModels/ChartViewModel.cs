@@ -1,5 +1,6 @@
 ﻿using OxyPlot;
 using OxyPlot.Annotations;
+using OxyPlot.Axes;
 using ProfitProphet.DTOs;
 using ProfitProphet.Services;
 using ProfitProphet.Services.Indicators;
@@ -22,14 +23,17 @@ namespace ProfitProphet.ViewModels
     {
         private readonly ChartBuilder _chartBuilder;
         private readonly Func<string, string, Task<List<ChartBuilder.CandleData>>> _loadCandlesAsync;
-
         private readonly IAppSettingsService _settingsService;
         private AppSettings _appSettings;
-        public event Action ChartUpdated;
 
+        public event Action ChartUpdated;
         public PlotModel ChartModel => _chartBuilder.Model;
-        //public LineAnnotation CursorLineX { get; private set; }
-        //public LineAnnotation CursorLineY { get; private set; }
+
+        // ===== CROSSHAIR VONALAK =====
+        public LineAnnotation CrosshairX { get; private set; }
+        public LineAnnotation CrosshairY { get; private set; }
+        public TextAnnotation CrosshairTextX { get; private set; }
+        public TextAnnotation CrosshairTextY { get; private set; }
 
         public ObservableCollection<string> Intervals { get; } =
             new(new[] { "M1", "M5", "M15", "H1", "H4", "D1" });
@@ -43,7 +47,6 @@ namespace ProfitProphet.ViewModels
                 if (_currentInterval != value)
                 {
                     _ = SaveIndicatorsForCurrentContextAsync();
-
                     _currentInterval = value;
                     OnPropertyChanged();
                     _ = ReloadAsync();
@@ -60,7 +63,6 @@ namespace ProfitProphet.ViewModels
                 if (_currentSymbol != value)
                 {
                     _ = SaveIndicatorsForCurrentContextAsync();
-
                     _currentSymbol = value;
                     OnPropertyChanged();
                     _ = ReloadAsync();
@@ -80,14 +82,9 @@ namespace ProfitProphet.ViewModels
                 if (_selectedIndicatorType == value) return;
                 _selectedIndicatorType = value;
                 OnPropertyChanged();
-
-                // HA KIVÁLASZTOTTUNK VALAMIT, INDÍTJUK A FOLYAMATOT:
                 if (value.HasValue)
                 {
-                    // Itt volt a hiba: át kell adni a "value.Value"-t paraméterként!
                     AddIndicatorWithDialog(value.Value);
-
-                    // Visszaállítjuk null-ra, hogy újra kiválasztható legyen ugyanaz
                     _selectedIndicatorType = null;
                     OnPropertyChanged();
                 }
@@ -95,12 +92,12 @@ namespace ProfitProphet.ViewModels
         }
 
         public ObservableCollection<IndicatorConfigDto> Indicators { get; } = new();
-
         private List<ChartBuilder.CandleData> _candles = new();
 
         public ICommand AddIndicatorWithDialogCommand { get; }
         public ICommand EditIndicatorCommand { get; }
         public ICommand DeleteIndicatorCommand { get; }
+
         private readonly IIndicatorRegistry _indicatorRegistry;
 
         public ChartViewModel(
@@ -112,15 +109,12 @@ namespace ProfitProphet.ViewModels
         {
             _settingsService = settingsService ?? throw new ArgumentNullException(nameof(settingsService));
             _appSettings = appSettings ?? throw new ArgumentNullException(nameof(appSettings));
-
             _chartBuilder = chartBuilder;
             _loadCandlesAsync = loadCandlesAsync ?? throw new ArgumentNullException(nameof(loadCandlesAsync));
-            //_indicatorRegistry = indicatorRegistry;
             _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
 
             AddIndicatorWithDialogCommand = new RelayCommand(param =>
             {
-                // Ellenőrizzük, hogy a kapott paraméter tényleg IndicatorType-e
                 if (param is IndicatorType type)
                 {
                     AddIndicatorWithDialog(type);
@@ -148,26 +142,19 @@ namespace ProfitProphet.ViewModels
             }
 
             _candles = await _loadCandlesAsync(CurrentSymbol, CurrentInterval);
-
-            // GAP DETEKTÁLÁS – hétvége / szünnap jelölése a CandleData-ban
             MarkGaps();
-
-            OnPropertyChanged(nameof(HasChartData)); //Chart may be empty, then message appears in UI (XAML)
+            OnPropertyChanged(nameof(HasChartData));
             RebuildChart();
             LoadIndicatorsForCurrentContext();
-
             System.Diagnostics.Debug.WriteLine($"[ChartVM] candles: {_candles?.Count ?? 0} for {CurrentSymbol} {CurrentInterval}");
             ChartUpdated?.Invoke();
         }
 
-        // ---- GAP DETEKTÁLÁS SEGÉDFÜGGVÉNY ----
         private void MarkGaps()
         {
             if (_candles == null || _candles.Count == 0)
                 return;
 
-            // csak napi idősornál értelmezzük (D1)
-            //bool isDaily = string.Equals(CurrentInterval, "1D", StringComparison.OrdinalIgnoreCase);
             var iv = CurrentInterval ?? string.Empty;
             bool isDaily =
                 string.Equals(iv, "1d", StringComparison.OrdinalIgnoreCase) ||
@@ -175,7 +162,6 @@ namespace ProfitProphet.ViewModels
 
             if (!isDaily)
             {
-                // minden más idősornál töröljük a jelölést
                 foreach (var c in _candles)
                 {
                     c.HasGapBefore = false;
@@ -190,35 +176,218 @@ namespace ProfitProphet.ViewModels
             if (_candles.Count == 0)
                 return;
 
-            // első gyertyának sosem lesz gap előtte
             _candles[0].HasGapBefore = false;
 
             for (int i = 1; i < _candles.Count; i++)
             {
                 var prev = _candles[i - 1];
                 var cur = _candles[i];
-
                 var prevDate = prev.Timestamp.Date;
                 var curDate = cur.Timestamp.Date;
-
                 var diffDays = (curDate - prevDate).TotalDays;
-
-                // ha több mint 1 nap telt el a két gyertya között -> hétvége / szünnap
                 cur.HasGapBefore = diffDays > 1.0;
-                //_candles[i].HasGapBefore = (cur - prev).TotalDays > 1.0;
             }
         }
 
         private void RebuildChart()
         {
             _chartBuilder.ShowGapMarkers = _appSettings?.ShowGapMarkers ?? true;
+
+            _chartBuilder.Model?.Annotations.Clear();
+            // ELŐSZÖR: Nullázzuk a crosshair referenciákat, mert új model jön
+            CrosshairX = null;
+            CrosshairY = null;
+            CrosshairTextX = null;
+            CrosshairTextY = null;
+
             _chartBuilder.BuildInteractiveChart(_candles, CurrentSymbol, CurrentInterval);
-            //SetupCursorAnnotations();
+
+            // MÁSODSZOR: Új crosshair objektumokat hozunk létre az ÚJ modellhez
+            SetupCrosshair();
+
             OnPropertyChanged(nameof(HasChartData));
             OnPropertyChanged(nameof(ChartModel));
             (AddIndicatorWithDialogCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (EditIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (DeleteIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
+        }
+
+        // ===== CROSSHAIR FUNKCIÓK - EGYSZERŰSÍTETT VERZIÓ =====
+        //private void SetupCrosshair()
+        //{
+        //    if (_chartBuilder.Model == null) return;
+
+        //    // Mindig új objektumokat hozunk létre (a referenciák már null-ra lettek állítva)
+        //    CrosshairX = new LineAnnotation
+        //    {
+        //        Type = LineAnnotationType.Vertical,
+        //        Color = OxyColors.Gray,
+        //        StrokeThickness = 0, // Kezdetben láthatatlan
+        //        LineStyle = LineStyle.Dash,
+        //        Text = "",
+        //        TextColor = OxyColors.White,
+        //        TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
+        //        TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
+        //        Layer = AnnotationLayer.AboveSeries,
+        //        FontSize = 11,
+        //        TextPadding = 3
+        //    };
+
+        //    CrosshairY = new LineAnnotation
+        //    {
+        //        Type = LineAnnotationType.Horizontal,
+        //        Color = OxyColors.Gray,
+        //        StrokeThickness = 0, // Kezdetben láthatatlan
+        //        LineStyle = LineStyle.Dash,
+        //        Text = "",
+        //        TextColor = OxyColors.White,
+        //        TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
+        //        TextVerticalAlignment = OxyPlot.VerticalAlignment.Middle,
+        //        Layer = AnnotationLayer.AboveSeries,
+        //        FontSize = 11,
+        //        TextPadding = 3
+        //    };
+
+        //    // Hozzáadjuk az ÚJ modellhez
+        //    _chartBuilder.Model.Annotations.Add(CrosshairX);
+        //    _chartBuilder.Model.Annotations.Add(CrosshairY);
+        //}
+        private void SetupCrosshair()
+        {
+            if (_chartBuilder.Model == null) return;
+
+            // Függőleges vonal - SZÖVEG NÉLKÜL
+            CrosshairX = new LineAnnotation
+            {
+                Type = LineAnnotationType.Vertical,
+                Color = OxyColors.Gray,
+                StrokeThickness = 0,
+                LineStyle = LineStyle.Dash,
+                Layer = AnnotationLayer.AboveSeries
+            };
+
+            // Vízszintes vonal - SZÖVEG NÉLKÜL
+            CrosshairY = new LineAnnotation
+            {
+                Type = LineAnnotationType.Horizontal,
+                Color = OxyColors.Gray,
+                StrokeThickness = 0,
+                LineStyle = LineStyle.Dash,
+                Layer = AnnotationLayer.AboveSeries
+            };
+
+            // KÜLÖN SZÖVEG ANNOTÁCIÓK - DÁTUMHOZ
+            CrosshairTextX = new TextAnnotation
+            {
+                Text = "",
+                TextColor = OxyColors.White,
+                Background = OxyColor.FromArgb(200, 30, 30, 30),
+                Padding = new OxyThickness(5, 2, 5, 2),
+                FontSize = 11,
+                Layer = AnnotationLayer.AboveSeries,
+                TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
+                TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center
+            };
+
+            // KÜLÖN SZÖVEG ANNOTÁCIÓK - ÁRHOZ
+            CrosshairTextY = new TextAnnotation
+            {
+                Text = "",
+                TextColor = OxyColors.White,
+                Background = OxyColor.FromArgb(200, 30, 30, 30),
+                Padding = new OxyThickness(5, 2, 5, 2),
+                FontSize = 11,
+                Layer = AnnotationLayer.AboveSeries,
+                TextVerticalAlignment = OxyPlot.VerticalAlignment.Middle,
+                TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right
+            };
+
+            _chartBuilder.Model.Annotations.Add(CrosshairX);
+            _chartBuilder.Model.Annotations.Add(CrosshairY);
+            _chartBuilder.Model.Annotations.Add(CrosshairTextX);
+            _chartBuilder.Model.Annotations.Add(CrosshairTextY);
+        }
+
+        /// <summary>
+        /// Frissíti a crosshair pozícióját és szövegét
+        /// </summary>
+        public void UpdateCrosshair(double x, double y)
+        {
+            if (CrosshairX == null || CrosshairY == null || _chartBuilder.Model == null) return;
+            if (_candles == null || _candles.Count == 0) return;
+
+            CrosshairX.X = x;
+            CrosshairY.Y = y;
+
+            // DÁTUM - Az X egy INDEX a CategoryAxis-ban!
+            try
+            {
+                int candleIndex = (int)Math.Round(x);
+
+                if (candleIndex >= 0 && candleIndex < _candles.Count)
+                {
+                    DateTime date = _candles[candleIndex].Timestamp;
+
+                    string dateText = CurrentInterval switch
+                    {
+                        "M1" or "M5" or "M15" => date.ToString("yyyy.MM.dd HH:mm"),
+                        "H1" or "H4" => date.ToString("yyyy.MM.dd HH:00"),
+                        "D1" => date.ToString("yyyy.MM.dd"),
+                        _ => date.ToString("yyyy.MM.dd")
+                    };
+
+                    if (CrosshairTextX != null)
+                    {
+                        CrosshairTextX.Text = dateText;
+                        CrosshairTextX.TextPosition = new DataPoint(x, _chartBuilder.Model.DefaultYAxis.ActualMinimum);
+                    }
+                }
+                else
+                {
+                    if (CrosshairTextX != null) CrosshairTextX.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[Crosshair] Hiba: {ex.Message}");
+                if (CrosshairTextX != null) CrosshairTextX.Text = "";
+            }
+
+            // ÁR
+            if (CrosshairTextY != null)
+            {
+                CrosshairTextY.Text = y.ToString("F2");
+                CrosshairTextY.TextPosition = new DataPoint(_chartBuilder.Model.DefaultXAxis.ActualMaximum, y);
+            }
+
+            _chartBuilder.Model.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Megjeleníti a crosshair vonalakat
+        /// </summary>
+        public void ShowCrosshair()
+        {
+            if (CrosshairX == null || CrosshairY == null) return;
+            CrosshairX.StrokeThickness = 1;
+            CrosshairY.StrokeThickness = 1;
+            _chartBuilder.Model?.InvalidatePlot(false);
+        }
+
+        /// <summary>
+        /// Elrejti a crosshair vonalakat
+        /// </summary>
+        public void HideCrosshair()
+        {
+            if (CrosshairX == null || CrosshairY == null) return;
+            CrosshairX.StrokeThickness = 0;
+            CrosshairY.StrokeThickness = 0;
+
+            // Szövegek elrejtése
+            if (CrosshairTextX != null) CrosshairTextX.Text = "";
+            if (CrosshairTextY != null) CrosshairTextY.Text = "";
+
+            _chartBuilder.Model?.InvalidatePlot(false);
         }
 
         public async Task ClearDataAsync()
@@ -230,19 +399,16 @@ namespace ProfitProphet.ViewModels
             OnPropertyChanged(nameof(ChartModel));
         }
 
-        // ---- PERSISTENCE HELPER ----
         private string GetProfileKey() =>
             $"{CurrentSymbol}|{CurrentInterval}";
 
         private void LoadIndicatorsForCurrentContext()
         {
             Indicators.Clear();
-
             if (string.IsNullOrWhiteSpace(CurrentSymbol) || string.IsNullOrWhiteSpace(CurrentInterval))
                 return;
 
             var key = GetProfileKey();
-
             if (_appSettings.IndicatorProfiles != null &&
                 _appSettings.IndicatorProfiles.TryGetValue(key, out var list) &&
                 list != null)
@@ -251,65 +417,33 @@ namespace ProfitProphet.ViewModels
                     Indicators.Add(Clone(cfg));
             }
 
-            // Ha betöltöttük, rajzoljuk újra az indikátorokat a charton
             ApplyIndicatorsFromList();
         }
 
-        // opcionális, ha SettingsWindow után új AppSettings-et töltesz:
         public void ReloadSettings(AppSettings settings)
         {
             _appSettings = settings ?? throw new ArgumentNullException(nameof(settings));
-            // aktuális symbol/interval-ra újratöltjük az indikátorokat
             LoadIndicatorsForCurrentContext();
         }
 
-        //private void AddIndicatorWithDialog()
-        //{
-        //    if (SelectedIndicatorType is not IndicatorType t) return;
-
-        //    var cfg = DefaultFor(t);
-        //    if (!IndicatorSettingsDialog.Show(ref cfg))
-        //    {
-        //        SelectedIndicatorType = null;
-        //        return;
-        //    }
-
-        //    Indicators.Add(cfg);
-        //    ApplyIndicatorsFromList();
-
-        //    _ = SaveIndicatorsForCurrentContextAsync();
-        //    SelectedIndicatorType = null;
-        //}
         private void AddIndicatorWithDialog(IndicatorType targetType)
         {
-            // 1. Megkérdezzük a Registry-t: "Mi ez az indikátor és mik a paraméterei?"
-            // (Ez a kulcs! Ha ez nincs, az ablak nem tudja mit rajzoljon ki)
             var indicatorDef = _indicatorRegistry.Resolve(targetType);
-
-            // 2. Létrehozunk egy alap konfigurációt (üres paraméterekkel)
             var newConfig = new IndicatorConfigDto
             {
                 Type = targetType,
                 IsEnabled = true,
                 Parameters = new Dictionary<string, string>(),
-                Color = "#FFFFFF" // Alapértelmezett szín (majd a ChartBuilder felülírja ha kell)
+                Color = "#FFFFFF"
             };
 
-            // 3. MEGNYITJUK AZ ÚJ ABLAKOT (IndicatorSettingsWindow)
-            // Átadjuk neki a configot ÉS a definíciót is!
             var win = new Views.IndicatorSettingsWindow(newConfig, indicatorDef);
-
-            // Szülő ablak beállítása (hogy középen legyen)
             if (Application.Current?.MainWindow != null)
                 win.Owner = Application.Current.MainWindow;
 
-            // 4. Ha a felhasználó a "Mentés" gombra kattintott...
             if (win.ShowDialog() == true)
             {
-                // ...akkor a newConfig.Parameters már fel van töltve a beírt adatokkal!
                 Indicators.Add(newConfig);
-
-                // Chart frissítése
                 ApplyIndicatorsFromList();
                 _ = SaveIndicatorsForCurrentContextAsync();
             }
@@ -318,30 +452,20 @@ namespace ProfitProphet.ViewModels
         private void EditIndicator(IndicatorConfigDto cfg)
         {
             if (cfg is null) return;
-
-            // 1. Lépés: Megkeressük a definíciót (hogy tudjuk, milyen mezőket kell kirajzolni)
             var indicatorDef = _indicatorRegistry.Resolve(cfg.Type);
-
-            // 2. Készítünk egy másolatot a konfigról (hogy ne az élőt szerkesszük, ha a Mégse gombra nyom)
             var copy = Clone(cfg);
 
-            // 3. MEGNYITJUK AZ ÚJ ABLAKOT (IndicatorSettingsWindow) a régi helyett
             var win = new Views.IndicatorSettingsWindow(copy, indicatorDef);
-
             if (Application.Current?.MainWindow != null)
                 win.Owner = Application.Current.MainWindow;
 
-            // 4. Ha a felhasználó mentett...
             if (win.ShowDialog() == true)
             {
-                // ...megkeressük az eredetit a listában és kicseréljük az újra (amiben már az új paraméterek vannak)
                 var ix = Indicators.IndexOf(cfg);
                 if (ix >= 0)
                 {
                     Indicators[ix] = copy;
                 }
-
-                // Chart frissítése
                 ApplyIndicatorsFromList();
                 _ = SaveIndicatorsForCurrentContextAsync();
             }
@@ -358,10 +482,8 @@ namespace ProfitProphet.ViewModels
         private void ApplyIndicatorsFromList()
         {
             _chartBuilder.ClearIndicatorsForSymbol(CurrentSymbol);
-
             foreach (var it in Indicators)
                 AddIndicatorToChartSettings(it);
-
             RebuildChart();
         }
 
@@ -372,21 +494,19 @@ namespace ProfitProphet.ViewModels
                 case IndicatorType.EMA:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "ema", p =>
                     {
-                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20); // Int
-                        p["Source"] = "Close";
-                        p["Color"] = cfg.Color; // Szín átadása
-                    });
-                    break;
-
-                case IndicatorType.SMA:
-                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "sma", p =>
-                    {
-                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20); // Int
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20);
                         p["Source"] = "Close";
                         p["Color"] = cfg.Color;
                     });
                     break;
-
+                case IndicatorType.SMA:
+                    _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "sma", p =>
+                    {
+                        p["Period"] = ParseInt(cfg.Parameters, "Period", 20);
+                        p["Source"] = "Close";
+                        p["Color"] = cfg.Color;
+                    });
+                    break;
                 case IndicatorType.Stochastic:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "stoch", p =>
                     {
@@ -395,7 +515,6 @@ namespace ProfitProphet.ViewModels
                         p["outputD"] = ParseString(cfg.Parameters, "outputD", "true");
                     });
                     break;
-
                 case IndicatorType.CMF:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "cmf", p =>
                     {
@@ -403,9 +522,6 @@ namespace ProfitProphet.ViewModels
                         p["MaPeriod"] = ParseInt(cfg.Parameters, "MaPeriod", 10);
                     });
                     break;
-
-                // --- AZ ÚJ INDIKÁTOROK (Ezek hiányoztak!) ---
-
                 case IndicatorType.RSI:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "rsi", p =>
                     {
@@ -414,7 +530,6 @@ namespace ProfitProphet.ViewModels
                         p["Color"] = cfg.Color;
                     });
                     break;
-
                 case IndicatorType.MACD:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "macd", p =>
                     {
@@ -424,7 +539,6 @@ namespace ProfitProphet.ViewModels
                         p["Source"] = "Close";
                     });
                     break;
-
                 case IndicatorType.Bollinger:
                     _chartBuilder.AddIndicatorToSymbol(CurrentSymbol, "bb", p =>
                     {
@@ -447,7 +561,7 @@ namespace ProfitProphet.ViewModels
         {
             var val = GetValueIgnoreCase(dict, key);
             if (val != null && double.TryParse(val, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out var d))
-                return (int)d; // Biztonságosabb double-ként olvasni majd int-re castolni
+                return (int)d;
             return def;
         }
 
@@ -470,106 +584,22 @@ namespace ProfitProphet.ViewModels
                 return;
 
             var key = GetProfileKey();
-
             _appSettings.IndicatorProfiles[key] =
-                Indicators.Select(Clone).ToList();   // klónozunk, ne élő referenciát ments
-
+                Indicators.Select(Clone).ToList();
             await _settingsService.SaveSettingsAsync(_appSettings);
         }
-
-        private static string ParseOrDefault(Dictionary<string, string> dict, string key, int def)
-        {
-            if (dict.TryGetValue(key, out var s) && int.TryParse(s, out var v))
-                return v.ToString();
-            return def.ToString();
-        }
-
-        //private static IndicatorConfigDto DefaultFor(IndicatorType t) => t switch
-        //{
-        //    IndicatorType.EMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
-        //    IndicatorType.SMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
-        //    IndicatorType.Stochastic => new() { Type = t, IsEnabled = true, Parameters = new() { ["kPeriod"] = "14", ["dPeriod"] = "3" } },
-        //    IndicatorType.CMF => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
-        //    _ => new() { Type = t, IsEnabled = true }
-        //};
-
-        private static IndicatorConfigDto DefaultFor(IndicatorType t) => t switch
-        {
-            IndicatorType.EMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
-            IndicatorType.SMA => new() { Type = t, IsEnabled = true, Parameters = new() { ["period"] = "20" } },
-            IndicatorType.Stochastic => new() { Type = t, IsEnabled = true, Parameters = new() { ["kPeriod"] = "14", ["dPeriod"] = "3" } },
-
-            // UPDATE: Added maPeriod with default value 10
-            IndicatorType.CMF => new()
-            {
-                Type = t,
-                IsEnabled = true,
-                Parameters = new()
-                {
-                    ["period"] = "20",
-                    ["maPeriod"] = "10"
-                }
-            },
-
-            _ => new() { Type = t, IsEnabled = true }
-        };
-
-        //private void SetupCursorAnnotations()
-        //{
-        //    if (_chartBuilder.Model == null) return;
-
-        //    // Ha már léteznek, nem hozzuk létre újra, csak visszaadjuk a modellhez
-        //    if (CursorLineX == null)
-        //    {
-        //        CursorLineX = new LineAnnotation
-        //        {
-        //            Type = LineAnnotationType.Vertical,
-        //            Color = OxyColors.White,
-        //            StrokeThickness = 1,
-        //            LineStyle = LineStyle.Dash,
-        //            Text = "",
-        //            TextColor = OxyColors.White,
-        //            TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
-        //            Layer = AnnotationLayer.AboveSeries
-        //        };
-        //    }
-
-        //    if (CursorLineY == null)
-        //    {
-        //        CursorLineY = new LineAnnotation
-        //        {
-        //            Type = LineAnnotationType.Horizontal,
-        //            Color = OxyColors.White,
-        //            StrokeThickness = 1,
-        //            LineStyle = LineStyle.Dash,
-        //            Text = "",
-        //            TextColor = OxyColors.White,
-        //            TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
-        //            Layer = AnnotationLayer.AboveSeries
-        //        };
-        //    }
-
-        //    // Biztosítjuk, hogy benne legyenek a modellben
-        //    if (!_chartBuilder.Model.Annotations.Contains(CursorLineX))
-        //    {
-        //        _chartBuilder.Model.Annotations.Add(CursorLineX);
-        //    }
-
-        //    if (!_chartBuilder.Model.Annotations.Contains(CursorLineY))
-        //    {
-        //        _chartBuilder.Model.Annotations.Add(CursorLineY);
-        //    }
-        //}
 
         private static IndicatorConfigDto Clone(IndicatorConfigDto s) =>
             new()
             {
                 Type = s.Type,
                 IsEnabled = s.IsEnabled,
-                Parameters = s.Parameters.ToDictionary(k => k.Key, v => v.Value)
+                Parameters = s.Parameters.ToDictionary(k => k.Key, v => v.Value),
+                Color = s.Color
             };
 
         public event PropertyChangedEventHandler? PropertyChanged;
+
         private void OnPropertyChanged([CallerMemberName] string? n = null) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(n));
     }

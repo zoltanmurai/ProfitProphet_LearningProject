@@ -582,19 +582,16 @@
                     Background="#141820">
                     <oxy:PlotView x:Name="ChartView"
                         Model="{Binding ChartVM.ChartModel}"
-                                  
                         Background="#0e1117"
                         IsManipulationEnabled="True"
                         ZoomRectangleCursor="SizeNWSE"
                         Grid.ColumnSpan="2"
                         Controller="{Binding ChartPlotController}"
-                        ContextMenu="{x:Null}" Margin="0,0,0,0">
-                            <!-- <oxy:PlotView.ContextMenu>
-                            <ContextMenu> -->
-                            <!--MenuItem Header="Add EMA (20)" Command="{Binding AddEma20Command}" / -->
-                            <!--  <MenuItem Header="Remove All Indicators" Command="{Binding ClearIndicatorsCommand}" />
-                            </ContextMenu>
-                        </oxy:PlotView.ContextMenu> -->
+                        ContextMenu="{x:Null}" 
+                        Margin="0,0,0,0"
+                        MouseMove="ChartView_MouseMove"
+                        MouseEnter="ChartView_MouseEnter"
+                        MouseLeave="ChartView_MouseLeave">
                     </oxy:PlotView>
                 </Border>
 
