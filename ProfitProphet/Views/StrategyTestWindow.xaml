@@ -10,8 +10,8 @@
         mc:Ignorable="d"
         Title="Stratégia Tesztelő" 
         
-        Height="720" Width="1100"
-        MinHeight="600" MinWidth="900"
+        Height="740" Width="1100"
+        MinHeight="740" MinWidth="900"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         Background="#1E1E1E">
@@ -27,7 +27,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="280"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="71*"/>
+            <ColumnDefinition Width="749*"/>
         </Grid.ColumnDefinitions>
 
         <Border Grid.Column="0" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,1,0" Padding="10">
@@ -203,7 +204,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="10">
+        <Grid Grid.Column="1" Margin="10,10,10,10" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="Auto"/>

@@ -51,26 +51,98 @@ namespace ProfitProphet.Services
 
                 if (canBuy && EvaluateGroups(profile.EntryGroups, indicatorCache, candles, i))
                 {
-                    if (i - lastEntryIndex < 5)
+                    //var lastOpenTrade = result.Trades.LastOrDefault(t => t.ExitDate == DateTime.MinValue);
+                    var activeTrades = result.Trades.Where(t => t.ExitDate == DateTime.MinValue).ToList();
+
+                    if (i - lastEntryIndex < 1)
                     {
                         continue; // Ugrunk a következő napra/órára
                     }
 
-                    if (holdings > 0)
+                    // 2. MAX POZÍCIÓ LIMIT
+                    int maxPyramidLayers = 10;
+                    if (activeTrades.Count >= maxPyramidLayers)
                     {
-                        int activeTradesCount = result.Trades.Count(t => t.ExitDate == DateTime.MinValue);
-                        if (activeTradesCount >= 5) // Max 5 rávásárlás
+                        continue;
+                    }
+
+                    //if (holdings > 0)
+                    //{
+                    //    int activeTradesCount = result.Trades.Count(t => t.ExitDate == DateTime.MinValue);
+                    //    if (activeTradesCount >= 5) // Max 5 rávásárlás
+                    //    {
+                    //        continue;
+                    //    }
+                    //}
+
+                    //if (lastOpenTrade != null)
+                    //{
+                    //    // A) MAX LIMIT ELLENŐRZÉS (Maradhat, hogy ne szálljon el a tőkeáttét)
+                    //    int activeTradesCount = result.Trades.Count(t => t.ExitDate == DateTime.MinValue);
+                    //    if (activeTradesCount >= 10) // Pl. Max 10 réteg engedélyezve
+                    //    {
+                    //        continue;
+                    //    }
+                    //    // B) ENVELOPE / GRID TÁVOLSÁG SZÁMÍTÁS
+                    //    double lastPrice = (double)lastOpenTrade.EntryPrice;
+                    //    // Kiszámoljuk a százalékos távolságot
+                    //    double deviation = Math.Abs(price - lastPrice) / lastPrice;
+
+                    //    // BEÁLLÍTÁS: Minimum sávméret. ezt kísérlezni kell
+                    //    // 0.01 = 1%-os sáv. Amíg ezen belül mozog (oldalaz), NEM vesz újat.
+                    //    double minEnvelopeSize = 0.01;
+
+                    //    // oldalazunk?
+                    //    if (deviation < minEnvelopeSize)
+                    //    {
+                    //        continue;
+                    //    }
+
+                    //    // Ha csak TREND irányba akarunk venni (Pyramiding). ez nem feltétel most
+                    //    // if (price <= lastPrice * (1 + minEnvelopeSize)) continue; 
+                    //}
+
+
+                    // CASH ELLENŐRZÉS (ne menjen negatívba!)
+                    int quantityToBuy = CalculatePositionSize(profile, cash, price);
+                    double tradeValue = quantityToBuy * price;
+                    double fee = CalculateFee(tradeValue, profile);
+
+                    if (cash < tradeValue + fee)
+                    {
+                        continue; // Nincs elég pénz
+                    }
+
+                    bool isTooCloseToAnyTrade = false;
+                    double minGridPercent = 0.01; // 1%-os minimális távolság (Ezt később ki lehet vezetni paraméternek)
+
+                    foreach (var trade in activeTrades)
+                    {
+                        double existingPrice = (double)trade.EntryPrice;
+
+                        // Kiszámoljuk a távolságot a JELENLEGI ár és a RÉGI kötés között
+                        double difference = Math.Abs(price - existingPrice) / existingPrice;
+
+                        // Ha BÁRMELYIK meglévő kötéshez túl közel vagyunk (< 1%)
+                        if (difference < minGridPercent)
                         {
-                            continue;
+                            isTooCloseToAnyTrade = true;
+                            break; // Találtunk egyet
                         }
                     }
 
-                    int quantityToBuy = CalculatePositionSize(profile, cash, price);
+                    // Ha túl közel van valamelyikhez, akkor kihagyjuk a vételt (lépünk a kövi gyertyára)
+                    if (isTooCloseToAnyTrade)
+                    {
+                        continue;
+                    }
+
+                    //int quantityToBuy = CalculatePositionSize(profile, cash, price);
 
                     if (quantityToBuy > 0)
                     {
-                        double tradeValue = quantityToBuy * price;
-                        double fee = CalculateFee(tradeValue, profile);
+                        //double tradeValue = quantityToBuy * price;
+                        //double fee = CalculateFee(tradeValue, profile);
 
                         if (cash >= tradeValue + fee)
                         {
@@ -116,11 +188,29 @@ namespace ProfitProphet.Services
 
                         cash += (revenue - fee);
 
+                        //foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
+                        //{
+                        //    trade.ExitDate = currentCandle.TimestampUtc;
+                        //    trade.ExitPrice = (decimal)price;
+                        //    trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity);
+                        //}
+
                         foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
                         {
                             trade.ExitDate = currentCandle.TimestampUtc;
                             trade.ExitPrice = (decimal)price;
-                            trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity);
+
+                            // Entry fee (már levonva volt a cash-ből, de itt nem szerepel)
+                            double entryValue = (double)trade.EntryPrice * trade.Quantity;
+                            double entryFee = CalculateFee(entryValue, profile);
+
+                            // Exit fee
+                            double exitValue = (double)trade.ExitPrice * trade.Quantity;
+                            double exitFee = CalculateFee(exitValue, profile);
+
+                            // Bruttó profit - költségek
+                            double grossP = ((double)trade.ExitPrice - (double)trade.EntryPrice) * trade.Quantity;
+                            trade.Profit = (decimal)(grossP - entryFee - exitFee);
                         }
 
                         holdings = 0;
@@ -193,10 +283,11 @@ namespace ProfitProphet.Services
 
             switch (profile.AmountType)
             {
-                case TradeAmountType.AllCash: amountToInvest = currentCash * 0.98; break;
+                case TradeAmountType.AllCash:
+                    amountToInvest = currentCash * 0.98;
+                    break;
                 case TradeAmountType.FixedCash:
-                    amountToInvest = profile.TradeAmount;
-                    if (amountToInvest > currentCash) amountToInvest = currentCash;
+                    amountToInvest = Math.Min(profile.TradeAmount, currentCash);
                     break;
                 case TradeAmountType.FixedShareCount:
                     double requiredCash = profile.TradeAmount * price;
@@ -207,7 +298,17 @@ namespace ProfitProphet.Services
                     amountToInvest = currentCash * (percent / 100.0);
                     break;
             }
-            return (int)(amountToInvest / price);
+
+            int quantity = (int)(amountToInvest / price);
+
+            // EXTRA VÉDELEM
+            double totalCost = quantity * price + CalculateFee(quantity * price, profile);
+            if (totalCost > currentCash)
+            {
+                return 0; // Még a fee-vel is túllépné
+            }
+
+            return quantity;
         }
 
         // --- JAVÍTOTT PRECALCULATE (ÁTADJA AZ ÖSSZES PARAMÉTERT) ---
@@ -302,7 +403,9 @@ namespace ProfitProphet.Services
             switch (rule.Operator)
             {
                 case ComparisonOperator.GreaterThan: return leftValue > rightValue;
+                case ComparisonOperator.GreaterThanOrEqual:return leftValue >= rightValue; // >=
                 case ComparisonOperator.LessThan: return leftValue < rightValue;
+                case ComparisonOperator.LessThanOrEqual: return leftValue <= rightValue; // <=
                 case ComparisonOperator.Equals: return Math.Abs(leftValue - rightValue) < 0.0001;
                 case ComparisonOperator.CrossesAbove: return (leftValue > rightValue) && (leftPrev <= rightPrev);
                 case ComparisonOperator.CrossesBelow: return (leftValue < rightValue) && (leftPrev >= rightPrev);
@@ -443,37 +546,25 @@ namespace ProfitProphet.Services
             cache[key] = values;
         }
 
-        private double GetValue(string name, int p1, int p2, int p3, bool isPrice, Dictionary<string, double[]> cache, List<Candle> candles, int index, int dependencyPeriod = 0)
+        private double GetValue(string name, int p1, int p2, int p3, bool isPrice,
+                       Dictionary<string, double[]> cache, List<Candle> candles,
+                       int index, int dependencyPeriod = 0)
         {
             if (string.IsNullOrEmpty(name)) return double.NaN;
-            if (index < 0) return double.NaN;
+            if (index < 0 || index >= candles.Count) return double.NaN;
 
-            bool isClose = string.Equals(name, "CLOSE", StringComparison.OrdinalIgnoreCase);
-            bool isOpen = string.Equals(name, "OPEN", StringComparison.OrdinalIgnoreCase);
-            bool isHigh = string.Equals(name, "HIGH", StringComparison.OrdinalIgnoreCase);
-            bool isLow = string.Equals(name, "LOW", StringComparison.OrdinalIgnoreCase);
+            string nameUpper = name.ToUpper();
 
-            if (isPrice || isClose || isOpen || isHigh || isLow)
-            {
-                int targetIndex = index - p1;
-                if (targetIndex < 0) return double.NaN;
+            // PRICE HANDLING - egyszerűen visszaadjuk az index-en lévő értéket
+            if (nameUpper == "CLOSE") return (double)candles[index].Close;
+            if (nameUpper == "OPEN") return (double)candles[index].Open;
+            if (nameUpper == "HIGH") return (double)candles[index].High;
+            if (nameUpper == "LOW") return (double)candles[index].Low;
 
-                if (isOpen) return (double)candles[targetIndex].Open;
-                if (isHigh) return (double)candles[targetIndex].High;
-                if (isLow) return (double)candles[targetIndex].Low;
-
-                return (double)candles[targetIndex].Close;
-            }
-
-            string key;
-            if (dependencyPeriod > 0)
-            {
-                key = $"{name}_{p1}_{p2}_{p3}_dep{dependencyPeriod}";
-            }
-            else
-            {
-                key = $"{name}_{p1}_{p2}_{p3}";
-            }
+            // INDICATOR HANDLING - itt a cache-ből jön
+            string key = dependencyPeriod > 0
+                ? $"{name}_{p1}_{p2}_{p3}_dep{dependencyPeriod}"
+                : $"{name}_{p1}_{p2}_{p3}";
 
             if (cache != null && cache.ContainsKey(key))
             {

@@ -28,18 +28,156 @@ namespace ProfitProphet.Services
             bool visualMode,
             IProgress<OptimizationResult> realtimeHandler)
         {
+            System.Diagnostics.Debug.WriteLine($"Processors: {Environment.ProcessorCount}, Using: {Math.Max(1, Environment.ProcessorCount - 2)}");
+
             // És itt továbbadjuk őket a belső, privát metódusnak:
             return await RunIterationAsync(candles, profile, parameters, progress, token, visualMode, realtimeHandler);
         }
 
+        //private async Task<List<OptimizationResult>> RunIterationAsync(
+        //    List<Candle> candles,
+        //    StrategyProfile profile,
+        //    List<OptimizationParameter> parameters,
+        //    IProgress<int> progress,
+        //    CancellationToken token,
+        //    bool visualMode,
+        //    IProgress<OptimizationResult> realtimeHandler) 
+        //{
+        //    var combinations = GenerateCombinations(parameters);
+        //    var results = new System.Collections.Concurrent.ConcurrentBag<OptimizationResult>();
+
+        //    int total = combinations.Count;
+        //    int current = 0;
+
+        //    // Egy egyszerű lock objektum, hogy ne egyszerre akarjon minden szál rajzolni
+        //    object syncLock = new object();
+        //    double bestScoreSoFar = double.MinValue;
+
+        //    await Task.Run(() =>
+        //    {
+        //        var options = new ParallelOptions 
+        //        { 
+        //            CancellationToken = token,
+        //            //MaxDegreeOfParallelism = Environment.ProcessorCount
+        //            // hagyunk x magot.
+        //            MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 2)
+        //        };
+        //        try
+        //        {
+        //            Parallel.ForEach(combinations, options, (combo, state) =>
+        //            {
+        //                //options.CancellationToken.ThrowIfCancellationRequested();
+        //                //if (options.CancellationToken.IsCancellationRequested)
+        //                //{
+        //                //    state.Stop(); // Jelzi a többi szálnak, hogy álljanak le
+        //                //    return;       // Kilépünk az aktuális iterációból
+        //                //}
+        //                // HELYES CANCELLATION fent nem jó, leáll, de nem látok semmit a UI-n, hogy leállt, ezért így csinálom:
+        //                token.ThrowIfCancellationRequested();
+
+        //                if (state.ShouldExitCurrentIteration) return;
+
+        //                var testProfile = DeepCopyProfile(profile);
+        //                for (int i = 0; i < parameters.Count; i++) ApplyValue(testProfile, parameters[i], combo[i]);
+
+        //                // Futtatás
+        //                var res = _backtestService.RunBacktest(candles, testProfile);
+
+        //                //if (res.TradeCount >= 5)
+        //                if (visualMode || res.TradeCount > 0)
+        //                {
+        //                    //var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
+        //                    var paramSummary = string.Join(", ", parameters.Select((p, idx) =>
+        //                    {
+        //                        // Megnézzük, hogy a paraméter neve alapján a Jobb vagy a Bal oldalt állítjuk-e
+        //                        string name;
+
+        //                        if (p.ParameterName.Contains("Right"))
+        //                        {
+        //                            // Ha a jobb oldalt állítjuk (pl. RightPeriod), akkor a jobb indikátor nevét írjuk ki
+        //                            name = !string.IsNullOrEmpty(p.Rule.RightIndicatorName)
+        //                                   ? p.Rule.RightIndicatorName
+        //                                   : "Right Value"; // Ha fix érték
+        //                        }
+        //                        else
+        //                        {
+        //                            // Ha a bal oldalt (pl. LeftPeriod), akkor a bal indikátort
+        //                            name = p.Rule.LeftIndicatorName;
+        //                        }
+
+        //                        return $"{name}: {combo[idx]}";
+        //                    }));
+
+        //                    var optRes = new OptimizationResult
+        //                    {
+        //                        Values = combo,
+        //                        ParameterSummary = paramSummary,
+        //                        Score = res.TotalProfitLoss, // Vagy ProfitFactor
+        //                        Profit = res.TotalProfitLoss,
+        //                        Drawdown = res.MaxDrawdown,
+        //                        TradeCount = res.TradeCount,
+        //                        ProfitFactor = res.ProfitFactor,
+        //                        // KULCSFONTOSSÁGÚ: Ha vizuális mód van, el kell mentenünk a görbét,
+        //                        // hogy a ViewModel ki tudja rajzolni!
+        //                        EquityCurve = visualMode ? res.EquityCurve : null,
+        //                        BalanceCurve = visualMode ? res.BalanceCurve : null,
+        //                        Trades = visualMode ? res.Trades : null
+        //                    };
+
+        //                    results.Add(optRes);
+
+        //                    if (visualMode && realtimeHandler != null)
+        //                    {
+        //                        if (options.CancellationToken.IsCancellationRequested) return;
+
+        //                        bool isNewBest = false;
+        //                        lock (syncLock)
+        //                        {
+        //                            if (optRes.Score > bestScoreSoFar)
+        //                            {
+        //                                bestScoreSoFar = optRes.Score;
+        //                                isNewBest = true;
+        //                            }
+        //                        }
+
+        //                        //if (isNewBest || optRes.Profit > 0)
+        //                        //{
+        //                        //    realtimeHandler.Report(optRes);
+        //                        //}
+        //                        if (isNewBest || optRes.Profit > 0 || results.Count < 5)
+        //                        {
+        //                            realtimeHandler.Report(optRes);
+        //                        }
+        //                    }
+        //                }
+
+        //                // Progress update (százalék)
+        //                if (!options.CancellationToken.IsCancellationRequested)
+        //                {
+        //                    int c = System.Threading.Interlocked.Increment(ref current);
+        //                    if (total > 0 && c % (Math.Max(1, total / 100)) == 0)
+        //                        progress?.Report((int)((double)c / total * 100));
+        //                }
+        //            });
+        //        }
+        //        catch (OperationCanceledException) { }
+        //        catch (AggregateException ae)
+        //        {
+        //            ae.Handle(ex => ex is OperationCanceledException); // Ha csak Cancel volt, "lenyeljük" a hibát
+        //        }
+        //    });
+
+        //    return results.OrderByDescending(r => r.Score).ToList();
+        //}
+
         private async Task<List<OptimizationResult>> RunIterationAsync(
-            List<Candle> candles,
-            StrategyProfile profile,
-            List<OptimizationParameter> parameters,
-            IProgress<int> progress,
-            CancellationToken token,
-            bool visualMode,
-            IProgress<OptimizationResult> realtimeHandler) 
+    List<Candle> candles,
+    StrategyProfile profile,
+    List<OptimizationParameter> parameters,
+    IProgress<int> progress,
+    CancellationToken token,
+    bool visualMode,
+    IProgress<OptimizationResult> realtimeHandler)
         {
             var combinations = GenerateCombinations(parameters);
             var results = new System.Collections.Concurrent.ConcurrentBag<OptimizationResult>();
@@ -47,119 +185,140 @@ namespace ProfitProphet.Services
             int total = combinations.Count;
             int current = 0;
 
-            // Egy egyszerű lock objektum, hogy ne egyszerre akarjon minden szál rajzolni
             object syncLock = new object();
             double bestScoreSoFar = double.MinValue;
 
             await Task.Run(() =>
             {
+                var options = new ParallelOptions
+                {
+                    CancellationToken = token,
+                    MaxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount - 2)
+                };
+
                 try
                 {
-                    var options = new ParallelOptions 
-                    { 
-                        CancellationToken = token, 
-                        MaxDegreeOfParallelism = Environment.ProcessorCount
-                    };
-
+                    System.Diagnostics.Debug.WriteLine($"Starting parallel processing at {DateTime.Now}");
                     Parallel.ForEach(combinations, options, (combo, state) =>
                     {
-                        //options.CancellationToken.ThrowIfCancellationRequested();
-                        if (options.CancellationToken.IsCancellationRequested)
+                        // HELYES CANCELLATION
+                        token.ThrowIfCancellationRequested();
+
+                        try
                         {
-                            state.Stop(); // Jelzi a többi szálnak, hogy álljanak le
-                            return;       // Kilépünk az aktuális iterációból
-                        }
-                        if (state.ShouldExitCurrentIteration) return;
+                            //  MINDEN iteráció saját másolatot kap
+                            var testProfile = DeepCopyProfile(profile);
 
-                        var testProfile = DeepCopyProfile(profile);
-                        for (int i = 0; i < parameters.Count; i++) ApplyValue(testProfile, parameters[i], combo[i]);
-
-                        // Futtatás
-                        var res = _backtestService.RunBacktest(candles, testProfile);
-
-                        //if (res.TradeCount >= 5)
-                        if (visualMode || res.TradeCount > 0)
-                        {
-                            //var paramSummary = string.Join(", ", parameters.Select((p, idx) => $"{p.Rule.LeftIndicatorName}: {combo[idx]}"));
-                            var paramSummary = string.Join(", ", parameters.Select((p, idx) =>
+                            for (int i = 0; i < parameters.Count; i++)
                             {
-                                // Megnézzük, hogy a paraméter neve alapján a Jobb vagy a Bal oldalt állítjuk-e
-                                string name;
+                                ApplyValue(testProfile, parameters[i], combo[i]);
+                            }
 
-                                if (p.ParameterName.Contains("Right"))
-                                {
-                                    // Ha a jobb oldalt állítjuk (pl. RightPeriod), akkor a jobb indikátor nevét írjuk ki
-                                    name = !string.IsNullOrEmpty(p.Rule.RightIndicatorName)
-                                           ? p.Rule.RightIndicatorName
-                                           : "Right Value"; // Ha fix érték
-                                }
-                                else
-                                {
-                                    // Ha a bal oldalt (pl. LeftPeriod), akkor a bal indikátort
-                                    name = p.Rule.LeftIndicatorName;
-                                }
+                            //  Backtest futtatás SAFE módon
+                            var res = _backtestService.RunBacktest(candles, testProfile);
 
-                                return $"{name}: {combo[idx]}";
-                            }));
-
-                            var optRes = new OptimizationResult
+                            if (visualMode || res.TradeCount > 0)
                             {
-                                Values = combo,
-                                ParameterSummary = paramSummary,
-                                Score = res.TotalProfitLoss, // Vagy ProfitFactor
-                                Profit = res.TotalProfitLoss,
-                                Drawdown = res.MaxDrawdown,
-                                TradeCount = res.TradeCount,
-                                ProfitFactor = res.ProfitFactor,
-                                // KULCSFONTOSSÁGÚ: Ha vizuális mód van, el kell mentenünk a görbét,
-                                // hogy a ViewModel ki tudja rajzolni!
-                                EquityCurve = visualMode ? res.EquityCurve : null,
-                                BalanceCurve = visualMode ? res.BalanceCurve : null,
-                                Trades = visualMode ? res.Trades : null
-                            };
-
-                            results.Add(optRes);
-
-                            if (visualMode && realtimeHandler != null)
-                            {
-                                if (options.CancellationToken.IsCancellationRequested) return;
-
-                                bool isNewBest = false;
-                                lock (syncLock)
+                                var paramSummary = string.Join(", ", parameters.Select((p, idx) =>
                                 {
-                                    if (optRes.Score > bestScoreSoFar)
+                                    string name;
+                                    if (p.ParameterName.Contains("Right"))
                                     {
-                                        bestScoreSoFar = optRes.Score;
-                                        isNewBest = true;
+                                        name = !string.IsNullOrEmpty(p.Rule.RightIndicatorName)
+                                               ? p.Rule.RightIndicatorName
+                                               : "Right Value";
+                                    }
+                                    else
+                                    {
+                                        name = p.Rule.LeftIndicatorName;
+                                    }
+                                    return $"{name}: {combo[idx]}";
+                                }));
+
+                                var optRes = new OptimizationResult
+                                {
+                                    Values = combo,
+                                    ParameterSummary = paramSummary,
+                                    Score = res.TotalProfitLoss,
+                                    Profit = res.TotalProfitLoss,
+                                    Drawdown = res.MaxDrawdown,
+                                    TradeCount = res.TradeCount,
+                                    ProfitFactor = res.ProfitFactor,
+                                    EquityCurve = visualMode ? res.EquityCurve : null,
+                                    BalanceCurve = visualMode ? res.BalanceCurve : null,
+                                    Trades = visualMode ? res.Trades : null
+                                };
+
+                                results.Add(optRes);
+
+                                //  Realtime report THREAD-SAFE módon
+                                if (visualMode && realtimeHandler != null)
+                                {
+                                    bool isNewBest = false;
+                                    lock (syncLock)
+                                    {
+                                        if (optRes.Score > bestScoreSoFar)
+                                        {
+                                            bestScoreSoFar = optRes.Score;
+                                            isNewBest = true;
+                                        }
+                                    }
+
+                                    if (isNewBest || optRes.Profit > 0 || results.Count < 5)
+                                    {
+                                        realtimeHandler.Report(optRes);
                                     }
                                 }
+                            }
 
-                                //if (isNewBest || optRes.Profit > 0)
-                                //{
-                                //    realtimeHandler.Report(optRes);
-                                //}
-                                if (isNewBest || optRes.Profit > 0 || results.Count < 5)
-                                {
-                                    realtimeHandler.Report(optRes);
-                                }
+                            //  Progress update
+                            int c = System.Threading.Interlocked.Increment(ref current);
+                            if (total > 0 && c % Math.Max(1, total / 100) == 0)
+                            {
+                                progress?.Report((int)((double)c / total * 100));
                             }
                         }
-
-                        // Progress update (százalék)
-                        if (!options.CancellationToken.IsCancellationRequested)
+                        catch (Exception ex)
                         {
-                            int c = System.Threading.Interlocked.Increment(ref current);
-                            if (total > 0 && c % (Math.Max(1, total / 100)) == 0)
-                                progress?.Report((int)((double)c / total * 100));
+                            //  HIBÁK LOGOLÁSA (ne nyelje el!)
+                            System.Diagnostics.Debug.WriteLine($"Error in optimization iteration: {ex.Message}");
+                            System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                            // Opcionálisan dobhatod tovább, ha le akarod állítani az egész folyamatot
+                            // throw;
                         }
                     });
                 }
-                catch (OperationCanceledException) { }
+                catch (OperationCanceledException)
+                {
+                    //  Normális leállítás - OK
+                    System.Diagnostics.Debug.WriteLine("Optimization cancelled by user");
+                }
                 catch (AggregateException ae)
                 {
-                    ae.Handle(ex => ex is OperationCanceledException); // Ha csak Cancel volt, "lenyeljük" a hibát
+                    // ""Csak a OperationCanceledException-t engedjük el
+                    foreach (var inner in ae.InnerExceptions)
+                    {
+                        if (inner is OperationCanceledException)
+                        {
+                            System.Diagnostics.Debug.WriteLine("Optimization cancelled");
+                        }
+                        else
+                        {
+                            // MINDEN MÁS HIBÁT LOGOLUNK!
+                            System.Diagnostics.Debug.WriteLine($"Optimization error: {inner.Message}");
+                            System.Diagnostics.Debug.WriteLine($"Stack trace: {inner.StackTrace}");
+                            throw; // Dobjuk tovább!
+                        }
+                    }
                 }
-            });
+                catch (Exception ex)
+                {
+                    // Minden egyéb nem várt hiba
+                    System.Diagnostics.Debug.WriteLine($"Unexpected error in optimization: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
+                    throw; // Dobjuk tovább a hívónak!
+                }
+            }, token); // Adjuk át a token-t a Task.Run-nak is!
 
             return results.OrderByDescending(r => r.Score).ToList();
         }
@@ -249,10 +408,18 @@ namespace ProfitProphet.Services
                 {
                     LeftIndicatorName = r.LeftIndicatorName,
                     LeftPeriod = r.LeftPeriod,
+                    LeftParameter2 = r.LeftParameter2, 
+                    LeftParameter3 = r.LeftParameter3, 
+                    LeftShift = r.LeftShift,           
+
                     Operator = r.Operator,
+
                     RightSourceType = r.RightSourceType,
                     RightIndicatorName = r.RightIndicatorName,
                     RightPeriod = r.RightPeriod,
+                    RightParameter2 = r.RightParameter2, 
+                    RightParameter3 = r.RightParameter3, 
+                    RightShift = r.RightShift,         
                     RightValue = r.RightValue
                 });
             }
