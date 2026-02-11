@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace ProfitProphet.Models.Strategies
@@ -51,6 +52,7 @@ namespace ProfitProphet.Models.Strategies
         public bool OnlySellInProfit { get; set; } = false;
 
         public List<TradeRecord> LastTestTrades { get; set; } = new List<TradeRecord>();
+        public string LastOptimizationReport { get; set; }
 
         // -------------------------------------------
 
@@ -64,6 +66,13 @@ namespace ProfitProphet.Models.Strategies
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+        public StrategyProfile DeepClone()
+        {
+            var options = new JsonSerializerOptions { WriteIndented = false };
+            string json = JsonSerializer.Serialize(this, options);
+            return JsonSerializer.Deserialize<StrategyProfile>(json, options);
+
         }
     }
 }

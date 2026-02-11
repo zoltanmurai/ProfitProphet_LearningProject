@@ -21,5 +21,6 @@ namespace ProfitProphet.Models.Strategies
         public List<EquityPoint> EquityCurve { get; set; }
         public List<EquityPoint> BalanceCurve { get; set; }
         public List<TradeRecord> Trades { get; set; }
+        public StrategyProfile OptimizedProfile { get; set; }
     }
 }

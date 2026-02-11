@@ -41,6 +41,7 @@ namespace ProfitProphet.ViewModels
         private static string _cachedLogText;
         private static int _cachedSelectedIndex = -1;
         private readonly IIndicatorRegistry _indicatorRegistry;
+        private readonly StrategySettingsService _settingsService;
 
         private readonly List<Candle> _candles;
         public event Action<BacktestResult> OnTestFinished;
@@ -51,7 +52,25 @@ namespace ProfitProphet.ViewModels
         public StrategyProfile CurrentProfile
         {
             get => _currentProfile;
-            set { _currentProfile = value; OnPropertyChanged(); }
+            set 
+            {
+                //_currentProfile = value; 
+                //OnPropertyChanged(); 
+                if (_currentProfile != value)
+                {
+                    _currentProfile = value;
+                    OnPropertyChanged();
+
+                    if (_currentProfile != null && !string.IsNullOrEmpty(_currentProfile.LastOptimizationReport))
+                    {
+                        IndicatorTestValues = _currentProfile.LastOptimizationReport;
+                    }
+                    else
+                    {
+                        IndicatorTestValues = GetStrategyDetails(_currentProfile);
+                    }
+                }
+            }
         }
 
         private bool _isRunning;
@@ -220,6 +239,7 @@ namespace ProfitProphet.ViewModels
             _optimizerService = optimizerService ?? throw new ArgumentNullException(nameof(optimizerService));
             _candles = candles ?? throw new ArgumentNullException(nameof(candles));
             _indicatorRegistry = indicatorRegistry;
+            _settingsService = new Services.StrategySettingsService();
             CurrentProfile = profile ?? throw new ArgumentNullException(nameof(profile));
 
             OpenOptimizerCommand = new RelayCommand(o => OpenOptimizer());
@@ -328,218 +348,6 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-        //private async void RunTest()
-        //{
-        //    // A. HA MÁR FUT -> LEÁLLÍTJUK
-        //    if (IsRunning)
-        //    {
-        //        _cts?.Cancel();
-        //        IndicatorTestValues = "Leállítás folyamatban...";
-        //        return;
-        //    }
-
-        //    // B. HA NEM FUT -> INDÍTJUK
-        //    if (CurrentProfile == null || _candles == null) return;
-
-        //    IsRunning = true;
-        //    ProgressValue = 0;
-
-        //    _cts = new CancellationTokenSource();
-        //    IndicatorTestValues = "Tesztelés...";
-        //    var token = _cts.Token;
-
-        //    IProgress<int> progressIndicator = new Progress<int>(value => ProgressValue = value);
-
-        //    // --- 1. PUFFERELÉS ELŐKÉSZÍTÉSE ---
-        //    // Ide gyűjtjük az adatokat a háttérből, hogy ne terheljük a UI-t egyesével
-        //    var pendingResults = new ConcurrentQueue<OptimizationResult>();
-
-        //    // UI Időzítő: 300ms-enként frissít (így a táblázat nem villog és nem fagy)
-        //    var uiTimer = new DispatcherTimer();
-        //    uiTimer.Interval = TimeSpan.FromMilliseconds(300);
-
-        //    // Globális legjobb érték követése
-        //    double globalBestScore = double.MinValue;
-
-        //    // Lista törlése
-        //    OptimizationResults.Clear();
-
-        //    // --- 2. AZ IDŐZÍTŐ LOGIKÁJA (Ez fut a UI Szálon 300ms-enként) ---
-        //    uiTimer.Tick += (s, args) =>
-        //    {
-        //        // Kivesszük az összeset, ami összegyűlt az elmúlt 300ms-ben
-        //        var batch = new List<OptimizationResult>();
-        //        while (pendingResults.TryDequeue(out var res))
-        //        {
-        //            batch.Add(res);
-        //        }
-
-        //        if (batch.Count == 0) return;
-
-        //        // Csak a legjobbakat dolgozzuk fel a Chartnak, de mindet a listának
-        //        bool chartUpdated = false;
-
-        //        foreach (var res in batch)
-        //        {
-        //            // A) Lista frissítése (Okos beszúrás nélkül, csak a végére, majd a végén rendezünk
-        //            // VAGY egyszerűsített beszúrás, ha nem túl nagy a batch).
-        //            // A fagyás elkerülése érdekében most csak hozzáadjuk, a rendezést a DataGridre bízzuk,
-        //            // vagy csak a legjobb 100-at tartjuk meg.
-
-        //            OptimizationResults.Add(res);
-
-        //            // B) Chart Frissítés (Csak ha rekord)
-        //            if (res.Score > globalBestScore)
-        //            {
-        //                globalBestScore = res.Score;
-
-        //                // Csak a legutolsó rekordot rajzoljuk ki a batch-ből
-        //                if (!chartUpdated && res.EquityCurve != null && res.EquityCurve.Count > 0)
-        //                {
-        //                    // 1. KIVÁLASZTJUK A LISTÁBAN (Így látszik a kijelölés!)
-        //                    // Mivel levédtük a settert (IsRunning check), ez nem okoz lassulást.
-        //                    SelectedResult = res;
-
-        //                    // 2. KIRAJZOLJUK A CHARTOT (Kötésekkel együtt!)
-        //                    var tempResult = new BacktestResult
-        //                    {
-        //                        EquityCurve = res.EquityCurve,
-        //                        BalanceCurve = res.BalanceCurve ?? new List<EquityPoint>(),
-
-        //                        // ITT A LÉNYEG: Átadjuk a kötéseket is, így megjelennek a pöttyök!
-        //                        Trades = res.Trades ?? new List<TradeRecord>()
-        //                    };
-
-        //                    UpdateChart(tempResult);
-        //                    chartUpdated = true;
-        //                }
-        //            }
-        //        }
-
-        //        // RAM VÉDELEM: Ha túl sok az elem, a régieket/rosszakat kidobjuk
-        //        // Ez kritikus, ha 100.000 iteráció fut!
-        //        if (OptimizationResults.Count > 500)
-        //        {
-        //            // Ez egy lassú művelet lehet, ritkábban kéne, de a stabilitás miatt:
-        //            // Inkább csak a lista végét vágjuk le, ha nem fér el.
-        //            // A leggyorsabb, ha nem rendezzük itt, hanem csak a View-ban.
-        //            // De ha nagyon kell a rendezés:
-        //            var sorted = OptimizationResults.OrderByDescending(x => x.Score).Take(200).ToList();
-        //            OptimizationResults.Clear();
-        //            foreach (var item in sorted) OptimizationResults.Add(item);
-        //        }
-        //    };
-
-        //    // --- 3. A HANDLER MÓDOSÍTÁSA ---
-        //    // Mostantól a handler NEM nyúl a UI-hoz, csak bedobja a közösbe.
-        //    var realTimeHandler = new Progress<OptimizationResult>(res =>
-        //    {
-        //        pendingResults.Enqueue(res);
-        //    });
-
-        //    uiTimer.Start(); // Indul a frissítés
-
-        //    try
-        //    {
-        //        await Task.Run(async () =>
-        //        {
-        //            if (UseOptimization)
-        //            {
-        //                if (_currentOptimizationParams == null || !_currentOptimizationParams.Any())
-        //                {
-        //                    Application.Current.Dispatcher.Invoke(() => MessageBox.Show("Nincsenek beállítva optimalizációs paraméterek!"));
-        //                    return;
-        //                }
-
-        //                // Indítás
-        //                var results = await _optimizerService.OptimizeAsync(
-        //                    _candles,
-        //                    CurrentProfile,
-        //                    _currentOptimizationParams,
-        //                    progressIndicator,
-        //                    token,
-        //                    IsVisualMode,
-        //                    realTimeHandler    // <--- Ez most már csak a Queue-ba ír
-        //                );
-
-        //                BacktestResult bestResult = null;
-
-        //                // VÉGSŐ FRISSÍTÉS UI SZÁLON
-        //                Application.Current.Dispatcher.Invoke(() =>
-        //                {
-        //                    uiTimer.Stop(); // Leállítjuk a köztes frissítést
-
-        //                    // A maradékot még feldolgozzuk
-        //                    while (pendingResults.TryDequeue(out var res)) results.Add(res);
-
-        //                    OptimizationResults.Clear();
-        //                    // Most már rendezhetjük az egészet nyugodtan
-        //                    foreach (var res in results.OrderByDescending(r => r.Score)) OptimizationResults.Add(res);
-
-        //                    _cachedOptimizationResults = OptimizationResults.ToList();
-        //                    //if (OptimizationResults.Any()) SelectedResult = OptimizationResults.First();
-        //                    if (OptimizationResults.Any())
-        //                    {
-        //                        SelectedResult = OptimizationResults.First();
-        //                        OptimizationResult bestResult = SelectedResult; // Elmentjük, hogy a lambda blokkon kívül is lássuk
-        //                    }
-        //                });
-
-        //                // --- SIKERES FUTÁS VÉGE ---
-        //                if (bestResult != null)
-        //                {
-        //                    stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.TotalProfitLoss:C0}\nTrades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n\n";
-        //                    string paramsText = GetStrategyDetails(CurrentProfile);
-
-        //                    IndicatorTestValues = stats + paramsText;
-        //                }
-        //                else
-        //                {
-        //                    IndicatorTestValues = "Nem született érvényes eredmény az optimalizálás során.";
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // ... Sima futtatás ág (Változatlan) ...
-        //                progressIndicator.Report(10);
-        //                if (token.IsCancellationRequested) return;
-        //                var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
-        //                progressIndicator.Report(100);
-
-        //                Application.Current.Dispatcher.Invoke(() =>
-        //                {
-        //                    uiTimer.Stop(); // Biztos ami biztos
-        //                    Result = res;
-        //                    UpdateChart(res);
-        //                    IndicatorTestValues = $"Egyedi futtatás kész. Profit Faktor: {res.ProfitFactor:N2}";
-        //                    _cachedSingleResult = res;
-        //                    _cachedLogText = IndicatorTestValues;
-        //                });
-        //            }
-
-        //        }, token);
-        //        System.Diagnostics.Debug.WriteLine($"Parallel processing completed at {DateTime.Now}");
-        //    }
-        //    catch (OperationCanceledException)
-        //    {
-        //        //IndicatorTestValues = "A műveletet a felhasználó megszakította.";
-        //        //string paramsText = GetStrategyDetails(CurrentProfile); // Az éppen aktuális beállítás
-
-        //        string message = "A műveletet a felhasználó megszakította.\n(Nincs kiszámolt statisztika)\n\n";
-        //        string paramsText = GetStrategyDetails(CurrentProfile);
-
-        //        //IndicatorTestValues = stats + paramsText;
-        //        IndicatorTestValues = message + paramsText;
-        //        ProgressValue = 0;
-        //    }
-        //    finally
-        //    {
-        //        uiTimer.Stop(); // Mindenképp megállítjuk
-        //        IsRunning = false;
-        //        _cts?.Dispose();
-        //        _cts = null;
-        //    }
-        //}
         private async void RunTest()
         {
             if (IsRunning)
@@ -560,16 +368,16 @@ namespace ProfitProphet.ViewModels
 
             IProgress<int> progressIndicator = new Progress<int>(value => ProgressValue = value);
 
-            // ✅ BUFFER a háttérszál és UI közé
+            // BUFFER a háttérszál és UI közé
             var pendingResults = new ConcurrentQueue<OptimizationResult>();
 
-            // ✅ Globális legjobb
+            // Globális legjobb
             double globalBestScore = double.MinValue;
             OptimizationResult globalBestResult = null;
 
             OptimizationResults.Clear();
 
-            // ✅ UI TIMER - 500ms (nem 300ms, az túl gyakori!)
+            // UI TIMER - 500ms (nem 300ms, az túl gyakori!)
             var uiTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
 
             uiTimer.Tick += (s, args) =>
@@ -583,7 +391,7 @@ namespace ProfitProphet.ViewModels
 
                 if (batch.Count == 0) return;
 
-                // 2. ✅ BULK INSERT (SOKKAL GYORSABB!)
+                // 2. BULK INSERT (SOKKAL GYORSABB!)
                 // Ideiglenesen kikapcsoljuk a CollectionChanged eseményt
                 var tempList = new List<OptimizationResult>(OptimizationResults);
                 tempList.AddRange(batch);
@@ -594,14 +402,14 @@ namespace ProfitProphet.ViewModels
                     tempList = tempList.OrderByDescending(x => x.Score).Take(500).ToList();
                 }
 
-                // ✅ EGY LÉPÉSBEN töröljük és töltjük újra (1 UI frissítés!)
+                // EGY LÉPÉSBEN töröljük és töltjük újra (1 UI frissítés!)
                 OptimizationResults.Clear();
                 foreach (var item in tempList)
                 {
                     OptimizationResults.Add(item);
                 }
 
-                // 3. ✅ CHART FRISSÍTÉS - CSAK 1x a batch-ben!
+                // 3. CHART FRISSÍTÉS - CSAK 1x a batch-ben!
                 var newBest = batch.OrderByDescending(x => x.Score).FirstOrDefault();
                 if (newBest != null && newBest.Score > globalBestScore)
                 {
@@ -610,7 +418,7 @@ namespace ProfitProphet.ViewModels
 
                     if (newBest.EquityCurve != null && newBest.EquityCurve.Count > 0)
                     {
-                        // ✅ NEM állítjuk a SelectedResult-ot futás közben (lassú!)
+                        // NEM állítjuk a SelectedResult-ot futás közben (lassú!)
                         // Csak a chart-ot frissítjük
                         var tempResult = new BacktestResult
                         {
@@ -624,7 +432,7 @@ namespace ProfitProphet.ViewModels
                 }
             };
 
-            // ✅ PROGRESS HANDLER - csak Enqueue, semmi más!
+            // PROGRESS HANDLER - csak Enqueue, semmi más!
             var realTimeHandler = new Progress<OptimizationResult>(res =>
             {
                 pendingResults.Enqueue(res);
@@ -645,7 +453,7 @@ namespace ProfitProphet.ViewModels
                             return;
                         }
 
-                        // ✅ OPTIMALIZÁLÁS FUTTATÁSA
+                        // OPTIMALIZÁLÁS FUTTATÁSA
                         var results = await _optimizerService.OptimizeAsync(
                             _candles,
                             CurrentProfile,
@@ -656,7 +464,7 @@ namespace ProfitProphet.ViewModels
                             realTimeHandler
                         );
 
-                        // ✅ VÉGSŐ FRISSÍTÉS (UI szálon)
+                        // VÉGSŐ FRISSÍTÉS (UI szálon)
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             uiTimer.Stop();
@@ -667,7 +475,7 @@ namespace ProfitProphet.ViewModels
                                 results.Add(res);
                             }
 
-                            // ✅ RENDEZÉS ÉS VÉGLEGESÍTÉS
+                            // RENDEZÉS ÉS VÉGLEGESÍTÉS
                             OptimizationResults.Clear();
                             var sortedResults = results.OrderByDescending(r => r.Score).Take(500).ToList();
 
@@ -678,7 +486,7 @@ namespace ProfitProphet.ViewModels
 
                             _cachedOptimizationResults = OptimizationResults.ToList();
 
-                            // ✅ Most már kiválaszthatjuk a legjobbet
+                            // Most már kiválaszthatjuk a legjobbet
                             if (OptimizationResults.Any())
                             {
                                 SelectedResult = OptimizationResults.First();
@@ -694,18 +502,60 @@ namespace ProfitProphet.ViewModels
                                 //               $"Trades: {bestResult.TradeCount}\n" +
                                 //               $"PF: {bestResult.ProfitFactor.ToString("F2", usCulture)}\n\n";
 
-                                stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:N0}\n" +
-                                        $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n\n";
+                                //stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:N0}\n" +
+                                //        $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n\n";
+                                // 1. MENTÉS ÉS ALKALMAZÁS LOGIKA
+                                // Ha az OptimizerService elmentette a profilt az eredménybe:
+                                if (bestResult.OptimizedProfile != null)
+                                {
+                                    CurrentProfile.EntryGroups = bestResult.OptimizedProfile.EntryGroups;
+                                    CurrentProfile.ExitGroups = bestResult.OptimizedProfile.ExitGroups;
 
-                                string paramsText = GetStrategyDetails(CurrentProfile);
-                                IndicatorTestValues = stats + paramsText;
-                                _cachedLogText = IndicatorTestValues;
+                                    _settingsService.SaveProfile(CurrentProfile);
+                                    stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:N0}\n" +
+                                           $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n" +
+                                           "(Paraméterek frissítve és mentve!)\n\n";
+
+                                    if (bestResult.OptimizedProfile != null)
+                                    {
+                                        stats += "(Paraméterek mentve!)\n\n";
+                                    }
+                                    else
+                                    {
+                                        stats += "\n";
+                                    }
+
+                                    string paramsText = GetStrategyDetails(CurrentProfile);
+                                    IndicatorTestValues = stats + paramsText;
+
+                                    _settingsService.SaveProfile(CurrentProfile);
+
+                                    // Frissítjük a log cache-t is
+                                    _cachedLogText = IndicatorTestValues;
+                                }
+
+                                // 2. SZÖVEG GENERÁLÁS
+                                //string stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:N0}\n" +
+                                //               $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n";
+
+                                //if (bestResult.OptimizedProfile != null)
+                                //{
+                                //    stats += "(Paraméterek mentve!)\n\n";
+                                //}
+                                //else
+                                //{
+                                //    stats += "\n";
+                                //}
+
+                                //string paramsText = GetStrategyDetails(CurrentProfile);
+                                //IndicatorTestValues = stats + paramsText;
+                                //_cachedLogText = IndicatorTestValues;
                             }
                         });
                     }
                     else
                     {
-                        // ✅ SIMA FUTTATÁS
+                        // SIMA FUTTATÁS
                         progressIndicator.Report(10);
                         token.ThrowIfCancellationRequested();
 
@@ -736,7 +586,7 @@ namespace ProfitProphet.ViewModels
             }
             catch (Exception ex)
             {
-                // ✅ HIBAKEZELÉS
+                // HIBAKEZELÉS
                 System.Diagnostics.Debug.WriteLine($"Error in RunTest: {ex.Message}");
                 System.Diagnostics.Debug.WriteLine($"Stack: {ex.StackTrace}");
 

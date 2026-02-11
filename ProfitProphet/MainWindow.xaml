@@ -582,6 +582,7 @@
                     Background="#141820">
                     <oxy:PlotView x:Name="ChartView"
                         Model="{Binding ChartVM.ChartModel}"
+                                  
                         Background="#0e1117"
                         IsManipulationEnabled="True"
                         ZoomRectangleCursor="SizeNWSE"

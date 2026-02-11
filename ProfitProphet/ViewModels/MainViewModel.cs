@@ -38,6 +38,7 @@ namespace ProfitProphet.ViewModels
         private AppSettings _settings;
         private readonly OptimizerService _optimizerService;
 
+
         private string _selectedSymbol;
         private string _selectedInterval;
 

@@ -1,4 +1,5 @@
 ﻿using OxyPlot;
+using OxyPlot.Annotations;
 using ProfitProphet.DTOs;
 using ProfitProphet.Services;
 using ProfitProphet.Services.Indicators;
@@ -6,13 +7,13 @@ using ProfitProphet.Settings;
 using ProfitProphet.ViewModels.Commands;
 using ProfitProphet.ViewModels.Dialogs;
 using System;
-using System.Windows;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ProfitProphet.ViewModels
@@ -27,6 +28,8 @@ namespace ProfitProphet.ViewModels
         public event Action ChartUpdated;
 
         public PlotModel ChartModel => _chartBuilder.Model;
+        //public LineAnnotation CursorLineX { get; private set; }
+        //public LineAnnotation CursorLineY { get; private set; }
 
         public ObservableCollection<string> Intervals { get; } =
             new(new[] { "M1", "M5", "M15", "H1", "H4", "D1" });
@@ -210,6 +213,7 @@ namespace ProfitProphet.ViewModels
         {
             _chartBuilder.ShowGapMarkers = _appSettings?.ShowGapMarkers ?? true;
             _chartBuilder.BuildInteractiveChart(_candles, CurrentSymbol, CurrentInterval);
+            //SetupCursorAnnotations();
             OnPropertyChanged(nameof(HasChartData));
             OnPropertyChanged(nameof(ChartModel));
             (AddIndicatorWithDialogCommand as RelayCommand)?.RaiseCanExecuteChanged();
@@ -509,6 +513,53 @@ namespace ProfitProphet.ViewModels
 
             _ => new() { Type = t, IsEnabled = true }
         };
+
+        //private void SetupCursorAnnotations()
+        //{
+        //    if (_chartBuilder.Model == null) return;
+
+        //    // Ha már léteznek, nem hozzuk létre újra, csak visszaadjuk a modellhez
+        //    if (CursorLineX == null)
+        //    {
+        //        CursorLineX = new LineAnnotation
+        //        {
+        //            Type = LineAnnotationType.Vertical,
+        //            Color = OxyColors.White,
+        //            StrokeThickness = 1,
+        //            LineStyle = LineStyle.Dash,
+        //            Text = "",
+        //            TextColor = OxyColors.White,
+        //            TextVerticalAlignment = OxyPlot.VerticalAlignment.Bottom,
+        //            Layer = AnnotationLayer.AboveSeries
+        //        };
+        //    }
+
+        //    if (CursorLineY == null)
+        //    {
+        //        CursorLineY = new LineAnnotation
+        //        {
+        //            Type = LineAnnotationType.Horizontal,
+        //            Color = OxyColors.White,
+        //            StrokeThickness = 1,
+        //            LineStyle = LineStyle.Dash,
+        //            Text = "",
+        //            TextColor = OxyColors.White,
+        //            TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Right,
+        //            Layer = AnnotationLayer.AboveSeries
+        //        };
+        //    }
+
+        //    // Biztosítjuk, hogy benne legyenek a modellben
+        //    if (!_chartBuilder.Model.Annotations.Contains(CursorLineX))
+        //    {
+        //        _chartBuilder.Model.Annotations.Add(CursorLineX);
+        //    }
+
+        //    if (!_chartBuilder.Model.Annotations.Contains(CursorLineY))
+        //    {
+        //        _chartBuilder.Model.Annotations.Add(CursorLineY);
+        //    }
+        //}
 
         private static IndicatorConfigDto Clone(IndicatorConfigDto s) =>
             new()
