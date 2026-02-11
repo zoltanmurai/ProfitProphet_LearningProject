@@ -145,8 +145,7 @@
                 Margin="10"
                 Padding="8,6"
                 FontWeight="Bold"
-                Foreground="{DynamicResource PrimaryText}"
-                Background="{DynamicResource AccentBrush}"
+                Foreground="White"  Background="{DynamicResource AccentBrush}"
                 BorderBrush="{DynamicResource AccentBrush}"
                 Cursor="Hand"
                 Height="38">
@@ -213,8 +212,7 @@
                         Height="28"
                         Padding="12,0"
                         Margin="0,0,10,0"
-                        Foreground="{DynamicResource PrimaryText}"
-                        Background="{DynamicResource AccentBrush}"
+                        Foreground="White" Background="{DynamicResource AccentBrush}"
                         BorderBrush="{DynamicResource AccentBrush}"
                         Cursor="Hand">
                         <Button.Style>
@@ -400,9 +398,10 @@
                     <Button Grid.Column="0" Content="Stratégia Teszt" 
                         Command="{Binding OpenStrategyTestCommand}" 
                         Margin="0,0,10,0" Padding="10,5" Height="28"
-                        Background="#2D2D30" 
+                        Background="{DynamicResource TertiaryBackground}"  
                         Foreground="{DynamicResource PrimaryText}" 
-                        BorderBrush="#3E3E42"/>
+                        BorderBrush="{DynamicResource BorderBrush}"
+                        BorderThickness="1"/>
 
                     <Grid Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0">
 

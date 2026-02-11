@@ -71,7 +71,7 @@
                         Width="80" 
                         Height="30" 
                         Background="{DynamicResource AccentBrush}" 
-                        Foreground="{DynamicResource PrimaryText}" 
+                        Foreground="White" 
                         BorderThickness="0"/>
             </StackPanel>
         </StackPanel>

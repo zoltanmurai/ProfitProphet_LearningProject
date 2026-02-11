@@ -12,6 +12,10 @@
             <SolidColorBrush x:Key="SecondaryBackground" Color="#161b22"/>
             <SolidColorBrush x:Key="TertiaryBackground" Color="#1f2937"/>
 
+            <SolidColorBrush x:Key="StrategyBuyBrush" Color="LimeGreen"/>
+            <SolidColorBrush x:Key="StrategySellBrush" Color="Red"/>
+            <SolidColorBrush x:Key="StrategyOrBrush" Color="#FFD700"/>
+
             <SolidColorBrush x:Key="PrimaryText" Color="White"/>
             <SolidColorBrush x:Key="SecondaryText" Color="#a5b1c2"/>
 
@@ -39,6 +43,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
                 <Setter Property="Padding" Value="6,4"/>
+                <Setter Property="VerticalContentAlignment" Value="Center"/>
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="ComboBox">
@@ -50,30 +55,35 @@
                                           Background="{TemplateBinding Background}"
                                           BorderBrush="{TemplateBinding BorderBrush}"
                                           BorderThickness="{TemplateBinding BorderThickness}"
+                                          HorizontalContentAlignment="Stretch" 
+                                          VerticalContentAlignment="Stretch"
                                           Cursor="Hand">
-                                    <Grid Margin="0,0,0,0">
+                                    <Grid HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
                                             <ColumnDefinition Width="20"/>
                                         </Grid.ColumnDefinitions>
+
                                         <Path x:Name="Arrow" Grid.Column="1"
                                           Data="M 0 0 L 4 4 L 8 0 Z"
                                           Fill="{TemplateBinding Foreground}"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
+                                          IsHitTestVisible="False"
                                           Width="8" Height="8"/>
                                     </Grid>
                                 </ToggleButton>
 
                                 <ContentPresenter x:Name="ContentSite"
                                               IsHitTestVisible="False"
-                                              Margin="6,3,25,3"
+                                              Margin="6,3,30,3"
                                               VerticalAlignment="Center"
                                               HorizontalAlignment="Left"
                                               Content="{TemplateBinding SelectionBoxItem}"
                                               ContentTemplate="{TemplateBinding SelectionBoxItemTemplate}"
                                               ContentTemplateSelector="{TemplateBinding ItemTemplateSelector}"
                                               TextElement.Foreground="{TemplateBinding Foreground}"/>
+
                                 <Popup x:Name="Popup"
                                    Placement="Bottom"
                                    IsOpen="{TemplateBinding IsDropDownOpen}"
@@ -93,12 +103,22 @@
                                     </Border>
                                 </Popup>
                             </Grid>
+
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
                                     <Setter TargetName="ToggleButton" Property="Background" Value="{DynamicResource ButtonHoverBackground}"/>
                                 </Trigger>
                                 <Trigger Property="IsDropDownOpen" Value="True">
                                     <Setter TargetName="ToggleButton" Property="BorderBrush" Value="{DynamicResource AccentBrush}"/>
+                                    <Setter TargetName="Arrow" Property="RenderTransform">
+                                        <Setter.Value>
+                                            <RotateTransform Angle="180" CenterX="4" CenterY="2"/>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
+                                    <Setter TargetName="ToggleButton" Property="Opacity" Value="0.6"/>
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

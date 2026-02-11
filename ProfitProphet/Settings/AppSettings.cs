@@ -1,4 +1,5 @@
 using ProfitProphet.DTOs;
+using ProfitProphet.Views;
 using System.Collections.Generic;
 
 namespace ProfitProphet.Settings
@@ -19,5 +20,6 @@ namespace ProfitProphet.Settings
 
         public Dictionary<string, List<IndicatorConfigDto>> IndicatorProfiles { get; set; }
             = new();
+        public ThemeSelection ThemePreference { get; internal set; }
     }
 }

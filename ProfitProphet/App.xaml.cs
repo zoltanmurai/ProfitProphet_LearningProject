@@ -70,7 +70,28 @@ namespace ProfitProphet
         {
             base.OnStartup(e);
 
-            // Adatbázis biztosítása
+            // 1. TÉMA BEÁLLÍTÁSA A MENTETT PREFERENCIA ALAPJÁN
+            // Először elkérjük a beállításokat kezelő szervizt
+            //var settingsService = _serviceProvider.GetRequiredService<IAppSettingsService>();
+
+            // Kiolvassuk, mit mentett el a felhasználó (System, Light vagy Dark)
+            // Ha még nincs mentett érték, az alapértelmezett (System) jön vissza.
+            //var userPref = settingsService.CurrentSettings.ThemePreference;
+
+            // Alkalmazzuk a választást (ez dönti el, hogy detektálni kell-e vagy kényszeríteni)
+            //Views.WindowStyleHelper.ApplyUserSelection(userPref);
+
+            // Mivel a Settings rész még nincs kész, egyszerűen megkérdezzük a Windowst:
+            var currentSystemTheme = Views.WindowStyleHelper.DetectSystemTheme();
+
+            // És beállítjuk a programot:
+            Views.WindowStyleHelper.SetApplicationTheme(currentSystemTheme);
+
+            // Elindítjuk a figyelést (ez csak akkor vált majd, ha a 'System' van kiválasztva)
+            Views.WindowStyleHelper.StartListeningToSystemChanges();
+
+
+            // 2. ADATBÁZIS ÉS EGYÉB INDÍTÁSI DOLGOK (MARAD A RÉGI)
             using (var scope = _serviceProvider.CreateScope())
             {
                 try
