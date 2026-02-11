@@ -14,6 +14,7 @@ namespace ProfitProphet.Views
         public SettingsWindow(DataService dataService, IAppSettingsService settings)
         {
             InitializeComponent();
+            this.ApplyDarkTitleBar();
 
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
             _settingsService = settings ?? throw new ArgumentNullException(nameof(settings));

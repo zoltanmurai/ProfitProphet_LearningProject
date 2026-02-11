@@ -21,6 +21,7 @@ namespace ProfitProphet.Views
         {
             InitializeComponent();
             this.DataContext = vm;
+            this.ApplyDarkTitleBar();
         }
     }
 }

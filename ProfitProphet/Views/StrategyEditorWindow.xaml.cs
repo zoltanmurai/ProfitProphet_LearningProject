@@ -22,6 +22,7 @@ namespace ProfitProphet.Views
         public StrategyEditorWindow()
         {
             InitializeComponent();
+            this.ApplyDarkTitleBar();
         }
     }
 }

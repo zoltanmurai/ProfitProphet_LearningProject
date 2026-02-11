@@ -3,8 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Settings" Height="600" Width="900"
         WindowStartupLocation="CenterOwner"
-        Background="#1e1e1e"
-        Foreground="White">
+        Background="{DynamicResource PrimaryBackground}"
+        Foreground="{DynamicResource PrimaryText}">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
@@ -12,16 +12,44 @@
         </Grid.ColumnDefinitions>
 
         <!-- Bal oldali menü -->
-        <StackPanel Background="#252526">
+        <StackPanel Background="{DynamicResource SecondaryBackground}">
             <TextBlock Text="Settings"
                        FontSize="20"
                        FontWeight="Bold"
+                       Foreground="{DynamicResource PrimaryText}"
                        Margin="10,10,10,0"/>
             <ListBox x:Name="Sidebar"
                      Margin="10"
-                     Background="#2d2d30"
-                     Foreground="White"
+                     Background="{DynamicResource TertiaryBackground}"
+                     Foreground="{DynamicResource PrimaryText}"
                      BorderThickness="0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="10,8"/>
+                        <Setter Property="Margin" Value="0,2"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListBoxItem">
+                                    <Border x:Name="border"
+                                            Background="{TemplateBinding Background}"
+                                            CornerRadius="4"
+                                            Padding="{TemplateBinding Padding}">
+                                        <ContentPresenter/>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="border" Property="Background" Value="{DynamicResource ButtonHoverBackground}"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
                 <ListBoxItem Content="Általános" Tag="General"/>
                 <ListBoxItem Content="APIs" Tag="ApiSettings"/>
                 <ListBoxItem Content="Data Import" Tag="DataImport"/>
@@ -29,7 +57,9 @@
         </StackPanel>
 
         <!-- Tartalom -->
-        <Border Grid.Column="1" Background="#1e1e1e" Padding="20">
+        <Border Grid.Column="1" 
+                Background="{DynamicResource PrimaryBackground}" 
+                Padding="20">
             <ContentControl x:Name="ContentArea"/>
         </Border>
     </Grid>

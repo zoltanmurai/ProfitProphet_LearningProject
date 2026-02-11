@@ -14,11 +14,11 @@
         MinHeight="740" MinWidth="900"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
-        Background="#1E1E1E">
+        Background="{DynamicResource PrimaryBackground}">
 
     <Window.Resources>
         <Style TargetType="ScrollBar">
-            <Setter Property="Background" Value="#252526"/>
+            <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
         </Style>
         <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
@@ -31,7 +31,11 @@
             <ColumnDefinition Width="749*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,1,0" Padding="10">
+        <Border Grid.Column="0" 
+                Background="{DynamicResource SecondaryBackground}" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="0,0,1,0" 
+                Padding="10">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
@@ -40,25 +44,49 @@
 
                 <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,10">
                     <StackPanel>
-                        <TextBlock Text="Vezérlőpult" FontSize="18" FontWeight="Bold" Foreground="White" Margin="0,0,0,15"/>
+                        <TextBlock Text="Vezérlőpult" 
+                                   FontSize="18" 
+                                   FontWeight="Bold" 
+                                   Foreground="{DynamicResource PrimaryText}" 
+                                   Margin="0,0,0,15"/>
 
-                        <TextBlock Text="{Binding CurrentProfile.Name}" Foreground="#007ACC" FontWeight="Bold" FontSize="15" TextWrapping="Wrap" Margin="0,0,0,2"/>
-                        <TextBlock Text="{Binding Symbol}" Foreground="Gray" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding CurrentProfile.Name}" 
+                                   Foreground="{DynamicResource AccentBrush}" 
+                                   FontWeight="Bold" 
+                                   FontSize="15" 
+                                   TextWrapping="Wrap" 
+                                   Margin="0,0,0,2"/>
+                        <TextBlock Text="{Binding Symbol}" 
+                                   Foreground="{DynamicResource SecondaryText}" 
+                                   FontWeight="SemiBold" 
+                                   Margin="0,0,0,10"/>
 
                         <Button Command="{Binding EditStrategyCommand}" 
                                 Content="Stratégia tervező ✏️" 
-                                Height="28" Margin="0,0,0,15"
-                                Background="#3E3E42" Foreground="White" BorderThickness="0"/>
+                                Height="28" 
+                                Margin="0,0,0,15"
+                                Background="{DynamicResource TertiaryBackground}" 
+                                Foreground="{DynamicResource PrimaryText}" 
+                                BorderThickness="0"/>
 
-                        <Separator Background="#3E3E42" Margin="0,0,0,15"/>
+                        <Separator Background="{DynamicResource BorderBrush}" Margin="0,0,0,15"/>
 
-                        <TextBlock Text="Időszak Kezdete:" Foreground="Gray" Margin="0,0,0,2"/>
-                        <DatePicker SelectedDate="{Binding StartDate}" Margin="0,0,0,8" Background="#333" Foreground="Black"/>
+                        <TextBlock Text="Időszak Kezdete:" 
+                                   Foreground="{DynamicResource SecondaryText}" 
+                                   Margin="0,0,0,2"/>
+                        <DatePicker SelectedDate="{Binding StartDate}" 
+                                    Margin="0,0,0,8" />
 
-                        <TextBlock Text="Időszak Vége:" Foreground="Gray" Margin="0,0,0,2"/>
-                        <DatePicker SelectedDate="{Binding EndDate}" Margin="0,0,0,15" Background="#333" Foreground="Black"/>
+                        <TextBlock Text="Időszak Vége:" 
+                                   Foreground="{DynamicResource SecondaryText}" 
+                                   Margin="0,0,0,2"/>
+                        <DatePicker SelectedDate="{Binding EndDate}" 
+                                    Margin="0,0,0,15" />
 
-                        <GroupBox Header="Pénzügyek és Jutalékok" Foreground="LightGray" BorderBrush="#444" Margin="0,0,0,15">
+                        <GroupBox Header="Pénzügyek és Jutalékok" 
+                                  Foreground="{DynamicResource SecondaryText}" 
+                                  BorderBrush="{DynamicResource BorderBrush}" 
+                                  Margin="0,0,0,15">
                             <Grid Margin="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="110"/>
@@ -73,27 +101,90 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Kezdő Tőke ($):" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
-                                <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding InitialCash}" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+                                <TextBlock Grid.Row="0" Grid.Column="0" 
+                                           Text="Kezdő Tőke ($):" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{DynamicResource SecondaryText}" 
+                                           Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="0" Grid.Column="1" 
+                                            Text="{Binding InitialCash}" 
+                                            Background="{DynamicResource TextBoxBackground}" 
+                                            Foreground="{DynamicResource TextBoxForeground}" 
+                                            BorderBrush="{DynamicResource BorderBrush}" 
+                                            Padding="2" 
+                                            Margin="0,0,0,4"/>
 
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="Kötés Típus:" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
-                                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding TradeAmountTypes}" SelectedItem="{Binding CurrentProfile.AmountType}" Margin="0,0,0,4"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" 
+                                           Text="Kötés Típus:" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{DynamicResource SecondaryText}" 
+                                           Margin="0,0,0,4"/>
+                                <ComboBox Grid.Row="1" Grid.Column="1" 
+                                            ItemsSource="{Binding TradeAmountTypes}" 
+                                            SelectedItem="{Binding CurrentProfile.AmountType}" 
+                                            Margin="0,0,0,4"/>
 
-                                <TextBlock Grid.Row="2" Grid.Column="0" Text="Kötés Méret:" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
-                                <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding CurrentProfile.TradeAmount}" ToolTip="Darabszám vagy Fix összeg ($)" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
 
-                                <TextBlock Grid.Row="3" Grid.Column="0" Text="Jutalék (%):" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
-                                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding CurrentProfile.CommissionPercent}" ToolTip="Pl. 0.45" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+                                <TextBlock Grid.Row="2" Grid.Column="0" 
+                                           Text="Kötés Méret:" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{DynamicResource SecondaryText}" 
+                                           Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="2" Grid.Column="1" 
+                                         Text="{Binding CurrentProfile.TradeAmount}" 
+                                         ToolTip="Darabszám vagy Fix összeg ($)" 
+                                         Background="{DynamicResource TertiaryBackground}" 
+                                         Foreground="{DynamicResource PrimaryText}" 
+                                         BorderBrush="{DynamicResource BorderBrush}" 
+                                         Padding="2" 
+                                         Margin="0,0,0,4"/>
 
-                                <TextBlock Grid.Row="4" Grid.Column="0" Text="Min. Díj ($):" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,0,4"/>
-                                <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding CurrentProfile.MinCommission}" ToolTip="Minimum fizetendő díj (pl. 7 USD)" Background="#333" Foreground="White" BorderBrush="#555" Padding="2" Margin="0,0,0,4"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" 
+                                           Text="Jutalék (%):" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{DynamicResource SecondaryText}" 
+                                           Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="3" Grid.Column="1" 
+                                         Text="{Binding CurrentProfile.CommissionPercent}" 
+                                         ToolTip="Pl. 0.45" 
+                                         Background="{DynamicResource TertiaryBackground}" 
+                                         Foreground="{DynamicResource PrimaryText}" 
+                                         BorderBrush="{DynamicResource BorderBrush}" 
+                                         Padding="2" 
+                                         Margin="0,0,0,4"/>
 
-                                <TextBlock Grid.Row="5" Grid.Column="0" Text="Napi Swap ($):" VerticalAlignment="Center" Foreground="Gray"/>
-                                <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding CurrentProfile.DailySwap}" ToolTip="Naponta levont költség pozíciónként" Background="#333" Foreground="White" BorderBrush="#555" Padding="2"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" 
+                                           Text="Min. Díj ($):" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{DynamicResource SecondaryText}" 
+                                           Margin="0,0,0,4"/>
+                                <TextBox Grid.Row="4" Grid.Column="1" 
+                                         Text="{Binding CurrentProfile.MinCommission}" 
+                                         ToolTip="Minimum fizetendő díj (pl. 7 USD)" 
+                                         Background="{DynamicResource TertiaryBackground}" 
+                                         Foreground="{DynamicResource PrimaryText}" 
+                                         BorderBrush="{DynamicResource BorderBrush}" 
+                                         Padding="2" 
+                                         Margin="0,0,0,4"/>
+
+                                <TextBlock Grid.Row="5" Grid.Column="0" 
+                                           Text="Napi Swap ($):" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{DynamicResource SecondaryText}"/>
+                                <TextBox Grid.Row="5" Grid.Column="1" 
+                                         Text="{Binding CurrentProfile.DailySwap}" 
+                                         ToolTip="Naponta levont költség pozíciónként" 
+                                         Background="{DynamicResource TertiaryBackground}" 
+                                         Foreground="{DynamicResource PrimaryText}" 
+                                         BorderBrush="{DynamicResource BorderBrush}" 
+                                         Padding="2"/>
                             </Grid>
                         </GroupBox>
 
-                        <Border Background="#2D2D30" CornerRadius="4" Padding="8" Margin="0,0,0,10">
+                        <Border Background="{DynamicResource TertiaryBackground}" 
+                                CornerRadius="4" 
+                                Padding="8" 
+                                Margin="0,0,0,10">
                             <StackPanel>
                                 <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
                                     <CheckBox IsChecked="{Binding UseOptimization}" VerticalAlignment="Center">
@@ -101,18 +192,22 @@
                                             <ScaleTransform ScaleX="1.1" ScaleY="1.1"/>
                                         </CheckBox.LayoutTransform>
                                     </CheckBox>
-                                    <TextBlock Text="Optimalizálás" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="White" FontWeight="SemiBold"/>
+                                    <TextBlock Text="Optimalizálás" 
+                                               VerticalAlignment="Center" 
+                                               Margin="8,0,0,0" 
+                                               Foreground="{DynamicResource PrimaryText}" 
+                                               FontWeight="SemiBold"/>
                                 </StackPanel>
 
                                 <Button Command="{Binding OpenOptimizerCommand}" 
-                Content="Beállítások ⚙️" 
-                Height="28" 
-                IsEnabled="{Binding UseOptimization}"
-                BorderThickness="0">
+                                        Content="Beállítások ⚙️" 
+                                        Height="28" 
+                                        IsEnabled="{Binding UseOptimization}"
+                                        BorderThickness="0">
                                     <Button.Style>
                                         <Style TargetType="Button">
-                                            <Setter Property="Background" Value="#444"/>
-                                            <Setter Property="Foreground" Value="White"/>
+                                            <Setter Property="Background" Value="{DynamicResource BorderBrush}"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="Button">
@@ -124,11 +219,11 @@
                                             </Setter>
                                             <Style.Triggers>
                                                 <Trigger Property="IsEnabled" Value="False">
-                                                    <Setter Property="Background" Value="#252526"/>
-                                                    <Setter Property="Foreground" Value="#555"/>
+                                                    <Setter Property="Background" Value="{DynamicResource SecondaryBackground}"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource SecondaryText}"/>
                                                 </Trigger>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#555"/>
+                                                    <Setter Property="Background" Value="{DynamicResource ButtonHoverBackground}"/>
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>
@@ -136,24 +231,24 @@
                                 </Button>
 
                                 <CheckBox Content="Élő vizualizáció (Lassabb!)" 
-                  IsChecked="{Binding IsVisualMode}" 
-                  IsEnabled="{Binding UseOptimization}"
-                  Foreground="#CCCCCC"
-                  FontSize="11"
-                  Margin="2,8,0,0" 
-                  VerticalAlignment="Center">
+                                          IsChecked="{Binding IsVisualMode}" 
+                                          IsEnabled="{Binding UseOptimization}"
+                                          Foreground="{DynamicResource SecondaryText}"
+                                          FontSize="11"
+                                          Margin="2,8,0,0" 
+                                          VerticalAlignment="Center">
                                     <CheckBox.ToolTip>
                                         <ToolTip Content="Ha be van kapcsolva, valós időben látod a legjobb tőkegörbét a charton."/>
                                     </CheckBox.ToolTip>
                                 </CheckBox>
                                 <TextBlock Text="{Binding OptimizationStatusMessage}" 
-               Foreground="{Binding OptimizationStatusColor}" 
-               FontSize="12" 
-               FontWeight="Bold" 
-               TextWrapping="Wrap" 
-               TextAlignment="Center" 
-               Margin="0,10,0,0"
-               Visibility="{Binding UseOptimization, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                           Foreground="{Binding OptimizationStatusColor}" 
+                                           FontSize="12" 
+                                           FontWeight="Bold" 
+                                           TextWrapping="Wrap" 
+                                           TextAlignment="Center" 
+                                           Margin="0,10,0,0"
+                                           Visibility="{Binding UseOptimization, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -161,22 +256,33 @@
 
                 <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
 
-                    <Grid Margin="0,0,0,5" Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
-                        <ProgressBar Value="{Binding ProgressValue}" Minimum="0" Maximum="100" 
-                                     Height="18" BorderThickness="0" Background="#333" Foreground="#007ACC"/>
+                    <Grid Margin="0,0,0,5" 
+                          Visibility="{Binding IsRunning, Converter={StaticResource BoolToVisibilityConverter}}">
+                        <ProgressBar Value="{Binding ProgressValue}" 
+                                     Minimum="0" 
+                                     Maximum="100" 
+                                     Height="18" 
+                                     BorderThickness="0" 
+                                     Background="{DynamicResource TertiaryBackground}" 
+                                     Foreground="{DynamicResource AccentBrush}"/>
                         <TextBlock Text="{Binding ProgressValue, StringFormat={}{0}%}" 
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" 
-                                   FontSize="10" Foreground="White" FontWeight="Bold"/>
+                                   HorizontalAlignment="Center" 
+                                   VerticalAlignment="Center" 
+                                   FontSize="10" 
+                                   Foreground="{DynamicResource PrimaryText}" 
+                                   FontWeight="Bold"/>
                     </Grid>
 
                     <Button Command="{Binding RunCommand}" 
-        Height="45" 
-        FontSize="16" FontWeight="Bold" BorderThickness="0">
+                            Height="45" 
+                            FontSize="16" 
+                            FontWeight="Bold" 
+                            BorderThickness="0">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Setter Property="Content" Value="FUTTATÁS ▶"/>
-                                <Setter Property="Background" Value="#007ACC"/>
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="Button">
@@ -211,15 +317,24 @@
                 <RowDefinition Height="1.5*"/>
             </Grid.RowDefinitions>
 
-            <Border Grid.Row="0" BorderBrush="#3E3E42" BorderThickness="1" Background="#1E1E1E" Margin="0,0,0,5">
+            <Border Grid.Row="0" 
+                    BorderBrush="{DynamicResource BorderBrush}" 
+                    BorderThickness="1" 
+                    Background="{DynamicResource PrimaryBackground}" 
+                    Margin="0,0,0,5">
                 <oxy:PlotView Model="{Binding EquityModel}" Background="Transparent"/>
             </Border>
 
             <StackPanel Grid.Row="1" Margin="0,5,0,10">
                 <TextBox Text="{Binding IndicatorTestValues}" 
-                         IsReadOnly="True" TextWrapping="Wrap"
-                         Background="#252526" Foreground="#FFD700" BorderBrush="#3E3E42" 
-                         Padding="6" FontSize="12" FontFamily="Consolas"/>
+                         IsReadOnly="True" 
+                         TextWrapping="Wrap"
+                         Background="{DynamicResource SecondaryBackground}" 
+                         Foreground="#FFD700" 
+                         BorderBrush="{DynamicResource BorderBrush}" 
+                         Padding="6" 
+                         FontSize="12" 
+                         FontFamily="Consolas"/>
             </StackPanel>
 
             <Grid Grid.Row="2">
@@ -228,7 +343,11 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Grid.Row="0" Text="Eredmények Listája" Foreground="#CCCCCC" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock Grid.Row="0" 
+                           Text="Eredmények Listája" 
+                           Foreground="{DynamicResource SecondaryText}" 
+                           FontWeight="Bold" 
+                           Margin="0,0,0,5"/>
 
                 <DataGrid Grid.Row="1" 
                           ItemsSource="{Binding OptimizationResults}" 
@@ -239,8 +358,13 @@
                           EnableColumnVirtualization="True"
                           VirtualizingPanel.IsVirtualizing="True"
                           VirtualizingPanel.VirtualizationMode="Recycling"
-                          Background="#1E1E1E" RowBackground="#252526" AlternatingRowBackground="#2D2D30"
-                          Foreground="White" BorderBrush="#3E3E42" GridLinesVisibility="None" HeadersVisibility="Column">
+                          Background="{DynamicResource PrimaryBackground}" 
+                          RowBackground="{DynamicResource SecondaryBackground}" 
+                          AlternatingRowBackground="{DynamicResource TertiaryBackground}"
+                          Foreground="{DynamicResource PrimaryText}" 
+                          BorderBrush="{DynamicResource BorderBrush}" 
+                          GridLinesVisibility="None" 
+                          HeadersVisibility="Column">
 
                     <DataGrid.InputBindings>
                         <MouseBinding MouseAction="LeftDoubleClick" 
@@ -250,18 +374,22 @@
 
                     <DataGrid.Resources>
                         <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="Background" Value="#3E3E42"/>
-                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="{DynamicResource TertiaryBackground}"/>
+                            <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
                             <Setter Property="Padding" Value="8,5"/>
                             <Setter Property="BorderThickness" Value="0,0,1,0"/>
-                            <Setter Property="BorderBrush" Value="#222"/>
+                            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
                         </Style>
                         <Style TargetType="DataGridCell">
                             <Setter Property="Padding" Value="5"/>
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="DataGridCell">
-                                        <Border Padding="{TemplateBinding Padding}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                        <Border Padding="{TemplateBinding Padding}" 
+                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                                Background="{TemplateBinding Background}" 
+                                                SnapsToDevicePixels="True">
                                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
                                         </Border>
                                     </ControlTemplate>
@@ -269,15 +397,18 @@
                             </Setter>
                             <Style.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="Background" Value="#007ACC"/>
-                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
                     </DataGrid.Resources>
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Profit ($)" Binding="{Binding Profit, StringFormat=N0}" Width="90" FontWeight="Bold">
+                        <DataGridTextColumn Header="Profit ($)" 
+                                            Binding="{Binding Profit, StringFormat=N0}" 
+                                            Width="90" 
+                                            FontWeight="Bold">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -285,7 +416,9 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
 
-                        <DataGridTextColumn Header="Kötés" Binding="{Binding TradeCount}" Width="50">
+                        <DataGridTextColumn Header="Kötés" 
+                                            Binding="{Binding TradeCount}" 
+                                            Width="50">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -293,7 +426,9 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
 
-                        <DataGridTextColumn Header="PF" Binding="{Binding ProfitFactor, StringFormat=N2}" Width="60">
+                        <DataGridTextColumn Header="PF" 
+                                            Binding="{Binding ProfitFactor, StringFormat=N2}" 
+                                            Width="60">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -302,7 +437,9 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
 
-                        <DataGridTextColumn Header="Drawdown" Binding="{Binding Drawdown, StringFormat=P1}" Width="80">
+                        <DataGridTextColumn Header="Drawdown" 
+                                            Binding="{Binding Drawdown, StringFormat=P1}" 
+                                            Width="80">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -311,7 +448,9 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
 
-                        <DataGridTextColumn Header="Score" Binding="{Binding Score, StringFormat=N2}" Width="80">
+                        <DataGridTextColumn Header="Score" 
+                                            Binding="{Binding Score, StringFormat=N2}" 
+                                            Width="80">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="HorizontalAlignment" Value="Right"/>
@@ -320,7 +459,9 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
 
-                        <DataGridTextColumn Header="Paraméterek" Binding="{Binding ParameterSummary}" Width="*"/>
+                        <DataGridTextColumn Header="Paraméterek" 
+                                            Binding="{Binding ParameterSummary}" 
+                                            Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>

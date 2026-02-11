@@ -11,6 +11,7 @@ namespace ProfitProphet.Views
         public SignalAlertWindow(string symbol, string signalType)
         {
             InitializeComponent();
+            this.ApplyDarkTitleBar();
 
             // Szövegek beállítása
             SymbolText.Text = symbol;

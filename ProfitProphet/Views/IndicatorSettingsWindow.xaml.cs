@@ -16,6 +16,7 @@ namespace ProfitProphet.Views
         public IndicatorSettingsWindow(IndicatorConfigDto config, IIndicator indicatorDefinition)
         {
             InitializeComponent();
+            this.ApplyDarkTitleBar();
             _config = config;
 
             TitleText.Text = $"{indicatorDefinition.DisplayName} Beállítások";

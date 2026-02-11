@@ -6,16 +6,16 @@
         Width="350"
         WindowStartupLocation="CenterOwner" 
         ResizeMode="NoResize"
-        Background="#1E1E1E" 
-        Foreground="White">
+        Background="{DynamicResource PrimaryBackground}" 
+        Foreground="{DynamicResource PrimaryText}">
 
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
 
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#2D2D30"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#3E3E42"/>
+            <Setter Property="Background" Value="{DynamicResource TertiaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="Padding" Value="5"/>
             <Setter Property="Margin" Value="0,0,0,10"/>
         </Style>
@@ -23,7 +23,12 @@
 
     <Border Padding="20">
         <StackPanel>
-            <TextBlock x:Name="TitleText" Text="Indikátor" FontSize="18" FontWeight="Bold" Foreground="#007ACC" Margin="0,0,0,15"/>
+            <TextBlock x:Name="TitleText" 
+                       Text="Indikátor" 
+                       FontSize="18" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource AccentBrush}" 
+                       Margin="0,0,0,15"/>
 
             <ItemsControl x:Name="ParamsList">
                 <ItemsControl.ItemTemplate>
@@ -31,14 +36,17 @@
                         <StackPanel Margin="0,5">
 
                             <StackPanel Visibility="{Binding IsText, Converter={StaticResource BoolToVis}}">
-                                <TextBlock Text="{Binding Definition.Name}" Foreground="Gray" Margin="0,0,0,3"/>
+                                <TextBlock Text="{Binding Definition.Name}" 
+                                           Foreground="{DynamicResource SecondaryText}" 
+                                           Margin="0,0,0,3"/>
                                 <TextBox Text="{Binding StringValue, Mode=TwoWay}"/>
                             </StackPanel>
 
                             <StackPanel Visibility="{Binding IsBoolean, Converter={StaticResource BoolToVis}}">
                                 <CheckBox Content="{Binding Definition.Name}" 
                                           IsChecked="{Binding BoolValue, Mode=TwoWay}"
-                                          Foreground="White" Margin="0,5,0,10"/>
+                                          Foreground="{DynamicResource PrimaryText}" 
+                                          Margin="0,5,0,10"/>
                             </StackPanel>
 
                         </StackPanel>
@@ -46,9 +54,25 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                <Button Content="Mégse" IsCancel="True" Width="80" Height="30" Margin="0,0,10,0" Background="#3E3E42" Foreground="White"/>
-                <Button Content="Mentés" Click="BtnSave_Click" IsDefault="True" Width="80" Height="30" Background="#007ACC" Foreground="White" BorderThickness="0"/>
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,10,0,0">
+                <Button Content="Mégse" 
+                        IsCancel="True" 
+                        Width="80" 
+                        Height="30" 
+                        Margin="0,0,10,0" 
+                        Background="{DynamicResource TertiaryBackground}" 
+                        Foreground="{DynamicResource PrimaryText}"
+                        BorderBrush="{DynamicResource BorderBrush}"/>
+                <Button Content="Mentés" 
+                        Click="BtnSave_Click" 
+                        IsDefault="True" 
+                        Width="80" 
+                        Height="30" 
+                        Background="{DynamicResource AccentBrush}" 
+                        Foreground="{DynamicResource PrimaryText}" 
+                        BorderThickness="0"/>
             </StackPanel>
         </StackPanel>
     </Border>

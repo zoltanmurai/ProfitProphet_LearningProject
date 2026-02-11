@@ -4,6 +4,7 @@ using OxyPlot.Wpf;
 using ProfitProphet.Entities;
 using ProfitProphet.Services;
 using ProfitProphet.ViewModels;
+using ProfitProphet.Views;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -22,6 +23,7 @@ namespace ProfitProphet
         {
             InitializeComponent();
             DataContext = viewModel;
+            this.ApplyDarkTitleBar();
         }
 
         private void WatchlistListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -33,9 +35,39 @@ namespace ProfitProphet
                 item.IsSelected = true;
         }
 
+        //private async void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Lekérjük az objektumot, és abból a Symbol property-t
+        //    if (WatchlistListBox?.SelectedItem != null)
+        //    {
+        //        // Ha van SelectedValuePath, akkor a SelectedValue
+        //        string symbol = WatchlistListBox.SelectedValue as string;
+
+        //        // VAGY az objektumból kinyerem. 
+        //        // dynamic item = WatchlistListBox.SelectedItem;
+        //        // string symbol = item.Symbol;
+
+        //        if (!string.IsNullOrEmpty(symbol))
+        //        {
+        //            var result = MessageBox.Show(
+        //                $"Biztosan el szeretnéd távolítani a(z) {symbol} szimbólumot és a hozzá tartozó múltbéli adatokat?",
+        //                "Megerõsítés",
+        //                MessageBoxButton.YesNo,
+        //                MessageBoxImage.Question);
+
+        //            if (result == MessageBoxResult.Yes)
+        //            {
+        //                await Vm.RemoveSymbolAsync(symbol);
+        //            }
+        //        }
+        //    }
+        //}
         private async void RemoveMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (WatchlistListBox?.SelectedItem is string symbol)
+            // A SelectedValue már a Symbol string lesz, mivel SelectedValuePath="Symbol"
+            string symbol = WatchlistListBox?.SelectedValue as string;
+
+            if (!string.IsNullOrEmpty(symbol))
             {
                 var result = MessageBox.Show(
                     $"Biztosan el szeretnéd távolítani a(z) {symbol} szimbólumot és a hozzá tartozó múltbéli adatokat?",

@@ -7,14 +7,19 @@
         mc:Ignorable="d"
         Title="Stratégia Szerkesztő (Profi Mód)" Height="700" Width="1280"
         WindowStartupLocation="CenterScreen"
-        Background="#1E1E1E" Foreground="White">
+        Background="{DynamicResource PrimaryBackground}" 
+        Foreground="{DynamicResource PrimaryText}">
 
     <Window.Resources>
         <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
 
         <DataTemplate x:Key="RuleTemplate">
-            <Border Background="#252526" BorderBrush="#3E3E42" BorderThickness="0,0,0,1" Margin="0,1" Padding="5">
+            <Border Background="{DynamicResource SecondaryBackground}" 
+                    BorderBrush="{DynamicResource BorderBrush}" 
+                    BorderThickness="0,0,0,1" 
+                    Margin="0,1" 
+                    Padding="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -27,44 +32,136 @@
                         <ColumnDefinition Width="30"/>
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="ÉS" VerticalAlignment="Center" Foreground="#007ACC" FontWeight="Bold" Margin="0,0,10,0"/>
+                    <TextBlock Text="ÉS" 
+                               VerticalAlignment="Center" 
+                               Foreground="{DynamicResource AccentBrush}" 
+                               FontWeight="Bold" 
+                               Margin="0,0,10,0"/>
 
-                    <ComboBox Grid.Column="1" ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding LeftIndicatorName}" Margin="0,0,5,0"/>
+                    <ComboBox Grid.Column="1" 
+                              ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
+                              SelectedItem="{Binding LeftIndicatorName}" 
+                              Margin="0,0,5,0"
+                              Background="{DynamicResource TertiaryBackground}"
+                              Foreground="{DynamicResource PrimaryText}"
+                              BorderBrush="{DynamicResource BorderBrush}"/>
 
-                    <StackPanel Grid.Column="2" Orientation="Horizontal" Margin="0,0,10,0" VerticalAlignment="Center">
-                        <TextBox Text="{Binding LeftPeriod}" Width="40" Margin="0,0,2,0" ToolTip="Period 1 / Fast / Length" TextAlignment="Center"/>
-                        <TextBox Text="{Binding LeftParameter2}" Width="40" Margin="0,0,2,0" ToolTip="Period 2 / Slow / Deviation" TextAlignment="Center"
-                                 Visibility="{Binding ShowLeftParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                        <TextBox Text="{Binding LeftParameter3}" Width="40" Margin="0,0,2,0" ToolTip="Period 3 / Signal / Slowing" TextAlignment="Center"
-                                 Visibility="{Binding ShowLeftParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <StackPanel Grid.Column="2" 
+                                Orientation="Horizontal" 
+                                Margin="0,0,10,0" 
+                                VerticalAlignment="Center">
+                        <TextBox Text="{Binding LeftPeriod}" 
+                                 Width="40" 
+                                 Margin="0,0,2,0" 
+                                 ToolTip="Period 1 / Fast / Length" 
+                                 TextAlignment="Center"
+                                 Background="{DynamicResource TextBoxBackground}"
+                                 Foreground="{DynamicResource TextBoxForeground}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
+                        <TextBox Text="{Binding LeftParameter2}" 
+                                 Width="40" 
+                                 Margin="0,0,2,0" 
+                                 ToolTip="Period 2 / Slow / Deviation" 
+                                 TextAlignment="Center"
+                                 Visibility="{Binding ShowLeftParam2, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 Background="{DynamicResource TertiaryBackground}"
+                                 Foreground="{DynamicResource PrimaryText}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
+                        <TextBox Text="{Binding LeftParameter3}" 
+                                 Width="40" 
+                                 Margin="0,0,2,0" 
+                                 ToolTip="Period 3 / Signal / Slowing" 
+                                 TextAlignment="Center"
+                                 Visibility="{Binding ShowLeftParam3, Converter={StaticResource BoolToVisibilityConverter}}"
+                                 Background="{DynamicResource TertiaryBackground}"
+                                 Foreground="{DynamicResource PrimaryText}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
                     </StackPanel>
 
-                    <ComboBox Grid.Column="3" ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding Operator}" Margin="0,0,10,0"/>
+                    <ComboBox Grid.Column="3" 
+                              ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
+                              SelectedItem="{Binding Operator}" 
+                              Margin="0,0,10,0"
+                              Background="{DynamicResource TertiaryBackground}"
+                              Foreground="{DynamicResource PrimaryText}"
+                              BorderBrush="{DynamicResource BorderBrush}"/>
 
-                    <ComboBox Grid.Column="4" ItemsSource="{Binding DataContext.AvailableSourceTypes, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding RightSourceType}" Margin="0,0,10,0"/>
+                    <ComboBox Grid.Column="4" 
+                              ItemsSource="{Binding DataContext.AvailableSourceTypes, RelativeSource={RelativeSource AncestorType=Window}}"
+                              SelectedItem="{Binding RightSourceType}" 
+                              Margin="0,0,10,0"
+                              Background="{DynamicResource TertiaryBackground}"
+                              Foreground="{DynamicResource PrimaryText}"
+                              BorderBrush="{DynamicResource BorderBrush}"/>
 
                     <Grid Grid.Column="5">
-                        <TextBox Text="{Binding RightValue}" Visibility="{Binding IsRightSideIndicator, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                        <TextBox Text="{Binding RightValue}" 
+                                 Visibility="{Binding IsRightSideIndicator, Converter={StaticResource InverseBoolToVisibilityConverter}}"
+                                 Background="{DynamicResource TertiaryBackground}"
+                                 Foreground="{DynamicResource PrimaryText}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
 
-                        <StackPanel Orientation="Horizontal" Visibility="{Binding IsRightSideIndicator, Converter={StaticResource BoolToVisibilityConverter}}">
-                            <ComboBox ItemsSource="{Binding AllowedRightIndicators}" SelectedItem="{Binding RightIndicatorName}" Width="100" Margin="0,0,5,0"/>
-                            <TextBox Text="{Binding RightPeriod}" Width="40" Margin="0,0,2,0" ToolTip="Period 1" TextAlignment="Center"/>
-                            <TextBox Text="{Binding RightParameter2}" Width="40" Margin="0,0,2,0" ToolTip="Period 2" TextAlignment="Center"
-                                     Visibility="{Binding ShowRightParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                            <TextBox Text="{Binding RightParameter3}" Width="40" Margin="0,0,2,0" ToolTip="Period 3" TextAlignment="Center"
-                                     Visibility="{Binding ShowRightParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                        <StackPanel Orientation="Horizontal" 
+                                    Visibility="{Binding IsRightSideIndicator, Converter={StaticResource BoolToVisibilityConverter}}">
+                            <ComboBox ItemsSource="{Binding AllowedRightIndicators}" 
+                                      SelectedItem="{Binding RightIndicatorName}" 
+                                      Width="100" 
+                                      Margin="0,0,5,0"
+                                      Background="{DynamicResource TertiaryBackground}"
+                                      Foreground="{DynamicResource PrimaryText}"
+                                      BorderBrush="{DynamicResource BorderBrush}"/>
+                            <TextBox Text="{Binding RightPeriod}" 
+                                     Width="40" 
+                                     Margin="0,0,2,0" 
+                                     ToolTip="Period 1" 
+                                     TextAlignment="Center"
+                                     Background="{DynamicResource TertiaryBackground}"
+                                     Foreground="{DynamicResource PrimaryText}"
+                                     BorderBrush="{DynamicResource BorderBrush}"/>
+                            <TextBox Text="{Binding RightParameter2}" 
+                                     Width="40" 
+                                     Margin="0,0,2,0" 
+                                     ToolTip="Period 2" 
+                                     TextAlignment="Center"
+                                     Visibility="{Binding ShowRightParam2, Converter={StaticResource BoolToVisibilityConverter}}"
+                                     Background="{DynamicResource TertiaryBackground}"
+                                     Foreground="{DynamicResource PrimaryText}"
+                                     BorderBrush="{DynamicResource BorderBrush}"/>
+                            <TextBox Text="{Binding RightParameter3}" 
+                                     Width="40" 
+                                     Margin="0,0,2,0" 
+                                     ToolTip="Period 3" 
+                                     TextAlignment="Center"
+                                     Visibility="{Binding ShowRightParam3, Converter={StaticResource BoolToVisibilityConverter}}"
+                                     Background="{DynamicResource TertiaryBackground}"
+                                     Foreground="{DynamicResource PrimaryText}"
+                                     BorderBrush="{DynamicResource BorderBrush}"/>
                         </StackPanel>
                     </Grid>
 
-                    <StackPanel Grid.Column="6" Orientation="Horizontal" VerticalAlignment="Center" Margin="5,0">
-                        <TextBlock Text="Shift:" Foreground="Gray" VerticalAlignment="Center" Margin="0,0,3,0" FontSize="10"/>
-                        <TextBox Text="{Binding Shift}" Width="30" ToolTip="Mennyivel nézzük vissza a múltat? (0=most, 1=előző gyertya)" TextAlignment="Center"/>
+                    <StackPanel Grid.Column="6" 
+                                Orientation="Horizontal" 
+                                VerticalAlignment="Center" 
+                                Margin="5,0">
+                        <TextBlock Text="Shift:" 
+                                   Foreground="{DynamicResource SecondaryText}" 
+                                   VerticalAlignment="Center" 
+                                   Margin="0,0,3,0" 
+                                   FontSize="10"/>
+                        <TextBox Text="{Binding Shift}" 
+                                 Width="30" 
+                                 ToolTip="Mennyivel nézzük vissza a múltat? (0=most, 1=előző gyertya)" 
+                                 TextAlignment="Center"
+                                 Background="{DynamicResource TertiaryBackground}"
+                                 Foreground="{DynamicResource PrimaryText}"
+                                 BorderBrush="{DynamicResource BorderBrush}"/>
                     </StackPanel>
 
-                    <Button Grid.Column="7" Content="🗑" Background="Transparent" BorderThickness="0" Foreground="#FF5555"
+                    <Button Grid.Column="7" 
+                            Content="🗑" 
+                            Background="Transparent" 
+                            BorderThickness="0" 
+                            Foreground="#FF5555"
                             Command="{Binding DataContext.RemoveRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding}"/>
                 </Grid>
@@ -72,7 +169,12 @@
         </DataTemplate>
 
         <DataTemplate x:Key="GroupTemplate">
-            <Border Background="#2D2D30" BorderBrush="#555" BorderThickness="1" CornerRadius="5" Margin="0,0,0,15" Padding="10">
+            <Border Background="{DynamicResource TertiaryBackground}" 
+                    BorderBrush="{DynamicResource BorderBrush}" 
+                    BorderThickness="1" 
+                    CornerRadius="5" 
+                    Margin="0,0,0,15" 
+                    Padding="10">
                 <StackPanel>
                     <Grid Margin="0,0,0,10">
                         <Grid.ColumnDefinitions>
@@ -80,12 +182,29 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="VAGY" FontWeight="Bold" Foreground="#FFD700" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="14"/>
-                            <TextBlock Text="Csoport Neve:" VerticalAlignment="Center" Foreground="Gray" Margin="0,0,5,0"/>
-                            <TextBox Text="{Binding Name}" Width="200" Background="#1E1E1E" Foreground="White" BorderBrush="#3E3E42"/>
+                            <TextBlock Text="VAGY" 
+                                       FontWeight="Bold" 
+                                       Foreground="#FFD700" 
+                                       VerticalAlignment="Center" 
+                                       Margin="0,0,10,0" 
+                                       FontSize="14"/>
+                            <TextBlock Text="Csoport Neve:" 
+                                       VerticalAlignment="Center" 
+                                       Foreground="{DynamicResource SecondaryText}" 
+                                       Margin="0,0,5,0"/>
+                            <TextBox Text="{Binding Name}" 
+                                        Width="200" 
+                                        Background="{DynamicResource TextBoxBackground}" 
+                                        Foreground="{DynamicResource TextBoxForeground}" 
+                                        BorderBrush="{DynamicResource BorderBrush}"/>
+
                         </StackPanel>
-                        <Button Grid.Column="1" Content="🗑 Csoport Törlése" 
-                                Background="Transparent" BorderThickness="0" Foreground="#FF5555" FontWeight="Bold"
+                        <Button Grid.Column="1" 
+                                Content="🗑 Csoport Törlése" 
+                                Background="Transparent" 
+                                BorderThickness="0" 
+                                Foreground="#FF5555" 
+                                FontWeight="Bold"
                                 Command="{Binding DataContext.RemoveGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                 CommandParameter="{Binding}"/>
                     </Grid>
@@ -93,8 +212,13 @@
                     <ItemsControl ItemsSource="{Binding Rules}" ItemTemplate="{StaticResource RuleTemplate}"/>
 
                     <Button Content="+ ÉS Szabály hozzáadása" 
-                            HorizontalAlignment="Left" Margin="30,5,0,0" Padding="10,2"
-                            Background="Transparent" BorderBrush="#007ACC" Foreground="#007ACC" BorderThickness="1"
+                            HorizontalAlignment="Left" 
+                            Margin="30,5,0,0" 
+                            Padding="10,2"
+                            Background="Transparent" 
+                            BorderBrush="{DynamicResource AccentBrush}" 
+                            Foreground="{DynamicResource AccentBrush}" 
+                            BorderThickness="1"
                             Command="{Binding DataContext.AddRuleToGroupCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding}"/>
                 </StackPanel>
@@ -110,18 +234,29 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Stratégia Szerkesztő (Profi Mód)" FontSize="22" FontWeight="Bold" Foreground="White"/>
-            <TextBlock Text="A csoportok között VAGY kapcsolat, a csoportokon belül ÉS kapcsolat van." Foreground="Gray" FontStyle="Italic"/>
+            <TextBlock Text="Stratégia Szerkesztő (Profi Mód)" 
+                       FontSize="22" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource PrimaryText}"/>
+            <TextBlock Text="A csoportok között VAGY kapcsolat, a csoportokon belül ÉS kapcsolat van." 
+                       Foreground="{DynamicResource SecondaryText}" 
+                       FontStyle="Italic"/>
 
             <StackPanel Orientation="Vertical" Margin="0,0,0,0">
-                <TextBlock Text="Extra beállítások:" Foreground="White" FontStyle="Italic" Margin="0,10,0,0"/>
+                <TextBlock Text="Extra beállítások:" 
+                           Foreground="{DynamicResource PrimaryText}" 
+                           FontStyle="Italic" 
+                           Margin="0,10,0,0"/>
                 <CheckBox Content="Rávásárlás engedélyezése (Pyramiding)" 
                           IsChecked="{Binding Profile.AllowPyramiding}" 
-                          Foreground="White" Margin="10,0,20,0"/>
+                          Foreground="{DynamicResource PrimaryText}" 
+                          Margin="10,0,20,0"/>
 
                 <CheckBox Content="Csak Profitban Zárás" 
                           IsChecked="{Binding Profile.OnlySellInProfit}" 
-                          Foreground="White" ToolTip="Csak akkor ad el jelzésre, ha az árfolyam > átlagár + költségek" Margin="10,0,20,0"/>
+                          Foreground="{DynamicResource PrimaryText}" 
+                          ToolTip="Csak akkor ad el jelzésre, ha az árfolyam > átlagár + költségek" 
+                          Margin="10,0,20,0"/>
             </StackPanel>
         </StackPanel>
 
@@ -132,24 +267,43 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <GroupBox Grid.Column="0" Header="Vételi Setupok (Entry)" BorderBrush="LimeGreen" Foreground="LimeGreen">
+            <GroupBox Grid.Column="0" 
+                      Header="Vételi Setupok (Entry)" 
+                      BorderBrush="LimeGreen" 
+                      Foreground="LimeGreen">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Content="+ Új Vételi Csoport (Setup)" 
+                    <Button DockPanel.Dock="Bottom" 
+                            Content="+ Új Vételi Csoport (Setup)" 
                             Command="{Binding AddEntryGroupCommand}"
-                            Background="#2D2D30" Foreground="LimeGreen" Margin="0,10,0,0" Padding="10" FontWeight="Bold"/>
+                            Background="{DynamicResource TertiaryBackground}" 
+                            Foreground="LimeGreen" 
+                            Margin="0,10,0,0" 
+                            Padding="10" 
+                            FontWeight="Bold"
+                            BorderBrush="LimeGreen"
+                            BorderThickness="1"/>
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
-                        <ItemsControl ItemsSource="{Binding EntryGroups}" ItemTemplate="{StaticResource GroupTemplate}">
-                        </ItemsControl>
+                        <ItemsControl ItemsSource="{Binding EntryGroups}" ItemTemplate="{StaticResource GroupTemplate}"/>
                     </ScrollViewer>
                 </DockPanel>
             </GroupBox>
 
-            <GroupBox Grid.Column="2" Header="Eladási Setupok (Exit)" BorderBrush="Red" Foreground="Red">
+            <GroupBox Grid.Column="2" 
+                      Header="Eladási Setupok (Exit)" 
+                      BorderBrush="Red" 
+                      Foreground="Red">
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Content="+ Új Eladási Csoport (Setup)" 
+                    <Button DockPanel.Dock="Bottom" 
+                            Content="+ Új Eladási Csoport (Setup)" 
                             Command="{Binding AddExitGroupCommand}"
-                            Background="#2D2D30" Foreground="Red" Margin="0,10,0,0" Padding="10" FontWeight="Bold"/>
+                            Background="{DynamicResource TertiaryBackground}" 
+                            Foreground="Red" 
+                            Margin="0,10,0,0" 
+                            Padding="10" 
+                            FontWeight="Bold"
+                            BorderBrush="Red"
+                            BorderThickness="1"/>
 
                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding ExitGroups}" ItemTemplate="{StaticResource GroupTemplate}"/>
@@ -158,9 +312,27 @@
             </GroupBox>
         </Grid>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button Content="Mégse" IsCancel="True" Command="{Binding CancelCommand}" Width="80" Height="30" Margin="0,0,10,0" Background="#3E3E42" Foreground="White"/>
-            <Button Content="MENTÉS" Command="{Binding SaveCommand}" Width="80" Height="30" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,15,0,0">
+            <Button Content="Mégse" 
+                    IsCancel="True" 
+                    Command="{Binding CancelCommand}" 
+                    Width="80" 
+                    Height="30" 
+                    Margin="0,0,10,0" 
+                    Background="{DynamicResource TertiaryBackground}" 
+                    Foreground="{DynamicResource PrimaryText}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
+            <Button Content="MENTÉS" 
+                    Command="{Binding SaveCommand}" 
+                    Width="80" 
+                    Height="30" 
+                    Background="{DynamicResource AccentBrush}" 
+                    Foreground="{DynamicResource PrimaryText}" 
+                    FontWeight="Bold"
+                    BorderThickness="0"/>
         </StackPanel>
     </Grid>
 </Window>

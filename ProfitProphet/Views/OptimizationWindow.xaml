@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Stratégia Optimalizálás Beállítása" Height="500" Width="700" 
-        Background="#1E1E1E" Foreground="#E0E0E0"
+        Background="{DynamicResource PrimaryBackground}" 
+        Foreground="{DynamicResource PrimaryText}"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style TargetType="TextBox">
-            <Setter Property="Background" Value="#333337"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderBrush" Value="#555"/>
+            <Setter Property="Background" Value="{DynamicResource TertiaryBackground}"/>
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryText}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
             <Setter Property="Padding" Value="2"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
@@ -26,17 +27,28 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="0" Margin="0,0,0,15">
-            <TextBlock Text="Optimalizációs Tartományok" FontSize="20" FontWeight="Bold" Foreground="#007ACC"/>
+            <TextBlock Text="Optimalizációs Tartományok" 
+                       FontSize="20" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource AccentBrush}"/>
             <TextBlock Text="Válaszd ki, mely paramétereket akarod optimalizálni, és add meg a határokat." 
-                       FontSize="12" Foreground="Gray" Margin="0,5,0,0"/>
+                       FontSize="12" 
+                       Foreground="{DynamicResource SecondaryText}" 
+                       Margin="0,5,0,0"/>
         </StackPanel>
 
-        <Border Grid.Row="1" BorderBrush="#3F3F46" BorderThickness="1" Background="#252526" Padding="5">
+        <Border Grid.Row="1" 
+                BorderBrush="{DynamicResource BorderBrush}" 
+                BorderThickness="1" 
+                Background="{DynamicResource SecondaryBackground}" 
+                Padding="5">
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <ItemsControl ItemsSource="{Binding AvailableParameters}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="#3F3F46" BorderThickness="0,0,0,1" Padding="5,8">
+                            <Border BorderBrush="{DynamicResource BorderBrush}" 
+                                    BorderThickness="0,0,0,1" 
+                                    Padding="5,8">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="30"/>
@@ -53,31 +65,58 @@
                                         <ColumnDefinition Width="50"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center"/>
+                                    <CheckBox Grid.Column="0" 
+                                              IsChecked="{Binding IsSelected}" 
+                                              VerticalAlignment="Center"/>
 
-                                    <TextBlock Grid.Column="1" Text="{Binding Name}" 
-                                               VerticalAlignment="Center" FontWeight="SemiBold" 
-                                               TextTrimming="CharacterEllipsis" ToolTip="{Binding Name}"/>
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding Name}" 
+                                               VerticalAlignment="Center" 
+                                               FontWeight="SemiBold"
+                                               Foreground="{DynamicResource PrimaryText}"
+                                               TextTrimming="CharacterEllipsis" 
+                                               ToolTip="{Binding Name}"/>
 
-                                    <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                        <TextBlock Text="(" Foreground="Gray"/>
+                                    <StackPanel Grid.Column="2" 
+                                                Orientation="Horizontal" 
+                                                VerticalAlignment="Center">
+                                        <TextBlock Text="(" Foreground="{DynamicResource SecondaryText}"/>
                                         <TextBlock Text="{Binding CurrentValue}" Foreground="#FFD700"/>
-                                        <TextBlock Text=")" Foreground="Gray"/>
+                                        <TextBlock Text=")" Foreground="{DynamicResource SecondaryText}"/>
                                     </StackPanel>
 
-                                    <TextBlock Grid.Column="3" Text="Min:" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,2,0"/>
-                                    <TextBox Grid.Column="4" Text="{Binding MinValue}" IsEnabled="{Binding IsSelected}" Margin="0,0,5,0"/>
+                                    <TextBlock Grid.Column="3" 
+                                               Text="Min:" 
+                                               VerticalAlignment="Center" 
+                                               Foreground="{DynamicResource SecondaryText}" 
+                                               Margin="5,0,2,0"/>
+                                    <TextBox Grid.Column="4" 
+                                             Text="{Binding MinValue}" 
+                                             IsEnabled="{Binding IsSelected}" 
+                                             Margin="0,0,5,0"/>
 
-                                    <TextBlock Grid.Column="5" Text="Max:" VerticalAlignment="Center" Foreground="Gray" Margin="5,0,2,0"/>
-                                    <TextBox Grid.Column="6" Text="{Binding MaxValue}" IsEnabled="{Binding IsSelected}" Margin="0,0,5,0"/>
+                                    <TextBlock Grid.Column="5" 
+                                               Text="Max:" 
+                                               VerticalAlignment="Center" 
+                                               Foreground="{DynamicResource SecondaryText}" 
+                                               Margin="5,0,2,0"/>
+                                    <TextBox Grid.Column="6" 
+                                             Text="{Binding MaxValue}" 
+                                             IsEnabled="{Binding IsSelected}" 
+                                             Margin="0,0,5,0"/>
 
-                                    <TextBlock Grid.Column="7" Text="Lépés:" VerticalAlignment="Center" Foreground="Gray" Margin="10,0,2,0"/>
-                                    <TextBox Grid.Column="8" Text="{Binding Step}" 
+                                    <TextBlock Grid.Column="7" 
+                                               Text="Lépés:" 
+                                               VerticalAlignment="Center" 
+                                               Foreground="{DynamicResource SecondaryText}" 
+                                               Margin="10,0,2,0"/>
+                                    <TextBox Grid.Column="8" 
+                                             Text="{Binding Step}" 
                                              Width="40" 
-                                             Background="#333" 
-                                             Foreground="#007ACC" 
+                                             Background="{DynamicResource TertiaryBackground}" 
+                                             Foreground="{DynamicResource AccentBrush}" 
                                              FontWeight="Bold"
-                                             BorderBrush="#555" 
+                                             BorderBrush="{DynamicResource BorderBrush}" 
                                              Padding="2"
                                              ToolTip="Ennyivel növelje a számot (pl. 1 vagy 5 vagy 10)"/>
 
@@ -89,14 +128,27 @@
             </ScrollViewer>
         </Border>
 
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button Content="Mégse" Command="{Binding CancelCommand}" 
-                    Width="100" Height="30" Margin="0,0,10,0" 
-                    Background="#444" Foreground="White"/>
+        <StackPanel Grid.Row="2" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    Margin="0,15,0,0">
+            <Button Content="Mégse" 
+                    Command="{Binding CancelCommand}" 
+                    Width="100" 
+                    Height="30" 
+                    Margin="0,0,10,0" 
+                    Background="{DynamicResource TertiaryBackground}" 
+                    Foreground="{DynamicResource PrimaryText}"
+                    BorderBrush="{DynamicResource BorderBrush}"/>
 
-            <Button Content="BEÁLLÍTÁS KÉSZ (OK)" Command="{Binding OkCommand}" 
-                    Width="150" Height="30" 
-                    Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+            <Button Content="BEÁLLÍTÁS KÉSZ (OK)" 
+                    Command="{Binding OkCommand}" 
+                    Width="150" 
+                    Height="30" 
+                    Background="{DynamicResource AccentBrush}" 
+                    Foreground="{DynamicResource PrimaryText}" 
+                    FontWeight="Bold"
+                    BorderThickness="0"/>
         </StackPanel>
     </Grid>
 </Window>

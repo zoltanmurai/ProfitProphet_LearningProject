@@ -23,6 +23,7 @@ namespace ProfitProphet.Views
         public OptimizationWindow()
         {
             InitializeComponent();
+            this.ApplyDarkTitleBar();
         }
         // Akkor hívódik meg, amikor az ablak Context-je (a ViewModel) megváltozik
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
