@@ -233,23 +233,29 @@ namespace ProfitProphet.Services
                 result.EquityCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = currentEquity });
                 result.BalanceCurve.Add(new EquityPoint { Time = currentCandle.TimestampUtc, Equity = currentBalance });
             }
-
-            // Kényszerített zárás a végén
+            // Kényszerített zárás a végén (JAVÍTOTT VERZIÓ)
             if (holdings > 0)
             {
                 double lastPrice = (double)candles.Last().Close;
                 double revenue = holdings * lastPrice;
                 double fee = CalculateFee(revenue, profile);
+
+                // 1. A PÉNZT HOZZÁADJUK
                 cash += (revenue - fee);
 
+                // 2. A NYITOTT POZÍCIÓK KEZELÉSE
                 foreach (var trade in result.Trades.Where(t => t.ExitDate == DateTime.MinValue))
                 {
-                    trade.ExitDate = candles.Last().TimestampUtc;
+                    // --- KOMMENTELTTEM (Így nem lesz nyíl a charton az utolsó gyertyán): ---
+                    // trade.ExitDate = candles.Last().TimestampUtc; 
+
+                    // az árat és a profitot beírjuk
                     trade.ExitPrice = (decimal)lastPrice;
                     trade.Profit = (decimal)((double)(trade.ExitPrice - trade.EntryPrice) * trade.Quantity);
                 }
             }
 
+            // A statisztikák számítása változatlan marad
             result.TotalProfitLoss = cash - initialCash;
             result.MaxDrawdown = maxDrawdown;
             result.TradeCount = result.Trades.Count;
