@@ -128,55 +128,108 @@ namespace ProfitProphet.ViewModels
 
             SaveCommand = new RelayCommand(_ => Save());
         }
+        //private void PopulateIndicators(IIndicatorRegistry registry)
+        //{
+        //    var list = new List<string>();
+
+        //    // A) Alapvető árfolyam adatok (Ezek mindig kellenek)
+        //    list.AddRange(new[] { "Close", "Open", "High", "Low", "Volume" });
+
+        //    // B) Lekérjük a Registry-ből az összes indikátort
+        //    if (registry != null)
+        //    {
+        //        var registeredIndicators = registry.GetAll();
+
+        //        foreach (var indicator in registeredIndicators)
+        //        {
+        //            // Itt egy kis trükk kell: 
+        //            // A BacktestService switch-case alapján tudnunk kell, 
+        //            // hogy melyik indikátornak vannak "al-vonalai".
+
+        //            string id = indicator.Id.ToUpper(); // pl. "MACD"
+
+        //            if (id == "MACD")
+        //            {
+        //                // A MACD-nek több kimenete van, ezeket külön kell felvenni,
+        //                // hogy a stratégiában ki tudd választani pl: MACD_Main > MACD_Signal
+        //                list.Add("MACD_MAIN");
+        //                list.Add("MACD_SIGNAL");
+        //                list.Add("MACD_HIST");
+        //            }
+        //            else if (id == "BB" || id == "BOLLINGER")
+        //            {
+        //                list.Add("BB_UPPER");  // Felső szalag
+        //                list.Add("BB_LOWER");  // Alsó szalag
+        //                list.Add("BB_MIDDLE"); // Középső szalag (ami valójában az SMA)
+        //            }
+        //            else
+        //            {
+        //                // Egyszerű indikátorok (RSI, SMA, EMA, CMF...)
+        //                // Csak simán a nevüket (ID) adjuk hozzá
+        //                list.Add(indicator.Id.ToUpper()); // pl. "RSI", "SMA"
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Fallback, ha nincs registry (teszteléshez)
+        //        list.AddRange(new[] { "SMA", "EMA", "RSI", "CMF", "STOCH", "STOCH_SIGNAL", "MACD_MAIN", "MACD_SIGNAL" });
+        //    }
+
+        //    AvailableIndicators = list;
+        //}
+
         private void PopulateIndicators(IIndicatorRegistry registry)
         {
             var list = new List<string>();
 
-            // A) Alapvető árfolyam adatok (Ezek mindig kellenek)
+            // A) Alapvető árfolyam adatok
             list.AddRange(new[] { "Close", "Open", "High", "Low", "Volume" });
 
-            // B) Lekérjük a Registry-ből az összes indikátort
+            // B) Indikátorok betöltése
             if (registry != null)
             {
                 var registeredIndicators = registry.GetAll();
-
                 foreach (var indicator in registeredIndicators)
                 {
-                    // Itt egy kis trükk kell: 
-                    // A BacktestService switch-case alapján tudnunk kell, 
-                    // hogy melyik indikátornak vannak "al-vonalai".
+                    string id = indicator.Id.ToUpper();
 
-                    string id = indicator.Id.ToUpper(); // pl. "MACD"
-
-                    if (id == "MACD")
+                    if (id.Contains("MACD"))
                     {
-                        // A MACD-nek több kimenete van, ezeket külön kell felvenni,
-                        // hogy a stratégiában ki tudd választani pl: MACD_Main > MACD_Signal
                         list.Add("MACD_MAIN");
                         list.Add("MACD_SIGNAL");
                         list.Add("MACD_HIST");
                     }
-                    else if (id == "BB" || id == "BOLLINGER")
+                    // JAVÍTVA: Jobb felismerés a Bollingerhez
+                    else if (id.Contains("BB") || id.Contains("BOLLINGER"))
                     {
-                        list.Add("BB_UPPER");  // Felső szalag
-                        list.Add("BB_LOWER");  // Alsó szalag
-                        list.Add("BB_MIDDLE"); // Középső szalag (ami valójában az SMA)
+                        list.Add("BB_UPPER");
+                        list.Add("BB_LOWER");
+                        list.Add("BB_MIDDLE");
+                    }
+                    else if (id.Contains("STOCH"))
+                    {
+                        list.Add("STOCH");
+                        list.Add("STOCH_SIGNAL");
                     }
                     else
                     {
-                        // Egyszerű indikátorok (RSI, SMA, EMA, CMF...)
-                        // Csak simán a nevüket (ID) adjuk hozzá
-                        list.Add(indicator.Id.ToUpper()); // pl. "RSI", "SMA"
+                        list.Add(id);
                     }
                 }
             }
             else
             {
-                // Fallback, ha nincs registry (teszteléshez)
-                list.AddRange(new[] { "SMA", "EMA", "RSI", "CMF", "STOCH", "STOCH_SIGNAL", "MACD_MAIN", "MACD_SIGNAL" });
+                list.AddRange(new[] {
+                    "SMA", "EMA", "RSI", "CMF", "CCI", "ATR", "MOMENTUM",
+                    "STOCH", "STOCH_SIGNAL",
+                    "MACD_MAIN", "MACD_SIGNAL", "MACD_HIST",
+                    "BB_UPPER", "BB_LOWER", "BB_MIDDLE"
+                });
             }
 
-            AvailableIndicators = list;
+            // Ismétlődések kiszűrése és rendezés
+            AvailableIndicators = list.Distinct().OrderBy(x => x).ToList();
         }
 
         private void Save()

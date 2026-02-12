@@ -78,32 +78,120 @@ namespace ProfitProphet.ViewModels
         {
             string prefix = isEntry ? "ENTRY" : "EXIT";
 
+            string side = "Bal";
+
+            string GetParamName(string indicatorName, int paramIndex)
+            {
+                string n = indicatorName.ToUpper();
+                if (n.Contains("BB") || n.Contains("BOLLINGER"))
+                {
+                    if (paramIndex == 2) return "Deviancia";
+                }
+                if (n.Contains("STOCH"))
+                {
+                    if (paramIndex == 1) return "%K Period";
+                    if (paramIndex == 2) return "%D Period"; // vagy Signal
+                    if (paramIndex == 3) return "Slowing";
+                }
+                if (n.Contains("MACD"))
+                {
+                    if (paramIndex == 1) return "Fast";
+                    if (paramIndex == 2) return "Slow";
+                    if (paramIndex == 3) return "Signal";
+                }
+
+                // Alapértelmezett
+                return paramIndex == 1 ? "Period" : $"Param {paramIndex}";
+            }
+            // --- BAL OLDAL ---
+            // 1. Fő Period
             if (rule.LeftPeriod > 0)
             {
+                string name = GetParamName(rule.LeftIndicatorName, 1);
                 AddParameterUI(rule, isEntry, "LeftPeriod", rule.LeftPeriod,
-                    $"{prefix} - {rule.LeftIndicatorName} (Bal): Period");
+                    $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
             }
 
-            if (rule.RightSourceType == DataSourceType.Indicator && rule.RightPeriod > 0)
+            // 2. Második Paraméter (Stoch %D, MACD Slow, BB Dev)
+            if (rule.LeftParameter2 > 0)
             {
-                AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
-                    $"{prefix} - {rule.RightIndicatorName} (Jobb): Period");
+                bool isBollinger = rule.LeftIndicatorName.ToUpper().Contains("BB");
+                string name = GetParamName(rule.LeftIndicatorName, 2);
+
+                AddParameterUI(rule, isEntry, "LeftParameter2", rule.LeftParameter2,
+                    $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}",
+                    isDecimal: isBollinger); // Csak a Bollinger tizedes!
+            }
+
+            // 3. Harmadik Paraméter (Stoch Slowing, MACD Signal)
+            if (rule.LeftParameter3 > 0)
+            {
+                string name = GetParamName(rule.LeftIndicatorName, 3);
+                AddParameterUI(rule, isEntry, "LeftParameter3", rule.LeftParameter3,
+                    $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
+            }
+
+            // --- JOBB OLDAL (Ha indikátor) ---
+            if (rule.RightSourceType == DataSourceType.Indicator)
+            {
+                side = "Jobb";
+
+                if (rule.RightPeriod > 0)
+                {
+                    string name = GetParamName(rule.RightIndicatorName, 1);
+                    AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
+                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+                }
+
+                if (rule.RightParameter2 > 0)
+                {
+                    bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
+                    string name = GetParamName(rule.RightIndicatorName, 2);
+                    AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
+                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
+                }
+
+                if (rule.RightParameter3 > 0)
+                {
+                    string name = GetParamName(rule.RightIndicatorName, 3);
+                    AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
+                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+                }
             }
 
             if (rule.RightSourceType == DataSourceType.Value)
             {
                 AddParameterUI(rule, isEntry, "RightValue", rule.RightValue,
-                    $"{prefix} - {rule.LeftIndicatorName} vs Fix Érték");
+                    $"{prefix} - {rule.LeftIndicatorName} vs Fix Érték", isDecimal: true);
             }
         }
 
-        private void AddParameterUI(StrategyRule rule, bool isEntry, string paramName, double currentValue, string displayName)
+        private void AddParameterUI(StrategyRule rule, bool isEntry, string paramName, double currentValue, string displayName, bool isDecimal)
         {
-            // Alapértelmezett tartományok (pl. +/- 50%)
-            int defaultMin = (int)Math.Max(1, Math.Floor(currentValue * 0.5));
-            int defaultMax = (int)Math.Ceiling(currentValue * 1.5);
+            double min, max, step;
 
-            if (defaultMax <= defaultMin) defaultMax = defaultMin + 5;
+            if (isDecimal)
+            {
+                // TIZEDES LOGIKA (pl. Bollinger Deviancia: 2.0 -> 1.0 - 3.0, lépés 0.1)
+                // Vagy ha az érték nagyon kicsi (0.001), akkor finomabb lépés kell
+
+                step = 0.1;
+                if (currentValue < 1.0 && currentValue > 0) step = 0.01; // Finomhangolás kis számokhoz
+
+                min = Math.Max(0.1, Math.Round(currentValue * 0.5, 1));
+                max = Math.Round(currentValue * 1.5, 1);
+
+                if (max <= min) max = min + 2.0;
+            }
+            else
+            {
+                // EGÉSZ SZÁM LOGIKA (pl. Period: 14 -> 7 - 21, lépés 1)
+                step = 1;
+                min = Math.Max(1, Math.Floor(currentValue * 0.5));
+                max = Math.Ceiling(currentValue * 1.5);
+
+                if (max <= min) max = min + 10;
+            }
 
             AvailableParameters.Add(new OptimizationParameterUI
             {
@@ -111,10 +199,14 @@ namespace ProfitProphet.ViewModels
                 Rule = rule,
                 ParameterName = paramName,
                 IsEntrySide = isEntry,
-                IsSelected = false, // Alapból nincs kijelölve
+                IsSelected = false,
+
                 CurrentValue = currentValue,
-                MinValue = defaultMin,
-                MaxValue = defaultMax
+
+                // FONTOS: Az OptimizationParameterUI-ban a Min/Max/Step típusának double-nek kell lennie!
+                MinValue = min,
+                MaxValue = max,
+                Step = step
             });
         }
 

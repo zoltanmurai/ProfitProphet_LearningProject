@@ -122,6 +122,7 @@ namespace ProfitProphet.Models.Strategies
 
                     OnPropertyChanged(nameof(ShowRightParam2));
                     OnPropertyChanged(nameof(ShowRightParam3));
+
                 }
             }
         }
@@ -235,45 +236,6 @@ namespace ProfitProphet.Models.Strategies
             if (AllowedRightIndicators == null) AllowedRightIndicators = new ObservableCollection<string>();
             AllowedRightIndicators.Clear();
 
-            //switch (LeftIndicatorName)
-            //{
-            //    case "CMF":
-            //        AllowedRightIndicators.Add("CMF_MA");
-            //        if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "CMF_MA";
-            //        break;
-
-            //    case "RSI":
-            //        AllowedRightIndicators.Add("RSI_MA");
-            //        AllowedRightIndicators.Add("RSI"); // Önmagával is összevethető (pl. másik periódus)
-            //        break;
-
-            //    case "STOCH":
-            //        AllowedRightIndicators.Add("Stoch_Signal");
-            //        break;
-            //    case "MACD":
-            //        AllowedRightIndicators.Add("MACD_SIGNAL");
-            //        AllowedRightIndicators.Add("MACD_MAIN");
-            //        break;
-            //    case "Close": // Árfolyam
-            //    case "Open":
-            //    case "High":
-            //    case "Low":
-            //        AllowedRightIndicators.Add("SMA");
-            //        AllowedRightIndicators.Add("EMA");
-            //        //AllowedRightIndicators.Add("BollingerUpper");
-            //        //AllowedRightIndicators.Add("BollingerLower");
-            //        AllowedRightIndicators.Add("BB_UPPER");
-            //        AllowedRightIndicators.Add("BB_LOWER");
-            //        AllowedRightIndicators.Add("BB_MIDDLE");
-            //        if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "SMA";
-            //        break;
-
-            //    default:
-            //        AllowedRightIndicators.Add("SMA");
-            //        AllowedRightIndicators.Add("EMA");
-            //        break;
-            //}
-            // Null ellenőrzés
             if (string.IsNullOrEmpty(LeftIndicatorName)) return;
 
             string left = LeftIndicatorName.ToUpper();
@@ -282,33 +244,50 @@ namespace ProfitProphet.Models.Strategies
             if (left.Contains("CMF"))
             {
                 AllowedRightIndicators.Add("CMF_MA");
-                //AllowedRightIndicators.Add("Value"); // Ha 0-hoz akarod nézni
+                AllowedRightIndicators.Add("CMF"); // Önmagával való összehasonlítás (pl. Shift)
                 if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "CMF_MA";
             }
             // 2. RSI
             else if (left.Contains("RSI"))
             {
-                AllowedRightIndicators.Add("RSI_MA"); // Ha van ilyen
-                //AllowedRightIndicators.Add("SMA");    // Ha mozgóátlagot akarsz rá
-                AllowedRightIndicators.Add("RSI");    // RSI vs RSI
-                //AllowedRightIndicators.Add("Value");  // 30 / 70 szintekhez
+                AllowedRightIndicators.Add("RSI_MA");
+                AllowedRightIndicators.Add("RSI");
             }
             // 3. STOCHASTIC
             else if (left.Contains("STOCH"))
             {
                 AllowedRightIndicators.Add("STOCH_SIGNAL");
-                //AllowedRightIndicators.Add("Value"); // 20 / 80 szintekhez
+                AllowedRightIndicators.Add("STOCH");
             }
-            // 4. MACD (Ez volt a kritikus pont!)
-            // A .Contains("MACD") elkapja a "MACD", "MACD_MAIN", "MACD_SIGNAL" neveket is
+            // 4. MACD
             else if (left.Contains("MACD"))
             {
                 AllowedRightIndicators.Add("MACD_SIGNAL");
                 AllowedRightIndicators.Add("MACD_MAIN");
                 AllowedRightIndicators.Add("MACD_HIST");
-                //AllowedRightIndicators.Add("Value"); // 0 szinthez
             }
-            // 5. ÁRFOLYAM (Price)
+            // 5. BOLLINGER SZALAGOK (BAL OLDALON) -> JOBB OLDALON ÁRFOLYAM KELL
+            else if (left.Contains("BB_") || left.Contains("BOLLINGER"))
+            {
+                AllowedRightIndicators.Add("Close");
+                AllowedRightIndicators.Add("Low");
+                AllowedRightIndicators.Add("High");
+                AllowedRightIndicators.Add("Open");
+                AllowedRightIndicators.Add("SMA"); // Esetleg mozgóátlaghoz képest
+
+                // Alapértelmezés
+                if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "Close";
+            }
+            // 6. MOZGÓÁTLAGOK (SMA, EMA) -> JOBB OLDALON ÁR VAGY MÁSIK MA
+            else if (left.StartsWith("SMA") || left.StartsWith("EMA"))
+            {
+                AllowedRightIndicators.Add("Close");
+                AllowedRightIndicators.Add("SMA"); // Keresztezésekhez (pl. SMA 50 vs SMA 200)
+                AllowedRightIndicators.Add("EMA");
+
+                if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "Close";
+            }
+            // 7. ÁRFOLYAM (Price) -> JOBB OLDALON BÁRMI
             else if (left == "CLOSE" || left == "OPEN" || left == "HIGH" || left == "LOW")
             {
                 AllowedRightIndicators.Add("SMA");
@@ -316,15 +295,19 @@ namespace ProfitProphet.Models.Strategies
                 AllowedRightIndicators.Add("BB_UPPER");
                 AllowedRightIndicators.Add("BB_LOWER");
                 AllowedRightIndicators.Add("BB_MIDDLE");
+                // Lehessen árfolyamot árfolyamhoz is (pl. Close > Open)
+                AllowedRightIndicators.Add("Open");
+                AllowedRightIndicators.Add("High");
+                AllowedRightIndicators.Add("Low");
 
                 if (string.IsNullOrEmpty(RightIndicatorName)) RightIndicatorName = "SMA";
             }
-            // 6. EGYÉB (Fallback)
+            // 8. EGYÉB (Fallback)
             else
             {
                 AllowedRightIndicators.Add("SMA");
                 AllowedRightIndicators.Add("EMA");
-                //AllowedRightIndicators.Add("Value");
+                AllowedRightIndicators.Add("Close"); // Biztonsági tartalék
             }
 
             OnPropertyChanged(nameof(AllowedRightIndicators));
