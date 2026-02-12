@@ -7,6 +7,7 @@ using ProfitProphet.ViewModels;
 using ProfitProphet.Views;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,7 +25,43 @@ namespace ProfitProphet
             InitializeComponent();
             DataContext = viewModel;
             this.ApplyDarkTitleBar();
+            this.Closing += MainWindow_Closing;
         }
+        private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Összegyûjtjük az összes ablakot, ami nem a MainWindow
+            var childWindows = Application.Current.Windows
+                .OfType<Window>()
+                .Where(w => w != this && w.IsLoaded)
+                .ToList();
+
+            // Bezárjuk õket
+            foreach (var window in childWindows)
+            {
+                window.Close();
+            }
+        }
+
+        //private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        //{
+        //    // Ellenõrizzük, van-e más nyitott ablak
+        //    var hasOpenChildWindows = Application.Current.Windows
+        //        .OfType<Window>()
+        //        .Any(w => w != this && w.IsVisible);
+
+        //    if (hasOpenChildWindows)
+        //    {
+        //        // Megakadályozzuk a bezárást
+        //        e.Cancel = true;
+
+        //        // Figyelmeztetés a felhasználónak
+        //        MessageBox.Show(
+        //            "Elõször zárd be a nyitott ablakokat!",
+        //            "Figyelmeztetés",
+        //            MessageBoxButton.OK,
+        //            MessageBoxImage.Warning);
+        //    }
+        //}
 
         private void WatchlistListBox_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {

@@ -34,6 +34,7 @@ namespace ProfitProphet.ViewModels
         private CancellationTokenSource _cts;
 
         // STATIKUS MEZŐK A MEMÓRIA MEGŐRZÉSÉHEZ
+        private static string _cachedContextKey;
         private static List<OptimizationParameterUI> _savedOptimizerState;
         private static bool _cachedUseOptimization = false;
         private static List<OptimizationResult> _cachedOptimizationResults;
@@ -54,8 +55,9 @@ namespace ProfitProphet.ViewModels
             get => _currentProfile;
             set 
             {
-                //_currentProfile = value; 
-                //OnPropertyChanged(); 
+                //_currentProfile = value;
+                //OnPropertyChanged();
+
                 if (_currentProfile != value)
                 {
                     _currentProfile = value;
@@ -69,7 +71,21 @@ namespace ProfitProphet.ViewModels
                     {
                         IndicatorTestValues = GetStrategyDetails(_currentProfile);
                     }
+
+                    //if (!string.IsNullOrEmpty(_currentProfile.LastOptimizationReport))
+                    //{
+                    //    IndicatorTestValues = _currentProfile.LastOptimizationReport;
+                    //}
+
+                    //else
+                    //{
+                    //    IndicatorTestValues = GetStrategyDetails(_currentProfile);
+                    //}
                 }
+                //else
+                //{
+                //    IndicatorTestValues = string.Empty;
+                //}
             }
         }
 
@@ -99,6 +115,13 @@ namespace ProfitProphet.ViewModels
         {
             get => _isVisualMode;
             set { _isVisualMode = value; OnPropertyChanged(); }
+        }
+
+        private string GetCurrentContextKey()
+        {
+            // Egyedi azonosító: Szimbólum + Stratégia Neve (vagy ID-ja)
+            if (CurrentProfile == null) return null;
+            return $"{Symbol}_{CurrentProfile.Name}";
         }
 
         public ICommand RunCommand { get; }
@@ -247,6 +270,59 @@ namespace ProfitProphet.ViewModels
 
             OptimizationResults = new ObservableCollection<OptimizationResult>();
 
+            if (_candles.Any())
+            {
+                Symbol = _candles.First().Symbol;
+                StartDate = _candles.Min(c => c.TimestampUtc);
+                EndDate = _candles.Max(c => c.TimestampUtc);
+            }
+            string currentKey = GetCurrentContextKey(); // Pl: "MOL_RSI_Strategy"
+
+            // Ha a mentett kulcs megegyezik a mostanival, akkor visszatöltünk
+            if (_cachedContextKey == currentKey)
+            {
+                UseOptimization = _cachedUseOptimization;
+
+                // Paraméterek visszatöltése... (maradhat a kódod)
+                if (_savedOptimizerState != null && _savedOptimizerState.Any())
+                {
+                    // ... (a te eredeti ciklusod) ...
+                }
+
+                // Eredmények visszatöltése...
+                if (_cachedOptimizationResults != null && _cachedOptimizationResults.Any())
+                {
+                    foreach (var res in _cachedOptimizationResults) OptimizationResults.Add(res);
+                    if (_cachedSelectedIndex >= 0 && _cachedSelectedIndex < OptimizationResults.Count)
+                        SelectedResult = OptimizationResults[_cachedSelectedIndex];
+                }
+                else if (_cachedSingleResult != null)
+                {
+                    Result = _cachedSingleResult;
+                    UpdateChart(_cachedSingleResult);
+                }
+
+                // Log szöveg visszatöltése
+                if (!string.IsNullOrEmpty(_cachedLogText))
+                {
+                    IndicatorTestValues = _cachedLogText;
+                }
+            }
+            else
+            {
+                // --- KÜLÖNBÖZŐ SZIMBÓLUM VAGY STRATÉGIA -> CACHE TÖRLÉSE ---
+                ClearStaticCache(); // Takarítunk, hogy ne maradjon szemét
+
+                // Ha nincs cache, nézzük meg, van-e mentett riport a profilban
+                if (!string.IsNullOrEmpty(CurrentProfile.LastOptimizationReport))
+                {
+                    IndicatorTestValues = CurrentProfile.LastOptimizationReport;
+                }
+                else
+                {
+                    IndicatorTestValues = GetStrategyDetails(CurrentProfile);
+                }
+            }
             // ==============================================================================
             // 1. PARAMÉTEREK VISSZAÁLLÍTÁSA (INDEX ALAPJÁN - JAVÍTOTT!)
             // ==============================================================================
@@ -331,6 +407,16 @@ namespace ProfitProphet.ViewModels
             {
                 SelectedResult = OptimizationResults.First();
             }
+        }
+        private static void ClearStaticCache()
+        {
+            _cachedContextKey = null;
+            _savedOptimizerState = null;
+            _cachedUseOptimization = false;
+            _cachedOptimizationResults = null;
+            _cachedSingleResult = null;
+            _cachedLogText = null;
+            _cachedSelectedIndex = -1;
         }
 
         private void OpenStrategyEditor(object obj)
@@ -464,7 +550,7 @@ namespace ProfitProphet.ViewModels
                             realTimeHandler
                         );
 
-                        // VÉGSŐ FRISSÍTÉS (UI szálon)
+                        // --- UI FRISSÍTÉS ÉS CACHE MENTÉS ---
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             uiTimer.Stop();
@@ -475,7 +561,7 @@ namespace ProfitProphet.ViewModels
                                 results.Add(res);
                             }
 
-                            // RENDEZÉS ÉS VÉGLEGESÍTÉS
+                            // Eredmények véglegesítése (Top 500)
                             OptimizationResults.Clear();
                             var sortedResults = results.OrderByDescending(r => r.Score).Take(500).ToList();
 
@@ -484,28 +570,22 @@ namespace ProfitProphet.ViewModels
                                 OptimizationResults.Add(res);
                             }
 
+                            // --- CACHE MENTÉS (Optimalizálás) ---
+                            _cachedContextKey = GetCurrentContextKey(); // <--- FONTOS!
                             _cachedOptimizationResults = OptimizationResults.ToList();
+                            // ------------------------------------
 
-                            // Most már kiválaszthatjuk a legjobbet
+                            // kiválasztjuk a legjobbet
                             if (OptimizationResults.Any())
                             {
                                 SelectedResult = OptimizationResults.First();
 
                                 var bestResult = SelectedResult;
-                                //stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:C0}\n" +
-                                //        $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n\n";
-
-                                //var usCulture = CultureInfo.GetCultureInfo("en-US");
-
-                                //stats = $"OPTIMALIZÁLT EREDMÉNY:\n" +
-                                //               $"Profit: {bestResult.Profit.ToString("C0", usCulture)}\n" +
-                                //               $"Trades: {bestResult.TradeCount}\n" +
-                                //               $"PF: {bestResult.ProfitFactor.ToString("F2", usCulture)}\n\n";
 
                                 //stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:N0}\n" +
                                 //        $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n\n";
                                 // 1. MENTÉS ÉS ALKALMAZÁS LOGIKA
-                                // Ha az OptimizerService elmentette a profilt az eredménybe:
+                                // Ha van optimalizált profil, mentsük el és írjuk ki
                                 if (bestResult.OptimizedProfile != null)
                                 {
                                     CurrentProfile.EntryGroups = bestResult.OptimizedProfile.EntryGroups;
@@ -526,30 +606,15 @@ namespace ProfitProphet.ViewModels
                                     }
 
                                     string paramsText = GetStrategyDetails(CurrentProfile);
-                                    IndicatorTestValues = stats + paramsText;
 
+                                    // UI és Profil frissítése
+                                    IndicatorTestValues = stats + paramsText;
+                                    CurrentProfile.LastOptimizationReport = IndicatorTestValues; // Mentsük a profilba is!
                                     _settingsService.SaveProfile(CurrentProfile);
 
-                                    // Frissítjük a log cache-t is
+                                    // Log cache frissítése
                                     _cachedLogText = IndicatorTestValues;
                                 }
-
-                                // 2. SZÖVEG GENERÁLÁS
-                                //string stats = $"OPTIMALIZÁLT EREDMÉNY:\nProfit: {bestResult.Profit:N0}\n" +
-                                //               $"Trades: {bestResult.TradeCount}\nPF: {bestResult.ProfitFactor:F2}\n";
-
-                                //if (bestResult.OptimizedProfile != null)
-                                //{
-                                //    stats += "(Paraméterek mentve!)\n\n";
-                                //}
-                                //else
-                                //{
-                                //    stats += "\n";
-                                //}
-
-                                //string paramsText = GetStrategyDetails(CurrentProfile);
-                                //IndicatorTestValues = stats + paramsText;
-                                //_cachedLogText = IndicatorTestValues;
                             }
                         });
                     }
@@ -562,14 +627,21 @@ namespace ProfitProphet.ViewModels
                         var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
                         progressIndicator.Report(100);
 
+                        // --- UI FRISSÍTÉS ÉS CACHE MENTÉS ---
                         Application.Current.Dispatcher.Invoke(() =>
                         {
                             uiTimer.Stop();
                             Result = res;
                             UpdateChart(res);
-                            IndicatorTestValues = $"Egyedi futtatás kész. Profit Faktor: {res.ProfitFactor:N2}";
+
+                            string message = $"Egyedi futtatás kész. Profit Faktor: {res.ProfitFactor:N2}";
+                            IndicatorTestValues = message;
+
+                            _cachedContextKey = GetCurrentContextKey();
                             _cachedSingleResult = res;
                             _cachedLogText = IndicatorTestValues;
+                            _cachedOptimizationResults = null; 
+                                                               
                         });
                     }
 
@@ -676,6 +748,7 @@ namespace ProfitProphet.ViewModels
                         })
                         .ToList();
 
+                    _cachedContextKey = GetCurrentContextKey();
                     UseOptimization = true;
                 }
                 win.Close();

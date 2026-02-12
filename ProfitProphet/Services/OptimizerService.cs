@@ -62,14 +62,19 @@ namespace ProfitProphet.Services
                 try
                 {
                     System.Diagnostics.Debug.WriteLine($"Starting parallel processing at {DateTime.Now}");
+
                     Parallel.ForEach(combinations, options, (combo, state) =>
                     {
-                        // HELYES CANCELLATION
-                        token.ThrowIfCancellationRequested();
+                        // 1. CANCELLATION CHECK - Kivétel dobás HELYETT return
+                        if (token.IsCancellationRequested)
+                        {
+                            state.Stop(); // Jelezzük a Parallel.ForEach-nek: ne indítson új iterációkat
+                            return;       // Kilépünk ebből az iterációból
+                        }
 
                         try
                         {
-                            // 1. Létrehozzuk a munkapéldányt (ez a meglévő manuális másolóval történik, ami gyors)
+                            // 1. Létrehozzuk a munkapéldányt
                             var testProfile = DeepCopyProfile(profile);
 
                             // 2. Beállítjuk a paramétereket
@@ -78,8 +83,22 @@ namespace ProfitProphet.Services
                                 ApplyValue(testProfile, parameters[i], combo[i]);
                             }
 
+                            // Munka közben is ellenőrizzük (ha hosszú a backtest)
+                            if (token.IsCancellationRequested)
+                            {
+                                state.Stop();
+                                return;
+                            }
+
                             // 3. Futtatjuk a tesztet
                             var res = _backtestService.RunBacktest(candles, testProfile);
+
+                            // Újabb ellenőrzés az eredmény feldolgozása előtt
+                            if (token.IsCancellationRequested)
+                            {
+                                state.Stop();
+                                return;
+                            }
 
                             if (visualMode || res.TradeCount > 0)
                             {
@@ -99,39 +118,47 @@ namespace ProfitProphet.Services
                                     return $"{name}: {combo[idx]}";
                                 }));
 
-                                var optRes = new OptimizationResult
-                                {
-                                    Values = combo,
-                                    ParameterSummary = paramSummary,
-                                    Score = res.TotalProfitLoss,
-                                    Profit = res.TotalProfitLoss,
-                                    Drawdown = res.MaxDrawdown,
-                                    TradeCount = res.TradeCount,
-                                    ProfitFactor = res.ProfitFactor,
-                                    EquityCurve = visualMode ? res.EquityCurve : null,
-                                    BalanceCurve = visualMode ? res.BalanceCurve : null,
-                                    Trades = visualMode ? res.Trades : null,
-                                    OptimizedProfile = testProfile.DeepClone()
-                                };
+                                double currentProfit = res.TotalProfitLoss;
 
-                                results.Add(optRes);
-
-                                // Realtime report
-                                if (visualMode && realtimeHandler != null)
+                                if (currentProfit > 0 || (visualMode && results.Count < 5))
                                 {
-                                    bool isNewBest = false;
-                                    lock (syncLock)
+                                    var optRes = new OptimizationResult
                                     {
-                                        if (optRes.Score > bestScoreSoFar)
-                                        {
-                                            bestScoreSoFar = optRes.Score;
-                                            isNewBest = true;
-                                        }
+                                        Values = combo,
+                                        ParameterSummary = paramSummary,
+                                        Score = res.TotalProfitLoss,
+                                        Profit = res.TotalProfitLoss,
+                                        Drawdown = res.MaxDrawdown,
+                                        TradeCount = res.TradeCount,
+                                        ProfitFactor = res.ProfitFactor,
+                                        EquityCurve = visualMode ? res.EquityCurve : null,
+                                        BalanceCurve = visualMode ? res.BalanceCurve : null,
+                                        Trades = visualMode ? res.Trades : null,
+                                        OptimizedProfile = testProfile.DeepClone()
+                                    };
+
+                                    lock (results)
+                                    {
+                                        results.Add(optRes);
                                     }
 
-                                    if (isNewBest || optRes.Profit > 0 || results.Count < 5)
+                                    // Realtime report
+                                    if (visualMode && realtimeHandler != null)
                                     {
-                                        realtimeHandler.Report(optRes);
+                                        bool isNewBest = false;
+                                        lock (syncLock)
+                                        {
+                                            if (optRes.Score > bestScoreSoFar)
+                                            {
+                                                bestScoreSoFar = optRes.Score;
+                                                isNewBest = true;
+                                            }
+                                        }
+
+                                        if (isNewBest || optRes.Profit > 0 || results.Count < 5)
+                                        {
+                                            realtimeHandler.Report(optRes);
+                                        }
                                     }
                                 }
                             }
@@ -146,36 +173,33 @@ namespace ProfitProphet.Services
                         catch (Exception ex)
                         {
                             System.Diagnostics.Debug.WriteLine($"Error in optimization iteration: {ex.Message}");
+                            // Egyéb hibákat csak logoljuk, ne állítsuk le az egész optimalizációt
                         }
                     });
+
+                    System.Diagnostics.Debug.WriteLine($"Parallel processing completed at {DateTime.Now}");
                 }
                 catch (OperationCanceledException)
                 {
-                    System.Diagnostics.Debug.WriteLine("Optimization cancelled by user");
-                }
-                catch (AggregateException ae)
-                {
-                    foreach (var inner in ae.InnerExceptions)
-                    {
-                        if (inner is OperationCanceledException)
-                        {
-                            System.Diagnostics.Debug.WriteLine("Optimization cancelled");
-                        }
-                        else
-                        {
-                            System.Diagnostics.Debug.WriteLine($"Optimization error: {inner.Message}");
-                            System.Diagnostics.Debug.WriteLine($"Stack trace: {inner.StackTrace}");
-                            throw; // Dobjuk tovább!
-                        }
-                    }
+                    // Ez csak akkor fut, ha a ParallelOptions dobta a kivételt (indulás előtt)
+                    System.Diagnostics.Debug.WriteLine("Optimization cancelled before start");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Unexpected error in optimization: {ex.Message}");
                     System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-                    throw; // Dobjuk tovább a hívónak!
+                    throw; // Valódi hibát továbbdobjuk
+                }
+
+                // 2. A CIKLUS UTÁN ellenőrizzük és dobjuk a kivételt EGYETLEN EGYSZER
+                // Így a ViewModel tudni fogja, hogy stop volt
+                if (token.IsCancellationRequested)
+                {
+                    System.Diagnostics.Debug.WriteLine("Optimization was cancelled - throwing OperationCanceledException");
+                    throw new OperationCanceledException(token);
                 }
             }, token);
+
 
             return results.OrderByDescending(r => r.Score).ToList();
         }
