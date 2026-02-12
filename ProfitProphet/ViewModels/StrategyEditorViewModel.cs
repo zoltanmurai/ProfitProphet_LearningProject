@@ -1,12 +1,18 @@
-﻿using ProfitProphet.Models.Strategies; // StrategyGroup, StrategyProfile
+﻿using Microsoft.Win32;
+using ProfitProphet.Models.Strategies; // StrategyGroup, StrategyProfile
+using ProfitProphet.Services.Indicators;
 using ProfitProphet.ViewModels.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Windows;
 using System.Windows.Input;
-using ProfitProphet.Services.Indicators;
+
 
 namespace ProfitProphet.ViewModels
 {
@@ -41,10 +47,13 @@ namespace ProfitProphet.ViewModels
 
         // Szabály műveletek (Csoporton belül)
         public ICommand AddRuleToGroupCommand { get; }
-        public ICommand RemoveRuleCommand { get; } // Ez trükkös lesz
+        public ICommand RemoveRuleCommand { get; } 
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
+        public ICommand SaveGroupCommand { get; }
+        public ICommand LoadEntryGroupCommand { get; } 
+        public ICommand LoadExitGroupCommand { get; } 
         public event Action OnRequestClose;
 
         public StrategyEditorViewModel(StrategyProfile profile, IIndicatorRegistry registry)
@@ -68,6 +77,11 @@ namespace ProfitProphet.ViewModels
             // 1. Csoport hozzáadása (Üres csoport létrehozása)
             AddEntryGroupCommand = new RelayCommand(_ => EntryGroups.Add(new StrategyGroup { Name = "Új Vételi Setup" }));
             AddExitGroupCommand = new RelayCommand(_ => ExitGroups.Add(new StrategyGroup { Name = "Új Eladási Setup" }));
+
+            SaveGroupCommand = new RelayCommand(param => SaveGroup(param as StrategyGroup));
+
+            LoadEntryGroupCommand = new RelayCommand(_ => LoadGroup(true));  // True = Entry
+            LoadExitGroupCommand = new RelayCommand(_ => LoadGroup(false));
 
             // 2. Csoport törlése
             //RemoveEntryGroupCommand = new RelayCommand(g => EntryGroups.Remove(g as StrategyGroup));
@@ -128,6 +142,75 @@ namespace ProfitProphet.ViewModels
 
             SaveCommand = new RelayCommand(_ => Save());
         }
+
+        private void SaveGroup(StrategyGroup group)
+        {
+            if (group == null) return;
+
+            // Fájl mentése ablak
+            var dlg = new SaveFileDialog
+            {
+                FileName = group.Name.Replace(" ", "_") + ".json", // Alapértelmezett név
+                DefaultExt = ".json",
+                Filter = "Strategy Setup (.json)|*.json",
+                Title = "Setup (Kártya) Mentése"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    // JSON szerializálás (formázva, hogy olvasható legyen)
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    string jsonString = JsonSerializer.Serialize(group, options);
+
+                    File.WriteAllText(dlg.FileName, jsonString);
+                    MessageBox.Show("Sikeres mentés!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba a mentés során: {ex.Message}", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        // --- BETÖLTÉS LOGIKA ---
+        private void LoadGroup(bool isEntry)
+        {
+            var dlg = new OpenFileDialog
+            {
+                DefaultExt = ".json",
+                Filter = "Strategy Setup (.json)|*.json",
+                Title = isEntry ? "Vételi Setup Betöltése" : "Eladási Setup Betöltése"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    string jsonString = File.ReadAllText(dlg.FileName);
+                    var loadedGroup = JsonSerializer.Deserialize<StrategyGroup>(jsonString);
+
+                    if (loadedGroup != null)
+                    {
+                        // Hozzáadjuk a megfelelő listához
+                        if (isEntry)
+                        {
+                            EntryGroups.Add(loadedGroup);
+                        }
+                        else
+                        {
+                            ExitGroups.Add(loadedGroup);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Hiba a betöltés során: {ex.Message}\nEllenőrizd, hogy megfelelő fájlt választottál-e!", "Hiba", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
         //private void PopulateIndicators(IIndicatorRegistry registry)
         //{
         //    var list = new List<string>();
