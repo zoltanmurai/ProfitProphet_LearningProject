@@ -408,7 +408,7 @@ namespace ProfitProphet.Services
                         FontSize = 24,              // Méret
 
                         Stroke = OxyColors.Transparent,
-                        TextColor = OxyColors.LimeGreen, // Zöld szín
+                        TextColor = OxyColors.Gold, // Zöld szín
                         FontWeight = OxyPlot.FontWeights.Bold,
 
                         // IGAZÍTÁS: A pont legyen a szöveg TETEJE (tehát a nyíl a pont alatt lóg)
@@ -441,7 +441,7 @@ namespace ProfitProphet.Services
                         FontSize = 24,
 
                         Stroke = OxyColors.Transparent,
-                        TextColor = OxyColors.Red,   // Piros szín
+                        TextColor = OxyColors.Blue,   // Piros szín
                         FontWeight = OxyPlot.FontWeights.Bold,
 
                         // IGAZÍTÁS: A pont legyen a szöveg ALJA (tehát a nyíl a pont fölött ül)
