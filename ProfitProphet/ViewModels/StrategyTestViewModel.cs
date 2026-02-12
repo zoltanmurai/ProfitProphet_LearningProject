@@ -247,15 +247,13 @@ namespace ProfitProphet.ViewModels
         string stats = "";
 
         public StrategyTestViewModel(
-            BacktestService backtestService,
-            IStrategySettingsService strategyService,
-            List<Candle> candles,
-            StrategyProfile profile,
-            OptimizerService optimizerService,
-            IIndicatorRegistry indicatorRegistry)
+    BacktestService backtestService,
+    IStrategySettingsService strategyService,
+    List<Candle> candles,
+    StrategyProfile profile,
+    OptimizerService optimizerService,
+    IIndicatorRegistry indicatorRegistry)
         {
-            // Visszatöltjük a checkbox állapotát
-            UseOptimization = _cachedUseOptimization;
 
             _backtestService = backtestService ?? throw new ArgumentNullException(nameof(backtestService));
             _strategyService = strategyService ?? throw new ArgumentNullException(nameof(strategyService));
@@ -265,17 +263,17 @@ namespace ProfitProphet.ViewModels
             _settingsService = new Services.StrategySettingsService();
             CurrentProfile = profile ?? throw new ArgumentNullException(nameof(profile));
 
-            OpenOptimizerCommand = new RelayCommand(o => OpenOptimizer());
-            ApplyResultCommand = new RelayCommand(obj => ApplyResult(obj));
-
             OptimizationResults = new ObservableCollection<OptimizationResult>();
 
+            // 2. SZIMBÓLUM ÉS DÁTUMOK BEÁLLÍTÁSA (Csak egyszer, az elején)
             if (_candles.Any())
             {
                 Symbol = _candles.First().Symbol;
                 StartDate = _candles.Min(c => c.TimestampUtc);
                 EndDate = _candles.Max(c => c.TimestampUtc);
             }
+
+            // 3. CACHE KEZELÉS
             string currentKey = GetCurrentContextKey(); // Pl: "MOL_RSI_Strategy"
 
             // Ha a mentett kulcs megegyezik a mostanival, akkor visszatöltünk
@@ -283,18 +281,64 @@ namespace ProfitProphet.ViewModels
             {
                 UseOptimization = _cachedUseOptimization;
 
-                // Paraméterek visszatöltése... (maradhat a kódod)
+                // A) PARAMÉTEREK VISSZATÖLTÉSE (A JAVÍTOTT, BIZTONSÁGOS LOGIKA)
                 if (_savedOptimizerState != null && _savedOptimizerState.Any())
                 {
-                    // ... (a te eredeti ciklusod) ...
+                    var tempVm = new OptimizationViewModel(CurrentProfile);
+
+                    for (int i = 0; i < tempVm.AvailableParameters.Count; i++)
+                    {
+                        if (i < _savedOptimizerState.Count)
+                        {
+                            var saved = _savedOptimizerState[i];
+                            var current = tempVm.AvailableParameters[i];
+
+                            if (saved.Name == current.Name)
+                            {
+                                current.IsSelected = saved.IsSelected;
+                                current.MinValue = saved.MinValue;
+                                current.MaxValue = saved.MaxValue;
+                                current.Step = saved.Step;
+                            }
+                            else
+                            {
+                                current.IsSelected = false;
+                            }
+                        }
+                    }
+
+                    // Lista újraépítése a motor számára
+                    _currentOptimizationParams = tempVm.AvailableParameters
+                        .Where(p => p.IsSelected)
+                        .Select(p => new OptimizationParameter
+                        {
+                            Rule = p.Rule,
+                            ParameterName = p.ParameterName,
+                            MinValue = p.MinValue,
+                            MaxValue = p.MaxValue,
+                            Step = p.Step
+                        }).ToList();
+
+                    if (_currentOptimizationParams.Any())
+                    {
+                        UseOptimization = true;
+                        UpdateOptimizationStatus();
+                    }
                 }
 
-                // Eredmények visszatöltése...
+                // B) EREDMÉNYEK VISSZATÖLTÉSE
                 if (_cachedOptimizationResults != null && _cachedOptimizationResults.Any())
                 {
                     foreach (var res in _cachedOptimizationResults) OptimizationResults.Add(res);
+
                     if (_cachedSelectedIndex >= 0 && _cachedSelectedIndex < OptimizationResults.Count)
+                    {
                         SelectedResult = OptimizationResults[_cachedSelectedIndex];
+                    }
+                    else
+                    {
+                        SelectedResult = OptimizationResults.First();
+                    }
                 }
                 else if (_cachedSingleResult != null)
                 {
@@ -302,7 +346,7 @@ namespace ProfitProphet.ViewModels
                     UpdateChart(_cachedSingleResult);
                 }
 
-                // Log szöveg visszatöltése
+                // C) LOG VISSZATÖLTÉSE
                 if (!string.IsNullOrEmpty(_cachedLogText))
                 {
                     IndicatorTestValues = _cachedLogText;
@@ -310,10 +354,10 @@ namespace ProfitProphet.ViewModels
             }
             else
             {
-                // --- KÜLÖNBÖZŐ SZIMBÓLUM VAGY STRATÉGIA -> CACHE TÖRLÉSE ---
-                ClearStaticCache(); // Takarítunk, hogy ne maradjon szemét
+                // --- KÜLÖNBÖZŐ KULCS -> CACHE TÖRLÉSE ---
+                ClearStaticCache();
 
-                // Ha nincs cache, nézzük meg, van-e mentett riport a profilban
+                // Alap riport betöltése a profilból
                 if (!string.IsNullOrEmpty(CurrentProfile.LastOptimizationReport))
                 {
                     IndicatorTestValues = CurrentProfile.LastOptimizationReport;
@@ -323,90 +367,12 @@ namespace ProfitProphet.ViewModels
                     IndicatorTestValues = GetStrategyDetails(CurrentProfile);
                 }
             }
-            // ==============================================================================
-            // 1. PARAMÉTEREK VISSZAÁLLÍTÁSA (INDEX ALAPJÁN - JAVÍTOTT!)
-            // ==============================================================================
-            if (_savedOptimizerState != null && _savedOptimizerState.Any())
-            {
-                var tempVm = new OptimizationViewModel(CurrentProfile);
 
-                // Név helyett INDEX alapján megyünk végig
-                for (int i = 0; i < tempVm.AvailableParameters.Count; i++)
-                {
-                    // Ha a mentett listában létezik ez az index
-                    if (i < _savedOptimizerState.Count)
-                    {
-                        var saved = _savedOptimizerState[i];
-                        var current = tempVm.AvailableParameters[i];
-
-                        // Felülírjuk az értékeket vakon, a sorrend alapján
-                        current.IsSelected = saved.IsSelected;
-                        current.MinValue = saved.MinValue;
-                        current.MaxValue = saved.MaxValue;
-                        current.Step = saved.Step;
-                    }
-                }
-
-                // Lista újraépítése a motor számára (hogy működjön a rajzolás)
-                _currentOptimizationParams = tempVm.AvailableParameters
-                    .Where(p => p.IsSelected)
-                    .Select(p => new OptimizationParameter
-                    {
-                        Rule = p.Rule, // Így megvan a helyes Rule referencia!
-                        ParameterName = p.ParameterName,
-                        MinValue = p.MinValue,
-                        MaxValue = p.MaxValue,
-                        Step = p.Step
-                    }).ToList();
-
-                UseOptimization = true;
-                UpdateOptimizationStatus();
-            }
-
-            // ==============================================================================
-            // 2. LISTA ÉS KIVÁLASZTÁS VISSZATÖLTÉSE
-            // ==============================================================================
-            if (_cachedOptimizationResults != null && _cachedOptimizationResults.Any())
-            {
-                foreach (var res in _cachedOptimizationResults)
-                {
-                    OptimizationResults.Add(res);
-                }
-
-                // Visszajelöljük az utolsót
-                if (_cachedSelectedIndex >= 0 && _cachedSelectedIndex < OptimizationResults.Count)
-                {
-                    // Mivel a _currentOptimizationParams fentebb helyreállt,
-                    // a SelectedResult setter most már tudni fogja, mit kell rajzolni!
-                    SelectedResult = OptimizationResults[_cachedSelectedIndex];
-                }
-            }
-            else if (_cachedSingleResult != null)
-            {
-                Result = _cachedSingleResult;
-                UpdateChart(_cachedSingleResult);
-            }
-
-            if (!string.IsNullOrEmpty(_cachedLogText))
-            {
-                IndicatorTestValues = _cachedLogText;
-            }
-
-            if (_candles.Any())
-            {
-                Symbol = _candles.First().Symbol;
-                StartDate = _candles.Min(c => c.TimestampUtc);
-                EndDate = _candles.Max(c => c.TimestampUtc);
-            }
-
+            // 4. PARANCSOK
             RunCommand = new RelayCommand(o => RunTest());
             EditStrategyCommand = new RelayCommand(OpenStrategyEditor);
             OpenOptimizerCommand = new RelayCommand(o => OpenOptimizer());
-
-            if (OptimizationResults.Any() && SelectedResult == null)
-            {
-                SelectedResult = OptimizationResults.First();
-            }
+            ApplyResultCommand = new RelayCommand(obj => ApplyResult(obj));
         }
         private static void ClearStaticCache()
         {
@@ -700,10 +666,9 @@ namespace ProfitProphet.ViewModels
         {
             var vm = new OptimizationViewModel(CurrentProfile);
 
-            // --- MEMÓRIA VISSZATÖLTÉSE (INDEX ALAPJÁN) ---
+            // --- MEMÓRIA VISSZATÖLTÉSE (NÉV EGYEZÉSSEL!) ---
             if (_savedOptimizerState != null)
             {
-                // Név helyett INDEX alapján
                 for (int i = 0; i < vm.AvailableParameters.Count; i++)
                 {
                     if (i < _savedOptimizerState.Count)
@@ -711,10 +676,20 @@ namespace ProfitProphet.ViewModels
                         var saved = _savedOptimizerState[i];
                         var current = vm.AvailableParameters[i];
 
-                        current.IsSelected = saved.IsSelected;
-                        current.MinValue = saved.MinValue;
-                        current.MaxValue = saved.MaxValue;
-                        current.Step = saved.Step;
+                        // --- JAVÍTÁS: NÉV ELLENŐRZÉS BEÉPÍTÉSE ---
+                        // Csak akkor töltjük vissza, ha a név is stimmel!
+                        if (saved.Name == current.Name)
+                        {
+                            current.IsSelected = saved.IsSelected;
+                            current.MinValue = saved.MinValue;
+                            current.MaxValue = saved.MaxValue;
+                            current.Step = saved.Step;
+                        }
+                        else
+                        {
+                            // Ha a sorrend elcsúszott (más a név), akkor ezt a sort reseteljük
+                            current.IsSelected = false;
+                        }
                     }
                 }
             }
@@ -725,7 +700,7 @@ namespace ProfitProphet.ViewModels
             {
                 if (result)
                 {
-                    // --- ÁLLAPOT MENTÉSE (SORRENDHELYESEN) ---
+                    // --- ÁLLAPOT MENTÉSE ---
                     _savedOptimizerState = vm.AvailableParameters.Select(p => new OptimizationParameterUI
                     {
                         Name = p.Name,
