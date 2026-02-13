@@ -82,8 +82,13 @@ namespace ProfitProphet.Services
                             }
 
                             // SZINKRONIZÁLÁS
+                            // A) Sorok közötti szinkron (Lock ikon)
                             foreach (var group in testProfile.EntryGroups) SyncGroup(group);
                             foreach (var group in testProfile.ExitGroups) SyncGroup(group);
+
+                            // B) Soron belüli szinkron (Smart Sync)
+                            foreach (var group in testProfile.EntryGroups) SyncInternalRules(group);
+                            foreach (var group in testProfile.ExitGroups) SyncInternalRules(group);
 
                             if (token.IsCancellationRequested)
                             {
@@ -345,6 +350,62 @@ namespace ProfitProphet.Services
                 });
             }
             return newG;
+        }
+
+        private void SyncInternalRules(StrategyGroup group)
+        {
+            if (group == null) return;
+
+            foreach (var rule in group.Rules)
+            {
+                // Ugyanaz a logika, mint az OptimizationViewModel-ben:
+                // Ha egy családba tartoznak, a Jobb oldalnak követnie KELL a Balt.
+                if (IsSameFamily(rule.LeftIndicatorName, rule.RightIndicatorName))
+                {
+                    rule.RightPeriod = rule.LeftPeriod;
+                    rule.RightParameter2 = rule.LeftParameter2;
+                    rule.RightParameter3 = rule.LeftParameter3;
+                }
+            }
+        }
+
+        private bool IsSameFamily(string leftName, string rightName)
+        {
+            if (string.IsNullOrEmpty(leftName) || string.IsNullOrEmpty(rightName)) return false;
+            string l = leftName.ToUpper();
+            string r = rightName.ToUpper();
+
+            // --- KIVÉTELEK (Ezeket NEM szabad szinkronizálni) ---
+
+            // 1. Mozgóátlagok (SMA 50 vs SMA 200 - el kell térniük!)
+            if (l.StartsWith("SMA") || l.StartsWith("EMA")) return false;
+
+            // 2. CMF vs CMF_MA (Az MA hossza független a CMF hosszától!)
+            // Ha az egyik sima, a másik MA, akkor engedni kell a külön állítást.
+            if (l == "CMF" && r == "CMF_MA") return false;
+            if (l == "CMF_MA" && r == "CMF") return false;
+
+            // 3. RSI vs RSI_MA (Szintén: az MA simítás hossza független)
+            if (l == "RSI" && r == "RSI_MA") return false;
+            if (l == "RSI_MA" && r == "RSI") return false;
+
+            // --- VALÓDI CSALÁDOK (Ezeket szinkronizáljuk) ---
+
+            // STOCHASTIC (Main és Signal ugyanabból a periódusból számolódik)
+            if (l.Contains("STOCH") && r.Contains("STOCH")) return true;
+
+            // MACD (Main és Signal ugyanazokkal a paraméterekkel kell fusson)
+            if (l.Contains("MACD") && r.Contains("MACD")) return true;
+
+            // BOLLINGER (Alsó/Felső szalag ugyanazzal a beállítással)
+            if ((l.Contains("BB") || l.Contains("BOLLINGER")) &&
+                (r.Contains("BB") || r.Contains("BOLLINGER"))) return true;
+
+            // (Az RSI vs RSI és CMF vs CMF marad true)
+            if (l == "RSI" && r == "RSI") return true;
+            if (l == "CMF" && r == "CMF") return true;
+
+            return false;
         }
     }
 }

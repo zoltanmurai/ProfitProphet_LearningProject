@@ -266,6 +266,15 @@ namespace ProfitProphet.ViewModels
                     SyncGroupRules(group);
                 }
             }
+
+            if (e.PropertyName == nameof(StrategyRule.LeftPeriod) ||
+                e.PropertyName == nameof(StrategyRule.LeftParameter2) ||
+                e.PropertyName == nameof(StrategyRule.LeftParameter3) ||
+                e.PropertyName == nameof(StrategyRule.LeftIndicatorName) ||
+                e.PropertyName == nameof(StrategyRule.RightIndicatorName))
+            {
+                AutoSyncRightSideParams(changedRule);
+            }
         }
 
         private StrategyGroup FindGroupOfRule(StrategyRule rule)
@@ -303,6 +312,58 @@ namespace ProfitProphet.ViewModels
                         if (currentRule.RightParameter3 != prevRule.RightParameter3) currentRule.RightParameter3 = prevRule.RightParameter3;
                     }
                 }
+            }
+        }
+
+        private void AutoSyncRightSideParams(StrategyRule rule)
+        {
+            if (rule == null || string.IsNullOrEmpty(rule.LeftIndicatorName) || string.IsNullOrEmpty(rule.RightIndicatorName))
+                return;
+
+            string left = rule.LeftIndicatorName.ToUpper();
+            string right = rule.RightIndicatorName.ToUpper();
+
+            bool shouldSync = false;
+
+            // 1. MACD CSALÁD (MACD_MAIN, MACD_SIGNAL, MACD_HIST)
+            if (left.Contains("MACD") && right.Contains("MACD"))
+            {
+                shouldSync = true;
+            }
+            // 2. STOCHASTIC CSALÁD (STOCH, STOCH_SIGNAL)
+            else if (left.Contains("STOCH") && right.Contains("STOCH"))
+            {
+                shouldSync = true;
+            }
+            // 3. BOLLINGER CSALÁD (BB_UPPER, BB_LOWER, BB_MIDDLE)
+            else if ((left.Contains("BB_") || left.Contains("BOLLINGER")) &&
+                     (right.Contains("BB_") || right.Contains("BOLLINGER")))
+            {
+                shouldSync = true;
+            }
+            // 4. RSI CSALÁD (RSI vs RSI_MA)
+            else if (left.Contains("RSI") && right.Contains("RSI"))
+            {
+                shouldSync = true;
+            }
+            // 5. CMF CSALÁD (CMF vs CMF_MA)
+            else if (left.Contains("CMF") && right.Contains("CMF"))
+            {
+                shouldSync = true;
+            }
+
+            // HA ROKONOK, AKKOR MÁSOLUNK
+            if (shouldSync)
+            {
+                // Csak akkor írjuk felül, ha eltérnek, hogy ne generáljunk felesleges eseményeket
+                if (rule.RightPeriod != rule.LeftPeriod)
+                    rule.RightPeriod = rule.LeftPeriod;
+
+                if (rule.RightParameter2 != rule.LeftParameter2)
+                    rule.RightParameter2 = rule.LeftParameter2;
+
+                if (rule.RightParameter3 != rule.LeftParameter3)
+                    rule.RightParameter3 = rule.LeftParameter3;
             }
         }
 

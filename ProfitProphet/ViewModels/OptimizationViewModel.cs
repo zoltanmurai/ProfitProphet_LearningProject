@@ -182,32 +182,66 @@ namespace ProfitProphet.ViewModels
             }
 
             // --- JOBB OLDAL ---
+            //if (rule.RightSourceType == DataSourceType.Indicator)
+            //{
+            //    side = "Jobb";
+
+            //    // CSAK AKKOR ADJUK HOZZÁ, HA NINCS LOCKOLVA A JOBB OLDAL!
+            //    if (!rule.IsRightLinked)
+            //    {
+            //        if (rule.RightPeriod > 0)
+            //        {
+            //            string name = GetParamName(rule.RightIndicatorName, 1);
+            //            AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
+            //                $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+            //        }
+            //        if (rule.RightParameter2 > 0)
+            //        {
+            //            bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
+            //            string name = GetParamName(rule.RightIndicatorName, 2);
+            //            AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
+            //                $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
+            //        }
+            //        if (rule.RightParameter3 > 0)
+            //        {
+            //            string name = GetParamName(rule.RightIndicatorName, 3);
+            //            AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
+            //                $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+            //        }
+            //    }
+            //}
             if (rule.RightSourceType == DataSourceType.Indicator)
             {
                 side = "Jobb";
 
-                // CSAK AKKOR ADJUK HOZZÁ, HA NINCS LOCKOLVA A JOBB OLDAL!
-                if (!rule.IsRightLinked)
+                // 1. ELLENŐRZÉS: Van-e sorok közötti link? (Ez volt eddig is)
+                if (rule.IsRightLinked) return;
+
+                // 2. ÚJ ELLENŐRZÉS: Családon belüli indikátorok? (Smart Sync)
+                // Ha igen, akkor NE adjunk hozzá csúszkát, mert a bal oldal vezérel!
+                if (IsSameFamily(rule.LeftIndicatorName, rule.RightIndicatorName)) return;
+
+                // Ha idáig eljutottunk, akkor ez egy független indikátor (pl. SMA vs EMA), mehet a csúszka
+                if (rule.RightPeriod > 0)
                 {
-                    if (rule.RightPeriod > 0)
-                    {
-                        string name = GetParamName(rule.RightIndicatorName, 1);
-                        AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
-                            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
-                    }
-                    if (rule.RightParameter2 > 0)
-                    {
-                        bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
-                        string name = GetParamName(rule.RightIndicatorName, 2);
-                        AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
-                            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
-                    }
-                    if (rule.RightParameter3 > 0)
-                    {
-                        string name = GetParamName(rule.RightIndicatorName, 3);
-                        AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
-                            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
-                    }
+                    string name = GetParamName(rule.RightIndicatorName, 1);
+                    AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
+                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+                }
+
+                if (rule.RightParameter2 > 0)
+                {
+                    bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
+                    string name = GetParamName(rule.RightIndicatorName, 2);
+                    AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
+                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
+                }
+
+                if (rule.RightParameter3 > 0)
+                {
+                    string name = GetParamName(rule.RightIndicatorName, 3);
+                    AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
+                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
                 }
             }
 
@@ -216,6 +250,71 @@ namespace ProfitProphet.ViewModels
                 AddParameterUI(rule, isEntry, "RightValue", rule.RightValue,
                     $"{prefix} - {rule.LeftIndicatorName} vs Fix Érték", isDecimal: true);
             }
+        }
+        //private bool IsSameFamily(string leftName, string rightName)
+        //{
+        //    if (string.IsNullOrEmpty(leftName) || string.IsNullOrEmpty(rightName)) return false;
+        //    string l = leftName.ToUpper();
+        //    string r = rightName.ToUpper();
+
+        //    // SMA és EMA kivétel! Ott pont az a lényeg, hogy eltérőek (Kereszteződés: SMA 50 vs SMA 200)
+        //    if (l.StartsWith("SMA") || l.StartsWith("EMA")) return false;
+
+        //    // STOCHASTIC
+        //    if (l.Contains("STOCH") && r.Contains("STOCH")) return true;
+
+        //    // MACD
+        //    if (l.Contains("MACD") && r.Contains("MACD")) return true;
+
+        //    // BOLLINGER
+        //    if ((l.Contains("BB") || l.Contains("BOLLINGER")) &&
+        //        (r.Contains("BB") || r.Contains("BOLLINGER"))) return true;
+
+        //    // RSI
+        //    if (l.Contains("RSI") && r.Contains("RSI")) return true;
+
+        //    // CMF
+        //    if (l.Contains("CMF") && r.Contains("CMF")) return true;
+
+        //    return false;
+        //}
+        private bool IsSameFamily(string leftName, string rightName)
+        {
+            if (string.IsNullOrEmpty(leftName) || string.IsNullOrEmpty(rightName)) return false;
+            string l = leftName.ToUpper();
+            string r = rightName.ToUpper();
+
+            // --- KIVÉTELEK (Ezeket NEM szabad szinkronizálni) ---
+
+            // 1. Mozgóátlagok (SMA 50 vs SMA 200 - el kell térniük!)
+            if (l.StartsWith("SMA") || l.StartsWith("EMA")) return false;
+
+            // 2. CMF vs CMF_MA (Az MA hossza független a CMF hosszától!)
+            // Ha az egyik sima, a másik MA, akkor engedni kell a külön állítást.
+            if (l == "CMF" && r == "CMF_MA") return false;
+            if (l == "CMF_MA" && r == "CMF") return false;
+
+            // 3. RSI vs RSI_MA (Szintén: az MA simítás hossza független)
+            if (l == "RSI" && r == "RSI_MA") return false;
+            if (l == "RSI_MA" && r == "RSI") return false;
+
+            // --- VALÓDI CSALÁDOK (Ezeket szinkronizáljuk) ---
+
+            // STOCHASTIC (Main és Signal ugyanabból a periódusból számolódik)
+            if (l.Contains("STOCH") && r.Contains("STOCH")) return true;
+
+            // MACD (Main és Signal ugyanazokkal a paraméterekkel kell fusson)
+            if (l.Contains("MACD") && r.Contains("MACD")) return true;
+
+            // BOLLINGER (Alsó/Felső szalag ugyanazzal a beállítással)
+            if ((l.Contains("BB") || l.Contains("BOLLINGER")) &&
+                (r.Contains("BB") || r.Contains("BOLLINGER"))) return true;
+
+            // (Az RSI vs RSI és CMF vs CMF marad true)
+            if (l == "RSI" && r == "RSI") return true;
+            if (l == "CMF" && r == "CMF") return true;
+
+            return false;
         }
 
         private void AddParameterUI(StrategyRule rule, bool isEntry, string paramName, double currentValue, string displayName, bool isDecimal)
