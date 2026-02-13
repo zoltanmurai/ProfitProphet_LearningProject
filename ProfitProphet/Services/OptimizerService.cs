@@ -228,6 +228,30 @@ namespace ProfitProphet.Services
             }
         }
 
+        //public void ApplyValue(StrategyProfile profile, OptimizationParameter param, int value)
+        //{
+        //    var targetList = param.IsEntrySide ? profile.EntryGroups : profile.ExitGroups;
+        //    if (targetList == null) return;
+
+        //    foreach (var group in targetList)
+        //    {
+        //        var ruleToUpdate = group.Rules.FirstOrDefault(r =>
+        //            r.LeftIndicatorName == param.Rule.LeftIndicatorName &&
+        //            r.Operator == param.Rule.Operator);
+
+        //        if (ruleToUpdate != null)
+        //        {
+        //            switch (param.ParameterName)
+        //            {
+        //                case "LeftPeriod": ruleToUpdate.LeftPeriod = value; break;
+        //                case "RightPeriod": ruleToUpdate.RightPeriod = value; break;
+        //                case "RightValue": ruleToUpdate.RightValue = value; break;
+        //                case "LeftShift": ruleToUpdate.LeftShift = value; break;
+        //                case "RightShift": ruleToUpdate.RightShift = value; break;
+        //            }
+        //        }
+        //    }
+        //}
         public void ApplyValue(StrategyProfile profile, OptimizationParameter param, int value)
         {
             var targetList = param.IsEntrySide ? profile.EntryGroups : profile.ExitGroups;
@@ -235,22 +259,43 @@ namespace ProfitProphet.Services
 
             foreach (var group in targetList)
             {
+                // JAVÍTÁS: Keressük meg a szabályt az EREDETI szabály alapján
+                // Ehhez tárolnunk kell az eredeti szabály indexét vagy egyedi azonosítóját
+
                 var ruleToUpdate = group.Rules.FirstOrDefault(r =>
-                    r.LeftIndicatorName == param.Rule.LeftIndicatorName &&
-                    r.Operator == param.Rule.Operator);
+                    IsSameRule(r, param.Rule));
 
                 if (ruleToUpdate != null)
                 {
                     switch (param.ParameterName)
                     {
                         case "LeftPeriod": ruleToUpdate.LeftPeriod = value; break;
+                        case "LeftParameter2": ruleToUpdate.LeftParameter2 = value; break;
+                        case "LeftParameter3": ruleToUpdate.LeftParameter3 = value; break;
                         case "RightPeriod": ruleToUpdate.RightPeriod = value; break;
+                        case "RightParameter2": ruleToUpdate.RightParameter2 = value; break;
+                        case "RightParameter3": ruleToUpdate.RightParameter3 = value; break;
                         case "RightValue": ruleToUpdate.RightValue = value; break;
                         case "LeftShift": ruleToUpdate.LeftShift = value; break;
                         case "RightShift": ruleToUpdate.RightShift = value; break;
                     }
                 }
             }
+        }
+
+        private bool IsSameRule(StrategyRule r1, StrategyRule r2)
+        {
+            return r1.LeftIndicatorName == r2.LeftIndicatorName &&
+                   r1.LeftPeriod == r2.LeftPeriod &&
+                   r1.LeftParameter2 == r2.LeftParameter2 &&
+                   r1.LeftParameter3 == r2.LeftParameter3 &&
+                   r1.Operator == r2.Operator &&
+                   r1.RightSourceType == r2.RightSourceType &&
+                   r1.RightIndicatorName == r2.RightIndicatorName &&
+                   r1.RightPeriod == r2.RightPeriod &&
+                   r1.RightParameter2 == r2.RightParameter2 &&
+                   r1.RightParameter3 == r2.RightParameter3 &&
+                   Math.Abs(r1.RightValue - r2.RightValue) < 0.0001;
         }
 
         public StrategyProfile DeepCopyProfile(StrategyProfile original)
