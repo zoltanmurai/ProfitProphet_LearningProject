@@ -11,7 +11,7 @@
         Title="Stratégia Tesztelő" 
         
         Height="740" Width="1100"
-        MinHeight="740" MinWidth="900"
+        MinHeight="840" MinWidth="900"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResizeWithGrip"
         Background="{DynamicResource PrimaryBackground}">

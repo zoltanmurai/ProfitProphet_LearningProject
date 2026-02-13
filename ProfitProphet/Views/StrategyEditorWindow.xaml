@@ -5,7 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:converters="clr-namespace:ProfitProphet.Converters"
         mc:Ignorable="d"
-        Title="Stratégia Szerkesztő (Profi Mód)" Height="700" Width="1280"
+        
+        Title="Stratégia Szerkesztő (Profi Mód)" 
+        Height="850" Width="1700"
+        MinHeight="600" MinWidth="800"
+        ResizeMode="CanResizeWithGrip"
+        
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource PrimaryBackground}" 
         Foreground="{DynamicResource PrimaryText}">
@@ -19,7 +24,8 @@
                     BorderBrush="{DynamicResource BorderBrush}" 
                     BorderThickness="0,0,0,1" 
                     Margin="0,1" 
-                    Padding="5">
+                    Padding="5"
+                    MinWidth="850">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -33,91 +39,111 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="ÉS" 
-                             VerticalAlignment="Center" 
-                             Foreground="{DynamicResource AccentBrush}" 
-                             FontWeight="Bold" 
-                             Margin="0,0,10,0"/>
+                     VerticalAlignment="Center" 
+                     Foreground="{DynamicResource AccentBrush}" 
+                     FontWeight="Bold" 
+                     Margin="0,0,10,0"/>
 
                     <ComboBox Grid.Column="1" 
-                              ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding LeftIndicatorName}" 
-                              Margin="0,0,5,0"/>
+                     ItemsSource="{Binding DataContext.AvailableIndicators, RelativeSource={RelativeSource AncestorType=Window}}"
+                     SelectedItem="{Binding LeftIndicatorName}" 
+                     Margin="0,0,5,0"/>
 
                     <StackPanel Grid.Column="2" 
-                                Orientation="Horizontal" 
-                                Margin="0,0,10,0" 
-                                VerticalAlignment="Center">
+                        Orientation="Horizontal" 
+                        Margin="0,0,10,0" 
+                        VerticalAlignment="Center">
                         <TextBox Text="{Binding LeftPeriod}" 
-                                 Width="40" Margin="0,0,2,0" 
-                                 ToolTip="Period 1 / Fast / Length" 
-                                 TextAlignment="Center"/>
+                         Width="40" Margin="0,0,2,0" 
+                         ToolTip="Period 1 / Fast / Length" 
+                         TextAlignment="Center"/>
                         <TextBox Text="{Binding LeftParameter2}" 
-                                 Width="40" Margin="0,0,2,0" 
-                                 ToolTip="Period 2 / Slow / Deviation" 
-                                 TextAlignment="Center"
-                                 Visibility="{Binding ShowLeftParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                         Width="40" Margin="0,0,2,0" 
+                         ToolTip="Period 2 / Slow / Deviation" 
+                         TextAlignment="Center"
+                         Visibility="{Binding ShowLeftParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
                         <TextBox Text="{Binding LeftParameter3}" 
-                                 Width="40" Margin="0,0,2,0" 
-                                 ToolTip="Period 3 / Signal / Slowing" 
-                                 TextAlignment="Center"
-                                 Visibility="{Binding ShowLeftParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                         Width="40" Margin="0,0,2,0" 
+                         ToolTip="Period 3 / Signal / Slowing" 
+                         TextAlignment="Center"
+                         Visibility="{Binding ShowLeftParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                        <CheckBox IsChecked="{Binding IsLeftLinked}"
+                          VerticalAlignment="Center"
+                          Margin="5,0,0,0"
+                          ToolTip="Bal oldal szinkronizálása az előző sorral (Lock)">
+                            <CheckBox.LayoutTransform>
+                                <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                            </CheckBox.LayoutTransform>
+                            <TextBlock Text="🔗" FontWeight="Bold" Foreground="Gray"/>
+                        </CheckBox>
                     </StackPanel>
 
                     <ComboBox Grid.Column="3" 
-                              ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding Operator}" 
-                              Margin="0,0,10,0"/>
+                     ItemsSource="{Binding DataContext.AvailableOperators, RelativeSource={RelativeSource AncestorType=Window}}"
+                     SelectedItem="{Binding Operator}" 
+                     Margin="0,0,10,0"/>
 
                     <ComboBox Grid.Column="4" 
-                              ItemsSource="{Binding DataContext.AvailableSourceTypes, RelativeSource={RelativeSource AncestorType=Window}}"
-                              SelectedItem="{Binding RightSourceType}" 
-                              Margin="0,0,10,0"/>
+                     ItemsSource="{Binding DataContext.AvailableSourceTypes, RelativeSource={RelativeSource AncestorType=Window}}"
+                     SelectedItem="{Binding RightSourceType}" 
+                     Margin="0,0,10,0"/>
 
                     <Grid Grid.Column="5">
                         <TextBox Text="{Binding RightValue}" 
-                                 Visibility="{Binding IsRightSideIndicator, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
+                         Visibility="{Binding IsRightSideIndicator, Converter={StaticResource InverseBoolToVisibilityConverter}}"/>
 
                         <StackPanel Orientation="Horizontal" 
-                                    Visibility="{Binding IsRightSideIndicator, Converter={StaticResource BoolToVisibilityConverter}}">
+                            Visibility="{Binding IsRightSideIndicator, Converter={StaticResource BoolToVisibilityConverter}}">
                             <ComboBox ItemsSource="{Binding AllowedRightIndicators}" 
-                                      SelectedItem="{Binding RightIndicatorName}" 
-                                      Width="100" Margin="0,0,5,0"/>
+                              SelectedItem="{Binding RightIndicatorName}" 
+                              Width="100" Margin="0,0,5,0"/>
                             <TextBox Text="{Binding RightPeriod}" 
-                                     Width="40" Margin="0,0,2,0" 
-                                     ToolTip="Period 1" TextAlignment="Center"/>
+                             Width="40" Margin="0,0,2,0" 
+                             ToolTip="Period 1" TextAlignment="Center"/>
                             <TextBox Text="{Binding RightParameter2}" 
-                                     Width="40" Margin="0,0,2,0" 
-                                     ToolTip="Period 2" TextAlignment="Center"
-                                     Visibility="{Binding ShowRightParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                             Width="40" Margin="0,0,2,0" 
+                             ToolTip="Period 2" TextAlignment="Center"
+                             Visibility="{Binding ShowRightParam2, Converter={StaticResource BoolToVisibilityConverter}}"/>
                             <TextBox Text="{Binding RightParameter3}" 
-                                     Width="40" Margin="0,0,2,0" 
-                                     ToolTip="Period 3" TextAlignment="Center"
-                                     Visibility="{Binding ShowRightParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                             Width="40" Margin="0,0,2,0" 
+                             ToolTip="Period 3" TextAlignment="Center"
+                             Visibility="{Binding ShowRightParam3, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                            <CheckBox IsChecked="{Binding IsRightLinked}"
+                              VerticalAlignment="Center"
+                              Margin="5,0,0,0"
+                              ToolTip="Jobb oldal szinkronizálása az előző sorral (Lock)">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="0.8" ScaleY="0.8"/>
+                                </CheckBox.LayoutTransform>
+                                <TextBlock Text="🔗" FontWeight="Bold" Foreground="Gray"/>
+                            </CheckBox>
                         </StackPanel>
                     </Grid>
 
                     <StackPanel Grid.Column="6" 
-                                Orientation="Horizontal" 
-                                VerticalAlignment="Center" 
-                                Margin="5,0">
+                        Orientation="Horizontal" 
+                        VerticalAlignment="Center" 
+                        Margin="5,0">
                         <TextBlock Text="Shift:" 
-                                   Foreground="{DynamicResource SecondaryText}" 
-                                   VerticalAlignment="Center" 
-                                   Margin="0,0,3,0" 
-                                   FontSize="10"/>
+                           Foreground="{DynamicResource SecondaryText}" 
+                           VerticalAlignment="Center" 
+                           Margin="0,0,3,0" 
+                           FontSize="10"/>
                         <TextBox Text="{Binding Shift}" 
-                                 Width="30" 
-                                 ToolTip="Mennyivel nézzük vissza a múltat? (0=most, 1=előző gyertya)" 
-                                 TextAlignment="Center"/>
+                         Width="30" 
+                         ToolTip="Mennyivel nézzük vissza a múltat? (0=most, 1=előző gyertya)" 
+                         TextAlignment="Center"/>
                     </StackPanel>
 
                     <Button Grid.Column="7" 
-                            Content="🗑" 
-                            Background="Transparent" 
-                            BorderThickness="0" 
-                            Foreground="#FF5555"
-                            Command="{Binding DataContext.RemoveRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding}"/>
+                    Content="🗑" 
+                    Background="Transparent" 
+                    BorderThickness="0" 
+                    Foreground="#FF5555"
+                    Command="{Binding DataContext.RemoveRuleCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                    CommandParameter="{Binding}"/>
                 </Grid>
             </Border>
         </DataTemplate>
@@ -236,6 +262,7 @@
                       Header="Vételi Setupok (Entry)" 
                       BorderBrush="{DynamicResource StrategyBuyBrush}" 
                       Foreground="{DynamicResource StrategyBuyBrush}">
+
                 <DockPanel>
                     <UniformGrid DockPanel.Dock="Bottom" Rows="1" Columns="2" Margin="0,10,0,0">
                         <Button Content="📂 Setup Betöltése..." 
@@ -259,7 +286,8 @@
                             BorderThickness="1"/>
                         </UniformGrid>
 
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding EntryGroups}" ItemTemplate="{StaticResource GroupTemplate}"/>
                     </ScrollViewer>
                 </DockPanel>
@@ -292,7 +320,8 @@
                             BorderThickness="1"/>
                     </UniformGrid>
 
-                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                                  HorizontalScrollBarVisibility="Auto">
                         <ItemsControl ItemsSource="{Binding ExitGroups}" ItemTemplate="{StaticResource GroupTemplate}"/>
                     </ScrollViewer>
                 </DockPanel>

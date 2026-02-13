@@ -29,7 +29,6 @@ namespace ProfitProphet.Services
             IProgress<OptimizationResult> realtimeHandler)
         {
             System.Diagnostics.Debug.WriteLine($"Processors: {Environment.ProcessorCount}, Using: {Math.Max(1, Environment.ProcessorCount - 2)}");
-
             return await RunIterationAsync(candles, profile, parameters, progress, token, visualMode, realtimeHandler);
         }
 
@@ -65,11 +64,10 @@ namespace ProfitProphet.Services
 
                     Parallel.ForEach(combinations, options, (combo, state) =>
                     {
-                        // 1. CANCELLATION CHECK - Kivétel dobás HELYETT return
                         if (token.IsCancellationRequested)
                         {
-                            state.Stop(); // Jelezzük a Parallel.ForEach-nek: ne indítson új iterációkat
-                            return;       // Kilépünk ebből az iterációból
+                            state.Stop();
+                            return;
                         }
 
                         try
@@ -83,7 +81,10 @@ namespace ProfitProphet.Services
                                 ApplyValue(testProfile, parameters[i], combo[i]);
                             }
 
-                            // Munka közben is ellenőrizzük (ha hosszú a backtest)
+                            // SZINKRONIZÁLÁS
+                            foreach (var group in testProfile.EntryGroups) SyncGroup(group);
+                            foreach (var group in testProfile.ExitGroups) SyncGroup(group);
+
                             if (token.IsCancellationRequested)
                             {
                                 state.Stop();
@@ -93,7 +94,6 @@ namespace ProfitProphet.Services
                             // 3. Futtatjuk a tesztet
                             var res = _backtestService.RunBacktest(candles, testProfile);
 
-                            // Újabb ellenőrzés az eredmény feldolgozása előtt
                             if (token.IsCancellationRequested)
                             {
                                 state.Stop();
@@ -142,7 +142,6 @@ namespace ProfitProphet.Services
                                         results.Add(optRes);
                                     }
 
-                                    // Realtime report
                                     if (visualMode && realtimeHandler != null)
                                     {
                                         bool isNewBest = false;
@@ -163,7 +162,6 @@ namespace ProfitProphet.Services
                                 }
                             }
 
-                            // Progress update
                             int c = System.Threading.Interlocked.Increment(ref current);
                             if (total > 0 && c % Math.Max(1, total / 100) == 0)
                             {
@@ -173,7 +171,6 @@ namespace ProfitProphet.Services
                         catch (Exception ex)
                         {
                             System.Diagnostics.Debug.WriteLine($"Error in optimization iteration: {ex.Message}");
-                            // Egyéb hibákat csak logoljuk, ne állítsuk le az egész optimalizációt
                         }
                     });
 
@@ -181,18 +178,15 @@ namespace ProfitProphet.Services
                 }
                 catch (OperationCanceledException)
                 {
-                    // Ez csak akkor fut, ha a ParallelOptions dobta a kivételt (indulás előtt)
                     System.Diagnostics.Debug.WriteLine("Optimization cancelled before start");
                 }
                 catch (Exception ex)
                 {
                     System.Diagnostics.Debug.WriteLine($"Unexpected error in optimization: {ex.Message}");
                     System.Diagnostics.Debug.WriteLine($"Stack trace: {ex.StackTrace}");
-                    throw; // Valódi hibát továbbdobjuk
+                    throw;
                 }
 
-                // 2. A CIKLUS UTÁN ellenőrizzük és dobjuk a kivételt EGYETLEN EGYSZER
-                // Így a ViewModel tudni fogja, hogy stop volt
                 if (token.IsCancellationRequested)
                 {
                     System.Diagnostics.Debug.WriteLine("Optimization was cancelled - throwing OperationCanceledException");
@@ -200,8 +194,37 @@ namespace ProfitProphet.Services
                 }
             }, token);
 
-
             return results.OrderByDescending(r => r.Score).ToList();
+        }
+
+        // --- ÚJ: HIÁNYZÓ METÓDUS A SZINKRONIZÁLÁSHOZ ---
+        private void SyncGroup(StrategyGroup group)
+        {
+            if (group == null || group.Rules.Count < 2) return;
+
+            for (int i = 1; i < group.Rules.Count; i++)
+            {
+                var currentRule = group.Rules[i];
+                var prevRule = group.Rules[i - 1];
+
+                // Bal oldal
+                if (currentRule.IsLeftLinked)
+                {
+                    currentRule.LeftPeriod = prevRule.LeftPeriod;
+                    currentRule.LeftParameter2 = prevRule.LeftParameter2;
+                    currentRule.LeftParameter3 = prevRule.LeftParameter3;
+                }
+
+                // Jobb oldal
+                if (currentRule.IsRightLinked &&
+                    currentRule.RightSourceType == DataSourceType.Indicator &&
+                    prevRule.RightSourceType == DataSourceType.Indicator)
+                {
+                    currentRule.RightPeriod = prevRule.RightPeriod;
+                    currentRule.RightParameter2 = prevRule.RightParameter2;
+                    currentRule.RightParameter3 = prevRule.RightParameter3;
+                }
+            }
         }
 
         private List<int[]> GenerateCombinations(List<OptimizationParameter> parameters)
@@ -220,6 +243,7 @@ namespace ProfitProphet.Services
             }
 
             int currentStep = 1;
+            if (parameters[depth].Step > 0) currentStep = (int)parameters[depth].Step;
 
             for (int v = (int)parameters[depth].MinValue; v <= (int)parameters[depth].MaxValue; v += currentStep)
             {
@@ -228,30 +252,6 @@ namespace ProfitProphet.Services
             }
         }
 
-        //public void ApplyValue(StrategyProfile profile, OptimizationParameter param, int value)
-        //{
-        //    var targetList = param.IsEntrySide ? profile.EntryGroups : profile.ExitGroups;
-        //    if (targetList == null) return;
-
-        //    foreach (var group in targetList)
-        //    {
-        //        var ruleToUpdate = group.Rules.FirstOrDefault(r =>
-        //            r.LeftIndicatorName == param.Rule.LeftIndicatorName &&
-        //            r.Operator == param.Rule.Operator);
-
-        //        if (ruleToUpdate != null)
-        //        {
-        //            switch (param.ParameterName)
-        //            {
-        //                case "LeftPeriod": ruleToUpdate.LeftPeriod = value; break;
-        //                case "RightPeriod": ruleToUpdate.RightPeriod = value; break;
-        //                case "RightValue": ruleToUpdate.RightValue = value; break;
-        //                case "LeftShift": ruleToUpdate.LeftShift = value; break;
-        //                case "RightShift": ruleToUpdate.RightShift = value; break;
-        //            }
-        //        }
-        //    }
-        //}
         public void ApplyValue(StrategyProfile profile, OptimizationParameter param, int value)
         {
             var targetList = param.IsEntrySide ? profile.EntryGroups : profile.ExitGroups;
@@ -259,9 +259,6 @@ namespace ProfitProphet.Services
 
             foreach (var group in targetList)
             {
-                // JAVÍTÁS: Keressük meg a szabályt az EREDETI szabály alapján
-                // Ehhez tárolnunk kell az eredeti szabály indexét vagy egyedi azonosítóját
-
                 var ruleToUpdate = group.Rules.FirstOrDefault(r =>
                     IsSameRule(r, param.Rule));
 
@@ -331,6 +328,10 @@ namespace ProfitProphet.Services
                     LeftParameter2 = r.LeftParameter2,
                     LeftParameter3 = r.LeftParameter3,
                     LeftShift = r.LeftShift,
+
+                    // LINKELÉSEK MÁSOLÁSA 
+                    IsLeftLinked = r.IsLeftLinked,
+                    IsRightLinked = r.IsRightLinked,
 
                     Operator = r.Operator,
 

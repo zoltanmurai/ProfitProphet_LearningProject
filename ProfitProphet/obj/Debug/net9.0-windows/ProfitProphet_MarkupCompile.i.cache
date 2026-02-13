@@ -16,5 +16,5 @@ E:\GitHub\ProfitProphet_LearningProject\ProfitProphet\App.xaml
 2211893033130
 MainWindow.xaml;Views\ApiSettingsControl.xaml;Views\DataImportControl.xaml;Views\IndicatorSettingsWindow.xaml;Views\OptimizationWindow.xaml;Views\SettingsWindow.xaml;Views\Signalalertwindow.xaml;Views\StrategyEditorWindow.xaml;Views\StrategyTestWindow.xaml;
 
-False
+True
 

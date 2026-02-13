@@ -186,6 +186,33 @@ namespace ProfitProphet.Models.Strategies
             }
         }
 
+        //private bool _isLinkedToPrevious;
+        //public bool IsLinkedToPrevious
+        //{
+        //    get => _isLinkedToPrevious;
+        //    set
+        //    {
+        //        if (_isLinkedToPrevious != value)
+        //        {
+        //            _isLinkedToPrevious = value;
+        //            OnPropertyChanged();
+        //        }
+        //    }
+        //}
+        private bool _isLeftLinked;
+        public bool IsLeftLinked
+        {
+            get => _isLeftLinked;
+            set { _isLeftLinked = value; OnPropertyChanged(); }
+        }
+
+        private bool _isRightLinked;
+        public bool IsRightLinked
+        {
+            get => _isRightLinked;
+            set { _isRightLinked = value; OnPropertyChanged(); }
+        }
+
         // --- OKOS LISTA (Context Aware) ---
         private ObservableCollection<string> _allowedRightIndicators;
         public ObservableCollection<string> AllowedRightIndicators

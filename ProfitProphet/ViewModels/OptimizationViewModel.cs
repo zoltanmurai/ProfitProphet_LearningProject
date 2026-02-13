@@ -103,59 +103,111 @@ namespace ProfitProphet.ViewModels
                 // Alapértelmezett
                 return paramIndex == 1 ? "Period" : $"Param {paramIndex}";
             }
-            // --- BAL OLDAL ---
-            // 1. Fő Period
-            if (rule.LeftPeriod > 0)
+            //// --- BAL OLDAL ---
+            //// 1. Fő Period
+            //if (rule.LeftPeriod > 0)
+            //{
+            //    string name = GetParamName(rule.LeftIndicatorName, 1);
+            //    AddParameterUI(rule, isEntry, "LeftPeriod", rule.LeftPeriod,
+            //        $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
+            //}
+
+            //// 2. Második Paraméter (Stoch %D, MACD Slow, BB Dev)
+            //if (rule.LeftParameter2 > 0)
+            //{
+            //    bool isBollinger = rule.LeftIndicatorName.ToUpper().Contains("BB");
+            //    string name = GetParamName(rule.LeftIndicatorName, 2);
+
+            //    AddParameterUI(rule, isEntry, "LeftParameter2", rule.LeftParameter2,
+            //        $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}",
+            //        isDecimal: isBollinger); // Csak a Bollinger tizedes!
+            //}
+
+            //// 3. Harmadik Paraméter (Stoch Slowing, MACD Signal)
+            //if (rule.LeftParameter3 > 0)
+            //{
+            //    string name = GetParamName(rule.LeftIndicatorName, 3);
+            //    AddParameterUI(rule, isEntry, "LeftParameter3", rule.LeftParameter3,
+            //        $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
+            //}
+
+            //// --- JOBB OLDAL (Ha indikátor) ---
+            //if (rule.RightSourceType == DataSourceType.Indicator)
+            //{
+            //    side = "Jobb";
+
+            //    if (rule.RightPeriod > 0)
+            //    {
+            //        string name = GetParamName(rule.RightIndicatorName, 1);
+            //        AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
+            //            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+            //    }
+
+            //    if (rule.RightParameter2 > 0)
+            //    {
+            //        bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
+            //        string name = GetParamName(rule.RightIndicatorName, 2);
+            //        AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
+            //            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
+            //    }
+
+            //    if (rule.RightParameter3 > 0)
+            //    {
+            //        string name = GetParamName(rule.RightIndicatorName, 3);
+            //        AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
+            //            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+            //    }
+            //}
+            if (!rule.IsLeftLinked)
             {
-                string name = GetParamName(rule.LeftIndicatorName, 1);
-                AddParameterUI(rule, isEntry, "LeftPeriod", rule.LeftPeriod,
-                    $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
+                if (rule.LeftPeriod > 0)
+                {
+                    string name = GetParamName(rule.LeftIndicatorName, 1);
+                    AddParameterUI(rule, isEntry, "LeftPeriod", rule.LeftPeriod,
+                        $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
+                }
+                if (rule.LeftParameter2 > 0)
+                {
+                    bool isBollinger = rule.LeftIndicatorName.ToUpper().Contains("BB");
+                    string name = GetParamName(rule.LeftIndicatorName, 2);
+                    AddParameterUI(rule, isEntry, "LeftParameter2", rule.LeftParameter2,
+                        $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: isBollinger);
+                }
+                if (rule.LeftParameter3 > 0)
+                {
+                    string name = GetParamName(rule.LeftIndicatorName, 3);
+                    AddParameterUI(rule, isEntry, "LeftParameter3", rule.LeftParameter3,
+                        $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
+                }
             }
 
-            // 2. Második Paraméter (Stoch %D, MACD Slow, BB Dev)
-            if (rule.LeftParameter2 > 0)
-            {
-                bool isBollinger = rule.LeftIndicatorName.ToUpper().Contains("BB");
-                string name = GetParamName(rule.LeftIndicatorName, 2);
-
-                AddParameterUI(rule, isEntry, "LeftParameter2", rule.LeftParameter2,
-                    $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}",
-                    isDecimal: isBollinger); // Csak a Bollinger tizedes!
-            }
-
-            // 3. Harmadik Paraméter (Stoch Slowing, MACD Signal)
-            if (rule.LeftParameter3 > 0)
-            {
-                string name = GetParamName(rule.LeftIndicatorName, 3);
-                AddParameterUI(rule, isEntry, "LeftParameter3", rule.LeftParameter3,
-                    $"{prefix} - {rule.LeftIndicatorName} ({side}): {name}", isDecimal: false);
-            }
-
-            // --- JOBB OLDAL (Ha indikátor) ---
+            // --- JOBB OLDAL ---
             if (rule.RightSourceType == DataSourceType.Indicator)
             {
                 side = "Jobb";
 
-                if (rule.RightPeriod > 0)
+                // CSAK AKKOR ADJUK HOZZÁ, HA NINCS LOCKOLVA A JOBB OLDAL!
+                if (!rule.IsRightLinked)
                 {
-                    string name = GetParamName(rule.RightIndicatorName, 1);
-                    AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
-                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
-                }
-
-                if (rule.RightParameter2 > 0)
-                {
-                    bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
-                    string name = GetParamName(rule.RightIndicatorName, 2);
-                    AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
-                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
-                }
-
-                if (rule.RightParameter3 > 0)
-                {
-                    string name = GetParamName(rule.RightIndicatorName, 3);
-                    AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
-                        $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+                    if (rule.RightPeriod > 0)
+                    {
+                        string name = GetParamName(rule.RightIndicatorName, 1);
+                        AddParameterUI(rule, isEntry, "RightPeriod", rule.RightPeriod,
+                            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+                    }
+                    if (rule.RightParameter2 > 0)
+                    {
+                        bool isBollinger = rule.RightIndicatorName.ToUpper().Contains("BB");
+                        string name = GetParamName(rule.RightIndicatorName, 2);
+                        AddParameterUI(rule, isEntry, "RightParameter2", rule.RightParameter2,
+                            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", isBollinger);
+                    }
+                    if (rule.RightParameter3 > 0)
+                    {
+                        string name = GetParamName(rule.RightIndicatorName, 3);
+                        AddParameterUI(rule, isEntry, "RightParameter3", rule.RightParameter3,
+                            $"{prefix} - {rule.RightIndicatorName} ({side}): {name}", false);
+                    }
                 }
             }
 

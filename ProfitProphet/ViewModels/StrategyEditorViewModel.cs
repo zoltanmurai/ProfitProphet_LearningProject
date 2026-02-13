@@ -13,7 +13,6 @@ using System.Text.Json.Serialization;
 using System.Windows;
 using System.Windows.Input;
 
-
 namespace ProfitProphet.ViewModels
 {
     public class StrategyEditorViewModel : INotifyPropertyChanged
@@ -24,9 +23,6 @@ namespace ProfitProphet.ViewModels
         public ObservableCollection<StrategyGroup> EntryGroups { get; set; }
         public ObservableCollection<StrategyGroup> ExitGroups { get; set; }
 
-        // --- LEGÖRDÜLŐ MENÜK (Adatforrás a UI-nak) ---
-        //public ObservableCollection<string> AvailableIndicators { get; } = new ObservableCollection<string>
-        //{ "CMF", "SMA", "EMA", "RSI", "Stoch", "Close", "Open", "High", "Low", "Volume" };
         private List<string> _availableIndicators;
         public List<string> AvailableIndicators
         {
@@ -38,22 +34,16 @@ namespace ProfitProphet.ViewModels
         public ObservableCollection<DataSourceType> AvailableSourceTypes { get; }
 
         // --- PARANCSOK ---
-        // Csoport műveletek
         public ICommand AddEntryGroupCommand { get; }
-        //public ICommand RemoveEntryGroupCommand { get; }
         public ICommand AddExitGroupCommand { get; }
-        //public ICommand RemoveExitGroupCommand { get; }
         public ICommand RemoveGroupCommand { get; }
-
-        // Szabály műveletek (Csoporton belül)
         public ICommand AddRuleToGroupCommand { get; }
-        public ICommand RemoveRuleCommand { get; } 
-
+        public ICommand RemoveRuleCommand { get; }
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
         public ICommand SaveGroupCommand { get; }
-        public ICommand LoadEntryGroupCommand { get; } 
-        public ICommand LoadExitGroupCommand { get; } 
+        public ICommand LoadEntryGroupCommand { get; }
+        public ICommand LoadExitGroupCommand { get; }
         public event Action OnRequestClose;
 
         public StrategyEditorViewModel(StrategyProfile profile, IIndicatorRegistry registry)
@@ -64,93 +54,70 @@ namespace ProfitProphet.ViewModels
             SaveCommand = new RelayCommand(o => Save());
             CancelCommand = new RelayCommand(o => Cancel());
 
-            // Csoportok betöltése
             EntryGroups = new ObservableCollection<StrategyGroup>(Profile.EntryGroups);
             ExitGroups = new ObservableCollection<StrategyGroup>(Profile.ExitGroups);
 
-            // Enumok betöltése
             AvailableOperators = new ObservableCollection<ComparisonOperator>(Enum.GetValues(typeof(ComparisonOperator)).Cast<ComparisonOperator>());
             AvailableSourceTypes = new ObservableCollection<DataSourceType>(Enum.GetValues(typeof(DataSourceType)).Cast<DataSourceType>());
 
             // --- Parancsok bekötése ---
-
-            // 1. Csoport hozzáadása (Üres csoport létrehozása)
             AddEntryGroupCommand = new RelayCommand(_ => EntryGroups.Add(new StrategyGroup { Name = "Új Vételi Setup" }));
             AddExitGroupCommand = new RelayCommand(_ => ExitGroups.Add(new StrategyGroup { Name = "Új Eladási Setup" }));
 
             SaveGroupCommand = new RelayCommand(param => SaveGroup(param as StrategyGroup));
 
-            LoadEntryGroupCommand = new RelayCommand(_ => LoadGroup(true));  // True = Entry
+            LoadEntryGroupCommand = new RelayCommand(_ => LoadGroup(true));
             LoadExitGroupCommand = new RelayCommand(_ => LoadGroup(false));
-
-            // 2. Csoport törlése
-            //RemoveEntryGroupCommand = new RelayCommand(g => EntryGroups.Remove(g as StrategyGroup));
-            //RemoveExitGroupCommand = new RelayCommand(g => ExitGroups.Remove(g as StrategyGroup));
-            //RemoveEntryGroupCommand = new RelayCommand(param =>
-            //{
-            //    if (param is StrategyGroup group)
-            //    {
-            //        // Ha a vételi listában van, onnan töröljük
-            //        if (EntryGroups.Contains(group))
-            //        {
-            //            EntryGroups.Remove(group);
-            //            return;
-            //        }
-            //        // Ha az eladási listában van, onnan töröljük
-            //        if (ExitGroups.Contains(group))
-            //        {
-            //            ExitGroups.Remove(group);
-            //            return;
-            //        }
-            //    }
-            //});
 
             RemoveGroupCommand = new RelayCommand(param =>
             {
                 if (param is StrategyGroup group)
                 {
-                    if (EntryGroups.Remove(group)) return; // Ha sikerült törölni a vételiből, kész.
-                    ExitGroups.Remove(group); // Ha nem, megpróbáljuk az eladásiból.
+                    if (EntryGroups.Remove(group)) return;
+                    ExitGroups.Remove(group);
                 }
             });
 
-            // 3. Szabály hozzáadása (Paraméter: A CSOPORT, amihez adjuk)
             AddRuleToGroupCommand = new RelayCommand(param =>
             {
                 if (param is StrategyGroup group)
                 {
-                    group.Rules.Add(new StrategyRule
+                    var newRule = new StrategyRule
                     {
                         LeftIndicatorName = "CMF",
                         LeftPeriod = 20,
                         Operator = ComparisonOperator.GreaterThan,
                         RightValue = 0
-                    });
+                    };
+
+                    // FONTOS: Az új szabályra is feliratkozunk!
+                    newRule.PropertyChanged += OnRulePropertyChanged;
+                    group.Rules.Add(newRule);
                 }
             });
 
-            // 4. Szabály törlése (Megkeressük, melyik csoportban van, és kivesszük)
             RemoveRuleCommand = new RelayCommand(param =>
             {
                 if (param is StrategyRule rule)
                 {
-                    // Végignézzük az összes csoportot mindkét oldalon
+                    rule.PropertyChanged -= OnRulePropertyChanged; // Leiratkozás törlés előtt
                     foreach (var group in EntryGroups) if (group.Rules.Remove(rule)) return;
                     foreach (var group in ExitGroups) if (group.Rules.Remove(rule)) return;
                 }
             });
 
-            SaveCommand = new RelayCommand(_ => Save());
+            //SaveCommand = new RelayCommand(_ => Save());
+            // Feliratkozás a meglévő szabályokra
+            SubscribeToRuleChanges();
         }
 
         private void SaveGroup(StrategyGroup group)
         {
             if (group == null) return;
 
-            // Fájl mentése ablak
             var dlg = new SaveFileDialog
             {
-                FileName = group.Name.Replace(" ", "_") + ".json", // Alapértelmezett név
+                FileName = group.Name.Replace(" ", "_") + ".json",
                 DefaultExt = ".json",
                 Filter = "Strategy Setup (.json)|*.json",
                 Title = "Setup (Kártya) Mentése"
@@ -160,10 +127,8 @@ namespace ProfitProphet.ViewModels
             {
                 try
                 {
-                    // JSON szerializálás (formázva, hogy olvasható legyen)
                     var options = new JsonSerializerOptions { WriteIndented = true };
                     string jsonString = JsonSerializer.Serialize(group, options);
-
                     File.WriteAllText(dlg.FileName, jsonString);
                     MessageBox.Show("Sikeres mentés!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -174,7 +139,6 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-        // --- BETÖLTÉS LOGIKA ---
         private void LoadGroup(bool isEntry)
         {
             var dlg = new OpenFileDialog
@@ -193,15 +157,14 @@ namespace ProfitProphet.ViewModels
 
                     if (loadedGroup != null)
                     {
-                        // Hozzáadjuk a megfelelő listához
-                        if (isEntry)
+                        // Betöltés után fel kell iratkozni az új szabályokra is!
+                        foreach (var rule in loadedGroup.Rules)
                         {
-                            EntryGroups.Add(loadedGroup);
+                            rule.PropertyChanged += OnRulePropertyChanged;
                         }
-                        else
-                        {
-                            ExitGroups.Add(loadedGroup);
-                        }
+
+                        if (isEntry) EntryGroups.Add(loadedGroup);
+                        else ExitGroups.Add(loadedGroup);
                     }
                 }
                 catch (Exception ex)
@@ -211,65 +174,11 @@ namespace ProfitProphet.ViewModels
             }
         }
 
-        //private void PopulateIndicators(IIndicatorRegistry registry)
-        //{
-        //    var list = new List<string>();
-
-        //    // A) Alapvető árfolyam adatok (Ezek mindig kellenek)
-        //    list.AddRange(new[] { "Close", "Open", "High", "Low", "Volume" });
-
-        //    // B) Lekérjük a Registry-ből az összes indikátort
-        //    if (registry != null)
-        //    {
-        //        var registeredIndicators = registry.GetAll();
-
-        //        foreach (var indicator in registeredIndicators)
-        //        {
-        //            // Itt egy kis trükk kell: 
-        //            // A BacktestService switch-case alapján tudnunk kell, 
-        //            // hogy melyik indikátornak vannak "al-vonalai".
-
-        //            string id = indicator.Id.ToUpper(); // pl. "MACD"
-
-        //            if (id == "MACD")
-        //            {
-        //                // A MACD-nek több kimenete van, ezeket külön kell felvenni,
-        //                // hogy a stratégiában ki tudd választani pl: MACD_Main > MACD_Signal
-        //                list.Add("MACD_MAIN");
-        //                list.Add("MACD_SIGNAL");
-        //                list.Add("MACD_HIST");
-        //            }
-        //            else if (id == "BB" || id == "BOLLINGER")
-        //            {
-        //                list.Add("BB_UPPER");  // Felső szalag
-        //                list.Add("BB_LOWER");  // Alsó szalag
-        //                list.Add("BB_MIDDLE"); // Középső szalag (ami valójában az SMA)
-        //            }
-        //            else
-        //            {
-        //                // Egyszerű indikátorok (RSI, SMA, EMA, CMF...)
-        //                // Csak simán a nevüket (ID) adjuk hozzá
-        //                list.Add(indicator.Id.ToUpper()); // pl. "RSI", "SMA"
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // Fallback, ha nincs registry (teszteléshez)
-        //        list.AddRange(new[] { "SMA", "EMA", "RSI", "CMF", "STOCH", "STOCH_SIGNAL", "MACD_MAIN", "MACD_SIGNAL" });
-        //    }
-
-        //    AvailableIndicators = list;
-        //}
-
         private void PopulateIndicators(IIndicatorRegistry registry)
         {
             var list = new List<string>();
-
-            // A) Alapvető árfolyam adatok
             list.AddRange(new[] { "Close", "Open", "High", "Low", "Volume" });
 
-            // B) Indikátorok betöltése
             if (registry != null)
             {
                 var registeredIndicators = registry.GetAll();
@@ -283,7 +192,6 @@ namespace ProfitProphet.ViewModels
                         list.Add("MACD_SIGNAL");
                         list.Add("MACD_HIST");
                     }
-                    // JAVÍTVA: Jobb felismerés a Bollingerhez
                     else if (id.Contains("BB") || id.Contains("BOLLINGER"))
                     {
                         list.Add("BB_UPPER");
@@ -310,9 +218,92 @@ namespace ProfitProphet.ViewModels
                     "BB_UPPER", "BB_LOWER", "BB_MIDDLE"
                 });
             }
-
-            // Ismétlődések kiszűrése és rendezés
             AvailableIndicators = list.Distinct().OrderBy(x => x).ToList();
+        }
+
+        // ==========================================================
+        // SZINKRONIZÁCIÓS LOGIKA (LOCK TO PREVIOUS)
+        // ==========================================================
+
+        private void SubscribeToRuleChanges()
+        {
+            foreach (var group in EntryGroups)
+            {
+                foreach (var rule in group.Rules)
+                {
+                    rule.PropertyChanged -= OnRulePropertyChanged;
+                    rule.PropertyChanged += OnRulePropertyChanged;
+                }
+            }
+
+            foreach (var group in ExitGroups)
+            {
+                foreach (var rule in group.Rules)
+                {
+                    rule.PropertyChanged -= OnRulePropertyChanged;
+                    rule.PropertyChanged += OnRulePropertyChanged;
+                }
+            }
+        }
+
+        private void OnRulePropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            var changedRule = sender as StrategyRule;
+            if (changedRule == null) return;
+
+            if (e.PropertyName == nameof(StrategyRule.IsLeftLinked) ||
+                e.PropertyName == nameof(StrategyRule.IsRightLinked) ||
+                e.PropertyName == nameof(StrategyRule.LeftPeriod) ||
+                e.PropertyName == nameof(StrategyRule.LeftParameter2) ||
+                e.PropertyName == nameof(StrategyRule.LeftParameter3) ||
+                e.PropertyName == nameof(StrategyRule.RightPeriod) ||
+                e.PropertyName == nameof(StrategyRule.RightParameter2) ||
+                e.PropertyName == nameof(StrategyRule.RightParameter3))
+            {
+                var group = FindGroupOfRule(changedRule);
+                if (group != null)
+                {
+                    SyncGroupRules(group);
+                }
+            }
+        }
+
+        private StrategyGroup FindGroupOfRule(StrategyRule rule)
+        {
+            foreach (var g in EntryGroups) if (g.Rules.Contains(rule)) return g;
+            foreach (var g in ExitGroups) if (g.Rules.Contains(rule)) return g;
+            return null;
+        }
+
+        private void SyncGroupRules(StrategyGroup group)
+        {
+            if (group == null || group.Rules.Count < 2) return;
+
+            // A 2. elemtől indulunk (index 1)
+            for (int i = 1; i < group.Rules.Count; i++)
+            {
+                var currentRule = group.Rules[i];
+                var prevRule = group.Rules[i - 1];
+
+                // 1. BAL OLDAL
+                if (currentRule.IsLeftLinked)
+                {
+                    if (currentRule.LeftPeriod != prevRule.LeftPeriod) currentRule.LeftPeriod = prevRule.LeftPeriod;
+                    if (currentRule.LeftParameter2 != prevRule.LeftParameter2) currentRule.LeftParameter2 = prevRule.LeftParameter2;
+                    if (currentRule.LeftParameter3 != prevRule.LeftParameter3) currentRule.LeftParameter3 = prevRule.LeftParameter3;
+                }
+
+                // 2. JOBB OLDAL
+                if (currentRule.IsRightLinked)
+                {
+                    if (prevRule.RightSourceType == DataSourceType.Indicator && currentRule.RightSourceType == DataSourceType.Indicator)
+                    {
+                        if (currentRule.RightPeriod != prevRule.RightPeriod) currentRule.RightPeriod = prevRule.RightPeriod;
+                        if (currentRule.RightParameter2 != prevRule.RightParameter2) currentRule.RightParameter2 = prevRule.RightParameter2;
+                        if (currentRule.RightParameter3 != prevRule.RightParameter3) currentRule.RightParameter3 = prevRule.RightParameter3;
+                    }
+                }
+            }
         }
 
         private void Save()
@@ -326,10 +317,10 @@ namespace ProfitProphet.ViewModels
             OnRequestClose?.Invoke();
         }
 
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
         {
-            PropertyChanged?.Invoke(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
