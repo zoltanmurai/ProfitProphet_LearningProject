@@ -36,8 +36,9 @@ namespace ProfitProphet.Views
         {
             object content = tag switch
             {
+                "Appearance" => new AppearanceSettingsControl(_settingsService),
                 "ApiSettings" => new ApiSettingsControl(_settingsService),
-                "DataImport"  => new DataImportControl(_dataService, _settingsService),
+                "DataImport" => new DataImportControl(_dataService, _settingsService),
                 _ => new TextBlock { Text = "Coming soon...", Foreground = Brushes.Gray }
             };
             ContentArea.Content = content;

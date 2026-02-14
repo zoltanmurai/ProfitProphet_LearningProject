@@ -72,24 +72,22 @@ namespace ProfitProphet
 
             // 1. TÉMA BEÁLLÍTÁSA A MENTETT PREFERENCIA ALAPJÁN
             // Először elkérjük a beállításokat kezelő szervizt
-            //var settingsService = _serviceProvider.GetRequiredService<IAppSettingsService>();
+            var settingsService = _serviceProvider.GetRequiredService<IAppSettingsService>();
 
             // Kiolvassuk, mit mentett el a felhasználó (System, Light vagy Dark)
             // Ha még nincs mentett érték, az alapértelmezett (System) jön vissza.
-            //var userPref = settingsService.CurrentSettings.ThemePreference;
+            var userPref = settingsService.CurrentSettings.ThemePreference;
 
-            // Alkalmazzuk a választást (ez dönti el, hogy detektálni kell-e vagy kényszeríteni)
-            //Views.WindowStyleHelper.ApplyUserSelection(userPref);
+            // ✨ ÚJ: InitializeTheme() használata, ami automatikusan:
+            // - Alkalmazza a választott témát (System/Light/Dark)
+            // - Ha System módban van, elindítja a Windows téma figyelést
+            WindowStyleHelper.InitializeTheme(userPref);
 
-            // Mivel a Settings rész még nincs kész, egyszerűen megkérdezzük a Windowst:
-            var currentSystemTheme = Views.WindowStyleHelper.DetectSystemTheme();
-
-            // És beállítjuk a programot:
-            Views.WindowStyleHelper.SetApplicationTheme(currentSystemTheme);
-
-            // Elindítjuk a figyelést (ez csak akkor vált majd, ha a 'System' van kiválasztva)
-            Views.WindowStyleHelper.StartListeningToSystemChanges();
-
+            // A régi kód már nem kell, az InitializeTheme() mindent megold:
+            // Views.WindowStyleHelper.ApplyUserSelection(userPref);
+            // Views.WindowStyleHelper.DetectSystemTheme();
+            // Views.WindowStyleHelper.SetApplicationTheme(currentSystemTheme);
+            // Views.WindowStyleHelper.StartListeningToSystemChanges();
 
             // 2. ADATBÁZIS ÉS EGYÉB INDÍTÁSI DOLGOK (MARAD A RÉGI)
             using (var scope = _serviceProvider.CreateScope())

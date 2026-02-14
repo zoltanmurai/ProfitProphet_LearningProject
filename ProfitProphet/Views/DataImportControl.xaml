@@ -1,18 +1,23 @@
 ﻿<UserControl x:Class="ProfitProphet.Views.DataImportControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Background="#1e1e1e">
+             Background="{DynamicResource PrimaryBackground}"
+             Foreground="{DynamicResource PrimaryText}">
+
     <StackPanel Margin="10">
-        <TextBlock Text="Data Import" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+        <TextBlock Text="Data Import" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"
+                   Foreground="{DynamicResource PrimaryText}"/>
+
         <CheckBox x:Name="AutoImportCheckBox"
                   Content="Automatikus dataimport"
                   IsChecked="{Binding AutoDataImport, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   Checked="AutoImportCheckBox_CheckedChanged"
                   Unchecked="AutoImportCheckBox_CheckedChanged"
                   Margin="0,0,0,8"
-                  Foreground="White"/>
+                  Foreground="{DynamicResource PrimaryText}"/>
+
         <StackPanel Orientation="Horizontal" Margin="0,10,0,10">
-            <TextBlock Text="Lookback Period (nap):" Width="150"/>
+            <TextBlock Text="Lookback Period (nap):" Width="150" VerticalAlignment="Center"/>
             <ComboBox x:Name="LookbackCombo" Width="200" SelectionChanged="LookbackCombo_SelectionChanged">
                 <ComboBoxItem Content="200 days"/>
                 <ComboBoxItem Content="350 days"/>
@@ -21,14 +26,20 @@
                 <ComboBoxItem Content="24 months"/>
             </ComboBox>
         </StackPanel>
+
         <Button Content="Start Import"
                 Width="120"
                 HorizontalAlignment="Left"
                 Margin="0,20,0,0"
-                Click="StartImport_Click"/>
+                Click="StartImport_Click"
+                Foreground="White"
+                Background="{DynamicResource AccentBrush}"
+                BorderThickness="0"/>
+
         <TextBlock x:Name="StatusTextBlock"
                    Text="{Binding ImportStatus}"
                    Margin="0,20,0,0"
-                   Foreground="LightGreen"/>
+                   Foreground="{DynamicResource StrategyBuyBrush}" 
+                   FontWeight="Bold"/>
     </StackPanel>
 </UserControl>

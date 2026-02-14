@@ -6,13 +6,19 @@ using System.Threading.Tasks;
 
 namespace ProfitProphet.Entities
 {
+    // Ticker entity representing a tradable instrument
     public class Ticker
     {
+        // Primary key
         public int Id { get; set; }
-        public string Symbol { get; set; } = "";   // pl. MSFT
-        public string Name { get; set; } = "";     // pl. Microsoft
 
-        // Reláció
+        // Trading symbol (e.g., "MSFT")
+        public string Symbol { get; set; } = "";   // e.g., MSFT
+
+        // Human-readable name (e.g., "Microsoft")
+        public string Name { get; set; } = "";     // e.g., Microsoft
+
+        // Navigation property: related candle records for this ticker
         public ICollection<Candle> Candles { get; set; } = new List<Candle>();
     }
 }

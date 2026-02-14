@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="ProfitProphet.Views.AppearanceSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="{DynamicResource PrimaryBackground}">
+    <StackPanel Margin="10">
+        <TextBlock Text="Megjelenés"
+                   FontSize="20"
+                   FontWeight="Bold"
+                   Foreground="{DynamicResource PrimaryText}"
+                   Margin="0,0,0,20"/>
+        <Border Background="{DynamicResource SecondaryBackground}"
+                CornerRadius="8"
+                Padding="20"
+                Margin="0,0,0,15">
+            <StackPanel>
+                <TextBlock Text="Téma"
+                           FontSize="14"
+                           FontWeight="SemiBold"
+                           Foreground="{DynamicResource PrimaryText}"
+                           Margin="0,0,0,15"/>
+                <RadioButton x:Name="RadioSystem"
+                            Content="Rendszer alapértelmezett"
+                            Foreground="{DynamicResource PrimaryText}"
+                            GroupName="Theme"
+                            IsChecked="True"
+                            Checked="RadioTheme_Checked"
+                            Margin="0,8"/>
+                <TextBlock Text="A program követi a Windows témabeállítását"
+                           FontSize="11"
+                           Foreground="{DynamicResource SecondaryText}"
+                           Margin="25,0,0,10"/>
+                <RadioButton x:Name="RadioLight"
+                            Content="Világos mód"
+                            Foreground="{DynamicResource PrimaryText}"
+                            GroupName="Theme"
+                            Checked="RadioTheme_Checked"
+                            Margin="0,8"/>
+                <TextBlock Text="Mindig világos megjelenés"
+                           FontSize="11"
+                           Foreground="{DynamicResource SecondaryText}"
+                           Margin="25,0,0,10"/>
+                <RadioButton x:Name="RadioDark"
+                            Content="Sötét mód"
+                            Foreground="{DynamicResource PrimaryText}"
+                            GroupName="Theme"
+                            Checked="RadioTheme_Checked"
+                            Margin="0,8"/>
+                <TextBlock Text="Mindig sötét megjelenés"
+                           FontSize="11"
+                           Foreground="{DynamicResource SecondaryText}"
+                           Margin="25,0,0,10"/>
+            </StackPanel>
+        </Border>
+        <Border Background="{DynamicResource TertiaryBackground}"
+                CornerRadius="6"
+                Padding="12"
+                BorderBrush="{DynamicResource BorderBrush}"
+                BorderThickness="1">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="ℹ️"
+                           FontSize="16"
+                           Margin="0,0,8,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock Text="A téma változtatás azonnal érvénybe lép minden ablakon."
+                           FontSize="12"
+                           Foreground="{DynamicResource SecondaryText}"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

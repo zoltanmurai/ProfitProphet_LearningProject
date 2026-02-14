@@ -20,6 +20,6 @@ namespace ProfitProphet.Settings
 
         public Dictionary<string, List<IndicatorConfigDto>> IndicatorProfiles { get; set; }
             = new();
-        public ThemeSelection ThemePreference { get; internal set; }
+        public ThemeSelection ThemePreference { get; set; } = ThemeSelection.System;
     }
 }

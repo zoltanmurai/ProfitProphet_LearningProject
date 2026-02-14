@@ -7,6 +7,9 @@
     <Compile Update="Views\ApiSettingsControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\AppearanceSettingsControl.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\DataImportControl.xaml.cs">
       <SubType>Code</SubType>
     </Compile>

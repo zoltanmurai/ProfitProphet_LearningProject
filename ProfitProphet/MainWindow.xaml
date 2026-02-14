@@ -191,7 +191,7 @@
                     ToolTip="Settings"
                     Cursor="Hand"
                     Margin="0,0,10,0">
-                    <Image Source="/Assets/settings_black.png"
+                    <Image Source="{DynamicResource SettingsIconSource}"
                         Stretch="Uniform"
                         Width="24" Height="24"/>
                 </Button>

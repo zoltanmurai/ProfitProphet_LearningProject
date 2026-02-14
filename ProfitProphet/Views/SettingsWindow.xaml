@@ -50,7 +50,7 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
 
-                <ListBoxItem Content="Általános" Tag="General"/>
+                <ListBoxItem Content="Megjelenés" Tag="Appearance"/>
                 <ListBoxItem Content="APIs" Tag="ApiSettings"/>
                 <ListBoxItem Content="Data Import" Tag="DataImport"/>
             </ListBox>

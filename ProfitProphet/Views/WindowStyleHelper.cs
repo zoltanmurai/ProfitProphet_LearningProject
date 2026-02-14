@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace ProfitProphet.Views
 {
@@ -16,6 +17,7 @@ namespace ProfitProphet.Views
     public static class WindowStyleHelper
     {
         private const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+        public static event Action<ThemeMode> ThemeChanged;
 
         [DllImport("dwmapi.dll", PreserveSig = true)]
         private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
@@ -82,6 +84,20 @@ namespace ProfitProphet.Views
         }
 
         /// <summary>
+        /// Inicializálja a témát az alkalmazás indításakor a mentett beállítás alapján
+        /// </summary>
+        public static void InitializeTheme(ThemeSelection savedPreference)
+        {
+            ApplyUserSelection(savedPreference);
+
+            // Ha System módban vagyunk, akkor figyeljük a rendszer változásokat
+            if (savedPreference == ThemeSelection.System)
+            {
+                StartListeningToSystemChanges();
+            }
+        }
+
+        /// <summary>
         /// Figyeli a Windows téma váltását futás közben
         /// </summary>
         public static void StartListeningToSystemChanges()
@@ -90,11 +106,15 @@ namespace ProfitProphet.Views
             {
                 if (e.Category == UserPreferenceCategory.General)
                 {
-                    var newTheme = DetectSystemTheme();
-                    if (newTheme != CurrentTheme)
+                    // Csak akkor változtassuk a témát, ha System módban vagyunk
+                    if (CurrentSelection == ThemeSelection.System)
                     {
-                        // Dispatcher kell, mert a SystemEvents más szálon jöhet
-                        Application.Current.Dispatcher.Invoke(() => SetApplicationTheme(newTheme));
+                        var newTheme = DetectSystemTheme();
+                        if (newTheme != CurrentTheme)
+                        {
+                            // Dispatcher kell, mert a SystemEvents más szálon jöhet
+                            Application.Current.Dispatcher.Invoke(() => SetApplicationTheme(newTheme));
+                        }
                     }
                 }
             };
@@ -125,6 +145,7 @@ namespace ProfitProphet.Views
             }
 
             ApplyApplicationResources(theme);
+            ThemeChanged?.Invoke(theme);
         }
 
         private static void SetTitleBarTheme(Window window, ThemeMode theme)
@@ -181,6 +202,7 @@ namespace ProfitProphet.Views
                 resources["StrategySellBrush"] = new SolidColorBrush(Colors.Red); // Vagy #FF5555
 
                 resources["StrategyOrBrush"] = new SolidColorBrush(Color.FromRgb(255, 215, 0)); // #FFD700
+                resources["SettingsIconSource"] = new BitmapImage(new Uri("pack://application:,,,/Assets/settings_black.png"));
             }
             else
             {
@@ -207,6 +229,7 @@ namespace ProfitProphet.Views
                 resources["StrategySellBrush"] = new SolidColorBrush(Color.FromRgb(220, 20, 60)); // Crimson
 
                 resources["StrategyOrBrush"] = new SolidColorBrush(Color.FromRgb(184, 134, 11)); // DarkGoldenrod
+                resources["SettingsIconSource"] = new BitmapImage(new Uri("pack://application:,,,/Assets/settings_white.png"));
             }
         }
 

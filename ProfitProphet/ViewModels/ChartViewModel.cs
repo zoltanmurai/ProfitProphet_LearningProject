@@ -7,6 +7,7 @@ using ProfitProphet.Services.Indicators;
 using ProfitProphet.Settings;
 using ProfitProphet.ViewModels.Commands;
 using ProfitProphet.ViewModels.Dialogs;
+using ProfitProphet.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -112,6 +113,9 @@ namespace ProfitProphet.ViewModels
             _chartBuilder = chartBuilder;
             _loadCandlesAsync = loadCandlesAsync ?? throw new ArgumentNullException(nameof(loadCandlesAsync));
             _indicatorRegistry = indicatorRegistry ?? throw new ArgumentNullException(nameof(indicatorRegistry));
+
+            WindowStyleHelper.ThemeChanged += UpdateChartTheme;
+            UpdateChartTheme(WindowStyleHelper.CurrentTheme);
 
             AddIndicatorWithDialogCommand = new RelayCommand(param =>
             {
@@ -548,6 +552,50 @@ namespace ProfitProphet.ViewModels
                     });
                     break;
             }
+        }
+
+        private void UpdateChartTheme(WindowStyleHelper.ThemeMode theme)
+        {
+            if (ChartModel == null) return;
+
+            bool isDark = theme == WindowStyleHelper.ThemeMode.Dark;
+
+            // 1. Színek előkészítése (Itt számoljuk ki a rács színét)
+            var textColor = isDark ? OxyColors.White : OxyColors.Black;
+            //var gridColor = isDark ? OxyColor.FromAColor(40, OxyColors.White) : OxyColor.FromAColor(40, OxyColors.Black);
+
+            // 2. Háttér és Keret beállítása
+            if (isDark)
+            {
+                //ChartModel.Background = OxyColor.FromRgb(14, 17, 23);
+                ChartModel.Background = OxyColor.FromRgb(22, 27, 34);
+                ChartModel.PlotAreaBorderColor = OxyColors.White;
+            }
+            else
+            {
+                ChartModel.Background = OxyColors.White;
+                ChartModel.PlotAreaBorderColor = OxyColors.Black;
+            }
+
+            ChartModel.PlotAreaBackground = OxyColors.Transparent;
+            ChartModel.TextColor = textColor;
+
+            // 3. Tengelyek és Rácsok színezése
+            foreach (var axis in ChartModel.Axes)
+            {
+                axis.TicklineColor = textColor;
+                axis.TextColor = textColor;
+                axis.TitleColor = textColor;
+
+                // JAVÍTÁS: Itt egyszerűen használjuk a fenti 'gridColor' változót
+                //axis.MajorGridlineColor = gridColor;
+                //axis.MinorGridlineColor = gridColor;
+
+                axis.AxislineColor = textColor;
+            }
+
+            // 4. Frissítés (true = adatok és stílusok teljes újrarajzolása)
+            ChartModel.InvalidatePlot(true);
         }
 
         private static string? GetValueIgnoreCase(Dictionary<string, string> dict, string key)
