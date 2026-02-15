@@ -193,17 +193,17 @@
                     Margin="0,0,10,0">
                     <Image Source="{DynamicResource SettingsIconSource}"
                         Stretch="Uniform"
-                        Width="24" Height="24"/>
+                        Width="42" Height="42"/>
                 </Button>
 
-                <Button Content="🧪 Test Alert" 
+                <!--<Button Content="🧪 Test Alert" 
                     Command="{Binding TestAlertCommand}"
                     Margin="5"
                     Padding="10,5"
                     Background="#ff6b35"
                     Foreground="{DynamicResource PrimaryText}"
                     BorderThickness="0"
-                    Cursor="Hand"/>
+                    Cursor="Hand"/>-->
 
                 <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0,0,0">
 

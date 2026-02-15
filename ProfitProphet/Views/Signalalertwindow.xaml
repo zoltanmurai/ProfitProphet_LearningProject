@@ -16,7 +16,7 @@
 
     <Border Background="{DynamicResource TertiaryBackground}" 
             CornerRadius="10" 
-            BorderBrush="Orange" 
+            BorderBrush="{DynamicResource SignalAlertBrush}" 
             BorderThickness="3"
             Padding="20"
             Margin="10">
@@ -35,11 +35,10 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Header -->
             <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
                 <TextBlock Text="🔔" 
                            FontSize="24" 
-                           Foreground="Gold" 
+                           Foreground="{DynamicResource StrategyOrBrush}" 
                            VerticalAlignment="Center" 
                            Margin="0,0,10,0"/>
                 <TextBlock Text="Trading Signal Alert" 
@@ -50,12 +49,11 @@
                            TextWrapping="Wrap"/>
             </StackPanel>
 
-            <!-- Content -->
             <StackPanel Grid.Row="1" Margin="0,0,0,20">
                 <TextBlock x:Name="SymbolText" 
                            FontSize="16" 
                            FontWeight="Bold" 
-                           Foreground="Orange"
+                           Foreground="{DynamicResource StrategyOrBrush}"
                            HorizontalAlignment="Center"
                            Margin="0,0,0,10"
                            TextWrapping="Wrap"/>
@@ -69,14 +67,13 @@
                            MaxWidth="500"/>
             </StackPanel>
 
-            <!-- Button -->
             <Button Grid.Row="2" 
                     Content="OK" 
                     Click="OkButton_Click"
                     Width="100"
                     Height="35"
                     Background="{DynamicResource AccentBrush}"
-                    Foreground="{DynamicResource PrimaryText}"
+                    Foreground="White"
                     BorderThickness="0"
                     FontSize="14"
                     FontWeight="Bold"

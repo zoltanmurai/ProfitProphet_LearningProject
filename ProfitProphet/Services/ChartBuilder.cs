@@ -476,7 +476,8 @@ namespace ProfitProphet.Services
                     LineStyle = LineStyle.Dash,
                     Layer = AnnotationLayer.BelowSeries,
                     XAxisKey = _xAxis.Key,
-                    YAxisKey = _mainYAxis.Key
+                    YAxisKey = _mainYAxis.Key,
+                    Tag = "GapMarker"
                 };
                 Model.Annotations.Add(gapLine);
             }

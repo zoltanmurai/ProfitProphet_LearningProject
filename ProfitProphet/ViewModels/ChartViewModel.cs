@@ -117,6 +117,11 @@ namespace ProfitProphet.ViewModels
             WindowStyleHelper.ThemeChanged += UpdateChartTheme;
             UpdateChartTheme(WindowStyleHelper.CurrentTheme);
 
+            if (ChartModel != null)
+            {
+                UpdateChartTheme(WindowStyleHelper.CurrentTheme);
+            }
+
             AddIndicatorWithDialogCommand = new RelayCommand(param =>
             {
                 if (param is IndicatorType type)
@@ -205,6 +210,8 @@ namespace ProfitProphet.ViewModels
             CrosshairTextY = null;
 
             _chartBuilder.BuildInteractiveChart(_candles, CurrentSymbol, CurrentInterval);
+
+            UpdateChartTheme(WindowStyleHelper.CurrentTheme);
 
             // MÁSODSZOR: Új crosshair objektumokat hozunk létre az ÚJ modellhez
             SetupCrosshair();
@@ -562,23 +569,29 @@ namespace ProfitProphet.ViewModels
 
             // 1. Színek előkészítése (Itt számoljuk ki a rács színét)
             var textColor = isDark ? OxyColors.White : OxyColors.Black;
-            //var gridColor = isDark ? OxyColor.FromAColor(40, OxyColors.White) : OxyColor.FromAColor(40, OxyColors.Black);
+            var gridColor = isDark ? OxyColor.FromAColor(40, OxyColors.White) : OxyColor.FromAColor(40, OxyColors.Black);
+            var gapColor = isDark ? OxyColor.FromArgb(60, 200, 200, 255) : OxyColor.FromArgb(60, 0, 0, 139);
 
             // 2. Háttér és Keret beállítása
             if (isDark)
             {
                 //ChartModel.Background = OxyColor.FromRgb(14, 17, 23);
                 ChartModel.Background = OxyColor.FromRgb(22, 27, 34);
-                ChartModel.PlotAreaBorderColor = OxyColors.White;
+                ChartModel.PlotAreaBackground = OxyColor.FromRgb(24, 28, 34);
+                ChartModel.PlotAreaBorderColor = OxyColor.FromRgb(40, 40, 40);
+                //ChartModel.PlotAreaBorderColor = OxyColors.White;
             }
             else
             {
                 ChartModel.Background = OxyColors.White;
-                ChartModel.PlotAreaBorderColor = OxyColors.Black;
+                ChartModel.PlotAreaBackground = OxyColors.White;
+                ChartModel.PlotAreaBorderColor = OxyColors.Gray;
+                //ChartModel.PlotAreaBorderColor = OxyColors.Black;
             }
 
             ChartModel.PlotAreaBackground = OxyColors.Transparent;
             ChartModel.TextColor = textColor;
+            ChartModel.TitleColor = textColor;
 
             // 3. Tengelyek és Rácsok színezése
             foreach (var axis in ChartModel.Axes)
@@ -587,12 +600,37 @@ namespace ProfitProphet.ViewModels
                 axis.TextColor = textColor;
                 axis.TitleColor = textColor;
 
-                // JAVÍTÁS: Itt egyszerűen használjuk a fenti 'gridColor' változót
-                //axis.MajorGridlineColor = gridColor;
-                //axis.MinorGridlineColor = gridColor;
+                axis.AxislineColor = textColor;
+
+                // használjuk a fenti 'gridColor' változót
+                axis.MajorGridlineColor = gridColor;
+                axis.MinorGridlineColor = gridColor;
 
                 axis.AxislineColor = textColor;
             }
+
+            if (ChartModel.Annotations != null)
+            {
+                foreach (var annotation in ChartModel.Annotations)
+                {
+                    // Ha ez egy GapMarker, színezzük át
+                    if (annotation is LineAnnotation line && line.Tag as string == "GapMarker")
+                    {
+                        line.Color = gapColor;
+                    }
+                }
+            }
+
+            //if (CrosshairTextX != null)
+            //{
+            //    CrosshairTextX.TextColor = textColor;
+            //    CrosshairTextX.Background = isDark ? OxyColor.FromArgb(200, 30, 30, 30) : OxyColor.FromArgb(200, 240, 240, 240);
+            //}
+            //if (CrosshairTextY != null)
+            //{
+            //    CrosshairTextY.TextColor = textColor;
+            //    CrosshairTextY.Background = isDark ? OxyColor.FromArgb(200, 30, 30, 30) : OxyColor.FromArgb(200, 240, 240, 240);
+            //}
 
             // 4. Frissítés (true = adatok és stílusok teljes újrarajzolása)
             ChartModel.InvalidatePlot(true);

@@ -15,6 +15,7 @@
             <SolidColorBrush x:Key="StrategyBuyBrush" Color="LimeGreen"/>
             <SolidColorBrush x:Key="StrategySellBrush" Color="Red"/>
             <SolidColorBrush x:Key="StrategyOrBrush" Color="#FFD700"/>
+            <SolidColorBrush x:Key="SignalAlertBrush" Color="Orange"/>
 
             <SolidColorBrush x:Key="PrimaryText" Color="White"/>
             <SolidColorBrush x:Key="SecondaryText" Color="#a5b1c2"/>

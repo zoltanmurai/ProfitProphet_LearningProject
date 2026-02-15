@@ -202,6 +202,8 @@ namespace ProfitProphet.Views
                 resources["StrategySellBrush"] = new SolidColorBrush(Colors.Red); // Vagy #FF5555
 
                 resources["StrategyOrBrush"] = new SolidColorBrush(Color.FromRgb(255, 215, 0)); // #FFD700
+                resources["SignalAlertBrush"] = new SolidColorBrush(Colors.Orange);
+
                 resources["SettingsIconSource"] = new BitmapImage(new Uri("pack://application:,,,/Assets/settings_black.png"));
             }
             else
@@ -229,7 +231,10 @@ namespace ProfitProphet.Views
                 resources["StrategySellBrush"] = new SolidColorBrush(Color.FromRgb(220, 20, 60)); // Crimson
 
                 resources["StrategyOrBrush"] = new SolidColorBrush(Color.FromRgb(184, 134, 11)); // DarkGoldenrod
+                resources["SignalAlertBrush"] = new SolidColorBrush(Colors.Orange);
+
                 resources["SettingsIconSource"] = new BitmapImage(new Uri("pack://application:,,,/Assets/settings_white.png"));
+
             }
         }
 
