@@ -202,7 +202,7 @@ namespace ProfitProphet.ViewModels
 
         public string Symbol { get; private set; }
 
-        private double _initialCash = 10000;
+        private double _initialCash = 10000000;
         public double InitialCash
         {
             get => _initialCash;
@@ -513,7 +513,8 @@ namespace ProfitProphet.ViewModels
                             progressIndicator,
                             token,
                             IsVisualMode,
-                            realTimeHandler
+                            realTimeHandler,
+                            InitialCash
                         );
 
                         // --- UI FRISSÍTÉS ÉS CACHE MENTÉS ---

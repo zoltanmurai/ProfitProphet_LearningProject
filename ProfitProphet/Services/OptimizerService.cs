@@ -26,10 +26,11 @@ namespace ProfitProphet.Services
             IProgress<int> progress,
             CancellationToken token,
             bool visualMode,
-            IProgress<OptimizationResult> realtimeHandler)
+            IProgress<OptimizationResult> realtimeHandler,
+            double initialCash)
         {
             System.Diagnostics.Debug.WriteLine($"Processors: {Environment.ProcessorCount}, Using: {Math.Max(1, Environment.ProcessorCount - 2)}");
-            return await RunIterationAsync(candles, profile, parameters, progress, token, visualMode, realtimeHandler);
+            return await RunIterationAsync(candles, profile, parameters, progress, token, visualMode, realtimeHandler, initialCash);
         }
 
         private async Task<List<OptimizationResult>> RunIterationAsync(
@@ -39,7 +40,8 @@ namespace ProfitProphet.Services
             IProgress<int> progress,
             CancellationToken token,
             bool visualMode,
-            IProgress<OptimizationResult> realtimeHandler)
+            IProgress<OptimizationResult> realtimeHandler,
+            double initialCash)
         {
             var combinations = GenerateCombinations(parameters);
             var results = new System.Collections.Concurrent.ConcurrentBag<OptimizationResult>();
@@ -97,7 +99,7 @@ namespace ProfitProphet.Services
                             }
 
                             // 3. Futtatjuk a tesztet
-                            var res = _backtestService.RunBacktest(candles, testProfile);
+                            var res = _backtestService.RunBacktest(candles, testProfile, initialCash);
 
                             if (token.IsCancellationRequested)
                             {

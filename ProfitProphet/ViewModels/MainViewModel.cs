@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using ProfitProphet.Data;
 using ProfitProphet.DTOs;
+using ProfitProphet.Entities;
 using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Models.Strategies;
 using ProfitProphet.Services;
@@ -178,14 +179,14 @@ namespace ProfitProphet.ViewModels
 
             // ITT MENTJÜK EL A KÖZÖS PÉLDÁNYT:
             _chartBuilder = chartBuilder;
-            var cfgPath = System.IO.Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                "ProfitProphet", "settings.json");
+            //var cfgPath = System.IO.Path.Combine(
+            //    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            //    "ProfitProphet", "settings.json");
 
-            _settingsService = new AppSettingsService(cfgPath);
+            //_settingsService = new AppSettingsService(cfgPath);
             _settings = _settingsService.LoadSettings();
 
-            _dataService = new DataService(new StockContext());
+            //_dataService = new DataService(new StockContext());
             TestAlertCommand = new RelayCommand(_ => ExecuteTestAlert());
 
             // ChartVM uses DataService via mapping to ChartBuilder.CandleData
@@ -194,7 +195,7 @@ namespace ProfitProphet.ViewModels
             //    var list = await _dataService.GetLocalDataAsync(symbol, interval);
             //    return MapToCandleData(list);
             //});
-            var registry = new ProfitProphet.Services.Indicators.IndicatorRegistry();
+            //var registry = new ProfitProphet.Services.Indicators.IndicatorRegistry();
             ChartVM = new ChartViewModel(_settingsService, _settings, async (symbol, interval) =>
             {
                 var list = await _dataService.GetLocalDataAsync(symbol, interval);
@@ -218,7 +219,7 @@ namespace ProfitProphet.ViewModels
                 return MapToCandleData(list);
             },
             _chartBuilder,
-            registry);
+            _indicatorRegistry);
 
             Intervals = new ObservableCollection<IntervalItem>
             {
@@ -261,11 +262,11 @@ namespace ProfitProphet.ViewModels
         }
 
         // Maps your entity DTO to ChartBuilder.CandleData for the ChartViewModel loader
-        private static List<ChartBuilder.CandleData> MapToCandleData(IEnumerable<ProfitProphet.Entities.Candle> src)
+        private static List<CandleData> MapToCandleData(IEnumerable<ProfitProphet.Entities.Candle> src)
         {
             return src
                 .OrderBy(c => c.TimestampUtc)
-                .Select(c => new ChartBuilder.CandleData
+                .Select(c => new CandleData
                 {
                     Timestamp = c.TimestampUtc,
                     Open = (double)c.Open,
@@ -576,7 +577,7 @@ namespace ProfitProphet.ViewModels
 
             // 3. Futtatunk egy "csendes" tesztet (ablaknyitás nélkül)
             // Itt a kezdő tőkét a beállításokból vagy fixen is vehetjük
-            var result = _backtestService.RunBacktest(candles, profile, 10000);
+            var result = _backtestService.RunBacktest(candles, profile, 100000000);
 
             // 4. Frissítjük a profilban a kötéseket és elmentjük
             profile.LastTestTrades = result.Trades;
@@ -609,7 +610,7 @@ namespace ProfitProphet.ViewModels
 
                 // 3. Lefuttatjuk a "csendes" háttér-tesztet
                 // (A 10000-es tőke itt csak példa, használhatod a beállításokból is)
-                var result = _backtestService.RunBacktest(candles, profile, 10000);
+                var result = _backtestService.RunBacktest(candles, profile, 100000000);
 
                 if (result.Trades.Count > 0)
                 {

@@ -74,16 +74,14 @@ namespace ProfitProphet
             // Először elkérjük a beállításokat kezelő szervizt
             var settingsService = _serviceProvider.GetRequiredService<IAppSettingsService>();
 
-            // Kiolvassuk, mit mentett el a felhasználó (System, Light vagy Dark)
-            // Ha még nincs mentett érték, az alapértelmezett (System) jön vissza.
+            // Kiolvassuk, mit mentett a felhasználó (System, Light vagy Dark)
+            // Ha nincs mentett, az alapértelmezett jön.
             var userPref = settingsService.CurrentSettings.ThemePreference;
+            //var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
 
-            // ✨ ÚJ: InitializeTheme() használata, ami automatikusan:
-            // - Alkalmazza a választott témát (System/Light/Dark)
-            // - Ha System módban van, elindítja a Windows téma figyelést
             WindowStyleHelper.InitializeTheme(userPref);
 
-            // A régi kód már nem kell, az InitializeTheme() mindent megold:
+            // az InitializeTheme() miatt nem kell:
             // Views.WindowStyleHelper.ApplyUserSelection(userPref);
             // Views.WindowStyleHelper.DetectSystemTheme();
             // Views.WindowStyleHelper.SetApplicationTheme(currentSystemTheme);
@@ -104,6 +102,7 @@ namespace ProfitProphet
             }
 
             var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
+            WindowStyleHelper.ApplyDarkTitleBar(mainWindow);
             mainWindow.Show();
         }
     }

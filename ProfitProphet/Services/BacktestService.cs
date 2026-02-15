@@ -10,7 +10,7 @@ namespace ProfitProphet.Services
 {
     public class BacktestService
     {
-        public BacktestResult RunBacktest(List<Candle> candles, StrategyProfile profile, double initialCash = 10000)
+        public BacktestResult RunBacktest(List<Candle> candles, StrategyProfile profile, double initialCash)
         {
             var result = new BacktestResult
             {
@@ -21,6 +21,22 @@ namespace ProfitProphet.Services
             };
 
             if (candles == null || candles.Count < 50) return result;
+
+            System.Diagnostics.Debug.WriteLine($"[BACKTEST START] Szimbólum: {result.Symbol}");
+            System.Diagnostics.Debug.WriteLine($"[BACKTEST DATA] Gyertyák száma: {candles.Count}");
+            System.Diagnostics.Debug.WriteLine($"[BACKTEST DATA] initialCash: {initialCash}");
+
+            if (candles.Count > 0)
+            {
+                var first = candles[0];
+                var last = candles[candles.Count - 1];
+                System.Diagnostics.Debug.WriteLine($"[DATA MINTA] Első: {first.TimestampUtc} | Ár: {first.Close}");
+                System.Diagnostics.Debug.WriteLine($"[DATA MINTA] Utolsó: {last.TimestampUtc} | Ár: {last.Close}");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"[HIBA] ÜRES a gyertyák listája! A Backtester nem kapott adatot.");
+            }
 
             // Indikátorok előszámítása (Cache feltöltése)
             var indicatorCache = PrecalculateIndicators(candles, profile);

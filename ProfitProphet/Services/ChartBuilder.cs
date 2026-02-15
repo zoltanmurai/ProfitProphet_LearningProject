@@ -7,12 +7,14 @@ using ProfitProphet.Models.Backtesting;
 using ProfitProphet.Models.Charting;
 using ProfitProphet.Services.Charting;
 using ProfitProphet.Services.Indicators;
+using ProfitProphet.Views;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 
 namespace ProfitProphet.Services
@@ -24,6 +26,7 @@ namespace ProfitProphet.Services
         private CandleStickSeries _series;
         private readonly IIndicatorRegistry _indicatorRegistry;
         private readonly IChartSettingsService _chartSettings;
+        private WindowStyleHelper.ThemeMode theme;
 
         private DateTime _earliestLoaded;
         private bool _isLoadingOlder;
@@ -54,22 +57,20 @@ namespace ProfitProphet.Services
             _lazyLoader = loader;
         }
 
-        public class CandleData
-        {
-            public DateTime Timestamp { get; set; }
-            public double Open { get; set; }
-            public double High { get; set; }
-            public double Low { get; set; }
-            public double Close { get; set; }
-            public double Volume { get; set; }
-            public bool HasGapBefore { get; set; }
-        }
-
         // ==================================================================================
         // Main Build Logic with Dynamic Panels
         // ==================================================================================
         public PlotModel BuildInteractiveChart(List<CandleData> candles, string symbol, string interval)
         {
+            this.theme = WindowStyleHelper.CurrentTheme;
+            bool isDark = this.theme == WindowStyleHelper.ThemeMode.Dark;
+
+            //var textColor = isDark ? OxyColors.White : OxyColors.Black;
+            //var bgColor = isDark ? OxyColor.FromRgb(22, 27, 34) : OxyColors.White;
+            //var plotAreaColor = isDark ? OxyColor.FromRgb(24, 28, 34) : OxyColors.White;
+            //var gridColor = isDark ? OxyColor.FromAColor(40, OxyColors.White) : OxyColor.FromAColor(40, OxyColors.Black);
+            //var borderColor = isDark ? OxyColor.FromRgb(40, 40, 40) : OxyColors.Gray;
+
             if (candles == null || candles.Count == 0)
                 return new PlotModel { Title = $"{symbol} - No Data", TextColor = OxyColors.White };
 
@@ -374,6 +375,13 @@ namespace ProfitProphet.Services
         {
             if (Model == null || _xAxis == null || _candles == null || _candles.Count == 0) return;
 
+            bool isDark = theme == WindowStyleHelper.ThemeMode.Dark;
+
+            // Zöld:
+            // var buyColor = isDark ? OxyColors.LimeGreen : OxyColors.Green;
+            //var buyColor = isDark ? OxyColors.Gold : OxyColors.DarkGoldenrod;
+            var buyColor = isDark ? OxyColors.Gold : OxyColors.Goldenrod;
+
             // 1. Előző nyilak törlése (marad a régi logika)
             var oldAnnotations = Model.Annotations.Where(a => a.Tag is string t && t == "TradeMarker").ToList();
             foreach (var ann in oldAnnotations)
@@ -408,7 +416,7 @@ namespace ProfitProphet.Services
                         FontSize = 24,              // Méret
 
                         Stroke = OxyColors.Transparent,
-                        TextColor = OxyColors.Gold, // Zöld szín
+                        TextColor = buyColor,//OxyColors.Gold, // Zöld szín
                         FontWeight = OxyPlot.FontWeights.Bold,
 
                         // IGAZÍTÁS: A pont legyen a szöveg TETEJE (tehát a nyíl a pont alatt lóg)
@@ -416,7 +424,7 @@ namespace ProfitProphet.Services
                         TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
 
                         ToolTip = $"Vétel: {trade.EntryDate:yyyy-MM-dd}\nÁr: {trade.EntryPrice}",
-                        Tag = "TradeMarker",
+                        Tag = "TradeMarker_Buy",
                         Layer = AnnotationLayer.AboveSeries
                     };
                     Model.Annotations.Add(buyArrow);
@@ -424,6 +432,9 @@ namespace ProfitProphet.Services
 
                 // --- ELADÁS (SELL) ---
                 var sellCandleIndex = _candles.FindIndex(c => c.Timestamp.Date == trade.ExitDate.Date);
+
+                //var sellColor = isDark ? OxyColors.DarkRed : OxyColors.Red;
+                var sellColor = isDark ? OxyColors.Blue : OxyColors.Blue;
 
                 if (sellCandleIndex >= 0)
                 {
@@ -441,7 +452,7 @@ namespace ProfitProphet.Services
                         FontSize = 24,
 
                         Stroke = OxyColors.Transparent,
-                        TextColor = OxyColors.Blue,   // Piros szín
+                        TextColor = sellColor,//OxyColors.Blue,   // Piros szín
                         FontWeight = OxyPlot.FontWeights.Bold,
 
                         // IGAZÍTÁS: A pont legyen a szöveg ALJA (tehát a nyíl a pont fölött ül)
@@ -449,7 +460,7 @@ namespace ProfitProphet.Services
                         TextHorizontalAlignment = OxyPlot.HorizontalAlignment.Center,
 
                         ToolTip = $"Eladás: {trade.ExitDate:yyyy-MM-dd}\nÁr: {trade.ExitPrice}\nProfit: {trade.Profit:C2}",
-                        Tag = "TradeMarker",
+                        Tag = "TradeMarker_Sell",
                         Layer = AnnotationLayer.AboveSeries
                     };
                     Model.Annotations.Add(sellArrow);

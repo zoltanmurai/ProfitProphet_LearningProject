@@ -2,6 +2,7 @@
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using ProfitProphet.DTOs;
+using ProfitProphet.Entities;
 using ProfitProphet.Services;
 using ProfitProphet.Services.Indicators;
 using ProfitProphet.Settings;
@@ -23,7 +24,7 @@ namespace ProfitProphet.ViewModels
     public sealed class ChartViewModel : INotifyPropertyChanged
     {
         private readonly ChartBuilder _chartBuilder;
-        private readonly Func<string, string, Task<List<ChartBuilder.CandleData>>> _loadCandlesAsync;
+        private readonly Func<string, string, Task<List<CandleData>>> _loadCandlesAsync;
         private readonly IAppSettingsService _settingsService;
         private AppSettings _appSettings;
 
@@ -93,7 +94,7 @@ namespace ProfitProphet.ViewModels
         }
 
         public ObservableCollection<IndicatorConfigDto> Indicators { get; } = new();
-        private List<ChartBuilder.CandleData> _candles = new();
+        private List<CandleData> _candles = new();
 
         public ICommand AddIndicatorWithDialogCommand { get; }
         public ICommand EditIndicatorCommand { get; }
@@ -104,7 +105,7 @@ namespace ProfitProphet.ViewModels
         public ChartViewModel(
             IAppSettingsService settingsService,
             AppSettings appSettings,
-            Func<string, string, Task<List<ChartBuilder.CandleData>>> loadCandlesAsync,
+            Func<string, string, Task<List<CandleData>>> loadCandlesAsync,
             ChartBuilder chartBuilder,
             IIndicatorRegistry indicatorRegistry)
         {
@@ -403,7 +404,7 @@ namespace ProfitProphet.ViewModels
 
         public async Task ClearDataAsync()
         {
-            _candles = new List<ChartBuilder.CandleData>();
+            _candles = new List<CandleData>();
             OnPropertyChanged(nameof(HasChartData));
             _chartBuilder.Model?.Series.Clear();
             _chartBuilder.Model?.InvalidatePlot(true);
@@ -571,6 +572,12 @@ namespace ProfitProphet.ViewModels
             var textColor = isDark ? OxyColors.White : OxyColors.Black;
             var gridColor = isDark ? OxyColor.FromAColor(40, OxyColors.White) : OxyColor.FromAColor(40, OxyColors.Black);
             var gapColor = isDark ? OxyColor.FromArgb(60, 200, 200, 255) : OxyColor.FromArgb(60, 0, 0, 139);
+            // Zöld:
+            // var buyColor = isDark ? OxyColors.LimeGreen : OxyColors.Green;
+            //var buyColor = isDark ? OxyColors.Gold : OxyColors.DarkGoldenrod;
+            var buyColor = isDark ? OxyColors.Gold : OxyColors.Goldenrod;
+            //var sellColor = isDark ? OxyColors.DarkRed : OxyColors.Red;
+            var sellColor = isDark ? OxyColors.Blue : OxyColors.Blue;
 
             // 2. Háttér és Keret beállítása
             if (isDark)
@@ -614,9 +621,29 @@ namespace ProfitProphet.ViewModels
                 foreach (var annotation in ChartModel.Annotations)
                 {
                     // Ha ez egy GapMarker, színezzük át
+                    //if (annotation is LineAnnotation line && line.Tag as string == "GapMarker")
+                    //{
+                    //    line.Color = gapColor;
+                    //}
+                    // GapMarker kezelése
                     if (annotation is LineAnnotation line && line.Tag as string == "GapMarker")
                     {
-                        line.Color = gapColor;
+                        line.Color = isDark ? OxyColor.FromArgb(60, 200, 200, 255) : OxyColor.FromArgb(60, 0, 0, 139);
+                    }
+
+                    // Kereskedési nyilak színezése
+                    else if (annotation is TextAnnotation textAnn)
+                    {
+                        string tag = textAnn.Tag as string;
+
+                        if (tag == "TradeMarker_Buy")
+                        {
+                            textAnn.TextColor = buyColor;
+                        }
+                        else if (tag == "TradeMarker_Sell")
+                        {
+                            textAnn.TextColor = sellColor;
+                        }
                     }
                 }
             }
