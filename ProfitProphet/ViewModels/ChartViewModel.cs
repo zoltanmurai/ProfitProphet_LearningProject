@@ -222,6 +222,8 @@ namespace ProfitProphet.ViewModels
             (AddIndicatorWithDialogCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (EditIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
             (DeleteIndicatorCommand as RelayCommand)?.RaiseCanExecuteChanged();
+
+            ChartUpdated?.Invoke();
         }
 
         // ===== CROSSHAIR FUNKCIÓK - EGYSZERŰSÍTETT VERZIÓ =====
