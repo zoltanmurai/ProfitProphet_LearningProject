@@ -30,24 +30,59 @@ namespace ProfitProphet
             // 1. Adatbázis
             services.AddDbContext<StockContext>();
 
-            // 2. Alap szolgáltatások
-            // Beállítások útvonala
+            // 2. BEÁLLÍTÁSOK ELŐRE BETÖLTÉSE (Hogy tudjunk dönteni)
             var cfgPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "ProfitProphet", "settings.json");
 
-            // Regisztráljuk a Service-t (aki ír/olvas)
-            services.AddSingleton<IAppSettingsService>(provider => new AppSettingsService(cfgPath));
+            // Létrehozunk egy ideiglenes példányt, csak hogy kiolvassuk belőle az adatokat
+            // (Még nem regisztráljuk a DI-ba, csak használjuk)
+            var tempSettingsService = new AppSettingsService(cfgPath);
+            var savedSettings = tempSettingsService.LoadSettings(); // <--- Itt vannak a mentett adatok!
 
-            // FONTOS: Regisztráljuk magát a Beállítás Objektumot is!
-            // Így ha a ChartViewModel 'AppSettings'-t kér (nem a service-t), akkor a DI konténer tudni fogja, mit adjon.
+            System.Diagnostics.Debug.WriteLine("---------------- DI DIAGNOSZTIKA ----------------");
+            System.Diagnostics.Debug.WriteLine($"JSON Fájl helye: {cfgPath}");
+            System.Diagnostics.Debug.WriteLine($"Beolvasott SelectedApi: '{savedSettings?.SelectedApi}'");
+            System.Diagnostics.Debug.WriteLine($"Beolvasott AlphaKulcs: '{savedSettings?.AlphaVantageApiKey}'");
+            System.Diagnostics.Debug.WriteLine("-------------------------------------------------");
+
+            // Most regisztráljuk a Service-t a többi osztály számára (pl. SettingsWindow)
+            // Fontos: Azt a példányt adjuk át, amit már létrehoztunk, így nem tölti be kétszer.
+            services.AddSingleton<IAppSettingsService>(tempSettingsService);
+
+            // Opcionális: Magát a Settings objektumot is regisztrálhatod
             services.AddSingleton<AppSettings>(provider => provider.GetRequiredService<IAppSettingsService>().CurrentSettings);
 
-            // 3. Üzleti logika és Indikátorok
-            services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>(); // <--- Ez kell a modularitáshoz!
-            services.AddSingleton<ChartBuilder>(); // <-- Ő majd kéri a Registry-t, és meg is kapja
+            string selectedApi = savedSettings?.SelectedApi ?? "YahooFinance";
+
+            if (selectedApi == "AlphaVantage" && !string.IsNullOrWhiteSpace(savedSettings?.AlphaVantageApiKey))
+            {
+                // Ha AlphaVantage van kiválasztva ÉS van hozzá kulcs
+                string key = savedSettings.AlphaVantageApiKey;
+                services.AddSingleton<IStockApiClient>(provider => new AlphaVantageClient(key));
+
+                System.Diagnostics.Debug.WriteLine($">>> DI: AlphaVantage regisztrálva. Kulcs eleje: {key.Substring(0, Math.Min(3, key.Length))}...");
+            }
+            else if (selectedApi == "TwelveData" && !string.IsNullOrWhiteSpace(savedSettings?.TwelveDataApiKey))
+            {
+                // Ha TwelveData van kiválasztva ÉS van hozzá kulcs
+                string key = savedSettings.TwelveDataApiKey;
+                services.AddSingleton<IStockApiClient>(provider => new TwelveDataClient(key));
+
+                System.Diagnostics.Debug.WriteLine(">>> DI: TwelveData regisztrálva.");
+            }
+            else
+            {
+                // Minden más esetben (YahooFinance, vagy ha a választotthoz nincs kulcs)
+                services.AddSingleton<IStockApiClient, YahooFinanceClient>();
+
+                System.Diagnostics.Debug.WriteLine(">>> DI: YahooFinance regisztrálva (Alapértelmezett).");
+            }
+
+            // 4. Egyéb szolgáltatások (Ezek jók voltak)
+            services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>();
+            services.AddSingleton<ChartBuilder>();
             services.AddSingleton<DataService>();
-            services.AddSingleton<IStockApiClient, YahooFinanceClient>();
 
             services.AddSingleton<IChartSettingsService, ChartSettingsService>();
             services.AddSingleton<IChartProfileService, ChartProfileService>();
@@ -56,13 +91,12 @@ namespace ProfitProphet
             services.AddSingleton<BacktestService>();
             services.AddSingleton<OptimizerService>();
 
-            // 4. ViewModels (Automatikusan megkapják a fenti service-eket)
-            services.AddSingleton<ChartViewModel>(); // Ő kéri: ChartSettings, Builder, AppSettings, Registry
+            // 5. ViewModels
+            services.AddSingleton<ChartViewModel>();
             services.AddSingleton<MainViewModel>();
-            services.AddSingleton<OptimizationViewModel>(); // Ha kell
+            services.AddSingleton<OptimizationViewModel>();
 
-            // 5. Ablakok
-            // Singleton, hogy ne vesszenek el az adatok bezárás/újranyitás között (opcionális, lehet Transient is)
+            // 6. Ablakok
             services.AddSingleton<MainWindow>();
         }
 

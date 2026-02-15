@@ -313,6 +313,7 @@ namespace ProfitProphet.ViewModels
         public async Task RefreshNowAsync()
         {
             if (IsRefreshing) return;
+            System.Diagnostics.Debug.WriteLine($"[PROVIDER CHECK] Jelenlegi kliens: {_apiClient.GetType().Name}");
 
             _ctsRefresh?.Cancel();
             _ctsRefresh = new CancellationTokenSource();
@@ -322,7 +323,7 @@ namespace ProfitProphet.ViewModels
             {
                 IsRefreshing = true;
 
-                // Refresh visible symbols (your existing service API)
+                // Refresh visible symbols (existing service API)
                 //await _dataService.RefreshAllVisibleAsync(Watchlist.ToList(), SelectedInterval, token);
                 await _dataService.RefreshAllVisibleAsync(Watchlist.Select(item => item.Symbol).ToList(), SelectedInterval, token);
 
@@ -342,6 +343,7 @@ namespace ProfitProphet.ViewModels
             RestoreSavedMarkers();
             await ChartVM.InitializeAsync();
             await UpdateLiveSignalsAsync();
+
         }
 
         private async Task HandleAutoRefreshToggleAsync(bool enabled)
