@@ -34,7 +34,7 @@ namespace ProfitProphet.Indicators.BuiltIn
 
             // DEBUG: print last few values to output window for verification
             int count = cmf.Length;
-            System.Diagnostics.Debug.WriteLine($"[CMF CHECK] Total candles: {count}");
+            //System.Diagnostics.Debug.WriteLine($"[CMF CHECK] Total candles: {count}");
 
             if (count >= 3)
             {
@@ -42,7 +42,7 @@ namespace ProfitProphet.Indicators.BuiltIn
                 {
                     double vol = candles[i].Volume;
                     double val = cmf[i];
-                    System.Diagnostics.Debug.WriteLine($"[CMF CHECK] Index: {i} | Volume input: {vol} | CMF Calculated: {val}");
+                    //System.Diagnostics.Debug.WriteLine($"[CMF CHECK] Index: {i} | Volume input: {vol} | CMF Calculated: {val}");
                 }
             }
             else

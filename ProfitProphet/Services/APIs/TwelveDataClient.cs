@@ -15,7 +15,12 @@ namespace ProfitProphet.Services.APIs
         private readonly string _apiKey;
 
         public TwelveDataClient() : this(string.Empty) { }
-        public TwelveDataClient(string apiKey) { _apiKey = apiKey ?? string.Empty; }
+        public TwelveDataClient(string apiKey) 
+        { 
+            _apiKey = apiKey ?? string.Empty; 
+            System.Diagnostics.Debug.WriteLine("Beolvasott SelectedApi: TwelveDataClient");
+        }
+
 
         // ───────────────── IStockApiClient ─────────────────
 

@@ -126,13 +126,19 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
 
-                <ListBox.ContextMenu>
+                <!--<ListBox.ContextMenu>
                     <ContextMenu Background="{DynamicResource SecondaryBackground}" 
                                  BorderBrush="{DynamicResource BorderBrush}">
                         <MenuItem Header="Remove from Watchlist" 
                                   Click="RemoveMenuItem_Click"
                                   Foreground="{DynamicResource PrimaryText}"
                                   Background="{DynamicResource SecondaryBackground}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>-->
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Remove from Watchlist"
+                      Click="RemoveMenuItem_Click" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
 

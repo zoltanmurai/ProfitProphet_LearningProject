@@ -156,7 +156,7 @@ namespace ProfitProphet.ViewModels
             OnPropertyChanged(nameof(HasChartData));
             RebuildChart();
             LoadIndicatorsForCurrentContext();
-            System.Diagnostics.Debug.WriteLine($"[ChartVM] candles: {_candles?.Count ?? 0} for {CurrentSymbol} {CurrentInterval}");
+            //System.Diagnostics.Debug.WriteLine($"[ChartVM] candles: {_candles?.Count ?? 0} for {CurrentSymbol} {CurrentInterval}");
             ChartUpdated?.Invoke();
         }
 

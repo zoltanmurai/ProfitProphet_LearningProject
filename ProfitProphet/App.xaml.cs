@@ -43,7 +43,7 @@ namespace ProfitProphet
             System.Diagnostics.Debug.WriteLine("---------------- DI DIAGNOSZTIKA ----------------");
             System.Diagnostics.Debug.WriteLine($"JSON Fájl helye: {cfgPath}");
             System.Diagnostics.Debug.WriteLine($"Beolvasott SelectedApi: '{savedSettings?.SelectedApi}'");
-            System.Diagnostics.Debug.WriteLine($"Beolvasott AlphaKulcs: '{savedSettings?.AlphaVantageApiKey}'");
+            //System.Diagnostics.Debug.WriteLine($"Beolvasott AlphaKulcs: '{savedSettings?.AlphaVantageApiKey}'");
             System.Diagnostics.Debug.WriteLine("-------------------------------------------------");
 
             // Most regisztráljuk a Service-t a többi osztály számára (pl. SettingsWindow)
@@ -51,33 +51,39 @@ namespace ProfitProphet
             services.AddSingleton<IAppSettingsService>(tempSettingsService);
 
             // Opcionális: Magát a Settings objektumot is regisztrálhatod
-            services.AddSingleton<AppSettings>(provider => provider.GetRequiredService<IAppSettingsService>().CurrentSettings);
+            //services.AddSingleton<AppSettings>(provider => provider.GetRequiredService<IAppSettingsService>().CurrentSettings);
 
-            string selectedApi = savedSettings?.SelectedApi ?? "YahooFinance";
+            //string selectedApi = savedSettings?.SelectedApi ?? "YahooFinance";
 
-            if (selectedApi == "AlphaVantage" && !string.IsNullOrWhiteSpace(savedSettings?.AlphaVantageApiKey))
-            {
-                // Ha AlphaVantage van kiválasztva ÉS van hozzá kulcs
-                string key = savedSettings.AlphaVantageApiKey;
-                services.AddSingleton<IStockApiClient>(provider => new AlphaVantageClient(key));
+            //if (selectedApi == "AlphaVantage" && !string.IsNullOrWhiteSpace(savedSettings?.AlphaVantageApiKey))
+            //{
+            //    // Ha AlphaVantage van kiválasztva ÉS van hozzá kulcs
+            //    string key = savedSettings.AlphaVantageApiKey;
+            //    services.AddSingleton<IStockApiClient>(provider => new AlphaVantageClient(key));
 
-                System.Diagnostics.Debug.WriteLine($">>> DI: AlphaVantage regisztrálva. Kulcs eleje: {key.Substring(0, Math.Min(3, key.Length))}...");
-            }
-            else if (selectedApi == "TwelveData" && !string.IsNullOrWhiteSpace(savedSettings?.TwelveDataApiKey))
-            {
-                // Ha TwelveData van kiválasztva ÉS van hozzá kulcs
-                string key = savedSettings.TwelveDataApiKey;
-                services.AddSingleton<IStockApiClient>(provider => new TwelveDataClient(key));
+            //    System.Diagnostics.Debug.WriteLine($">>> DI: AlphaVantage regisztrálva. Kulcs eleje: {key.Substring(0, Math.Min(3, key.Length))}...");
+            //}
+            //else if (selectedApi == "TwelveData" && !string.IsNullOrWhiteSpace(savedSettings?.TwelveDataApiKey))
+            //{
+            //    // Ha TwelveData van kiválasztva ÉS van hozzá kulcs
+            //    string key = savedSettings.TwelveDataApiKey;
+            //    services.AddSingleton<IStockApiClient>(provider => new TwelveDataClient(key));
 
-                System.Diagnostics.Debug.WriteLine(">>> DI: TwelveData regisztrálva.");
-            }
-            else
-            {
-                // Minden más esetben (YahooFinance, vagy ha a választotthoz nincs kulcs)
-                services.AddSingleton<IStockApiClient, YahooFinanceClient>();
+            //    System.Diagnostics.Debug.WriteLine(">>> DI: TwelveData regisztrálva.");
+            //}
+            //else
+            //{
+            //    // Minden más esetben (YahooFinance, vagy ha a választotthoz nincs kulcs)
+            //    services.AddSingleton<IStockApiClient, YahooFinanceClient>();
 
-                System.Diagnostics.Debug.WriteLine(">>> DI: YahooFinance regisztrálva (Alapértelmezett).");
-            }
+            //    System.Diagnostics.Debug.WriteLine(">>> DI: YahooFinance regisztrálva (Alapértelmezett).");
+            //}
+
+            services.AddSingleton<IStockApiClientFactory, StockApiClientFactory>();
+
+            services.AddTransient<IStockApiClient>(provider =>
+                provider.GetRequiredService<IStockApiClientFactory>().CreateClient());
+
 
             // 4. Egyéb szolgáltatások (Ezek jók voltak)
             services.AddSingleton<IIndicatorRegistry, IndicatorRegistry>();

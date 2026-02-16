@@ -261,12 +261,12 @@ namespace ProfitProphet.Services
             if (ohlc.Count > 0)
             {
                 var last = ohlc.Last();
-                System.Diagnostics.Debug.WriteLine($"[ADAT ELLENŐRZÉS] Utolsó gyertya: {last.Close} | Volume: {last.Volume}");
+                //System.Diagnostics.Debug.WriteLine($"[ADAT ELLENŐRZÉS] Utolsó gyertya: {last.Close} | Volume: {last.Volume}");
 
-                if (last.Volume == 0)
-                    System.Diagnostics.Debug.WriteLine("[HIBA] A Volume értéke 0! Valahol elveszik az adat.");
-                else
-                    System.Diagnostics.Debug.WriteLine("[OK] A Volume adat megérkezett a ChartBuilder-be.");
+                //if (last.Volume == 0)
+                //    System.Diagnostics.Debug.WriteLine("[HIBA] A Volume értéke 0! Valahol elveszik az adat.");
+                //else
+                //    System.Diagnostics.Debug.WriteLine("[OK] A Volume adat megérkezett a ChartBuilder-be.");
             }
 
             foreach (var inst in settings.Indicators.Where(i => i.IsVisible))
@@ -285,7 +285,7 @@ namespace ProfitProphet.Services
                     targetAxis = indicatorToAxisMap[inst];
                 }
 
-                System.Diagnostics.Debug.WriteLine($"[MODEL ELLENŐRZÉS] Model: {Model} | _xAxis: {_xAxis}");
+                //System.Diagnostics.Debug.WriteLine($"[MODEL ELLENŐRZÉS] Model: {Model} | _xAxis: {_xAxis}");
                 ind.Render(Model, result, _xAxis, targetAxis);
             }
 

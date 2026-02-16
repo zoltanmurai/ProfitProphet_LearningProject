@@ -20,6 +20,8 @@ namespace ProfitProphet.Services.APIs
         public AlphaVantageClient(string apiKey)
         {
             _apiKey = apiKey ?? string.Empty;
+
+            System.Diagnostics.Debug.WriteLine("Beolvasott SelectedApi: AlphaVantageClient");
         }
 
         // ─────────────────────────────────────────────────────────────────────────
