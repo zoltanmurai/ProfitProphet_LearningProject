@@ -708,8 +708,8 @@ namespace ProfitProphet.ViewModels
                         var saved = _savedOptimizerState[i];
                         var current = vm.AvailableParameters[i];
 
-                        // --- JAVÍTÁS: NÉV ELLENŐRZÉS BEÉPÍTÉSE ---
-                        // Csak akkor töltjük vissza, ha a név is stimmel!
+                        // --- NÉV ELLENŐRZÉS ---
+                        // ha a név is stimmel
                         if (saved.Name == current.Name)
                         {
                             current.IsSelected = saved.IsSelected;
@@ -725,6 +725,9 @@ namespace ProfitProphet.ViewModels
                     }
                 }
             }
+
+            vm.StartDate = this.StartDate;
+            vm.EndDate = this.EndDate;
 
             var win = new OptimizationWindow { DataContext = vm, Owner = Application.Current.MainWindow };
 
