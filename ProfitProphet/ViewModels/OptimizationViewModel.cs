@@ -28,6 +28,20 @@ namespace ProfitProphet.ViewModels
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
+        private DateTime _startDate = DateTime.Today.AddYears(-1);
+        public DateTime StartDate
+        {
+            get => _startDate;
+            set { _startDate = value; OnPropertyChanged(); }
+        }
+
+        private DateTime _endDate = DateTime.Today;
+        public DateTime EndDate
+        {
+            get => _endDate;
+            set { _endDate = value; OnPropertyChanged(); }
+        }
+
         public OptimizationViewModel(StrategyProfile profile)
         {
             _profile = profile;

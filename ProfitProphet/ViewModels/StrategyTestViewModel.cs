@@ -505,9 +505,22 @@ namespace ProfitProphet.ViewModels
                             return;
                         }
 
+                        var filteredCandles = _candles
+                            .Where(c => c.TimestampUtc >= StartDate && c.TimestampUtc <= EndDate)
+                            .OrderBy(c => c.TimestampUtc)
+                            .ToList();
+
+                        if (filteredCandles.Count < 50)
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                               MessageBox.Show("A kiválasztott időszakban nincs elég adat!"));
+                            return;
+                        }
+
                         // OPTIMALIZÁLÁS FUTTATÁSA
                         var results = await _optimizerService.OptimizeAsync(
-                            _candles,
+                            //_candles,
+                            filteredCandles,
                             CurrentProfile,
                             _currentOptimizationParams,
                             progressIndicator,
@@ -591,7 +604,25 @@ namespace ProfitProphet.ViewModels
                         progressIndicator.Report(10);
                         token.ThrowIfCancellationRequested();
 
-                        var res = _backtestService.RunBacktest(_candles, CurrentProfile, InitialCash);
+                        var filteredCandles = _candles
+                            .Where(c => c.TimestampUtc >= StartDate && c.TimestampUtc <= EndDate)
+                            .OrderBy(c => c.TimestampUtc)
+                            .ToList();
+
+                        if (filteredCandles.Count < 50)
+                        {
+                            Application.Current.Dispatcher.Invoke(() =>
+                               MessageBox.Show("A kiválasztott időszakban nincs elég adat!"));
+                            return;
+                        }
+
+                        var res = _backtestService.RunBacktest(
+                            //_candles, 
+                            filteredCandles,
+                            CurrentProfile, 
+                            InitialCash
+                            );
+
                         progressIndicator.Report(100);
 
                         // --- UI FRISSÍTÉS ÉS CACHE MENTÉS ---
@@ -723,6 +754,9 @@ namespace ProfitProphet.ViewModels
                             Step = p.Step
                         })
                         .ToList();
+
+                    this.StartDate = vm.StartDate;
+                    this.EndDate = vm.EndDate;
 
                     _cachedContextKey = GetCurrentContextKey();
                     UseOptimization = true;
