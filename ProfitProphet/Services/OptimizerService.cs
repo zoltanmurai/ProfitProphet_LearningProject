@@ -204,7 +204,6 @@ namespace ProfitProphet.Services
             return results.OrderByDescending(r => r.Score).ToList();
         }
 
-        // --- ÚJ: HIÁNYZÓ METÓDUS A SZINKRONIZÁLÁSHOZ ---
         private void SyncGroup(StrategyGroup group)
         {
             if (group == null || group.Rules.Count < 2) return;

@@ -76,48 +76,11 @@ namespace ProfitProphet.Services
                     }
 
                     // 2. MAX POZÍCIÓ LIMIT
-                    int maxPyramidLayers = 10;
+                    int maxPyramidLayers = profile.AllowPyramiding ? 1000 : 1;
                     if (activeTrades.Count >= maxPyramidLayers)
                     {
                         continue;
                     }
-
-                    //if (holdings > 0)
-                    //{
-                    //    int activeTradesCount = result.Trades.Count(t => t.ExitDate == DateTime.MinValue);
-                    //    if (activeTradesCount >= 5) // Max 5 rávásárlás
-                    //    {
-                    //        continue;
-                    //    }
-                    //}
-
-                    //if (lastOpenTrade != null)
-                    //{
-                    //    // A) MAX LIMIT ELLENŐRZÉS (Maradhat, hogy ne szálljon el a tőkeáttét)
-                    //    int activeTradesCount = result.Trades.Count(t => t.ExitDate == DateTime.MinValue);
-                    //    if (activeTradesCount >= 10) // Pl. Max 10 réteg engedélyezve
-                    //    {
-                    //        continue;
-                    //    }
-                    //    // B) ENVELOPE / GRID TÁVOLSÁG SZÁMÍTÁS
-                    //    double lastPrice = (double)lastOpenTrade.EntryPrice;
-                    //    // Kiszámoljuk a százalékos távolságot
-                    //    double deviation = Math.Abs(price - lastPrice) / lastPrice;
-
-                    //    // BEÁLLÍTÁS: Minimum sávméret. ezt kísérlezni kell
-                    //    // 0.01 = 1%-os sáv. Amíg ezen belül mozog (oldalaz), NEM vesz újat.
-                    //    double minEnvelopeSize = 0.01;
-
-                    //    // oldalazunk?
-                    //    if (deviation < minEnvelopeSize)
-                    //    {
-                    //        continue;
-                    //    }
-
-                    //    // Ha csak TREND irányba akarunk venni (Pyramiding). ez nem feltétel most
-                    //    // if (price <= lastPrice * (1 + minEnvelopeSize)) continue; 
-                    //}
-
 
                     // CASH ELLENŐRZÉS (ne menjen negatívba!)
                     int quantityToBuy = CalculatePositionSize(profile, cash, price);

@@ -839,7 +839,8 @@ namespace ProfitProphet.ViewModels
                     Title = "Balance (Realizált)",
                     Color = OxyColors.DodgerBlue,
                     StrokeThickness = 2,
-                    MarkerType = MarkerType.None
+                    MarkerType = MarkerType.None,
+                    Decimator = Decimator.Decimate
                 };
                 foreach (var pt in balancePoints) balanceSeries.Points.Add(DateTimeAxis.CreateDataPoint(pt.Time, pt.Equity));
                 if (balancePoints.Last().Time < EndDate) balanceSeries.Points.Add(DateTimeAxis.CreateDataPoint(EndDate, balancePoints.Last().Equity));
@@ -853,6 +854,7 @@ namespace ProfitProphet.ViewModels
                 Color = OxyColors.LimeGreen,
                 StrokeThickness = 2,
                 MarkerType = MarkerType.None,
+                Decimator = Decimator.Decimate
             };
             equitySeries.Points.AddRange(viewPoints);
             model.Series.Add(equitySeries);
@@ -867,7 +869,8 @@ namespace ProfitProphet.ViewModels
                     MarkerFill = OxyColors.White,
                     MarkerStroke = OxyColors.Black,
                     MarkerStrokeThickness = 1,
-                    Title = "Vétel"
+                    Title = "Vétel",
+                    TrackerFormatString = null
                 };
 
                 // 6. KÖTÉSEK (ELADÁS)
@@ -878,7 +881,8 @@ namespace ProfitProphet.ViewModels
                     MarkerFill = OxyColors.Red,
                     MarkerStroke = OxyColors.White,
                     MarkerStrokeThickness = 1,
-                    Title = "Eladás"
+                    Title = "Eladás",
+                    TrackerFormatString = null
                 };
 
                 foreach (var trade in res.Trades)
